@@ -68,7 +68,9 @@ export default function InstallerDashboard({ user, onLogout }) {
   };
 
   const siteUrl = process.env.REACT_APP_SITE_URL || window.location.origin;
-  const embedCode = `<iframe src="${siteUrl}/embed?installer=${installerId}" width="100%" height="820" frameborder="0" style="border:none;max-width:700px;display:block;margin:0 auto;" title="Solar Savings Calculator" loading="lazy"></iframe>`;
+  const embedCode = `<!-- Solar Savings Calculator -->
+<iframe id="sc-iframe" src="${siteUrl}/embed?installer=${installerId}" width="100%" height="700" frameborder="0" scrolling="no" style="border:none;width:100%;display:block;" title="Solar Savings Calculator"></iframe>
+<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='sc-resize'){var f=document.getElementById('sc-iframe');if(f)f.style.height=(e.data.height+20)+'px';}});<\/script>`;
 
   return (
     <div className="dash-layout">

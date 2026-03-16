@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
@@ -25,12 +25,26 @@ const initialForm = {
   equipmentTier: 'standard',
 };
 
-export default function SolarCalculator() {
+export default function SolarCalculator({ embedded }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(initialForm);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const containerRef = useRef(null);
+
+  // Auto-resize iframe when content height changes
+  useEffect(() => {
+    if (!embedded) return;
+    const sendHeight = () => {
+      const height = document.body.scrollHeight;
+      window.parent.postMessage({ type: 'sc-resize', height }, '*');
+    };
+    sendHeight();
+    const observer = new ResizeObserver(sendHeight);
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [embedded, step, results]);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
@@ -76,7 +90,7 @@ export default function SolarCalculator() {
   ];
 
   return (
-    <section className="calculator-section">
+    <section className="calculator-section" ref={containerRef} style={embedded ? { padding: '24px 16px 32px', minHeight: 'unset' } : {}}>
       <div className="calculator-container">
         <div className="calculator-header">
           <span className="calc-badge">Free Estimate</span>
