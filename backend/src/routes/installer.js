@@ -19,8 +19,8 @@ router.put('/:id', (req, res) => {
 
   // Only allow updating known config fields
   const allowedFields = [
-    'minSystemSize', 'maxSystemSize', 'serviceStates', 'batteries',
-    'roofSurcharges', 'equipment', 'federalTaxCredit', 'panelWattage',
+    'minSystemSize', 'maxSystemSize', 'pricePerWatt', 'serviceStates', 'batteries',
+    'roofSurcharges', 'federalTaxCredit', 'panelWattage',
     'systemName', 'companyName', 'primaryColor', 'accentColor',
     'ctaHeadline', 'ctaSubtext', 'ctaButtonText', 'ctaPhone', 'ctaButtonUrl',
   ];

@@ -14,6 +14,7 @@ const ALL_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID',
 
 const DEFAULT_CONFIG = {
   minSystemSize: 4, maxSystemSize: 20,
+  pricePerWatt: 2.8,
   serviceStates: [],
   batteries: {
     none: { label: 'No battery', cost: 0 },
@@ -21,11 +22,6 @@ const DEFAULT_CONFIG = {
     two: { label: '2 Batteries (Tesla Powerwall)', cost: 23000 },
   },
   roofSurcharges: { asphalt: 0, metal: 500, tile: 1500, flat: 800 },
-  equipment: {
-    basic: { label: 'Basic (JinkoSolar)', pricePerWatt: 2.5 },
-    standard: { label: 'Standard (Qcells)', pricePerWatt: 2.8 },
-    premium: { label: 'Premium (SunPower)', pricePerWatt: 3.4 },
-  },
   systemName: 'Solar Calculator', companyName: '', primaryColor: '#f59e0b',
 };
 
@@ -87,7 +83,6 @@ export default function InstallerDashboard({ user, onLogout }) {
         <nav className="dash-nav">
           {[
             { id: 'pricing', icon: '💰', label: 'Pricing Settings' },
-            { id: 'equipment', icon: '🔧', label: 'Equipment Options' },
             { id: 'appearance', icon: '🎨', label: 'Appearance' },
             { id: 'embed', icon: '📋', label: 'Embed Code' },
             { id: 'leads', icon: '📊', label: 'Leads' },
@@ -113,7 +108,6 @@ export default function InstallerDashboard({ user, onLogout }) {
           <div>
             <h1 className="dash-page-title">
               {activeTab === 'pricing' && 'Pricing Settings'}
-              {activeTab === 'equipment' && 'Equipment Options'}
               {activeTab === 'appearance' && 'Appearance'}
               {activeTab === 'embed' && 'Embed Code'}
               {activeTab === 'leads' && 'Leads'}
@@ -129,6 +123,12 @@ export default function InstallerDashboard({ user, onLogout }) {
 
           {activeTab === 'pricing' && (
             <div className="settings-grid">
+              <SettingCard title="Base Price per Watt" desc="All-in installed cost per watt — covers panels, inverter, labor, permits, and your margin. This is the single number that drives every estimate.">
+                <SettingRow label="Price per Watt ($)" hint="Typical range: $2.50 – $4.00">
+                  <input type="number" step="0.05" min="1" max="6" value={config.pricePerWatt || 2.8} onChange={e => update('pricePerWatt', parseFloat(e.target.value))} className="dash-input" />
+                </SettingRow>
+              </SettingCard>
+
               <SettingCard title="Roof Surcharges" desc="Extra cost added for non-standard roof types.">
                 {Object.entries(config.roofSurcharges).map(([type, cost]) => (
                   <SettingRow key={type} label={`${type.charAt(0).toUpperCase() + type.slice(1)} roof ($)`}>
@@ -189,21 +189,6 @@ export default function InstallerDashboard({ user, onLogout }) {
                   </button>
                 )}
               </SettingCard>
-            </div>
-          )}
-
-          {activeTab === 'equipment' && (
-            <div className="settings-grid">
-              {Object.entries(config.equipment).map(([tier, eq]) => (
-                <SettingCard key={tier} title={`${tier.charAt(0).toUpperCase() + tier.slice(1)} Tier`} desc={`Configure ${tier} equipment pricing`}>
-                  <SettingRow label="Display Label">
-                    <input type="text" value={eq.label} onChange={e => update('equipment', { ...config.equipment, [tier]: { ...eq, label: e.target.value } })} className="dash-input dash-input-text" />
-                  </SettingRow>
-                  <SettingRow label="Price per Watt ($)">
-                    <input type="number" step="0.05" min="1" max="6" value={eq.pricePerWatt} onChange={e => update('equipment', { ...config.equipment, [tier]: { ...eq, pricePerWatt: parseFloat(e.target.value) } })} className="dash-input" />
-                  </SettingRow>
-                </SettingCard>
-              ))}
             </div>
           )}
 

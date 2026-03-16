@@ -163,8 +163,7 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
 
   // 7. Calculate installation cost
   // pricePerWatt is all-in (panels + labor + inverter + permits + profit)
-  const tier = config.equipment[equipmentTier] || config.equipment.standard;
-  const equipmentCost = systemSizeKw * 1000 * tier.pricePerWatt;
+  const equipmentCost = systemSizeKw * 1000 * config.pricePerWatt;
   const roofSurcharge = config.roofSurcharges[roofType] || 0;
   const batteryCost = (config.batteries[battery] || config.batteries.none).cost;
 
@@ -260,8 +259,7 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
     },
     chart: savingsChart,
     equipment: {
-      tier: equipmentTier,
-      tierLabel: tier.label,
+      pricePerWatt: config.pricePerWatt,
       batteryLabel: (config.batteries[battery] || config.batteries.none).label,
     },
   };

@@ -14,11 +14,7 @@ const DEFAULT_INSTALLER_CONFIG = {
     tile: 1500,
     flat: 800,
   },
-  equipment: {
-    basic: { label: "Basic (JinkoSolar)", pricePerWatt: 2.5 },
-    standard: { label: "Standard (Qcells)", pricePerWatt: 2.8 },
-    premium: { label: "Premium (SunPower)", pricePerWatt: 3.4 },
-  },
+  pricePerWatt: 2.8,         // all-in installed cost per watt (panels + labor + inverter + permits + margin)
   serviceStates: [],         // e.g. ['TX', 'CA'] — empty means serve all states
   federalTaxCredit: 0.30,    // 30% ITC
   panelWattage: 400,          // watts per panel
