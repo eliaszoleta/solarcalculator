@@ -1,12 +1,30 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 const { JWT_SECRET } = require('../middleware/auth');
 
 const router = express.Router();
 
-// In-memory user store — replace with a database in production
-const users = new Map();
+const USERS_FILE = path.join(__dirname, '../../data/users.json');
+
+function loadUsers() {
+  try {
+    const raw = fs.readFileSync(USERS_FILE, 'utf8');
+    return new Map(Object.entries(JSON.parse(raw)));
+  } catch {
+    return new Map();
+  }
+}
+
+function saveUsers(map) {
+  const dir = path.dirname(USERS_FILE);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(USERS_FILE, JSON.stringify(Object.fromEntries(map), null, 2), 'utf8');
+}
+
+const users = loadUsers();
 
 // POST /api/auth/signup
 router.post('/signup', async (req, res) => {
@@ -32,6 +50,7 @@ router.post('/signup', async (req, res) => {
     createdAt: new Date().toISOString(),
   };
   users.set(email.toLowerCase(), user);
+  saveUsers(users);
 
   const token = jwt.sign({ id: installerId, email: user.email, companyName }, JWT_SECRET, { expiresIn: '7d' });
   res.status(201).json({ success: true, data: { token, installerId, email: user.email, companyName } });

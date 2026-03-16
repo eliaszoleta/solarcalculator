@@ -95,7 +95,7 @@ export default function InstallerDashboard({ user, onLogout }) {
           <span className="dash-brand-name">MySolar<span>Widget</span></span>
         </div>
         <div style={{ padding: '0 16px 16px', fontSize: 12, color: '#64748b', borderBottom: '1px solid #1e293b', marginBottom: 8 }}>
-          {localStorage.getItem('sc_company') || user?.companyName || 'My Company'}
+          {config.companyName || user?.user_metadata?.company_name || 'My Company'}
         </div>
         <nav className="dash-nav">
           {[
