@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import './ResultsScreen.css';
 
@@ -11,37 +11,66 @@ function fmtDollar(n) {
 }
 
 export default function ResultsScreen({ results, onReset, form, installerConfig, embedded }) {
-  const [leadForm, setLeadForm] = useState({ name: '', email: '', phone: '' });
-  const [submitted, setSubmitted] = useState(false);
   const { system, cost, incentives, savings, chart } = results;
   const cta = installerConfig || {};
 
-  const handleLeadSubmit = e => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
   // Find payback year for chart reference line
   const paybackYear = chart.find(d => d.cumulativeSavings >= 0)?.year;
+
+  const hasFinancing = savings.monthlyPaymentFinanced > 0;
+  const daySavings = hasFinancing
+    ? Math.max(0, form.monthlyBill - savings.monthlyPaymentFinanced)
+    : savings.monthly;
 
   return (
     <section className="results-section">
       <div className="results-container">
 
-        {/* Hero Result */}
+        {/* Hero — Payment vs Bill comparison */}
         <div className="results-hero">
           <span className="results-badge">Your Solar Estimate</span>
-          <h2 className="results-title">Solar could cut your electric bill by <span className="highlight">{fmtDollar(savings.monthly)}/mo</span></h2>
-          <p className="results-subtitle">Based on your ${form.monthlyBill}/month electric bill in {results.inputs.state || 'your area'}</p>
+
+          {hasFinancing ? (
+            <>
+              <div className="versus-block">
+                <div className="versus-side">
+                  <div className="versus-label">Your current bill</div>
+                  <div className="versus-amount versus-bill">{fmtDollar(form.monthlyBill)}<span>/mo</span></div>
+                </div>
+                <div className="versus-arrow">→</div>
+                <div className="versus-side">
+                  <div className="versus-label">Solar payment</div>
+                  <div className="versus-amount versus-solar">{fmtDollar(savings.monthlyPaymentFinanced)}<span>/mo</span></div>
+                </div>
+              </div>
+              <h2 className="results-title">
+                Save <span className="highlight">{fmtDollar(daySavings)}/mo from day one</span>
+              </h2>
+              <p className="results-subtitle">
+                Based on your {fmtDollar(form.monthlyBill)}/month bill in {results.inputs.state || 'your area'} — financed at 8.99% APR over 25 years
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="results-title">
+                Solar could cut your electric bill by <span className="highlight">{fmtDollar(savings.monthly)}/mo</span>
+              </h2>
+              <p className="results-subtitle">
+                Based on your {fmtDollar(form.monthlyBill)}/month electric bill in {results.inputs.state || 'your area'}
+              </p>
+            </>
+          )}
         </div>
 
         {/* Key Metrics */}
         <div className="metrics-grid">
-          <div className="metric-card metric-savings">
-            <div className="metric-label">Monthly Bill Reduction</div>
-            <div className="metric-value">{fmtDollar(savings.monthly)}</div>
-            <div className="metric-sub">less to the utility company</div>
-          </div>
+          {hasFinancing && (
+            <div className="metric-card metric-savings">
+              <div className="metric-label">Day-One Monthly Savings</div>
+              <div className="metric-value">{fmtDollar(daySavings)}</div>
+              <div className="metric-sub">bill − solar payment</div>
+            </div>
+          )}
           <div className="metric-card">
             <div className="metric-label">Annual Electricity Savings</div>
             <div className="metric-value">{fmtDollar(savings.annual)}</div>
@@ -100,11 +129,9 @@ export default function ResultsScreen({ results, onReset, form, installerConfig,
             </div>
           </div>
 
-          {savings.monthlyPaymentFinanced > 0 && (
+          {hasFinancing && (
             <div className="financing-note">
-              💳 <strong>If financed:</strong> ~{fmtDollar(savings.monthlyPaymentFinanced)}/mo loan payment (25 yr, 5.9% APR).{' '}
-              Your electric bill drops ~{fmtDollar(savings.monthly)}/mo, so your <strong>net monthly savings = ~{fmtDollar(savings.netMonthlyFinanced || Math.max(0, savings.monthly - savings.monthlyPaymentFinanced))}</strong>{' '}
-              ({fmtDollar(savings.monthly)} savings − {fmtDollar(savings.monthlyPaymentFinanced)} payment).
+              💳 <strong>If financed:</strong> ~{fmtDollar(savings.monthlyPaymentFinanced)}/mo loan payment (25 yr, 8.99% APR). Your electric bill drops ~{fmtDollar(savings.monthly)}/mo — <strong>net savings from day one: ~{fmtDollar(daySavings)}/mo</strong>.
             </div>
           )}
 
@@ -149,10 +176,9 @@ export default function ResultsScreen({ results, onReset, form, installerConfig,
           </div>
         </div>
 
-        {/* CTA — installer-branded when embedded, generic lead form otherwise */}
+        {/* CTA — installer-branded when embedded, generic thank-you otherwise */}
         <div className="section-card lead-card">
           {embedded ? (
-            // Installer CTA
             <div style={{ textAlign: 'center', padding: '8px 0' }}>
               <div style={{ fontSize: 36, marginBottom: 12 }}>☀️</div>
               <h3 style={{ fontSize: 22, fontWeight: 800, color: 'white', marginBottom: 8 }}>
@@ -188,26 +214,12 @@ export default function ResultsScreen({ results, onReset, form, installerConfig,
                 </p>
               )}
             </div>
-          ) : submitted ? (
+          ) : (
             <div className="lead-success">
               <div className="lead-success-icon">✅</div>
-              <h3>We'll be in touch!</h3>
-              <p>A solar specialist will contact you with a precise quote for your home.</p>
+              <h3>You're all set!</h3>
+              <p>A solar specialist will reach out with a precise quote for your home. Check your email for your savings summary.</p>
             </div>
-          ) : (
-            <>
-              <div className="lead-header">
-                <h3 className="section-title">Get Your Exact Solar Quote</h3>
-                <p className="lead-desc">This estimate is based on your inputs. Get a precise system design and final price from a local solar installer — free, no obligation.</p>
-              </div>
-              <form className="lead-form" onSubmit={handleLeadSubmit}>
-                <input type="text" placeholder="Your full name" value={leadForm.name} onChange={e => setLeadForm(p => ({ ...p, name: e.target.value }))} required className="lead-input" />
-                <input type="email" placeholder="Email address" value={leadForm.email} onChange={e => setLeadForm(p => ({ ...p, email: e.target.value }))} required className="lead-input" />
-                <input type="tel" placeholder="Phone number" value={leadForm.phone} onChange={e => setLeadForm(p => ({ ...p, phone: e.target.value }))} className="lead-input" />
-                <button type="submit" className="btn btn-cta lead-cta">Get My Free Solar Quote →</button>
-              </form>
-              <p className="lead-disclaimer">No spam. No commitment. One call with a certified installer.</p>
-            </>
           )}
         </div>
 

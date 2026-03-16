@@ -7,11 +7,12 @@ import StepLocation from './steps/StepLocation';
 import StepHome from './steps/StepHome';
 import StepRoof from './steps/StepRoof';
 import StepBattery from './steps/StepBattery';
-import StepEquipment from './steps/StepEquipment';
+import StepLead from './steps/StepLead';
 import ResultsScreen from './ResultsScreen';
 import ProgressBar from '../ui/ProgressBar';
 import './SolarCalculator.css';
 
+// Steps 1-5 are the calculator questions; step 6 is the lead gate
 const TOTAL_STEPS = 6;
 
 const initialForm = {
@@ -19,10 +20,11 @@ const initialForm = {
   zip: '',
   state: '',
   homeType: 'house',
+  ownsHome: null,
   sunExposure: 'full',
   roofType: 'asphalt',
   battery: 'none',
-  equipmentTier: 'standard',
+  equipmentTier: 'standard', // fixed — removed from UI, always standard
 };
 
 export default function SolarCalculator({ embedded, installerConfig, installerId }) {
@@ -51,11 +53,16 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   const next = () => setStep(s => Math.min(s + 1, TOTAL_STEPS));
   const back = () => setStep(s => Math.max(s - 1, 1));
 
-  const calculate = async () => {
+  // Called when lead form is submitted — run calculation and show results
+  const handleLeadSubmit = async (leadData) => {
     setLoading(true);
     setError(null);
     try {
-      const payload = installerId ? { ...form, installerId } : form;
+      const payload = {
+        ...form,
+        lead: leadData,
+        ...(installerId ? { installerId } : {}),
+      };
       const { data } = await axios.post(`${API_BASE}/api/calculate`, payload);
       if (data.success) {
         setResults(data.data);
@@ -87,8 +94,23 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
     { label: 'Home Type', icon: '🏠' },
     { label: 'Roof', icon: '🏗' },
     { label: 'Battery', icon: '🔋' },
-    { label: 'Equipment', icon: '☀️' },
+    { label: 'Your Info', icon: '👤' },
   ];
+
+  const serviceStates = installerConfig?.serviceStates || [];
+  const isOutOfArea = step === 2 && serviceStates.length > 0 && form.state && !serviceStates.includes(form.state);
+
+  // Disqualify if apartment/condo or renter — block Next button on step 3
+  const isDisqualified = step === 3 && (
+    form.homeType === 'apartment' ||
+    form.homeType === 'condo' ||
+    form.ownsHome === false
+  );
+
+  // On step 3 (house selected), require ownsHome to be answered before proceeding
+  const step3Incomplete = step === 3 && form.homeType === 'house' && form.ownsHome === null;
+
+  const canProceed = !isOutOfArea && !isDisqualified && !step3Incomplete;
 
   return (
     <section className="calculator-section" ref={containerRef} style={embedded ? { padding: '24px 16px 32px', minHeight: 'unset' } : {}}>
@@ -96,7 +118,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
         <div className="calculator-header">
           <span className="calc-badge">Free Estimate</span>
           <h1 className="calc-title">How Much Will You Save Going Solar?</h1>
-          <p className="calc-subtitle">Answer 6 quick questions and get your personalized solar savings estimate instantly.</p>
+          <p className="calc-subtitle">Answer 5 quick questions and get your personalized solar savings estimate instantly.</p>
         </div>
 
         <div className="calculator-card">
@@ -104,36 +126,51 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
 
           <div className="step-content">
             {step === 1 && <StepBill value={form.monthlyBill} onChange={v => update('monthlyBill', v)} />}
-            {step === 2 && <StepLocation zip={form.zip} state={form.state} onZipChange={v => update('zip', v)} onStateChange={v => update('state', v)} />}
-            {step === 3 && <StepHome value={form.homeType} onChange={v => update('homeType', v)} />}
+            {step === 2 && <StepLocation zip={form.zip} state={form.state} onZipChange={v => update('zip', v)} onStateChange={v => update('state', v)} serviceStates={serviceStates} />}
+            {step === 3 && (
+              <StepHome
+                homeType={form.homeType}
+                ownsHome={form.ownsHome}
+                onHomeTypeChange={v => update('homeType', v)}
+                onOwnsHomeChange={v => update('ownsHome', v)}
+              />
+            )}
             {step === 4 && <StepRoof sunExposure={form.sunExposure} roofType={form.roofType} onExposureChange={v => update('sunExposure', v)} onRoofChange={v => update('roofType', v)} />}
             {step === 5 && <StepBattery value={form.battery} onChange={v => update('battery', v)} />}
-            {step === 6 && <StepEquipment value={form.equipmentTier} onChange={v => update('equipmentTier', v)} />}
+            {step === 6 && <StepLead onSubmit={handleLeadSubmit} loading={loading} />}
           </div>
 
           {error && <div className="error-banner">{error}</div>}
 
-          <div className="step-nav">
-            {step > 1 && (
+          {/* Nav — hidden on step 6 (lead form has its own submit button) */}
+          {step < 6 && (
+            <div className="step-nav">
+              {step > 1 && (
+                <button className="btn btn-secondary" onClick={back}>
+                  ← Back
+                </button>
+              )}
+              <div className="step-counter">{step} of 5</div>
+              <button
+                className="btn btn-primary"
+                onClick={next}
+                disabled={!canProceed}
+                title={isDisqualified ? "Solar is not available for this home type" : step3Incomplete ? "Please answer the ownership question" : ""}
+              >
+                Next →
+              </button>
+            </div>
+          )}
+
+          {step === 6 && (
+            <div className="step-nav">
               <button className="btn btn-secondary" onClick={back} disabled={loading}>
                 ← Back
               </button>
-            )}
-            <div className="step-counter">{step} of {TOTAL_STEPS}</div>
-            {step < TOTAL_STEPS ? (
-              <button className="btn btn-primary" onClick={next}>
-                Next →
-              </button>
-            ) : (
-              <button className="btn btn-cta" onClick={calculate} disabled={loading}>
-                {loading ? (
-                  <span className="loading-spinner">Calculating...</span>
-                ) : (
-                  '☀️ Calculate My Savings'
-                )}
-              </button>
-            )}
-          </div>
+              <div className="step-counter">Almost done</div>
+              <div />
+            </div>
+          )}
         </div>
 
         <div className="trust-badges">

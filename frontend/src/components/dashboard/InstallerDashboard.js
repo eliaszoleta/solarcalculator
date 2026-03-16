@@ -10,8 +10,11 @@ async function getAuthHeader() {
   return session ? { Authorization: `Bearer ${session.access_token}` } : {};
 }
 
+const ALL_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC'];
+
 const DEFAULT_CONFIG = {
   minSystemSize: 4, maxSystemSize: 20,
+  serviceStates: [],
   batteries: {
     none: { label: 'No battery', cost: 0 },
     one: { label: '1 Battery (Tesla Powerwall)', cost: 11500 },
@@ -149,6 +152,42 @@ export default function InstallerDashboard({ user, onLogout }) {
                 <SettingRow label="Maximum System Size (kW)">
                   <input type="number" step="1" min="5" max="50" value={config.maxSystemSize} onChange={e => update('maxSystemSize', parseInt(e.target.value))} className="dash-input" />
                 </SettingRow>
+              </SettingCard>
+
+              <SettingCard title="Service Area" desc="Leads outside your service area will be told you don't serve their location. Leave all unchecked to accept leads from any state.">
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, padding: '4px 0' }}>
+                  {ALL_STATES.map(st => {
+                    const active = (config.serviceStates || []).includes(st);
+                    return (
+                      <button
+                        key={st}
+                        type="button"
+                        onClick={() => {
+                          const current = config.serviceStates || [];
+                          update('serviceStates', active ? current.filter(s => s !== st) : [...current, st]);
+                        }}
+                        style={{
+                          padding: '4px 10px', fontSize: 12, borderRadius: 6, border: '1px solid',
+                          borderColor: active ? '#1e40af' : '#cbd5e1',
+                          background: active ? '#1e40af' : 'white',
+                          color: active ? 'white' : '#64748b',
+                          cursor: 'pointer', fontWeight: active ? 600 : 400,
+                        }}
+                      >
+                        {st}
+                      </button>
+                    );
+                  })}
+                </div>
+                {(config.serviceStates || []).length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => update('serviceStates', [])}
+                    style={{ marginTop: 8, fontSize: 12, color: '#94a3b8', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    Clear all (serve all states)
+                  </button>
+                )}
               </SettingCard>
             </div>
           )}

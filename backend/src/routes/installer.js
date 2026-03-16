@@ -19,7 +19,7 @@ router.put('/:id', (req, res) => {
 
   // Only allow updating known config fields
   const allowedFields = [
-    'minSystemSize', 'maxSystemSize', 'batteries',
+    'minSystemSize', 'maxSystemSize', 'serviceStates', 'batteries',
     'roofSurcharges', 'equipment', 'federalTaxCredit', 'panelWattage',
     'systemName', 'companyName', 'primaryColor', 'accentColor',
     'ctaHeadline', 'ctaSubtext', 'ctaButtonText', 'ctaPhone', 'ctaButtonUrl',
@@ -49,8 +49,8 @@ router.post('/', (req, res) => {
 // GET /api/installer/:id/public — return branding-only config (no auth required, safe for embed)
 router.get('/:id/public', (req, res) => {
   const config = installerConfigs.get(req.params.id) || DEFAULT_INSTALLER_CONFIG;
-  const { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl } = config;
-  res.json({ success: true, data: { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl } });
+  const { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates } = config;
+  res.json({ success: true, data: { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates } });
 });
 
 // GET /api/installer/:id/defaults — return default config template
