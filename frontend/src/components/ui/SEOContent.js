@@ -15,7 +15,7 @@ export default function SEOContent() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 24 }}>
           {[
             { icon: '⚡', title: 'Your Electric Bill', desc: 'We calculate exactly how much electricity your home uses based on your monthly bill and your state\'s electricity rate.' },
-            { icon: '🌞', title: 'Sunlight Data', desc: 'We use peak sun hours by state to calculate how much solar energy your area produces. Powered by NREL data.' },
+            { icon: '🌞', title: 'Sunlight Data', desc: 'Enter your ZIP code and we pull real irradiance data from the NREL PVWatts API for your exact location. Without a ZIP, we use NREL peak sun hour averages by state.' },
             { icon: '📐', title: 'System Sizing', desc: 'We recommend the ideal system size to offset your usage, then calculate the real installation cost based on current market rates.' },
             { icon: '💰', title: 'Savings Projection', desc: 'We project 30 years of savings accounting for 4% annual utility rate increases, tax credits, and your financing options.' },
           ].map(item => (
@@ -41,7 +41,7 @@ export default function SEOContent() {
             {[
               { state: 'California', cost: '$19,000–$25,000', rate: '$0.32/kWh', saving: 'High savings' },
               { state: 'Texas', cost: '$14,000–$20,000', rate: '$0.14/kWh', saving: 'Great solar' },
-              { state: 'Florida', cost: '$15,000–$21,000', rate: '$0.14/kWh', saving: 'No state tax' },
+              { state: 'Florida', cost: '$15,000–$21,000', rate: '$0.145/kWh', saving: 'No state tax' },
               { state: 'Arizona', cost: '$14,000–$19,000', rate: '$0.13/kWh', saving: 'Most sun hours' },
               { state: 'Nevada', cost: '$14,000–$20,000', rate: '$0.12/kWh', saving: 'State rebates' },
               { state: 'New York', cost: '$17,000–$24,000', rate: '$0.22/kWh', saving: 'NY-Sun program' },
@@ -68,7 +68,7 @@ export default function SEOContent() {
           {[
             {
               q: 'How accurate is this solar calculator?',
-              a: 'Our estimates are within 15–20% of real quotes for most homes. We use actual electricity rates by state, NREL sun hour data, and current market installation costs ($2.50–$3.50/watt). For an exact price, you need a site visit from a certified installer.',
+              a: 'Our estimates are within 10–20% of real installer quotes for most homes. When you enter a ZIP code, we use real irradiance data from the NREL PVWatts API for your exact location, which improves accuracy to roughly 10–15%. Without a ZIP we use NREL state averages (15–20% range). We also use EIA electricity rates by state and current market installation costs ($2.50–$3.50/watt). For an exact price, you\'ll still need a site visit from a certified installer.',
             },
             {
               q: 'How much does solar save on average?',

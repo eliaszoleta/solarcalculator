@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /installer/
+Disallow: /embed/
+
+Sitemap: https://solarcalculator.example.com/sitemap.xml

@@ -88,6 +88,47 @@ export default function App() {
           "operatingSystem": "Web",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
         })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How accurate is this solar calculator?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Our estimates are within 10–20% of real installer quotes for most homes. When you enter a ZIP code, we use real irradiance data from the NREL PVWatts API for your exact location, which improves accuracy to roughly 10–15%. Without a ZIP we use NREL state averages (15–20% range). We also use EIA electricity rates by state and current market installation costs ($2.50–$3.50/watt). For an exact price, you'll still need a site visit from a certified installer." }
+            },
+            {
+              "@type": "Question",
+              "name": "How much does solar save on average?",
+              "acceptedAnswer": { "@type": "Answer", "text": "The average US homeowner saves $1,000–$1,500 per year with solar. Over 25 years, that's $25,000–$40,000 in savings. The exact amount depends on your electricity rate, sunlight hours, and system size." }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the 30% federal solar tax credit?",
+              "acceptedAnswer": { "@type": "Answer", "text": "The Investment Tax Credit (ITC) lets you deduct 30% of your total solar installation cost from your federal income taxes. For a $20,000 system, you'd get a $6,000 tax credit, reducing your net cost to $14,000. This applies to systems installed through 2032." }
+            },
+            {
+              "@type": "Question",
+              "name": "How long does it take for solar to pay itself off?",
+              "acceptedAnswer": { "@type": "Answer", "text": "The average payback period in the US is 7–12 years depending on your state, electricity rate, and system cost. After payback, all solar production is essentially free electricity." }
+            },
+            {
+              "@type": "Question",
+              "name": "Do I need a battery for solar panels?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Most grid-tied solar systems don't require a battery. Without one, your home uses solar during the day and draws from the grid at night. A battery like the Tesla Powerwall ($10,000–$14,000 installed) adds backup power during outages and maximizes self-consumption." }
+            },
+            {
+              "@type": "Question",
+              "name": "How many solar panels does an average home need?",
+              "acceptedAnswer": { "@type": "Answer", "text": "A typical US home using 10,000 kWh per year needs a 6–9 kW solar system, which is roughly 15–22 panels (400W each). Our calculator automatically sizes the system for your specific usage and location." }
+            },
+            {
+              "@type": "Question",
+              "name": "Does my roof need to face south for solar?",
+              "acceptedAnswer": { "@type": "Answer", "text": "South-facing roofs are ideal, but east or west-facing roofs still produce 80–85% of a south-facing system's output. North-facing roofs are not ideal. Our calculator accounts for shading loss in the roof sun exposure step." }
+            }
+          ]
+        })}</script>
       </Helmet>
       <Header />
       <main>
