@@ -27,11 +27,6 @@ const DEFAULT_CONFIG = {
   systemName: 'Solar Calculator', companyName: '', primaryColor: '#f59e0b',
 };
 
-function getAuthHeader() {
-  const token = localStorage.getItem('sc_token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
-
 export default function InstallerDashboard({ user, onLogout }) {
   const installerId = user?.id || user?.sub;
   const [config, setConfig] = useState(DEFAULT_CONFIG);
