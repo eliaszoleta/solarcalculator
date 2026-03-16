@@ -154,7 +154,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
               <span>{fmtDollar(cost.low)} – {fmtDollar(cost.high)}</span>
             </div>
             <div className="cost-row cost-credit">
-              <span>Federal tax credit (30%)</span>
+              <span>Federal solar tax credit (30%)</span>
               <span>− {fmtDollar(incentives.federalTaxCredit)}</span>
             </div>
             <div className="cost-row cost-net">
@@ -162,6 +162,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
               <span>{fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)}</span>
             </div>
           </div>
+          <p className="tax-credit-disclaimer">* The 30% federal tax credit is claimed when you file your taxes — not an instant discount at purchase. Consult a tax professional to confirm eligibility.</p>
 
           {hasFinancing && (
             <div className="financing-note">
