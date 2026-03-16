@@ -1,10 +1,28 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const path = require('path');
 const { DEFAULT_INSTALLER_CONFIG } = require('../config/defaults');
 
-// In-memory store for demo purposes
-// In production, replace with a database
-const installerConfigs = new Map();
+const DATA_FILE = path.join(__dirname, '../../data/installer-configs.json');
+
+// Load persisted configs from disk, fall back to empty object on first run
+function loadConfigs() {
+  try {
+    const raw = fs.readFileSync(DATA_FILE, 'utf8');
+    return new Map(Object.entries(JSON.parse(raw)));
+  } catch {
+    return new Map();
+  }
+}
+
+function saveConfigs(map) {
+  const dir = path.dirname(DATA_FILE);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(DATA_FILE, JSON.stringify(Object.fromEntries(map), null, 2), 'utf8');
+}
+
+const installerConfigs = loadConfigs();
 
 // GET /api/installer/:id — get installer config
 router.get('/:id', (req, res) => {
@@ -35,6 +53,7 @@ router.put('/:id', (req, res) => {
   }
 
   installerConfigs.set(id, updated);
+  saveConfigs(installerConfigs);
   res.json({ success: true, data: updated });
 });
 
@@ -43,6 +62,7 @@ router.post('/', (req, res) => {
   const id = `inst_${Date.now()}`;
   const config = { ...DEFAULT_INSTALLER_CONFIG, ...req.body, id };
   installerConfigs.set(id, config);
+  saveConfigs(installerConfigs);
   res.status(201).json({ success: true, data: { id, config } });
 });
 
