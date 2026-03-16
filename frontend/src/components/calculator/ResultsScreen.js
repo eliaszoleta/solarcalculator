@@ -20,9 +20,15 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
   const paybackYear = chart.find(d => d.cumulativeSavings >= 0)?.year;
 
   const hasFinancing = !isCash && savings.monthlyPaymentFinanced > 0;
+  // True day-one savings = what solar saves off the bill minus the loan payment.
+  // Using bill - loan overstates savings because 85% offset leaves ~15% still owed to utility.
   const daySavings = hasFinancing
-    ? Math.max(0, form.monthlyBill - savings.monthlyPaymentFinanced)
+    ? savings.netMonthlyFinanced
     : savings.monthly;
+  // Total monthly outlay after going solar: loan payment + remaining utility bill
+  const totalMonthlyCostWithSolar = hasFinancing
+    ? savings.monthlyPaymentFinanced + Math.max(0, form.monthlyBill - savings.monthly)
+    : null;
 
   return (
     <section className="results-section">
@@ -61,8 +67,8 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
                 </div>
                 <div className="versus-arrow">→</div>
                 <div className="versus-side">
-                  <div className="versus-label">Solar payment</div>
-                  <div className="versus-amount versus-solar">{fmtDollar(savings.monthlyPaymentFinanced)}<span>/mo</span></div>
+                  <div className="versus-label">Est. total with solar</div>
+                  <div className="versus-amount versus-solar">{fmtDollar(totalMonthlyCostWithSolar)}<span>/mo</span></div>
                 </div>
               </div>
               <h2 className="results-title">
@@ -159,7 +165,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
 
           {hasFinancing && (
             <div className="financing-note">
-              💳 <strong>If financed:</strong> ~{fmtDollar(savings.monthlyPaymentFinanced)}/mo loan payment (25 yr, est. 9–11% APR — actual rate depends on credit). Your electric bill drops ~{fmtDollar(savings.monthly)}/mo — <strong>net savings from day one: ~{fmtDollar(daySavings)}/mo</strong>.
+              💳 <strong>If financed:</strong> ~{fmtDollar(savings.monthlyPaymentFinanced)}/mo loan payment (25 yr, est. 5.99% APR — actual rate depends on credit and lender). Solar covers ~{system.offsetPercent}% of usage — <strong>net savings from day one: ~{fmtDollar(daySavings)}/mo</strong>.
             </div>
           )}
 
