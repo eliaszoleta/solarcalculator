@@ -14,7 +14,7 @@ export default function Footer() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
               <span style={{ fontSize: 20 }}>☀️</span>
               <span style={{ fontSize: 17, fontWeight: 800, color: 'white' }}>
-                Solar<span style={{ color: '#f59e0b' }}>Calc</span>
+                MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
               </span>
             </div>
             <p style={{ fontSize: 13, maxWidth: 260, lineHeight: 1.6 }}>
@@ -41,7 +41,7 @@ export default function Footer() {
           </div>
         </div>
         <div style={{ borderTop: '1px solid #1e293b', paddingTop: 20, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-          <p style={{ fontSize: 12 }}>© {new Date().getFullYear()} SolarCalc. Estimates are for informational purposes only.</p>
+          <p style={{ fontSize: 12 }}>© {new Date().getFullYear()} MySolarWidget. Estimates are for informational purposes only.</p>
           <p style={{ fontSize: 12 }}>Solar production data powered by <a href="https://developer.nrel.gov/docs/solar/pvwatts/" target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa' }}>NREL PVWatts</a></p>
         </div>
       </div>
