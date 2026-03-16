@@ -125,29 +125,31 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
     roofType,          // asphalt | metal | tile | flat
   } = inputs;
 
-  // 1. Resolve electricity rate
-  const electricityRate = STATE_ELECTRICITY_RATES[state] || 0.15;
-
-  // 2. Estimate monthly usage
-  const monthlyUsageKwh = monthlyBill / electricityRate;
-  const annualUsageKwh = monthlyUsageKwh * 12;
-
-  // 3. Resolve sun hours (geocode if possible for PVWatts)
+  // 1. Resolve state first (geocode ZIP if provided) so rate uses the correct state
   let geo = null;
   if (zip) {
     geo = await geocodeZip(zip);
   }
   const resolvedState = (geo && geo.state) || state || 'TX';
+
+  // 2. Resolve electricity rate using confirmed state
+  const electricityRate = STATE_ELECTRICITY_RATES[resolvedState] || 0.15;
+
+  // 3. Estimate monthly usage
+  const monthlyUsageKwh = monthlyBill / electricityRate;
+  const annualUsageKwh = monthlyUsageKwh * 12;
+
+  // 4. Resolve sun hours and shading
   const sunHours = STATE_SUN_HOURS[resolvedState] || 4.5;
   const shadingFactor = getShadingFactor(sunExposure);
   const effectiveSunHours = sunHours * shadingFactor;
 
-  // 4. Calculate recommended system size
+  // 5. Calculate recommended system size
   let systemSizeKw = monthlyUsageKwh / (effectiveSunHours * 30);
   systemSizeKw = Math.max(config.minSystemSize, Math.min(config.maxSystemSize, systemSizeKw));
   systemSizeKw = Math.round(systemSizeKw * 10) / 10;
 
-  // 5. Get solar production data (PVWatts or fallback estimate)
+  // 6. Get solar production data (PVWatts or fallback estimate)
   let production = null;
   if (geo) {
     production = await getPVWattsData({ lat: geo.lat, lon: geo.lon, systemSizeKw });
@@ -156,7 +158,7 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
     production = estimateSolarProduction(systemSizeKw, resolvedState, shadingFactor);
   }
 
-  // 6. Calculate panel count
+  // 7. Calculate panel count
   const panelCount = Math.ceil((systemSizeKw * 1000) / config.panelWattage);
 
   // 7. Calculate installation cost
@@ -204,8 +206,15 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
     [...Array(30)].reduce((acc, _, i) => acc + (monthlySavings * 12) * Math.pow(1.04, i), 0)
   );
 
-  // 12. Payback period (years)
-  const paybackYears = monthlySavings > 0 ? Math.round((netCost / (monthlySavings * 12)) * 10) / 10 : null;
+  // 12. Payback period — iterate with same 4%/yr growth as the chart so they are consistent
+  let paybackYears = null;
+  if (annualSavings > 0) {
+    let cumulative = 0;
+    for (let i = 0; i < 30; i++) {
+      cumulative += annualSavings * Math.pow(1.04, i);
+      if (cumulative >= netCost) { paybackYears = i + 1; break; }
+    }
+  }
 
   // 13. 30-year savings chart data
   const savingsChart = [...Array(30)].map((_, i) => {
