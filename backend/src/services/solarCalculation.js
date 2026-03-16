@@ -162,16 +162,13 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
   const panelCount = Math.ceil((systemSizeKw * 1000) / config.panelWattage);
 
   // 7. Calculate installation cost
+  // pricePerWatt is all-in (panels + labor + inverter + permits + profit)
   const tier = config.equipment[equipmentTier] || config.equipment.standard;
   const equipmentCost = systemSizeKw * 1000 * tier.pricePerWatt;
-  const laborCost = config.laborCost;
-  const permitCost = config.permitCost;
-  const inverterCost = config.inverterCost;
   const roofSurcharge = config.roofSurcharges[roofType] || 0;
   const batteryCost = (config.batteries[battery] || config.batteries.none).cost;
 
-  const subtotal = equipmentCost + laborCost + permitCost + inverterCost + roofSurcharge + batteryCost;
-  const totalCost = Math.round(subtotal * (1 + config.profitMargin));
+  const totalCost = Math.round(equipmentCost + roofSurcharge + batteryCost);
 
   // Cost range (±10%)
   const costLow = Math.round(totalCost * 0.9);

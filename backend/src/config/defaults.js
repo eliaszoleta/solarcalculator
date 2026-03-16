@@ -1,13 +1,8 @@
 // Default installer configuration
 // These are used when no custom installer config is found
 const DEFAULT_INSTALLER_CONFIG = {
-  pricePerWatt: 3.0,        // $ per watt installed
   minSystemSize: 4,          // kW
   maxSystemSize: 20,         // kW
-  laborCost: 5000,           // flat $ labor
-  permitCost: 1200,          // flat $ permits & engineering
-  inverterCost: 2500,        // flat $ inverter
-  profitMargin: 0.25,        // 25%
   batteries: {
     none: { label: "No battery", cost: 0 },
     one: { label: "1 Battery (Tesla Powerwall)", cost: 11500 },

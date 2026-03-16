@@ -11,8 +11,7 @@ async function getAuthHeader() {
 }
 
 const DEFAULT_CONFIG = {
-  pricePerWatt: 3.0, minSystemSize: 4, maxSystemSize: 20,
-  laborCost: 5000, permitCost: 1200, inverterCost: 2500, profitMargin: 0.25,
+  minSystemSize: 4, maxSystemSize: 20,
   batteries: {
     none: { label: 'No battery', cost: 0 },
     one: { label: '1 Battery (Tesla Powerwall)', cost: 11500 },
@@ -127,24 +126,6 @@ export default function InstallerDashboard({ user, onLogout }) {
 
           {activeTab === 'pricing' && (
             <div className="settings-grid">
-              <SettingCard title="Installation Pricing" desc="Set your base price per watt — this drives the total cost estimate.">
-                <SettingRow label="Price per Watt ($)" hint="Typical range: $2.50–$3.50">
-                  <input type="number" step="0.05" min="1.5" max="6" value={config.pricePerWatt} onChange={e => update('pricePerWatt', parseFloat(e.target.value))} className="dash-input" />
-                </SettingRow>
-                <SettingRow label="Profit Margin (%)" hint="Added on top of equipment + labor">
-                  <input type="number" step="1" min="0" max="60" value={Math.round(config.profitMargin * 100)} onChange={e => update('profitMargin', parseInt(e.target.value) / 100)} className="dash-input" />
-                </SettingRow>
-                <SettingRow label="Labor Cost ($)" hint="Flat labor fee">
-                  <input type="number" step="100" min="0" max="20000" value={config.laborCost} onChange={e => update('laborCost', parseInt(e.target.value))} className="dash-input" />
-                </SettingRow>
-                <SettingRow label="Permit & Engineering ($)" hint="Permits, inspections, system design">
-                  <input type="number" step="100" min="0" max="5000" value={config.permitCost} onChange={e => update('permitCost', parseInt(e.target.value))} className="dash-input" />
-                </SettingRow>
-                <SettingRow label="Inverter Cost ($)" hint="String or microinverter system">
-                  <input type="number" step="100" min="500" max="10000" value={config.inverterCost} onChange={e => update('inverterCost', parseInt(e.target.value))} className="dash-input" />
-                </SettingRow>
-              </SettingCard>
-
               <SettingCard title="Roof Surcharges" desc="Extra cost added for non-standard roof types.">
                 {Object.entries(config.roofSurcharges).map(([type, cost]) => (
                   <SettingRow key={type} label={`${type.charAt(0).toUpperCase() + type.slice(1)} roof ($)`}>
