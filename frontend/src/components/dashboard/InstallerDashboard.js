@@ -34,7 +34,7 @@ function getAuthHeader() {
 
 export default function InstallerDashboard({ user, onLogout }) {
   const installerId = user?.id || user?.sub;
-  const [config, setConfig] = useState(null);
+  const [config, setConfig] = useState(DEFAULT_CONFIG);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState('pricing');
@@ -53,9 +53,6 @@ export default function InstallerDashboard({ user, onLogout }) {
     load();
   }, [installerId, onLogout]);
 
-  if (!config) return (
-    <div className="dash-loading">Loading dashboard...</div>
-  );
 
   const update = (field, value) => {
     setConfig(prev => ({ ...prev, [field]: value }));

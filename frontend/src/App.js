@@ -17,9 +17,14 @@ export default function App() {
 
   useEffect(() => {
     if (!isInstaller) return;
-    // Check for existing session on load
+    // Check for existing session on load — 3s timeout as safety net
+    const timeout = setTimeout(() => setAuthLoading(false), 3000);
     supabase.auth.getSession().then(({ data: { session } }) => {
+      clearTimeout(timeout);
       setUser(session?.user ?? null);
+      setAuthLoading(false);
+    }).catch(() => {
+      clearTimeout(timeout);
       setAuthLoading(false);
     });
     // Listen for auth state changes (login, logout, password reset)
