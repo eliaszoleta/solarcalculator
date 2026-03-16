@@ -31,6 +31,8 @@ export default function InstallerDashboard({ user, onLogout }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState('pricing');
+  const [leads, setLeads] = useState([]);
+  const [leadsLoading, setLeadsLoading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -45,6 +47,21 @@ export default function InstallerDashboard({ user, onLogout }) {
     };
     load();
   }, [installerId, onLogout]);
+
+  useEffect(() => {
+    if (activeTab !== 'leads') return;
+    const loadLeads = async () => {
+      setLeadsLoading(true);
+      const { data, error } = await supabase
+        .from('leads')
+        .select('*')
+        .eq('installer_id', installerId)
+        .order('created_at', { ascending: false });
+      if (!error) setLeads(data || []);
+      setLeadsLoading(false);
+    };
+    loadLeads();
+  }, [activeTab, installerId]);
 
 
   const update = (field, value) => {
@@ -251,10 +268,52 @@ export default function InstallerDashboard({ user, onLogout }) {
           )}
 
           {activeTab === 'leads' && (
-            <div className="leads-placeholder">
-              <div className="leads-icon">📊</div>
-              <h3>Lead tracking coming soon</h3>
-              <p>Leads collected through the calculator will appear here with contact info, estimated savings, and system size.</p>
+            <div className="setting-card">
+              <div className="setting-card-header">
+                <h3 className="setting-card-title">Leads ({leads.length})</h3>
+                <p className="setting-card-desc">Contacts collected through your solar calculator.</p>
+              </div>
+              <div className="setting-card-body">
+                {leadsLoading ? (
+                  <p style={{ color: '#64748b', fontSize: 14 }}>Loading leads...</p>
+                ) : leads.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748b' }}>
+                    <div style={{ fontSize: 32, marginBottom: 12 }}>📋</div>
+                    <p style={{ fontSize: 14 }}>No leads yet. They'll appear here once someone completes your calculator.</p>
+                  </div>
+                ) : (
+                  <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                      <thead>
+                        <tr style={{ borderBottom: '1px solid #e2e8f0', color: '#64748b', textAlign: 'left' }}>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Name</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Email</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Phone</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Payment</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Timeline</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>System</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Annual Savings</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {leads.map(lead => (
+                          <tr key={lead.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                            <td style={{ padding: '10px 12px', fontWeight: 500 }}>{lead.name}</td>
+                            <td style={{ padding: '10px 12px' }}><a href={`mailto:${lead.email}`} style={{ color: '#1e40af' }}>{lead.email}</a></td>
+                            <td style={{ padding: '10px 12px' }}>{lead.phone}</td>
+                            <td style={{ padding: '10px 12px', textTransform: 'capitalize' }}>{lead.payment_method || '—'}</td>
+                            <td style={{ padding: '10px 12px', textTransform: 'capitalize' }}>{lead.timeline || '—'}</td>
+                            <td style={{ padding: '10px 12px' }}>{lead.system_size_kw ? `${lead.system_size_kw} kW` : '—'}</td>
+                            <td style={{ padding: '10px 12px' }}>{lead.annual_savings ? `$${lead.annual_savings.toLocaleString()}` : '—'}</td>
+                            <td style={{ padding: '10px 12px', color: '#64748b' }}>{new Date(lead.created_at).toLocaleDateString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 

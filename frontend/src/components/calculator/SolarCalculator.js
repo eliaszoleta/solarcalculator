@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { supabase } from '../../lib/supabase';
 import StepBill from './steps/StepBill';
 import StepLocation from './steps/StepLocation';
 import StepHome from './steps/StepHome';
@@ -69,6 +70,21 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
       if (data.success) {
         setResults(data.data);
         setStep(TOTAL_STEPS + 1);
+        // Persist lead to Supabase (fire-and-forget, don't block UX on failure)
+        supabase.from('leads').insert({
+          installer_id: installerId || null,
+          name: leadData.name,
+          email: leadData.email,
+          phone: leadData.phone,
+          timeline: leadData.timeline,
+          payment_method: leadData.paymentMethod,
+          monthly_bill: parseFloat(form.monthlyBill),
+          state: form.state || null,
+          zip: form.zip || null,
+          system_size_kw: data.data.system?.sizeKw || null,
+          annual_savings: data.data.savings?.annual || null,
+          total_cost: data.data.cost?.total || null,
+        }).then(({ error }) => { if (error) console.error('Lead save error:', error.message); });
       } else {
         setError('Calculation failed. Please check your inputs and try again.');
       }
