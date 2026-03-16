@@ -4,6 +4,23 @@ import './InstallerDashboard.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
 
+const DEFAULT_CONFIG = {
+  pricePerWatt: 3.0, minSystemSize: 4, maxSystemSize: 20,
+  laborCost: 5000, permitCost: 1200, inverterCost: 2500, profitMargin: 0.25,
+  batteries: {
+    none: { label: 'No battery', cost: 0 },
+    one: { label: '1 Battery (Tesla Powerwall)', cost: 11500 },
+    two: { label: '2 Batteries (Tesla Powerwall)', cost: 23000 },
+  },
+  roofSurcharges: { asphalt: 0, metal: 500, tile: 1500, flat: 800 },
+  equipment: {
+    basic: { label: 'Basic (JinkoSolar)', pricePerWatt: 2.5 },
+    standard: { label: 'Standard (Qcells)', pricePerWatt: 2.8 },
+    premium: { label: 'Premium (SunPower)', pricePerWatt: 3.4 },
+  },
+  systemName: 'Solar Calculator', companyName: '', primaryColor: '#f59e0b',
+};
+
 function getAuthHeader() {
   const token = localStorage.getItem('sc_token');
   return token ? { Authorization: `Bearer ${token}` } : {};
@@ -19,8 +36,16 @@ export default function InstallerDashboard({ user, onLogout }) {
   useEffect(() => {
     axios.get(`${API_BASE}/api/installer/${installerId}`, { headers: getAuthHeader() })
       .then(res => setConfig(res.data.data))
-      .catch(() => {});
-  }, [installerId]);
+      .catch(err => {
+        if (err.response?.status === 401) {
+          // Token expired — force re-login
+          onLogout();
+        } else {
+          // API unavailable — load with defaults so dashboard still opens
+          setConfig(DEFAULT_CONFIG);
+        }
+      });
+  }, [installerId, onLogout]);
 
   if (!config) return (
     <div className="dash-loading">Loading dashboard...</div>
