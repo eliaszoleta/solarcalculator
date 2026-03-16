@@ -78,7 +78,7 @@ export default function AuthPage({ onAuth }) {
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <span style={{ fontSize: 36 }}>☀️</span>
           <div style={{ fontSize: 24, fontWeight: 800, color: 'white', marginTop: 8 }}>
-            Solar<span style={{ color: '#f59e0b' }}>Calc</span>
+            MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
           </div>
           <div style={{ fontSize: 14, color: '#93c5fd', marginTop: 4 }}>Installer Dashboard</div>
         </div>
