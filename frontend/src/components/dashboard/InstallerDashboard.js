@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-const API_BASE = process.env.REACT_APP_API_URL || '';
 import './InstallerDashboard.css';
 
-const INSTALLER_ID = 'demo_installer';
+const API_BASE = process.env.REACT_APP_API_URL || '';
 
-export default function InstallerDashboard() {
+function getAuthHeader() {
+  const token = localStorage.getItem('sc_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+export default function InstallerDashboard({ user, onLogout }) {
+  const installerId = localStorage.getItem('sc_installer_id');
   const [config, setConfig] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState('pricing');
 
   useEffect(() => {
-    axios.get(`${API_BASE}/api/installer/${INSTALLER_ID}`)
+    axios.get(`${API_BASE}/api/installer/${installerId}`, { headers: getAuthHeader() })
       .then(res => setConfig(res.data.data))
       .catch(() => {});
-  }, []);
+  }, [installerId]);
 
   if (!config) return (
     <div className="dash-loading">Loading dashboard...</div>
@@ -30,7 +34,7 @@ export default function InstallerDashboard() {
   const save = async () => {
     setSaving(true);
     try {
-      await axios.put(`${API_BASE}/api/installer/${INSTALLER_ID}`, config);
+      await axios.put(`${API_BASE}/api/installer/${installerId}`, config, { headers: getAuthHeader() });
       setSaved(true);
     } catch (err) {
       alert('Save failed. Please try again.');
@@ -39,7 +43,7 @@ export default function InstallerDashboard() {
     }
   };
 
-  const embedCode = `<script src="https://solarcalc.example.com/widget.js" data-installer="${INSTALLER_ID}"></script>`;
+  const embedCode = `<script src="https://solarcalc.example.com/widget.js" data-installer="${installerId}"></script>`;
 
   return (
     <div className="dash-layout">
@@ -47,6 +51,9 @@ export default function InstallerDashboard() {
         <div className="dash-brand">
           <span style={{ fontSize: 20 }}>☀️</span>
           <span className="dash-brand-name">Solar<span>Calc</span></span>
+        </div>
+        <div style={{ padding: '0 16px 16px', fontSize: 12, color: '#64748b', borderBottom: '1px solid #1e293b', marginBottom: 8 }}>
+          {localStorage.getItem('sc_company') || user?.companyName || 'My Company'}
         </div>
         <nav className="dash-nav">
           {[
@@ -65,6 +72,10 @@ export default function InstallerDashboard() {
               <span>{tab.label}</span>
             </button>
           ))}
+          <button className="dash-nav-item" onClick={onLogout} style={{ marginTop: 'auto', color: '#f87171' }}>
+            <span>🚪</span>
+            <span>Sign Out</span>
+          </button>
         </nav>
       </aside>
 

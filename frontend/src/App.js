@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import SolarCalculator from './components/calculator/SolarCalculator';
 import InstallerDashboard from './components/dashboard/InstallerDashboard';
+import AuthPage from './components/dashboard/AuthPage';
 import Header from './components/ui/Header';
 import Footer from './components/ui/Footer';
 import SEOContent from './components/ui/SEOContent';
@@ -10,8 +11,24 @@ import './App.css';
 const isInstaller = window.location.pathname.startsWith('/installer');
 
 export default function App() {
+  const [user, setUser] = useState(() => {
+    const token = localStorage.getItem('sc_token');
+    const company = localStorage.getItem('sc_company');
+    return token ? { token, companyName: company } : null;
+  });
+
+  const handleAuth = (userData) => setUser(userData);
+
+  const handleLogout = () => {
+    localStorage.removeItem('sc_token');
+    localStorage.removeItem('sc_installer_id');
+    localStorage.removeItem('sc_company');
+    setUser(null);
+  };
+
   if (isInstaller) {
-    return <InstallerDashboard />;
+    if (!user) return <AuthPage onAuth={handleAuth} />;
+    return <InstallerDashboard user={user} onLogout={handleLogout} />;
   }
 
   return (

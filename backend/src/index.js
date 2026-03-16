@@ -6,6 +6,8 @@ const rateLimit = require('express-rate-limit');
 
 const calculateRouter = require('./routes/calculate');
 const installerRouter = require('./routes/installer');
+const authRouter = require('./routes/auth');
+const { requireAuth } = require('./middleware/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -33,8 +35,9 @@ app.use('/api/calculate', rateLimit({
 app.use(express.json({ limit: '10kb' }));
 
 // Routes
+app.use('/api/auth', authRouter);
 app.use('/api/calculate', calculateRouter);
-app.use('/api/installer', installerRouter);
+app.use('/api/installer', requireAuth, installerRouter);
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
