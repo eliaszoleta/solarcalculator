@@ -31,26 +31,26 @@ export default function ResultsScreen({ results, onReset, form, installerConfig,
         {/* Hero Result */}
         <div className="results-hero">
           <span className="results-badge">Your Solar Estimate</span>
-          <h2 className="results-title">You could save <span className="highlight">{fmtDollar(savings.monthly)}/mo</span> going solar</h2>
+          <h2 className="results-title">Solar could cut your electric bill by <span className="highlight">{fmtDollar(savings.monthly)}/mo</span></h2>
           <p className="results-subtitle">Based on your ${form.monthlyBill}/month electric bill in {results.inputs.state || 'your area'}</p>
         </div>
 
         {/* Key Metrics */}
         <div className="metrics-grid">
           <div className="metric-card metric-savings">
-            <div className="metric-label">Monthly Savings</div>
+            <div className="metric-label">Monthly Bill Reduction</div>
             <div className="metric-value">{fmtDollar(savings.monthly)}</div>
-            <div className="metric-sub">vs. current ${fmt(savings.currentMonthlyBill)} bill</div>
+            <div className="metric-sub">less to the utility company</div>
           </div>
           <div className="metric-card">
-            <div className="metric-label">Annual Savings</div>
+            <div className="metric-label">Annual Electricity Savings</div>
             <div className="metric-value">{fmtDollar(savings.annual)}</div>
-            <div className="metric-sub">per year</div>
+            <div className="metric-sub">saved on your electric bill</div>
           </div>
           <div className="metric-card metric-highlight">
             <div className="metric-label">30-Year Savings</div>
             <div className="metric-value">{fmtDollar(savings.thirtyYear)}</div>
-            <div className="metric-sub">total estimated</div>
+            <div className="metric-sub">total vs. renting from utility</div>
           </div>
           <div className="metric-card">
             <div className="metric-label">Payback Period</div>
@@ -102,7 +102,9 @@ export default function ResultsScreen({ results, onReset, form, installerConfig,
 
           {savings.monthlyPaymentFinanced > 0 && (
             <div className="financing-note">
-              💳 If financed: ~{fmtDollar(savings.monthlyPaymentFinanced)}/month for 25 years at 5.9% APR — still less than your current electric bill.
+              💳 <strong>If financed:</strong> ~{fmtDollar(savings.monthlyPaymentFinanced)}/mo loan payment (25 yr, 5.9% APR).{' '}
+              Your electric bill drops ~{fmtDollar(savings.monthly)}/mo, so your <strong>net monthly savings = ~{fmtDollar(savings.netMonthlyFinanced || Math.max(0, savings.monthly - savings.monthlyPaymentFinanced))}</strong>{' '}
+              ({fmtDollar(savings.monthly)} savings − {fmtDollar(savings.monthlyPaymentFinanced)} payment).
             </div>
           )}
 

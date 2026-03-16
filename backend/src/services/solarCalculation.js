@@ -194,6 +194,10 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
     ? Math.round(netCost * (loanRate * Math.pow(1 + loanRate, loanTermMonths)) / (Math.pow(1 + loanRate, loanTermMonths) - 1))
     : 0;
 
+  // 10b. Net savings after financing payment
+  const netMonthlySavings = Math.max(0, monthlySavings - monthlyPayment);
+  const netAnnualSavings = netMonthlySavings * 12;
+
   // 11. 30-year savings projection (assume 4%/yr utility increase)
   const thirtyYearSavings = Math.round(
     [...Array(30)].reduce((acc, _, i) => acc + (monthlySavings * 12) * Math.pow(1.04, i), 0)
@@ -245,6 +249,8 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
       annual: Math.round(annualSavings),
       thirtyYear: thirtyYearSavings,
       monthlyPaymentFinanced: monthlyPayment,
+      netMonthlyFinanced: netMonthlySavings,
+      netAnnualFinanced: netAnnualSavings,
       paybackYears,
       electricityRate,
       currentMonthlyBill: monthlyBill,
