@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { supabase } from './lib/supabase';
 import SolarCalculator from './components/calculator/SolarCalculator';
 import InstallerDashboard from './components/dashboard/InstallerDashboard';
 import AuthPage from './components/dashboard/AuthPage';
@@ -11,23 +12,35 @@ import './App.css';
 const isInstaller = window.location.pathname.startsWith('/installer');
 
 export default function App() {
-  const [user, setUser] = useState(() => {
-    const token = localStorage.getItem('sc_token');
-    const company = localStorage.getItem('sc_company');
-    return token ? { token, companyName: company } : null;
-  });
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(isInstaller);
 
-  const handleAuth = (userData) => setUser(userData);
+  useEffect(() => {
+    if (!isInstaller) return;
+    // Check for existing session on load
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setAuthLoading(false);
+    });
+    // Listen for auth state changes (login, logout, password reset)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('sc_token');
-    localStorage.removeItem('sc_installer_id');
-    localStorage.removeItem('sc_company');
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
   };
 
   if (isInstaller) {
-    if (!user) return <AuthPage onAuth={handleAuth} />;
+    if (authLoading) return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0f172a' }}>
+        <div style={{ color: 'white', fontSize: 16 }}>Loading...</div>
+      </div>
+    );
+    if (!user) return <AuthPage onAuth={setUser} />;
     return <InstallerDashboard user={user} onLogout={handleLogout} />;
   }
 

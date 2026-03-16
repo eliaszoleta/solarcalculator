@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { supabase } from '../../lib/supabase';
 import './InstallerDashboard.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
+
+async function getAuthHeader() {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session ? { Authorization: `Bearer ${session.access_token}` } : {};
+}
 
 const DEFAULT_CONFIG = {
   pricePerWatt: 3.0, minSystemSize: 4, maxSystemSize: 20,
@@ -27,24 +33,21 @@ function getAuthHeader() {
 }
 
 export default function InstallerDashboard({ user, onLogout }) {
-  const installerId = localStorage.getItem('sc_installer_id');
+  const installerId = user?.id || user?.sub;
   const [config, setConfig] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState('pricing');
 
   useEffect(() => {
-    axios.get(`${API_BASE}/api/installer/${installerId}`, { headers: getAuthHeader() })
-      .then(res => setConfig(res.data.data))
-      .catch(err => {
-        if (err.response?.status === 401) {
-          // Token expired — force re-login
-          onLogout();
-        } else {
-          // API unavailable — load with defaults so dashboard still opens
-          setConfig(DEFAULT_CONFIG);
-        }
-      });
+    getAuthHeader().then(headers =>
+      axios.get(`${API_BASE}/api/installer/${installerId}`, { headers })
+        .then(res => setConfig(res.data.data))
+        .catch(err => {
+          if (err.response?.status === 401) onLogout();
+          else setConfig(DEFAULT_CONFIG);
+        })
+    );
   }, [installerId, onLogout]);
 
   if (!config) return (
@@ -59,7 +62,8 @@ export default function InstallerDashboard({ user, onLogout }) {
   const save = async () => {
     setSaving(true);
     try {
-      await axios.put(`${API_BASE}/api/installer/${installerId}`, config, { headers: getAuthHeader() });
+      const headers = await getAuthHeader();
+      await axios.put(`${API_BASE}/api/installer/${installerId}`, config, { headers });
       setSaved(true);
     } catch (err) {
       alert('Save failed. Please try again.');
