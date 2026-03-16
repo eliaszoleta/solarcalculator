@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-
-const API_BASE = process.env.REACT_APP_API_URL || '';
 import StepBill from './steps/StepBill';
 import StepLocation from './steps/StepLocation';
 import StepHome from './steps/StepHome';
@@ -11,6 +9,8 @@ import StepLead from './steps/StepLead';
 import ResultsScreen from './ResultsScreen';
 import ProgressBar from '../ui/ProgressBar';
 import './SolarCalculator.css';
+
+const API_BASE = process.env.REACT_APP_API_URL || '';
 
 // Steps 1-5 are the calculator questions; step 6 is the lead gate
 const TOTAL_STEPS = 6;
