@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
+const API_BASE = process.env.REACT_APP_API_URL || '';
 import './InstallerDashboard.css';
 
 const INSTALLER_ID = 'demo_installer';
@@ -11,7 +13,7 @@ export default function InstallerDashboard() {
   const [activeTab, setActiveTab] = useState('pricing');
 
   useEffect(() => {
-    axios.get(`/api/installer/${INSTALLER_ID}`)
+    axios.get(`${API_BASE}/api/installer/${INSTALLER_ID}`)
       .then(res => setConfig(res.data.data))
       .catch(() => {});
   }, []);
@@ -28,7 +30,7 @@ export default function InstallerDashboard() {
   const save = async () => {
     setSaving(true);
     try {
-      await axios.put(`/api/installer/${INSTALLER_ID}`, config);
+      await axios.put(`${API_BASE}/api/installer/${INSTALLER_ID}`, config);
       setSaved(true);
     } catch (err) {
       alert('Save failed. Please try again.');

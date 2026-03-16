@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+
+const API_BASE = process.env.REACT_APP_API_URL || '';
 import StepBill from './steps/StepBill';
 import StepLocation from './steps/StepLocation';
 import StepHome from './steps/StepHome';
@@ -39,7 +41,7 @@ export default function SolarCalculator() {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.post('/api/calculate', form);
+      const { data } = await axios.post(`${API_BASE}/api/calculate`, form);
       if (data.success) {
         setResults(data.data);
         setStep(TOTAL_STEPS + 1);
