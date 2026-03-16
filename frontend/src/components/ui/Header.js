@@ -18,7 +18,7 @@ export default function Header() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <span style={{ fontSize: 22 }}>☀️</span>
         <span style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em' }}>
-          Solar<span style={{ color: '#f59e0b' }}>Calc</span>
+          MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
         </span>
       </div>
       <nav style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
