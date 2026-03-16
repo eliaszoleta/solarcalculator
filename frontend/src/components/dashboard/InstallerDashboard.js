@@ -40,14 +40,17 @@ export default function InstallerDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState('pricing');
 
   useEffect(() => {
-    getAuthHeader().then(headers =>
-      axios.get(`${API_BASE}/api/installer/${installerId}`, { headers })
-        .then(res => setConfig(res.data.data))
-        .catch(err => {
-          if (err.response?.status === 401) onLogout();
-          else setConfig(DEFAULT_CONFIG);
-        })
-    );
+    const load = async () => {
+      try {
+        const headers = await getAuthHeader();
+        const res = await axios.get(`${API_BASE}/api/installer/${installerId}`, { headers });
+        setConfig(res.data.data);
+      } catch (err) {
+        if (err.response?.status === 401) onLogout();
+        else setConfig(DEFAULT_CONFIG);
+      }
+    };
+    load();
   }, [installerId, onLogout]);
 
   if (!config) return (
