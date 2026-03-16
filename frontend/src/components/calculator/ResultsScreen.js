@@ -10,14 +10,16 @@ function fmtDollar(n) {
   return '$' + fmt(Math.abs(n));
 }
 
-export default function ResultsScreen({ results, onReset, form, installerConfig, embedded }) {
+export default function ResultsScreen({ results, onReset, form, lead, installerConfig, embedded }) {
   const { system, cost, incentives, savings, chart } = results;
   const cta = installerConfig || {};
+
+  const isCash = lead?.paymentMethod === 'cash';
 
   // Find payback year for chart reference line
   const paybackYear = chart.find(d => d.cumulativeSavings >= 0)?.year;
 
-  const hasFinancing = savings.monthlyPaymentFinanced > 0;
+  const hasFinancing = !isCash && savings.monthlyPaymentFinanced > 0;
   const daySavings = hasFinancing
     ? Math.max(0, form.monthlyBill - savings.monthlyPaymentFinanced)
     : savings.monthly;
@@ -26,11 +28,31 @@ export default function ResultsScreen({ results, onReset, form, installerConfig,
     <section className="results-section">
       <div className="results-container">
 
-        {/* Hero — Payment vs Bill comparison */}
+        {/* Hero */}
         <div className="results-hero">
           <span className="results-badge">Your Solar Estimate</span>
 
-          {hasFinancing ? (
+          {isCash ? (
+            <>
+              <div className="versus-block">
+                <div className="versus-side">
+                  <div className="versus-label">Net cost after 30% credit</div>
+                  <div className="versus-amount versus-bill">{fmtDollar(incentives.netCost)}</div>
+                </div>
+                <div className="versus-arrow">→</div>
+                <div className="versus-side">
+                  <div className="versus-label">Paid off in</div>
+                  <div className="versus-amount versus-solar">{savings.paybackYears ? `${savings.paybackYears} yrs` : 'N/A'}</div>
+                </div>
+              </div>
+              <h2 className="results-title">
+                Then pure savings — <span className="highlight">{fmtDollar(savings.monthly)}/mo</span> back in your pocket
+              </h2>
+              <p className="results-subtitle">
+                Cash purchase. No loan, no interest. {fmtDollar(savings.thirtyYear)} total over 30 years in {results.inputs.state || 'your area'}.
+              </p>
+            </>
+          ) : hasFinancing ? (
             <>
               <div className="versus-block">
                 <div className="versus-side">
@@ -64,7 +86,13 @@ export default function ResultsScreen({ results, onReset, form, installerConfig,
 
         {/* Key Metrics */}
         <div className="metrics-grid">
-          {hasFinancing && (
+          {isCash ? (
+            <div className="metric-card metric-savings">
+              <div className="metric-label">Net Cost (after credit)</div>
+              <div className="metric-value">{fmtDollar(incentives.netCost)}</div>
+              <div className="metric-sub">one-time cash purchase</div>
+            </div>
+          ) : hasFinancing && (
             <div className="metric-card metric-savings">
               <div className="metric-label">Day-One Monthly Savings</div>
               <div className="metric-value">{fmtDollar(daySavings)}</div>

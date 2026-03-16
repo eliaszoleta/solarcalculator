@@ -31,6 +31,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(initialForm);
   const [results, setResults] = useState(null);
+  const [lead, setLead] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const containerRef = useRef(null);
@@ -55,6 +56,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
 
   // Called when lead form is submitted — run calculation and show results
   const handleLeadSubmit = async (leadData) => {
+    setLead(leadData);
     setLoading(true);
     setError(null);
     try {
@@ -81,11 +83,12 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
     setStep(1);
     setForm(initialForm);
     setResults(null);
+    setLead(null);
     setError(null);
   };
 
   if (results && step === TOTAL_STEPS + 1) {
-    return <ResultsScreen results={results} onReset={reset} form={form} installerConfig={installerConfig} embedded={embedded} />;
+    return <ResultsScreen results={results} onReset={reset} form={form} lead={lead} installerConfig={installerConfig} embedded={embedded} />;
   }
 
   const steps = [
