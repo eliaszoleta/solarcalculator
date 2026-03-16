@@ -39,7 +39,7 @@ export default function StepLead({ onSubmit, loading }) {
             placeholder="Your full name"
             value={form.name}
             onChange={e => { setForm(p => ({ ...p, name: e.target.value })); setErrors(p => ({ ...p, name: null })); }}
-            className="lead-input"
+            className="sl-input"
             style={{ width: '100%' }}
           />
           {errors.name && <div className="field-error">{errors.name}</div>}
@@ -51,7 +51,7 @@ export default function StepLead({ onSubmit, loading }) {
             placeholder="Email address"
             value={form.email}
             onChange={e => { setForm(p => ({ ...p, email: e.target.value })); setErrors(p => ({ ...p, email: null })); }}
-            className="lead-input"
+            className="sl-input"
             style={{ width: '100%' }}
           />
           {errors.email && <div className="field-error">{errors.email}</div>}
@@ -63,7 +63,7 @@ export default function StepLead({ onSubmit, loading }) {
             placeholder="Phone number"
             value={form.phone}
             onChange={e => { setForm(p => ({ ...p, phone: e.target.value })); setErrors(p => ({ ...p, phone: null })); }}
-            className="lead-input"
+            className="sl-input"
             style={{ width: '100%' }}
           />
           {errors.phone && <div className="field-error">{errors.phone}</div>}
@@ -97,6 +97,19 @@ export default function StepLead({ onSubmit, loading }) {
       </p>
 
       <style>{`
+        .sl-input {
+          padding: 12px 14px;
+          border: 1.5px solid #e2e8f0;
+          border-radius: 10px;
+          font-size: 15px;
+          color: #1e293b;
+          background: white;
+          outline: none;
+          box-sizing: border-box;
+          transition: border-color 0.12s;
+        }
+        .sl-input:focus { border-color: #1e40af; }
+        .sl-input::placeholder { color: #94a3b8; }
         .field-error { color: #dc2626; font-size: 12px; margin-top: 4px; }
         .option-card-sm { padding: 10px 12px; }
         .option-grid-2 { grid-template-columns: 1fr 1fr; }
