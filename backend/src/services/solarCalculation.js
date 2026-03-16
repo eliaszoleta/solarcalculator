@@ -144,8 +144,8 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
   const shadingFactor = getShadingFactor(sunExposure);
   const effectiveSunHours = sunHours * shadingFactor;
 
-  // 5. Calculate recommended system size
-  let systemSizeKw = monthlyUsageKwh / (effectiveSunHours * 30);
+  // 5. Calculate recommended system size (target 85% offset — realistic installs aim for 80–90%)
+  let systemSizeKw = (monthlyUsageKwh * 0.85) / (effectiveSunHours * 30);
   systemSizeKw = Math.max(config.minSystemSize, Math.min(config.maxSystemSize, systemSizeKw));
   systemSizeKw = Math.round(systemSizeKw * 10) / 10;
 
@@ -186,8 +186,8 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
   const annualSavings = Math.round(Math.min(annualSolarKwh, annualUsageKwh) * electricityRate);
   const monthlySavings = Math.round(annualSavings / 12);
 
-  // 10. Estimated financed monthly payment (25yr, 10% APR — mid-range of current solar loan market 9–11%)
-  const loanRate = 0.10 / 12;
+  // 10. Estimated financed monthly payment (25yr, 5.99% APR — standard solar marketing rate with dealer fee baked in)
+  const loanRate = 0.0599 / 12;
   const loanTermMonths = 300; // 25 years
   const monthlyPayment = netCost > 0
     ? Math.round(netCost * (loanRate * Math.pow(1 + loanRate, loanTermMonths)) / (Math.pow(1 + loanRate, loanTermMonths) - 1))

@@ -69,7 +69,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
                 Save <span className="highlight">{fmtDollar(daySavings)}/mo from day one</span>
               </h2>
               <p className="results-subtitle">
-                Based on your {fmtDollar(form.monthlyBill)}/month bill in {results.inputs.state || 'your area'} — estimated at 9–11% APR over 25 years (rate varies by lender and credit score)
+                Based on your {fmtDollar(form.monthlyBill)}/month bill in {results.inputs.state || 'your area'} — estimated at 5.99% APR over 25 years (rate varies by lender and credit score)
               </p>
             </>
           ) : (
