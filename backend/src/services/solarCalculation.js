@@ -186,8 +186,8 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
   const annualSavings = Math.round(Math.min(annualSolarKwh, annualUsageKwh) * electricityRate);
   const monthlySavings = Math.round(annualSavings / 12);
 
-  // 10. Estimated financed monthly payment (25yr, 8.99% APR — current solar loan market)
-  const loanRate = 0.0899 / 12;
+  // 10. Estimated financed monthly payment (25yr, 10% APR — mid-range of current solar loan market 9–11%)
+  const loanRate = 0.10 / 12;
   const loanTermMonths = 300; // 25 years
   const monthlyPayment = netCost > 0
     ? Math.round(netCost * (loanRate * Math.pow(1 + loanRate, loanTermMonths)) / (Math.pow(1 + loanRate, loanTermMonths) - 1))

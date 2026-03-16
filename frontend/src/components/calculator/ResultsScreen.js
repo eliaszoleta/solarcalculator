@@ -69,7 +69,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
                 Save <span className="highlight">{fmtDollar(daySavings)}/mo from day one</span>
               </h2>
               <p className="results-subtitle">
-                Based on your {fmtDollar(form.monthlyBill)}/month bill in {results.inputs.state || 'your area'} — financed at 8.99% APR over 25 years
+                Based on your {fmtDollar(form.monthlyBill)}/month bill in {results.inputs.state || 'your area'} — estimated at 9–11% APR over 25 years (rate varies by lender and credit score)
               </p>
             </>
           ) : (
@@ -159,7 +159,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
 
           {hasFinancing && (
             <div className="financing-note">
-              💳 <strong>If financed:</strong> ~{fmtDollar(savings.monthlyPaymentFinanced)}/mo loan payment (25 yr, 8.99% APR). Your electric bill drops ~{fmtDollar(savings.monthly)}/mo — <strong>net savings from day one: ~{fmtDollar(daySavings)}/mo</strong>.
+              💳 <strong>If financed:</strong> ~{fmtDollar(savings.monthlyPaymentFinanced)}/mo loan payment (25 yr, est. 9–11% APR — actual rate depends on credit). Your electric bill drops ~{fmtDollar(savings.monthly)}/mo — <strong>net savings from day one: ~{fmtDollar(daySavings)}/mo</strong>.
             </div>
           )}
 
