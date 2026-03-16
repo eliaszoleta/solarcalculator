@@ -1,0 +1,9 @@
+{
+  "short_name": "Solar Calculator",
+  "name": "Solar Savings Calculator",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#f59e0b",
+  "background_color": "#ffffff"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "solarcalculator",
+  "version": "1.0.0",
+  "description": "Solar panel savings & installation cost calculator SaaS",
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start"
+  }
+}
