@@ -149,7 +149,7 @@ export default function ResultsScreen({ results, onReset, form, installerConfig,
 
         {/* CTA — installer-branded when embedded, generic lead form otherwise */}
         <div className="section-card lead-card">
-          {embedded && (cta.ctaPhone || cta.ctaButtonUrl) ? (
+          {embedded ? (
             // Installer CTA
             <div style={{ textAlign: 'center', padding: '8px 0' }}>
               <div style={{ fontSize: 36, marginBottom: 12 }}>☀️</div>
