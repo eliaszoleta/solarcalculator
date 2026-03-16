@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
+Allow: /blog
+Allow: /blog/
 Disallow: /installer/
 Disallow: /embed/
+Disallow: /api/
 
-Sitemap: https://solarcalculator.example.com/sitemap.xml
+Sitemap: https://www.mysolarcalculator.com/sitemap.xml

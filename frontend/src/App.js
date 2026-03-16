@@ -8,12 +8,31 @@ import AuthPage from './components/dashboard/AuthPage';
 import Header from './components/ui/Header';
 import Footer from './components/ui/Footer';
 import SEOContent from './components/ui/SEOContent';
+import BlogIndex from './components/blog/BlogIndex';
+import BlogPost from './components/blog/BlogPost';
+import BlogCategory from './components/blog/BlogCategory';
 import './App.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
-const isInstaller = window.location.pathname.startsWith('/installer');
-const isEmbed = window.location.pathname.startsWith('/embed');
+const pathname = window.location.pathname.replace(/\/$/, '') || '/';
+const isInstaller = pathname.startsWith('/installer');
+const isEmbed = pathname.startsWith('/embed');
+const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
 const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
+
+// Resolve blog route
+function BlogRouter() {
+  if (pathname === '/blog') return <BlogIndex />;
+  if (pathname.startsWith('/blog/category/')) {
+    const cat = pathname.replace('/blog/category/', '');
+    return <BlogCategory category={cat} />;
+  }
+  if (pathname.startsWith('/blog/')) {
+    const slug = pathname.replace('/blog/', '');
+    return <BlogPost slug={slug} />;
+  }
+  return <BlogIndex />;
+}
 
 // Fetches installer config then renders the calculator with it
 function EmbedWrapper({ installerId }) {
@@ -62,6 +81,14 @@ export default function App() {
   };
 
   if (isEmbed) return <EmbedWrapper installerId={embedInstallerId} />;
+
+  if (isBlog) return (
+    <div className="app">
+      <Header />
+      <main><BlogRouter /></main>
+      <Footer />
+    </div>
+  );
 
   if (isInstaller) {
     if (authLoading) return (

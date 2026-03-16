@@ -27,7 +27,10 @@ export default function Footer() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <a href="#how-it-works" style={{ fontSize: 13, color: '#94a3b8' }}>How It Works</a>
                 <a href="#faq" style={{ fontSize: 13, color: '#94a3b8' }}>FAQ</a>
-                <a href="#" style={{ fontSize: 13, color: '#94a3b8' }}>Solar Incentives</a>
+                <a href="/blog" style={{ fontSize: 13, color: '#94a3b8' }}>Solar Blog</a>
+                <a href="/blog/category/solar-incentives" style={{ fontSize: 13, color: '#94a3b8' }}>Solar Incentives</a>
+                <a href="/blog/category/solar-costs" style={{ fontSize: 13, color: '#94a3b8' }}>Solar Costs</a>
+                <a href="/blog/category/solar-savings" style={{ fontSize: 13, color: '#94a3b8' }}>Solar Savings</a>
               </div>
             </div>
             <div>

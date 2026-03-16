@@ -23,6 +23,7 @@ export default function Header() {
       </div>
       <nav style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
         <a href="#how-it-works" style={{ fontSize: 14, color: '#64748b', fontWeight: 500 }}>How It Works</a>
+        <a href="/blog" style={{ fontSize: 14, color: '#64748b', fontWeight: 500 }}>Blog</a>
         <a href="#faq" style={{ fontSize: 14, color: '#64748b', fontWeight: 500 }}>FAQ</a>
         <a href="/installer" style={{
           fontSize: 13,
