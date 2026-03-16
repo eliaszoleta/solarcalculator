@@ -47,6 +47,13 @@ router.post('/', (req, res) => {
   res.status(201).json({ success: true, data: { id, config } });
 });
 
+// GET /api/installer/:id/public — return branding-only config (no auth required, safe for embed)
+router.get('/:id/public', (req, res) => {
+  const config = installerConfigs.get(req.params.id) || DEFAULT_INSTALLER_CONFIG;
+  const { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl } = config;
+  res.json({ success: true, data: { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl } });
+});
+
 // GET /api/installer/:id/defaults — return default config template
 router.get('/:id/defaults', (req, res) => {
   res.json({ success: true, data: DEFAULT_INSTALLER_CONFIG });

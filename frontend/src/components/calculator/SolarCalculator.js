@@ -25,7 +25,7 @@ const initialForm = {
   equipmentTier: 'standard',
 };
 
-export default function SolarCalculator({ embedded, installerConfig }) {
+export default function SolarCalculator({ embedded, installerConfig, installerId }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(initialForm);
   const [results, setResults] = useState(null);
@@ -55,7 +55,8 @@ export default function SolarCalculator({ embedded, installerConfig }) {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.post(`${API_BASE}/api/calculate`, form);
+      const payload = installerId ? { ...form, installerId } : form;
+      const { data } = await axios.post(`${API_BASE}/api/calculate`, payload);
       if (data.success) {
         setResults(data.data);
         setStep(TOTAL_STEPS + 1);

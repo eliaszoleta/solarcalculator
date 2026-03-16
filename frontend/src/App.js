@@ -30,7 +30,7 @@ function EmbedWrapper({ installerId }) {
 
   return (
     <div style={{ background: 'white', minHeight: '100vh' }}>
-      <SolarCalculator embedded installerConfig={installerConfig} />
+      <SolarCalculator embedded installerConfig={installerConfig} installerId={installerId} />
     </div>
   );
 }

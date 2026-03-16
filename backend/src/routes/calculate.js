@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { calculateSolarEstimate } = require('../services/solarCalculation');
+const { installerConfigs } = require('./installer');
 
 // POST /api/calculate
 router.post('/', async (req, res) => {
-  const { monthlyBill, zip, state, homeType, sunExposure, battery, equipmentTier, roofType, installerConfig } = req.body;
+  const { monthlyBill, zip, state, homeType, sunExposure, battery, equipmentTier, roofType, installerConfig, installerId } = req.body;
 
   // Validate required inputs
   const errors = [];
@@ -29,6 +30,7 @@ router.post('/', async (req, res) => {
   }
 
   try {
+    const resolvedConfig = installerConfig || (installerId ? installerConfigs.get(installerId) : null) || {};
     const result = await calculateSolarEstimate(
       {
         monthlyBill: parseFloat(monthlyBill),
@@ -40,7 +42,7 @@ router.post('/', async (req, res) => {
         equipmentTier,
         roofType: roofType || 'asphalt',
       },
-      installerConfig || {}
+      resolvedConfig
     );
     res.json({ success: true, data: result });
   } catch (err) {
