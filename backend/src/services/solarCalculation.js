@@ -184,7 +184,8 @@ async function calculateSolarEstimate(inputs, installerConfig = {}) {
   // 9. Calculate savings
   const annualSolarKwh = production.annualKwh;
   const offsetPercent = Math.min(100, Math.round((annualSolarKwh / annualUsageKwh) * 100));
-  const annualSavings = Math.round(Math.min(annualSolarKwh, annualUsageKwh) * electricityRate * 12) / 12 * 12;
+  // annualSolarKwh is already annual — multiply by rate once to get annual dollar savings
+  const annualSavings = Math.round(Math.min(annualSolarKwh, annualUsageKwh) * electricityRate);
   const monthlySavings = Math.round(annualSavings / 12);
 
   // 10. Estimated financed monthly payment (25yr, 5.9% APR)
