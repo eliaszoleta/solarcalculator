@@ -67,7 +67,8 @@ export default function InstallerDashboard({ user, onLogout }) {
     }
   };
 
-  const embedCode = `<script src="https://solarcalc.example.com/widget.js" data-installer="${installerId}"></script>`;
+  const siteUrl = process.env.REACT_APP_SITE_URL || window.location.origin;
+  const embedCode = `<iframe src="${siteUrl}/embed?installer=${installerId}" width="100%" height="820" frameborder="0" style="border:none;max-width:700px;display:block;margin:0 auto;" title="Solar Savings Calculator" loading="lazy"></iframe>`;
 
   return (
     <div className="dash-layout">

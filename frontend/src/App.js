@@ -10,6 +10,8 @@ import SEOContent from './components/ui/SEOContent';
 import './App.css';
 
 const isInstaller = window.location.pathname.startsWith('/installer');
+const isEmbed = window.location.pathname.startsWith('/embed');
+const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -38,6 +40,15 @@ export default function App() {
     await supabase.auth.signOut();
     setUser(null);
   };
+
+  // Embedded calculator — no header/footer, just the calculator
+  if (isEmbed) {
+    return (
+      <div style={{ background: 'white', minHeight: '100vh' }}>
+        <SolarCalculator installerId={embedInstallerId} embedded />
+      </div>
+    );
+  }
 
   if (isInstaller) {
     if (authLoading) return (
