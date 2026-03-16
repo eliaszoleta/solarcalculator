@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
 import { supabase } from './lib/supabase';
 import SolarCalculator from './components/calculator/SolarCalculator';
 import InstallerDashboard from './components/dashboard/InstallerDashboard';
@@ -9,9 +10,30 @@ import Footer from './components/ui/Footer';
 import SEOContent from './components/ui/SEOContent';
 import './App.css';
 
+const API_BASE = process.env.REACT_APP_API_URL || '';
 const isInstaller = window.location.pathname.startsWith('/installer');
 const isEmbed = window.location.pathname.startsWith('/embed');
 const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
+
+// Fetches installer config then renders the calculator with it
+function EmbedWrapper({ installerId }) {
+  const [installerConfig, setInstallerConfig] = useState(null);
+
+  useEffect(() => {
+    if (!installerId) { setInstallerConfig({}); return; }
+    axios.get(`${API_BASE}/api/installer/${installerId}/public`)
+      .then(res => setInstallerConfig(res.data.data || {}))
+      .catch(() => setInstallerConfig({}));
+  }, [installerId]);
+
+  if (!installerConfig) return null;
+
+  return (
+    <div style={{ background: 'white', minHeight: '100vh' }}>
+      <SolarCalculator embedded installerConfig={installerConfig} />
+    </div>
+  );
+}
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -19,7 +41,6 @@ export default function App() {
 
   useEffect(() => {
     if (!isInstaller) return;
-    // Check for existing session on load — 3s timeout as safety net
     const timeout = setTimeout(() => setAuthLoading(false), 3000);
     supabase.auth.getSession().then(({ data: { session } }) => {
       clearTimeout(timeout);
@@ -29,7 +50,6 @@ export default function App() {
       clearTimeout(timeout);
       setAuthLoading(false);
     });
-    // Listen for auth state changes (login, logout, password reset)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
@@ -41,14 +61,7 @@ export default function App() {
     setUser(null);
   };
 
-  // Embedded calculator — no header/footer, just the calculator
-  if (isEmbed) {
-    return (
-      <div style={{ background: 'white', minHeight: '100vh' }}>
-        <SolarCalculator installerId={embedInstallerId} embedded />
-      </div>
-    );
-  }
+  if (isEmbed) return <EmbedWrapper installerId={embedInstallerId} />;
 
   if (isInstaller) {
     if (authLoading) return (

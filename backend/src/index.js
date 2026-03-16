@@ -37,6 +37,23 @@ app.use(express.json({ limit: '10kb' }));
 // Routes
 app.use('/api/auth', authRouter);
 app.use('/api/calculate', calculateRouter);
+// Public read-only endpoint for embedded calculator (no auth)
+app.get('/api/installer/:id/public', (req, res) => {
+  const { DEFAULT_INSTALLER_CONFIG } = require('./config/defaults');
+  const { installerConfigs } = require('./routes/installer');
+  const config = installerConfigs ? installerConfigs.get(req.params.id) : null;
+  // Only expose CTA + branding fields publicly, not pricing internals
+  const full = config || DEFAULT_INSTALLER_CONFIG;
+  res.json({ success: true, data: {
+    companyName: full.companyName,
+    ctaHeadline: full.ctaHeadline,
+    ctaSubtext: full.ctaSubtext,
+    ctaButtonText: full.ctaButtonText,
+    ctaPhone: full.ctaPhone,
+    ctaButtonUrl: full.ctaButtonUrl,
+    primaryColor: full.primaryColor,
+  }});
+});
 app.use('/api/installer', requireAuth, installerRouter);
 
 // Health check

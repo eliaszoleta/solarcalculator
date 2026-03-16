@@ -23,6 +23,7 @@ router.put('/:id', (req, res) => {
     'permitCost', 'inverterCost', 'profitMargin', 'batteries',
     'roofSurcharges', 'equipment', 'federalTaxCredit', 'panelWattage',
     'systemName', 'companyName', 'primaryColor', 'accentColor',
+    'ctaHeadline', 'ctaSubtext', 'ctaButtonText', 'ctaPhone', 'ctaButtonUrl',
   ];
 
   const current = installerConfigs.get(id) || { ...DEFAULT_INSTALLER_CONFIG };
@@ -52,3 +53,4 @@ router.get('/:id/defaults', (req, res) => {
 });
 
 module.exports = router;
+module.exports.installerConfigs = installerConfigs;

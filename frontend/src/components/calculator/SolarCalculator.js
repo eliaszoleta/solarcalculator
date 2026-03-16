@@ -25,7 +25,7 @@ const initialForm = {
   equipmentTier: 'standard',
 };
 
-export default function SolarCalculator({ embedded }) {
+export default function SolarCalculator({ embedded, installerConfig }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(initialForm);
   const [results, setResults] = useState(null);
@@ -77,7 +77,7 @@ export default function SolarCalculator({ embedded }) {
   };
 
   if (results && step === TOTAL_STEPS + 1) {
-    return <ResultsScreen results={results} onReset={reset} form={form} />;
+    return <ResultsScreen results={results} onReset={reset} form={form} installerConfig={installerConfig} embedded={embedded} />;
   }
 
   const steps = [

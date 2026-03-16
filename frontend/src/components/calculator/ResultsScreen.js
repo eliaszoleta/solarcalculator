@@ -10,14 +10,14 @@ function fmtDollar(n) {
   return '$' + fmt(Math.abs(n));
 }
 
-export default function ResultsScreen({ results, onReset, form }) {
+export default function ResultsScreen({ results, onReset, form, installerConfig, embedded }) {
   const [leadForm, setLeadForm] = useState({ name: '', email: '', phone: '' });
   const [submitted, setSubmitted] = useState(false);
   const { system, cost, incentives, savings, chart } = results;
+  const cta = installerConfig || {};
 
   const handleLeadSubmit = e => {
     e.preventDefault();
-    // In production: send lead to backend/CRM
     setSubmitted(true);
   };
 
@@ -147,9 +147,46 @@ export default function ResultsScreen({ results, onReset, form }) {
           </div>
         </div>
 
-        {/* Lead Capture */}
+        {/* CTA — installer-branded when embedded, generic lead form otherwise */}
         <div className="section-card lead-card">
-          {submitted ? (
+          {embedded && (cta.ctaPhone || cta.ctaButtonUrl) ? (
+            // Installer CTA
+            <div style={{ textAlign: 'center', padding: '8px 0' }}>
+              <div style={{ fontSize: 36, marginBottom: 12 }}>☀️</div>
+              <h3 style={{ fontSize: 22, fontWeight: 800, color: 'white', marginBottom: 8 }}>
+                {cta.ctaHeadline || 'Ready to Go Solar?'}
+              </h3>
+              <p style={{ color: '#bfdbfe', fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>
+                {cta.ctaSubtext || 'Our team will design a custom solar system for your home — free, no obligation.'}
+              </p>
+              {cta.companyName && (
+                <p style={{ color: '#93c5fd', fontSize: 13, marginBottom: 16, fontWeight: 600 }}>
+                  {cta.companyName}
+                </p>
+              )}
+              <a
+                href={cta.ctaButtonUrl || `tel:${cta.ctaPhone}`}
+                style={{
+                  display: 'inline-block',
+                  padding: '14px 32px',
+                  background: 'linear-gradient(135deg, #f59e0b, #f97316)',
+                  color: 'white',
+                  borderRadius: 10,
+                  fontWeight: 700,
+                  fontSize: 16,
+                  textDecoration: 'none',
+                  boxShadow: '0 4px 14px rgba(245,158,11,0.4)',
+                }}
+              >
+                {cta.ctaButtonText || 'Contact Us'}
+              </a>
+              {cta.ctaPhone && (
+                <p style={{ color: '#93c5fd', fontSize: 14, marginTop: 12 }}>
+                  📞 {cta.ctaPhone}
+                </p>
+              )}
+            </div>
+          ) : submitted ? (
             <div className="lead-success">
               <div className="lead-success-icon">✅</div>
               <h3>We'll be in touch!</h3>
@@ -162,32 +199,10 @@ export default function ResultsScreen({ results, onReset, form }) {
                 <p className="lead-desc">This estimate is based on your inputs. Get a precise system design and final price from a local solar installer — free, no obligation.</p>
               </div>
               <form className="lead-form" onSubmit={handleLeadSubmit}>
-                <input
-                  type="text"
-                  placeholder="Your full name"
-                  value={leadForm.name}
-                  onChange={e => setLeadForm(p => ({ ...p, name: e.target.value }))}
-                  required
-                  className="lead-input"
-                />
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  value={leadForm.email}
-                  onChange={e => setLeadForm(p => ({ ...p, email: e.target.value }))}
-                  required
-                  className="lead-input"
-                />
-                <input
-                  type="tel"
-                  placeholder="Phone number"
-                  value={leadForm.phone}
-                  onChange={e => setLeadForm(p => ({ ...p, phone: e.target.value }))}
-                  className="lead-input"
-                />
-                <button type="submit" className="btn btn-cta lead-cta">
-                  Get My Free Solar Quote →
-                </button>
+                <input type="text" placeholder="Your full name" value={leadForm.name} onChange={e => setLeadForm(p => ({ ...p, name: e.target.value }))} required className="lead-input" />
+                <input type="email" placeholder="Email address" value={leadForm.email} onChange={e => setLeadForm(p => ({ ...p, email: e.target.value }))} required className="lead-input" />
+                <input type="tel" placeholder="Phone number" value={leadForm.phone} onChange={e => setLeadForm(p => ({ ...p, phone: e.target.value }))} className="lead-input" />
+                <button type="submit" className="btn btn-cta lead-cta">Get My Free Solar Quote →</button>
               </form>
               <p className="lead-disclaimer">No spam. No commitment. One call with a certified installer.</p>
             </>

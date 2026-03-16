@@ -31,6 +31,12 @@ const DEFAULT_INSTALLER_CONFIG = {
   companyName: "",
   primaryColor: "#f59e0b",
   accentColor: "#1e40af",
+  // Lead CTA shown on results screen when embedded
+  ctaHeadline: "Ready to Go Solar?",
+  ctaSubtext: "Our team will design a custom solar system for your home — free, no obligation.",
+  ctaButtonText: "Call Us for a Free Quote",
+  ctaPhone: "",
+  ctaButtonUrl: "",
 };
 
 // Electricity rates by state ($/kWh) — EIA 2024 averages

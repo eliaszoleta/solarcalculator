@@ -191,16 +191,34 @@ export default function InstallerDashboard({ user, onLogout }) {
             <div className="settings-grid">
               <SettingCard title="Branding" desc="Customize the calculator appearance on your website.">
                 <SettingRow label="Company Name">
-                  <input type="text" placeholder="Your Solar Company" value={config.companyName} onChange={e => update('companyName', e.target.value)} className="dash-input dash-input-text" />
+                  <input type="text" placeholder="Your Solar Company" value={config.companyName || ''} onChange={e => update('companyName', e.target.value)} className="dash-input dash-input-text" />
                 </SettingRow>
                 <SettingRow label="Calculator Title">
-                  <input type="text" value={config.systemName} onChange={e => update('systemName', e.target.value)} className="dash-input dash-input-text" />
+                  <input type="text" value={config.systemName || ''} onChange={e => update('systemName', e.target.value)} className="dash-input dash-input-text" />
                 </SettingRow>
                 <SettingRow label="Primary Color">
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <input type="color" value={config.primaryColor} onChange={e => update('primaryColor', e.target.value)} style={{ width: 40, height: 36, border: 'none', padding: 2, borderRadius: 6, cursor: 'pointer' }} />
+                    <input type="color" value={config.primaryColor || '#f59e0b'} onChange={e => update('primaryColor', e.target.value)} style={{ width: 40, height: 36, border: 'none', padding: 2, borderRadius: 6, cursor: 'pointer' }} />
                     <span className="color-value">{config.primaryColor}</span>
                   </div>
+                </SettingRow>
+              </SettingCard>
+
+              <SettingCard title="Results Page CTA" desc="What visitors see after they get their savings estimate — shown on your embedded calculator.">
+                <SettingRow label="Headline" hint='e.g. "Ready to Go Solar?"'>
+                  <input type="text" placeholder="Ready to Go Solar?" value={config.ctaHeadline || ''} onChange={e => update('ctaHeadline', e.target.value)} className="dash-input dash-input-text" />
+                </SettingRow>
+                <SettingRow label="Subtext" hint="One sentence below the headline">
+                  <input type="text" placeholder="Call us for a free site visit." value={config.ctaSubtext || ''} onChange={e => update('ctaSubtext', e.target.value)} className="dash-input dash-input-text" />
+                </SettingRow>
+                <SettingRow label="Phone Number" hint="Click-to-call button">
+                  <input type="text" placeholder="+1 (555) 000-0000" value={config.ctaPhone || ''} onChange={e => update('ctaPhone', e.target.value)} className="dash-input dash-input-text" />
+                </SettingRow>
+                <SettingRow label="Button Text">
+                  <input type="text" placeholder="Call Us for a Free Quote" value={config.ctaButtonText || ''} onChange={e => update('ctaButtonText', e.target.value)} className="dash-input dash-input-text" />
+                </SettingRow>
+                <SettingRow label="Button URL" hint="Optional — links to your contact page instead of phone">
+                  <input type="text" placeholder="https://yoursite.com/contact" value={config.ctaButtonUrl || ''} onChange={e => update('ctaButtonUrl', e.target.value)} className="dash-input dash-input-text" />
                 </SettingRow>
               </SettingCard>
             </div>
