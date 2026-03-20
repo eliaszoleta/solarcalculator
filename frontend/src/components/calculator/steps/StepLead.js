@@ -14,15 +14,17 @@ const PAYMENT_METHODS = [
   { value: 'unsure', label: 'Not sure yet', desc: 'Help me decide' },
 ];
 
-export default function StepLead({ onSubmit, loading }) {
+export default function StepLead({ onSubmit, loading, requireContact }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', timeline: '', paymentMethod: '' });
   const [errors, setErrors] = useState({});
 
   const validate = () => {
     const e = {};
-    if (!form.name.trim()) e.name = 'Name is required';
-    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Valid email is required';
-    if (!form.phone.trim()) e.phone = 'Phone number is required';
+    if (requireContact) {
+      if (!form.name.trim()) e.name = 'Name is required';
+      if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Valid email is required';
+      if (!form.phone.trim()) e.phone = 'Phone number is required';
+    }
     if (!form.timeline) e.timeline = 'Please select a timeline';
     if (!form.paymentMethod) e.paymentMethod = 'Please select a payment preference';
     return e;
@@ -37,45 +39,55 @@ export default function StepLead({ onSubmit, loading }) {
 
   return (
     <div>
-      <h2 className="step-title">You're one step away from your estimate</h2>
-      <p className="step-desc">Where should we send your personalized solar savings report?</p>
+      <h2 className="step-title">
+        {requireContact ? "You're one step away from your estimate" : 'Almost there!'}
+      </h2>
+      <p className="step-desc">
+        {requireContact
+          ? 'Where should we send your personalized solar savings report?'
+          : 'Tell us a bit about your solar plans to get your free estimate.'}
+      </p>
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <div>
-          <input
-            type="text"
-            placeholder="Your full name"
-            value={form.name}
-            onChange={e => { setForm(p => ({ ...p, name: e.target.value })); setErrors(p => ({ ...p, name: null })); }}
-            className="sl-input"
-            style={{ width: '100%' }}
-          />
-          {errors.name && <div className="field-error">{errors.name}</div>}
-        </div>
+        {requireContact && (
+          <>
+            <div>
+              <input
+                type="text"
+                placeholder="Your full name"
+                value={form.name}
+                onChange={e => { setForm(p => ({ ...p, name: e.target.value })); setErrors(p => ({ ...p, name: null })); }}
+                className="sl-input"
+                style={{ width: '100%' }}
+              />
+              {errors.name && <div className="field-error">{errors.name}</div>}
+            </div>
 
-        <div>
-          <input
-            type="email"
-            placeholder="Email address"
-            value={form.email}
-            onChange={e => { setForm(p => ({ ...p, email: e.target.value })); setErrors(p => ({ ...p, email: null })); }}
-            className="sl-input"
-            style={{ width: '100%' }}
-          />
-          {errors.email && <div className="field-error">{errors.email}</div>}
-        </div>
+            <div>
+              <input
+                type="email"
+                placeholder="Email address"
+                value={form.email}
+                onChange={e => { setForm(p => ({ ...p, email: e.target.value })); setErrors(p => ({ ...p, email: null })); }}
+                className="sl-input"
+                style={{ width: '100%' }}
+              />
+              {errors.email && <div className="field-error">{errors.email}</div>}
+            </div>
 
-        <div>
-          <input
-            type="tel"
-            placeholder="Phone number"
-            value={form.phone}
-            onChange={e => { setForm(p => ({ ...p, phone: e.target.value })); setErrors(p => ({ ...p, phone: null })); }}
-            className="sl-input"
-            style={{ width: '100%' }}
-          />
-          {errors.phone && <div className="field-error">{errors.phone}</div>}
-        </div>
+            <div>
+              <input
+                type="tel"
+                placeholder="Phone number"
+                value={form.phone}
+                onChange={e => { setForm(p => ({ ...p, phone: e.target.value })); setErrors(p => ({ ...p, phone: null })); }}
+                className="sl-input"
+                style={{ width: '100%' }}
+              />
+              {errors.phone && <div className="field-error">{errors.phone}</div>}
+            </div>
+          </>
+        )}
 
         <div>
           <p style={{ fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 8 }}>How are you planning to pay?</p>
@@ -118,9 +130,11 @@ export default function StepLead({ onSubmit, loading }) {
         </button>
       </form>
 
-      <p style={{ fontSize: 12, color: '#94a3b8', textAlign: 'center', marginTop: 10 }}>
-        No spam. No commitment. One call with a certified installer.
-      </p>
+      {requireContact && (
+        <p style={{ fontSize: 12, color: '#94a3b8', textAlign: 'center', marginTop: 10 }}>
+          No spam. No commitment. One call with a certified installer.
+        </p>
+      )}
 
       <style>{`
         .sl-input {

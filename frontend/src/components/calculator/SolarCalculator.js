@@ -156,7 +156,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
             )}
             {step === 4 && <StepRoof sunExposure={form.sunExposure} roofType={form.roofType} onExposureChange={v => update('sunExposure', v)} onRoofChange={v => update('roofType', v)} />}
             {step === 5 && <StepBattery value={form.battery} onChange={v => update('battery', v)} />}
-            {step === 6 && <StepLead onSubmit={handleLeadSubmit} loading={loading} />}
+            {step === 6 && <StepLead onSubmit={handleLeadSubmit} loading={loading} requireContact={!!installerId} />}
           </div>
 
           {error && <div className="error-banner">{error}</div>}

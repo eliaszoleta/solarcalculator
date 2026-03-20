@@ -16,7 +16,7 @@ export default function Header() {
       boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <img src="/android-chrome-192x192.png" alt="MySolarWidget logo" style={{ width: 28, height: 28, borderRadius: 6 }} />
+        <img src="/android-chrome-192x192.png" alt="MySolarWidget logo" style={{ width: 42, height: 42, borderRadius: 8 }} />
         <span style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em' }}>
           MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
         </span>
