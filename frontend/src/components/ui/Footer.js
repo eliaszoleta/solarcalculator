@@ -1,60 +1,94 @@
 import React from 'react';
 
+const links = {
+  Resources: [
+    { label: 'How It Works', href: '#how-it-works' },
+    { label: 'FAQ', href: '#faq' },
+    { label: 'Solar Blog', href: '/blog' },
+    { label: 'Solar Incentives', href: '/blog/category/solar-incentives' },
+    { label: 'Solar Costs', href: '/blog/category/solar-costs' },
+  ],
+  'For Installers': [
+    { label: 'Dashboard', href: '/installer' },
+    { label: 'Embed Widget', href: '/for-installers' },
+    { label: 'Pricing', href: '/for-installers#pricing' },
+  ],
+  Company: [
+    { label: 'About', href: '/about' },
+    { label: 'Contact', href: '/contact' },
+    { label: 'Privacy Policy', href: '/privacy-policy' },
+    { label: 'Terms of Service', href: '/terms-of-service' },
+  ],
+};
+
 export default function Footer() {
   return (
     <footer style={{
-      background: '#0f172a',
-      color: '#94a3b8',
-      padding: '40px 24px',
-      marginTop: 'auto',
+      background: '#0a0a0a',
+      borderTop: '1px solid rgba(255,255,255,0.06)',
     }}>
-      <div style={{ maxWidth: 720, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 32, marginBottom: 32 }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <img src="/favicon-192x192.png" alt="MySolarWidget logo" style={{ width: 42, height: 42, borderRadius: 8 }} />
-              <span style={{ fontSize: 17, fontWeight: 800, color: 'white' }}>
+      <div style={{ maxWidth: 1120, margin: '0 auto', padding: '64px 32px 40px' }}>
+
+        {/* Top row */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 48, marginBottom: 56 }}>
+
+          {/* Brand */}
+          <div style={{ maxWidth: 260 }}>
+            <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 9, marginBottom: 16, textDecoration: 'none' }}>
+              <img src="/favicon-192x192.png" alt="MySolarWidget" style={{ width: 34, height: 34, borderRadius: 8 }} />
+              <span style={{ fontSize: 16, fontWeight: 800, color: '#ffffff', letterSpacing: '-0.03em' }}>
                 MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
               </span>
-            </div>
-            <p style={{ fontSize: 13, maxWidth: 260, lineHeight: 1.6 }}>
-              Free solar savings calculator for homeowners. Estimates based on real solar data.
+            </a>
+            <p style={{ fontSize: 13.5, color: '#6b7280', lineHeight: 1.65 }}>
+              Free solar savings calculator for US homeowners — powered by real NREL data and EIA electricity rates.
             </p>
           </div>
-          <div style={{ display: 'flex', gap: 40 }}>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'white', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Resources</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <a href="#how-it-works" style={{ fontSize: 13, color: '#94a3b8' }}>How It Works</a>
-                <a href="#faq" style={{ fontSize: 13, color: '#94a3b8' }}>FAQ</a>
-                <a href="/blog" style={{ fontSize: 13, color: '#94a3b8' }}>Solar Blog</a>
-                <a href="/blog/category/solar-incentives" style={{ fontSize: 13, color: '#94a3b8' }}>Solar Incentives</a>
-                <a href="/blog/category/solar-costs" style={{ fontSize: 13, color: '#94a3b8' }}>Solar Costs</a>
-                <a href="/blog/category/solar-savings" style={{ fontSize: 13, color: '#94a3b8' }}>Solar Savings</a>
+
+          {/* Link columns */}
+          <div style={{ display: 'flex', gap: 56, flexWrap: 'wrap' }}>
+            {Object.entries(links).map(([section, items]) => (
+              <div key={section}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#ffffff', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
+                  {section}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {items.map(item => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      style={{ fontSize: 13.5, color: '#6b7280', transition: 'color 0.12s', textDecoration: 'none' }}
+                      onMouseEnter={e => e.currentTarget.style.color = '#d1d5db'}
+                      onMouseLeave={e => e.currentTarget.style.color = '#6b7280'}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'white', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>For Installers</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <a href="/installer" style={{ fontSize: 13, color: '#94a3b8' }}>Dashboard</a>
-                <a href="/for-installers#embed" style={{ fontSize: 13, color: '#94a3b8' }}>Embed Widget</a>
-                <a href="/for-installers#pricing" style={{ fontSize: 13, color: '#94a3b8' }}>Pricing</a>
-              </div>
-            </div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'white', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Company</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <a href="/about" style={{ fontSize: 13, color: '#94a3b8' }}>About Us</a>
-                <a href="/contact" style={{ fontSize: 13, color: '#94a3b8' }}>Contact</a>
-                <a href="/privacy-policy" style={{ fontSize: 13, color: '#94a3b8' }}>Privacy Policy</a>
-                <a href="/terms-of-service" style={{ fontSize: 13, color: '#94a3b8' }}>Terms of Service</a>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-        <div style={{ borderTop: '1px solid #1e293b', paddingTop: 20, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-          <p style={{ fontSize: 12 }}>© {new Date().getFullYear()} MySolarWidget. Estimates are for informational purposes only. <a href="/privacy-policy" style={{ color: '#64748b' }}>Privacy</a> · <a href="/terms-of-service" style={{ color: '#64748b' }}>Terms</a></p>
-          <p style={{ fontSize: 12 }}>Solar production data powered by <a href="https://developer.nrel.gov/docs/solar/pvwatts/" target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa' }}>NREL PVWatts</a></p>
+
+        {/* Bottom row */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 28, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+          <p style={{ fontSize: 12.5, color: '#4b5563' }}>
+            © {new Date().getFullYear()} MySolarWidget · Estimates are for informational purposes only ·{' '}
+            <a href="/privacy-policy" style={{ color: '#6b7280' }}>Privacy</a>
+            {' · '}
+            <a href="/terms-of-service" style={{ color: '#6b7280' }}>Terms</a>
+          </p>
+          <p style={{ fontSize: 12.5, color: '#4b5563' }}>
+            Solar data powered by{' '}
+            <a
+              href="https://developer.nrel.gov/docs/solar/pvwatts/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#6b7280' }}
+            >
+              NREL PVWatts
+            </a>
+          </p>
         </div>
       </div>
     </footer>
