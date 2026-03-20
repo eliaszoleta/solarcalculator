@@ -72,7 +72,7 @@ function TableOfContents({ sections, activeId }) {
 function SidebarCTA() {
   return (
     <div className="sidebar-cta">
-      <div className="sidebar-cta__icon">☀️</div>
+      <img src="/android-chrome-192x192.png" alt="MySolarWidget" className="sidebar-cta__icon" style={{ width: 48, height: 48, borderRadius: 12, marginBottom: 10 }} />
       <h4>Free Solar Calculator</h4>
       <p>See how much solar saves you based on your real electricity bill and location.</p>
       <a href="/" className="sidebar-cta__btn">Get My Estimate →</a>
@@ -283,7 +283,7 @@ export default function BlogPost({ slug }) {
 
           {/* Inline CTA after intro */}
           <div className="post-cta-inline">
-            <div className="post-cta-inline__icon" aria-hidden>☀️</div>
+            <img src="/android-chrome-192x192.png" alt="" aria-hidden className="post-cta-inline__icon" style={{ width: 48, height: 48, borderRadius: 10 }} />
             <div className="post-cta-inline__text">
               <h4>Free Solar Savings Calculator</h4>
               <p>See your personalized cost, savings, and payback period based on your home and location.</p>
@@ -305,7 +305,7 @@ export default function BlogPost({ slug }) {
               {/* Inline CTA after middle section */}
               {idx === Math.floor(post.sections.length / 2) - 1 && (
                 <div className="post-cta-inline" style={{ marginTop: 24 }}>
-                  <div className="post-cta-inline__icon" aria-hidden>🔢</div>
+                  <img src="/android-chrome-192x192.png" alt="" aria-hidden className="post-cta-inline__icon" style={{ width: 48, height: 48, borderRadius: 10 }} />
                   <div className="post-cta-inline__text">
                     <h4>Estimate Your Solar Savings</h4>
                     <p>Enter your monthly bill and ZIP code for a personalized estimate powered by real NREL solar data.</p>
@@ -323,7 +323,7 @@ export default function BlogPost({ slug }) {
 
           {/* Big CTA block */}
           <div className="post-cta-block">
-            <div className="post-cta-block__icon" aria-hidden>☀️</div>
+            <img src="/android-chrome-192x192.png" alt="" aria-hidden className="post-cta-block__icon" style={{ width: 64, height: 64, borderRadius: 14, marginBottom: 12 }} />
             <h3>Ready to See Your Solar Savings?</h3>
             <p>
               Use our free Solar Calculator to estimate your installation cost, monthly savings,

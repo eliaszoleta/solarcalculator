@@ -215,7 +215,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
         <div className="section-card lead-card">
           {embedded ? (
             <div style={{ textAlign: 'center', padding: '8px 0' }}>
-              <div style={{ fontSize: 36, marginBottom: 12 }}>☀️</div>
+              <img src="/android-chrome-192x192.png" alt="MySolarWidget" style={{ width: 56, height: 56, borderRadius: 14, marginBottom: 12 }} />
               <h3 style={{ fontSize: 22, fontWeight: 800, color: 'white', marginBottom: 8 }}>
                 {cta.ctaHeadline || 'Ready to Go Solar?'}
               </h3>

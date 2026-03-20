@@ -122,7 +122,7 @@ export default function BlogCategory({ category: categorySlug }) {
 
         {/* CTA */}
         <div className="post-cta-block" style={{ marginTop: 48 }}>
-          <div className="post-cta-block__icon" aria-hidden>☀️</div>
+          <img src="/android-chrome-192x192.png" alt="" aria-hidden className="post-cta-block__icon" style={{ width: 64, height: 64, borderRadius: 14, marginBottom: 12 }} />
           <h3>Estimate Your Solar Savings</h3>
           <p>
             Use our free Solar Calculator to see your personalized cost, monthly savings,

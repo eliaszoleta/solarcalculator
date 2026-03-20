@@ -91,7 +91,7 @@ export default function InstallerDashboard({ user, onLogout }) {
     <div className="dash-layout">
       <aside className="dash-sidebar">
         <div className="dash-brand">
-          <span style={{ fontSize: 20 }}>☀️</span>
+          <img src="/android-chrome-192x192.png" alt="MySolarWidget logo" style={{ width: 26, height: 26, borderRadius: 6 }} />
           <span className="dash-brand-name">MySolar<span>Widget</span></span>
         </div>
         <div style={{ padding: '0 16px 16px', fontSize: 12, color: '#64748b', borderBottom: '1px solid #1e293b', marginBottom: 8 }}>

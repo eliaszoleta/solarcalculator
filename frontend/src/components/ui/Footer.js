@@ -12,7 +12,7 @@ export default function Footer() {
         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 32, marginBottom: 32 }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <span style={{ fontSize: 20 }}>☀️</span>
+              <img src="/android-chrome-192x192.png" alt="MySolarWidget logo" style={{ width: 26, height: 26, borderRadius: 6 }} />
               <span style={{ fontSize: 17, fontWeight: 800, color: 'white' }}>
                 MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
               </span>

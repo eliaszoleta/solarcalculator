@@ -123,7 +123,7 @@ export default function BlogIndex() {
             <a href={`/blog/${featured.slug}`} className="blog-featured__card">
               <div className="blog-featured__img">
                 <span style={{ position: 'relative', zIndex: 1 }}>
-                  {CATEGORY_ICON[featured.category] || '☀️'}
+                  {CATEGORY_ICON[featured.category] || <img src="/android-chrome-192x192.png" alt="" style={{ width: 72, height: 72, borderRadius: 16 }} />}
                 </span>
               </div>
               <div className="blog-featured__body">
@@ -156,7 +156,7 @@ export default function BlogIndex() {
               <article key={post.slug} className="blog-card" role="listitem">
                 <a href={`/blog/${post.slug}`} style={{ textDecoration: 'none', display: 'contents' }}>
                   <div className="blog-card__img" aria-hidden>
-                    {CATEGORY_ICON[post.category] || '☀️'}
+                    {CATEGORY_ICON[post.category] || <img src="/android-chrome-192x192.png" alt="" style={{ width: 48, height: 48, borderRadius: 10 }} />}
                   </div>
                   <div className="blog-card__body">
                     <div className="blog-card__meta">
