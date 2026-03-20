@@ -25,7 +25,7 @@ export default function Header() {
         <a href="#how-it-works" style={{ fontSize: 14, color: '#64748b', fontWeight: 500 }}>How It Works</a>
         <a href="/blog" style={{ fontSize: 14, color: '#64748b', fontWeight: 500 }}>Blog</a>
         <a href="#faq" style={{ fontSize: 14, color: '#64748b', fontWeight: 500 }}>FAQ</a>
-        <a href="/installer" style={{
+        <a href="/for-installers" style={{
           fontSize: 13,
           fontWeight: 600,
           background: '#f1f5f9',

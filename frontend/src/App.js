@@ -11,11 +11,13 @@ import SEOContent from './components/ui/SEOContent';
 import BlogIndex from './components/blog/BlogIndex';
 import BlogPost from './components/blog/BlogPost';
 import BlogCategory from './components/blog/BlogCategory';
+import InstallerLanding from './components/pages/InstallerLanding';
 import './App.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
 const pathname = window.location.pathname.replace(/\/$/, '') || '/';
 const isInstaller = pathname.startsWith('/installer');
+const isForInstallers = pathname === '/for-installers';
 const isEmbed = pathname.startsWith('/embed');
 const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
 const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
@@ -95,6 +97,8 @@ export default function App() {
   };
 
   if (isEmbed) return <EmbedWrapper installerId={embedInstallerId} />;
+
+  if (isForInstallers) return <InstallerLanding />;
 
   if (isBlog) return (
     <div className="app">
