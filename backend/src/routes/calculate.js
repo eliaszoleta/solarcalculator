@@ -29,8 +29,15 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const { getInstallerConfig } = require('./installer');
-    const resolvedConfig = installerConfig || (installerId ? (await getInstallerConfig(installerId)) : null) || {};
+    let resolvedConfig = installerConfig || {};
+    if (!resolvedConfig.pricePerWatt && installerId) {
+      try {
+        const { getInstallerConfig } = require('./installer');
+        resolvedConfig = (await getInstallerConfig(installerId)) || {};
+      } catch (configErr) {
+        console.warn('Could not load installer config, using defaults:', configErr.message);
+      }
+    }
     const result = await calculateSolarEstimate(
       {
         monthlyBill: parseFloat(monthlyBill),
@@ -46,7 +53,7 @@ router.post('/', async (req, res) => {
     );
     res.json({ success: true, data: result });
   } catch (err) {
-    console.error('Calculation error:', err);
+    console.error('Calculation error:', err.message, err.stack);
     res.status(500).json({ success: false, error: 'Calculation failed. Please try again.' });
   }
 });
