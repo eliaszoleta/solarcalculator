@@ -1,5 +1,6 @@
 import React from 'react';
-import { BoltIcon, SunIcon, RulerIcon, DollarSignIcon } from './Icons';
+import { BoltIcon, SunIcon, RulerIcon, DollarSignIcon, CategoryIcon, getCategoryColors } from './Icons';
+import { CATEGORIES } from '../../data/blogPosts';
 
 export default function SEOContent() {
   return (
@@ -110,6 +111,52 @@ export default function SEOContent() {
             <FAQItem key={i} q={item.q} a={item.a} />
           ))}
         </div>
+        </div>
+      </section>
+
+      {/* Browse by Category */}
+      <section style={{ padding: '96px 24px', background: '#fafafa', borderTop: '1px solid #f3f4f6' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 900, color: '#0a0a0a', letterSpacing: '-0.03em', marginBottom: 12 }}>
+              Browse by Category
+            </h2>
+            <p style={{ fontSize: 16, color: '#6b7280', maxWidth: 480, margin: '0 auto', lineHeight: 1.65 }}>
+              Explore our solar guides by topic — from costs and financing to installation and savings.
+            </p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+            {CATEGORIES.map(c => {
+              const colors = getCategoryColors(c.slug);
+              return (
+                <a
+                  key={c.slug}
+                  href={`/blog/category/${c.slug}`}
+                  style={{
+                    borderRadius: 16,
+                    padding: 22,
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 16,
+                    background: colors.bg,
+                    border: `1.5px solid ${colors.border}`,
+                    transition: 'transform 0.15s, box-shadow 0.15s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+                >
+                  <div style={{ width: 52, height: 52, borderRadius: 12, background: colors.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <CategoryIcon slug={c.slug} size={24} color={colors.iconColor} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 15, fontWeight: 800, color: '#0f172a', marginBottom: 4, letterSpacing: '-0.01em' }}>{c.label}</div>
+                    <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.55, margin: 0 }}>{c.description}</p>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
         </div>
       </section>
 
