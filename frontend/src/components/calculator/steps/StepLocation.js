@@ -1,4 +1,5 @@
 import React from 'react';
+import { MapPinIcon, SunIcon } from '../../ui/Icons';
 
 const US_STATES = [
   ['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],
@@ -56,13 +57,13 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
 
       {isOutOfArea ? (
         <div className="disqualify-box" style={{ textAlign: 'center', padding: 20, background: '#fef3c7', border: '1px solid #fbbf24', borderRadius: 12, color: '#92400e' }}>
-          <div style={{ fontSize: 28, marginBottom: 8 }}>📍</div>
+          <div style={{ marginBottom: 8 }}><MapPinIcon size={28} /></div>
           <h4 style={{ margin: '0 0 8px', fontWeight: 700 }}>We don't currently serve {state}</h4>
           <p style={{ margin: 0, fontSize: 13, lineHeight: 1.6 }}>This installer operates in a specific service area. Try selecting a different state or contact them directly to check availability.</p>
         </div>
       ) : (
         <div className="location-note">
-          <span className="note-icon">🌞</span>
+          <span className="note-icon"><SunIcon size={16} /></span>
           <span>States like California, Arizona, and Texas get more sun hours — meaning higher solar production and bigger savings.</span>
         </div>
       )}

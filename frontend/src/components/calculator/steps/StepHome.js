@@ -1,9 +1,10 @@
 import React from 'react';
+import { HomeIcon, BuildingIcon, KeyIcon, FileTextIcon, AlertTriangleIcon } from '../../ui/Icons';
 
 const HOME_TYPES = [
-  { value: 'house', icon: '🏠', label: 'House', desc: 'Single-family home' },
-  { value: 'condo', icon: '🏙', label: 'Condo', desc: 'Condominium unit' },
-  { value: 'apartment', icon: '🏢', label: 'Apartment', desc: 'Apartment unit' },
+  { value: 'house', icon: <HomeIcon size={24} />, label: 'House', desc: 'Single-family home' },
+  { value: 'condo', icon: <BuildingIcon size={24} />, label: 'Condo', desc: 'Condominium unit' },
+  { value: 'apartment', icon: <BuildingIcon size={24} />, label: 'Apartment', desc: 'Apartment unit' },
 ];
 
 export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsHomeChange }) {
@@ -36,14 +37,14 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
               className={`option-card ${ownsHome === true ? 'selected' : ''}`}
               onClick={() => onOwnsHomeChange(true)}
             >
-              <span className="option-icon">🔑</span>
+              <span className="option-icon"><KeyIcon size={24} /></span>
               <div className="option-label">I own it</div>
             </button>
             <button
               className={`option-card ${ownsHome === false ? 'selected' : ''}`}
               onClick={() => onOwnsHomeChange(false)}
             >
-              <span className="option-icon">📄</span>
+              <span className="option-icon"><FileTextIcon size={24} /></span>
               <div className="option-label">I rent it</div>
             </button>
           </div>
@@ -54,13 +55,13 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
         <div className="disqualify-box">
           {(homeType === 'apartment' || homeType === 'condo') ? (
             <>
-              <div className="disqualify-icon">🏙️</div>
+              <div className="disqualify-icon"><AlertTriangleIcon size={28} /></div>
               <h4>Solar isn't available for {homeType} units</h4>
               <p>Rooftop solar requires ownership of a single-family home. However, <strong>community solar programs</strong> let you subscribe to a local solar farm and get credits on your electric bill — no rooftop needed.</p>
             </>
           ) : (
             <>
-              <div className="disqualify-icon">🔑</div>
+              <div className="disqualify-icon"><AlertTriangleIcon size={28} /></div>
               <h4>You need to own your home to go solar</h4>
               <p>Solar panels are a permanent home improvement that require owner approval. If you're planning to buy, come back when you're ready — this calculator will still be here.</p>
             </>

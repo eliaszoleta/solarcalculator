@@ -1,4 +1,5 @@
 import React from 'react';
+import { LightBulbIcon } from '../../ui/Icons';
 
 export default function StepBill({ value, onChange }) {
   return (
@@ -42,7 +43,7 @@ export default function StepBill({ value, onChange }) {
       </div>
 
       <p className="bill-hint">
-        💡 Tip: Find your average on your utility bill or account portal.
+        <LightBulbIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />Tip: Find your average on your utility bill or account portal.
       </p>
 
       <style>{`

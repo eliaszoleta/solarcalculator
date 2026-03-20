@@ -1,16 +1,17 @@
 import React from 'react';
+import { SunIcon, SunCloudIcon, CloudIcon, HomeIcon, LayersIcon, LayoutIcon, MinusSquareIcon } from '../../ui/Icons';
 
 const SUN_OPTIONS = [
-  { value: 'full', icon: '☀️', label: 'Full Sun', desc: 'Most of roof in direct sun' },
-  { value: 'partial', icon: '⛅', label: 'Partial Shade', desc: 'Some shading from trees/buildings' },
-  { value: 'mostly_shade', icon: '☁️', label: 'Mostly Shade', desc: 'Heavy shade most of day' },
+  { value: 'full', icon: <SunIcon size={24} />, label: 'Full Sun', desc: 'Most of roof in direct sun' },
+  { value: 'partial', icon: <SunCloudIcon size={24} />, label: 'Partial Shade', desc: 'Some shading from trees/buildings' },
+  { value: 'mostly_shade', icon: <CloudIcon size={24} />, label: 'Mostly Shade', desc: 'Heavy shade most of day' },
 ];
 
 const ROOF_TYPES = [
-  { value: 'asphalt', icon: '🏠', label: 'Asphalt Shingles', desc: 'Most common, easiest install', extra: '' },
-  { value: 'metal', icon: '🔩', label: 'Metal Roof', desc: 'Standing seam metal', extra: '+$500' },
-  { value: 'tile', icon: '🏰', label: 'Tile Roof', desc: 'Clay or concrete tile', extra: '+$1,500' },
-  { value: 'flat', icon: '⬜', label: 'Flat Roof', desc: 'Requires tilt mounting', extra: '+$800' },
+  { value: 'asphalt', icon: <HomeIcon size={24} />, label: 'Asphalt Shingles', desc: 'Most common, easiest install', extra: '' },
+  { value: 'metal', icon: <LayersIcon size={24} />, label: 'Metal Roof', desc: 'Standing seam metal', extra: '+$500' },
+  { value: 'tile', icon: <LayoutIcon size={24} />, label: 'Tile Roof', desc: 'Clay or concrete tile', extra: '+$1,500' },
+  { value: 'flat', icon: <MinusSquareIcon size={24} />, label: 'Flat Roof', desc: 'Requires tilt mounting', extra: '+$800' },
 ];
 
 export default function StepRoof({ sunExposure, roofType, onExposureChange, onRoofChange }) {

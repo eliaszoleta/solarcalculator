@@ -1,9 +1,10 @@
 import React from 'react';
+import { PlugIcon, BatteryIcon, BoltIcon } from '../../ui/Icons';
 
 const BATTERY_OPTIONS = [
   {
     value: 'none',
-    icon: '🔌',
+    icon: <PlugIcon size={24} />,
     label: 'No Battery',
     desc: 'Grid-tied system. Power from grid at night.',
     price: 'Included',
@@ -11,7 +12,7 @@ const BATTERY_OPTIONS = [
   },
   {
     value: 'one',
-    icon: '🔋',
+    icon: <BatteryIcon size={24} />,
     label: '1 Battery',
     desc: 'Tesla Powerwall or similar. Backup power + night use.',
     price: '+$11,500',
@@ -19,7 +20,7 @@ const BATTERY_OPTIONS = [
   },
   {
     value: 'two',
-    icon: '⚡',
+    icon: <BoltIcon size={24} />,
     label: '2 Batteries',
     desc: 'Maximum storage. Nearly full energy independence.',
     price: '+$23,000',
@@ -42,7 +43,7 @@ export default function StepBattery({ value, onChange }) {
           >
             {opt.popular && <span className="popular-badge">Most Popular</span>}
             <div className="battery-row">
-              <span className="option-icon" style={{ fontSize: 24, marginBottom: 0 }}>{opt.icon}</span>
+              <span className="option-icon" style={{ marginBottom: 0 }}>{opt.icon}</span>
               <div className="battery-info">
                 <div className="option-label">{opt.label}</div>
                 <div className="option-desc">{opt.desc}</div>

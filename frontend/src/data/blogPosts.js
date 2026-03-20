@@ -1,10 +1,10 @@
 export const CATEGORIES = [
-  { slug: 'solar-costs',        label: 'Solar Costs',        icon: '💰', description: 'Real pricing data, installation costs, and what to expect when going solar.' },
-  { slug: 'solar-financing',    label: 'Solar Financing',    icon: '🏦', description: 'Loans, leases, PPAs, and cash options — find the best way to pay for solar.' },
-  { slug: 'solar-savings',      label: 'Solar Savings',      icon: '📈', description: 'How much solar saves homeowners and how to maximize your return.' },
-  { slug: 'solar-incentives',   label: 'Solar Incentives',   icon: '🎁', description: 'Federal tax credits, state rebates, and every incentive available to you.' },
-  { slug: 'solar-installation', label: 'Solar Installation', icon: '🔧', description: 'The step-by-step installation process, timelines, and what to expect.' },
-  { slug: 'solar-basics',       label: 'Solar Basics',       icon: '☀️', description: 'How solar panels work, key terms, and everything beginners need to know.' },
+  { slug: 'solar-costs',        label: 'Solar Costs',        description: 'Real pricing data, installation costs, and what to expect when going solar.' },
+  { slug: 'solar-financing',    label: 'Solar Financing',    description: 'Loans, leases, PPAs, and cash options — find the best way to pay for solar.' },
+  { slug: 'solar-savings',      label: 'Solar Savings',      description: 'How much solar saves homeowners and how to maximize your return.' },
+  { slug: 'solar-incentives',   label: 'Solar Incentives',   description: 'Federal tax credits, state rebates, and every incentive available to you.' },
+  { slug: 'solar-installation', label: 'Solar Installation', description: 'The step-by-step installation process, timelines, and what to expect.' },
+  { slug: 'solar-basics',       label: 'Solar Basics',       description: 'How solar panels work, key terms, and everything beginners need to know.' },
 ];
 
 export const POSTS = [

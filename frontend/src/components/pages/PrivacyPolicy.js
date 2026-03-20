@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-const DOMAIN = 'https://www.mysolarcalculator.com';
+const DOMAIN = 'https://www.mysolarwidget.com';
 
 export default function PrivacyPolicy() {
   return (
@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
         <p style={{ color: '#64748b', fontSize: 14, marginBottom: 40 }}>Last updated: March 20, 2026</p>
 
         <Section title="1. Introduction">
-          <p>MySolarWidget ("we," "us," or "our") operates the website at mysolarcalculator.com (the "Site"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our Site or use our free solar savings calculator.</p>
+          <p>MySolarWidget ("we," "us," or "our") operates the website at mysolarwidget.com (the "Site"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our Site or use our free solar savings calculator.</p>
           <p>By using our Site you agree to the collection and use of information in accordance with this policy. If you do not agree, please do not use the Site.</p>
         </Section>
 
@@ -101,7 +101,7 @@ export default function PrivacyPolicy() {
             <li><strong>Opt-out:</strong> Opt out of marketing communications at any time</li>
             <li><strong>Data portability:</strong> Request your data in a portable format</li>
           </ul>
-          <p>To exercise these rights, contact us at <a href="mailto:privacy@mysolarcalculator.com" style={linkStyle}>privacy@mysolarcalculator.com</a>.</p>
+          <p>To exercise these rights, contact us at <a href="mailto:privacy@mysolarwidget.com" style={linkStyle}>privacy@mysolarwidget.com</a>.</p>
           <p><strong>California residents</strong> have additional rights under the California Consumer Privacy Act (CCPA). We do not sell personal information as defined by the CCPA.</p>
         </Section>
 
@@ -122,8 +122,8 @@ export default function PrivacyPolicy() {
           <div style={{ background: '#f8fafc', borderRadius: 12, padding: '20px 24px', marginTop: 12 }}>
             <p style={{ margin: 0, lineHeight: 2 }}>
               <strong>MySolarWidget</strong><br />
-              Email: <a href="mailto:privacy@mysolarcalculator.com" style={linkStyle}>privacy@mysolarcalculator.com</a><br />
-              Website: <a href={DOMAIN} style={linkStyle}>www.mysolarcalculator.com</a>
+              Email: <a href="mailto:privacy@mysolarwidget.com" style={linkStyle}>privacy@mysolarwidget.com</a><br />
+              Website: <a href={DOMAIN} style={linkStyle}>www.mysolarwidget.com</a>
             </p>
           </div>
         </Section>

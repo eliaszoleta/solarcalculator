@@ -9,6 +9,7 @@ import StepBattery from './steps/StepBattery';
 import StepLead from './steps/StepLead';
 import ResultsScreen from './ResultsScreen';
 import ProgressBar from '../ui/ProgressBar';
+import { BoltIcon, MapPinIcon, HomeIcon, BuildingIcon, BatteryIcon, UserIcon, LockIcon, CheckCircleIcon } from '../ui/Icons';
 import './SolarCalculator.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
@@ -108,12 +109,12 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   }
 
   const steps = [
-    { label: 'Electric Bill', icon: '⚡' },
-    { label: 'Location', icon: '📍' },
-    { label: 'Home Type', icon: '🏠' },
-    { label: 'Roof', icon: '🏗' },
-    { label: 'Battery', icon: '🔋' },
-    { label: 'Your Info', icon: '👤' },
+    { label: 'Electric Bill', icon: <BoltIcon size={14} /> },
+    { label: 'Location', icon: <MapPinIcon size={14} /> },
+    { label: 'Home Type', icon: <HomeIcon size={14} /> },
+    { label: 'Roof', icon: <BuildingIcon size={14} /> },
+    { label: 'Battery', icon: <BatteryIcon size={14} /> },
+    { label: 'Your Info', icon: <UserIcon size={14} /> },
   ];
 
   const serviceStates = installerConfig?.serviceStates || [];
@@ -193,9 +194,9 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
         </div>
 
         <div className="trust-badges">
-          <span>🔒 No account needed</span>
-          <span>⚡ Instant results</span>
-          <span>✅ Free to use</span>
+          <span><LockIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />No account needed</span>
+          <span><BoltIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />Instant results</span>
+          <span><CheckCircleIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />Free to use</span>
         </div>
       </div>
     </section>

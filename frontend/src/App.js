@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
+import { BoltIcon } from './components/ui/Icons';
 import { supabase } from './lib/supabase';
 import SolarCalculator from './components/calculator/SolarCalculator';
 import InstallerDashboard from './components/dashboard/InstallerDashboard';
@@ -61,7 +62,7 @@ function EmbedWrapper({ installerId }) {
     return (
       <div style={{ minHeight: 260, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 32, fontFamily: 'sans-serif' }}>
         <div style={{ textAlign: 'center', maxWidth: 380 }}>
-          <div style={{ fontSize: 36, marginBottom: 12 }}>⚡</div>
+          <div style={{ marginBottom: 12 }}><BoltIcon size={36} /></div>
           <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Calculator Temporarily Unavailable</h3>
           <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>
             This solar calculator is currently paused. Please check back soon.
@@ -163,16 +164,16 @@ export default function App() {
       <Helmet>
         <title>Free Solar Panel Cost Calculator 2026 — Estimate Savings in 2 Minutes</title>
         <meta name="description" content="Free solar savings calculator for US homeowners. Enter your electric bill and get an instant estimate of solar installation cost, monthly savings, and 30-year ROI. Powered by real NREL sunlight data." />
-        <link rel="canonical" href="https://www.mysolarcalculator.com/" />
+        <link rel="canonical" href="https://www.mysolarwidget.com/" />
         <meta property="og:title" content="Free Solar Panel Cost Calculator 2026 — Estimate Savings in 2 Minutes" />
         <meta property="og:description" content="Free solar savings calculator for US homeowners. Enter your electric bill and get an instant estimate of solar installation cost, monthly savings, and 30-year ROI." />
-        <meta property="og:url" content="https://www.mysolarcalculator.com/" />
+        <meta property="og:url" content="https://www.mysolarwidget.com/" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.mysolarcalculator.com/android-chrome-512x512.png" />
+        <meta property="og:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Solar Panel Cost Calculator 2026" />
         <meta name="twitter:description" content="Instantly estimate your solar installation cost and 30-year savings. Free, powered by real NREL data. Takes under 2 minutes." />
-        <meta name="twitter:image" content="https://www.mysolarcalculator.com/android-chrome-512x512.png" />
+        <meta name="twitter:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
@@ -180,7 +181,7 @@ export default function App() {
           "description": "Free solar panel cost and savings estimator for US homeowners. Powered by NREL PVWatts real irradiance data and EIA electricity rates.",
           "applicationCategory": "FinanceApplication",
           "operatingSystem": "Web",
-          "url": "https://www.mysolarcalculator.com/",
+          "url": "https://www.mysolarwidget.com/",
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -189,10 +190,10 @@ export default function App() {
           "publisher": {
             "@type": "Organization",
             "name": "MySolarWidget",
-            "url": "https://www.mysolarcalculator.com",
+            "url": "https://www.mysolarwidget.com",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.mysolarcalculator.com/android-chrome-512x512.png"
+              "url": "https://www.mysolarwidget.com/android-chrome-512x512.png"
             }
           },
           "aggregateRating": {

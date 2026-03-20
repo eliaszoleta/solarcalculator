@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { MailIcon } from '../ui/Icons';
 
 export default function AuthPage({ onAuth }) {
   const [mode, setMode] = useState('login'); // 'login' | 'signup' | 'forgot' | 'check_email'
@@ -88,7 +89,7 @@ export default function AuthPage({ onAuth }) {
           {/* Check email confirmation */}
           {mode === 'check_email' && (
             <div style={{ textAlign: 'center', padding: '8px 0' }}>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>📬</div>
+              <div style={{ marginBottom: 16 }}><MailIcon size={48} /></div>
               <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Check your email</h2>
               <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>
                 We sent a link to <strong>{form.email}</strong>.<br />

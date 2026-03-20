@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ClipboardIcon, LinkIcon, ChartBarIcon, PaintBrushIcon, DollarSignIcon, MapPinIcon, BatteryIcon, RulerIcon, SunIcon, BoltIcon, HomeIcon, TrendingDownIcon, WrenchIcon, CreditCardIcon } from '../ui/Icons';
 
 export default function InstallerLanding() {
   return (
@@ -133,19 +134,19 @@ function HowItWorks() {
   const steps = [
     {
       num: '01',
-      icon: '📋',
+      icon: <ClipboardIcon size={24} />,
       title: 'Create your account',
       desc: 'Sign up in 60 seconds. Set your pricing per watt, service area, battery costs, and company branding — all from a simple dashboard.',
     },
     {
       num: '02',
-      icon: '🔗',
+      icon: <LinkIcon size={24} />,
       title: 'Paste one line of code',
       desc: 'Copy the embed snippet from your dashboard and paste it anywhere on your website. The calculator appears instantly, fully branded to your business.',
     },
     {
       num: '03',
-      icon: '📊',
+      icon: <ChartBarIcon size={24} />,
       title: 'Receive qualified leads',
       desc: 'Every homeowner who completes the calculator submits their name, email, phone, timeline, and payment preference — sent straight to your leads dashboard.',
     },
@@ -162,7 +163,7 @@ function HowItWorks() {
           {steps.map(s => (
             <div key={s.num} style={{ position: 'relative' }}>
               <div style={{ fontSize: 11, fontWeight: 800, color: '#1e40af', letterSpacing: '0.1em', marginBottom: 16, opacity: 0.5 }}>STEP {s.num}</div>
-              <div style={{ width: 52, height: 52, background: 'linear-gradient(135deg, #eff6ff, #dbeafe)', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, marginBottom: 18 }}>
+              <div style={{ width: 52, height: 52, background: 'linear-gradient(135deg, #eff6ff, #dbeafe)', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
                 {s.icon}
               </div>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 10 }}>{s.title}</h3>
@@ -179,32 +180,32 @@ function HowItWorks() {
 function Features() {
   const features = [
     {
-      icon: '🎨',
+      icon: <PaintBrushIcon size={28} />,
       title: 'Fully white-labeled',
       desc: 'Your company name, your colors, your CTA. Homeowners see your brand — not ours. Customize the headline, subtext, phone number, and button that appear after the estimate.',
     },
     {
-      icon: '💰',
+      icon: <DollarSignIcon size={28} />,
       title: 'Your pricing, your margin',
       desc: 'Set your own price per watt ($2.50–$4.00 typical), roof surcharges for tile/metal/flat, battery costs, and system size limits. Every estimate reflects your real quote structure.',
     },
     {
-      icon: '📍',
+      icon: <MapPinIcon size={28} />,
       title: 'Service area control',
       desc: "Restrict the calculator to your service states. Homeowners outside your area are told you don't serve their location — so you only get leads you can actually close.",
     },
     {
-      icon: '🔋',
+      icon: <BatteryIcon size={28} />,
       title: 'Battery storage options',
       desc: 'Let homeowners compare estimates with no battery, one Powerwall, or two. Configure your exact installed battery costs so estimates match your actual proposals.',
     },
     {
-      icon: '📊',
+      icon: <ChartBarIcon size={28} />,
       title: 'Live leads dashboard',
       desc: 'Every lead — name, email, phone, system size, annual savings, payment preference, and timeline — appears in your dashboard the moment someone submits the calculator.',
     },
     {
-      icon: '📐',
+      icon: <RulerIcon size={28} />,
       title: 'Auto-resizing iframe',
       desc: 'The embedded calculator automatically resizes to fit its content on any device. No scrollbars, no fixed heights to maintain. Just drop it in and it works.',
     },
@@ -220,7 +221,7 @@ function Features() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24, marginTop: 56 }}>
           {features.map(f => (
             <div key={f.title} style={{ background: 'white', borderRadius: 16, padding: '28px 24px', border: '1px solid #e2e8f0' }}>
-              <div style={{ fontSize: 28, marginBottom: 14 }}>{f.icon}</div>
+              <div style={{ marginBottom: 14 }}>{f.icon}</div>
               <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{f.title}</h3>
               <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7 }}>{f.desc}</p>
             </div>
@@ -235,22 +236,22 @@ function Features() {
 function AccuracySection() {
   const items = [
     {
-      icon: '☀️',
+      icon: <SunIcon size={20} />,
       title: 'Real irradiance data from NREL',
       desc: 'When a homeowner enters their ZIP code, the calculator calls the NREL PVWatts API — the same dataset used by the US Department of Energy — to get precise solar production estimates for their exact location.',
     },
     {
-      icon: '⚡',
+      icon: <BoltIcon size={20} />,
       title: 'EIA electricity rates by state',
       desc: 'Monthly bills are converted to kWh usage using the US Energy Information Administration\'s latest average electricity rates by state — not guesses.',
     },
     {
-      icon: '🏠',
+      icon: <HomeIcon size={20} />,
       title: 'Right-sized for each home',
       desc: 'The calculator targets 85% energy offset, accounting for roof type, sun exposure, shading, and your min/max system size settings. Panel count is calculated at 400W per panel.',
     },
     {
-      icon: '📉',
+      icon: <TrendingDownIcon size={20} />,
       title: '30-year savings projection',
       desc: 'Savings are modeled at a 4%/year utility rate increase — a conservative assumption based on the historical EIA trend. Financed estimates include a 25-year loan at 5.99% APR as a reference point.',
     },
@@ -268,7 +269,7 @@ function AccuracySection() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 28, marginTop: 52 }}>
           {items.map(item => (
             <div key={item.title} style={{ display: 'flex', gap: 16 }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
+              <div style={{ width: 44, height: 44, borderRadius: 12, background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 {item.icon}
               </div>
               <div>
@@ -292,12 +293,12 @@ function AccuracySection() {
 /* ─── Calculator preview steps ───────────────────────── */
 function CalculatorPreview() {
   const steps = [
-    { icon: '⚡', label: 'Monthly electric bill' },
-    { icon: '📍', label: 'ZIP code & state' },
-    { icon: '🏠', label: 'Home type & ownership' },
-    { icon: '🏗', label: 'Roof type & sun exposure' },
-    { icon: '🔋', label: 'Battery storage preference' },
-    { icon: '💳', label: 'Timeline & payment method' },
+    { icon: <BoltIcon size={16} />, label: 'Monthly electric bill' },
+    { icon: <MapPinIcon size={16} />, label: 'ZIP code & state' },
+    { icon: <HomeIcon size={16} />, label: 'Home type & ownership' },
+    { icon: <WrenchIcon size={16} />, label: 'Roof type & sun exposure' },
+    { icon: <BatteryIcon size={16} />, label: 'Battery storage preference' },
+    { icon: <CreditCardIcon size={16} />, label: 'Timeline & payment method' },
   ];
 
   return (
@@ -316,7 +317,7 @@ function CalculatorPreview() {
               background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
               borderRadius: 50, padding: '10px 18px',
             }}>
-              <span style={{ fontSize: 16 }}>{s.icon}</span>
+              <span style={{ display: 'flex', alignItems: 'center' }}>{s.icon}</span>
               <span style={{ fontSize: 13, color: 'white', fontWeight: 500 }}>{i + 1}. {s.label}</span>
             </div>
           ))}

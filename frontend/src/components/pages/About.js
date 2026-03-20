@@ -1,7 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { SunIcon, BoltIcon, WrenchIcon, DollarSignIcon } from '../ui/Icons';
 
-const DOMAIN = 'https://www.mysolarcalculator.com';
+const DOMAIN = 'https://www.mysolarwidget.com';
 
 export default function About() {
   return (
@@ -26,7 +27,7 @@ export default function About() {
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer support",
-            "email": "hello@mysolarcalculator.com",
+            "email": "hello@mysolarwidget.com",
             "url": `${DOMAIN}/contact`
           },
           "sameAs": []
@@ -69,28 +70,28 @@ export default function About() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20, marginTop: 24 }}>
             {[
               {
-                icon: '🌞',
+                icon: <SunIcon size={28} />,
                 title: 'NREL PVWatts API',
                 desc: "When you enter a ZIP code, we query the National Renewable Energy Laboratory's PVWatts database for your exact location's peak sun hours and irradiance. This is the same dataset used by professional installers."
               },
               {
-                icon: '⚡',
+                icon: <BoltIcon size={28} />,
                 title: 'EIA Electricity Rates',
                 desc: "We use real residential electricity rates from the U.S. Energy Information Administration (EIA) for each state, updated regularly. Your savings estimate reflects what you actually pay per kWh."
               },
               {
-                icon: '🏗️',
+                icon: <WrenchIcon size={28} />,
                 title: 'Market Installation Costs',
                 desc: "Our installation cost estimates ($2.50–$3.50/watt) are based on current national averages from SEIA and Lawrence Berkeley National Laboratory's Tracking the Sun report."
               },
               {
-                icon: '💰',
+                icon: <DollarSignIcon size={28} />,
                 title: 'Federal Tax Credit',
                 desc: "We apply the current 30% Investment Tax Credit (ITC) and project savings over 30 years with a 4% annual electricity rate increase, consistent with historical averages."
               }
             ].map(item => (
               <div key={item.title} style={{ background: '#f8fafc', borderRadius: 14, padding: 24 }}>
-                <div style={{ fontSize: 28, marginBottom: 10 }}>{item.icon}</div>
+                <div style={{ marginBottom: 10 }}>{item.icon}</div>
                 <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{item.title}</h3>
                 <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6 }}>{item.desc}</p>
               </div>

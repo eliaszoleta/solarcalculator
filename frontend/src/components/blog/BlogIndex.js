@@ -1,12 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { POSTS, CATEGORIES, getFeaturedPost } from '../../data/blogPosts';
+import { CategoryIcon, StarIcon, CalendarIcon, ClockIcon, PencilIcon, SearchIcon } from '../ui/Icons';
 import './Blog.css';
 
-const SITE_URL = 'https://www.mysolarcalculator.com';
+const SITE_URL = 'https://www.mysolarwidget.com';
 const POSTS_PER_PAGE = 6;
-
-const CATEGORY_ICON = Object.fromEntries(CATEGORIES.map(c => [c.slug, c.icon]));
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -90,7 +89,7 @@ export default function BlogIndex() {
               onChange={handleSearch}
               aria-label="Search blog articles"
             />
-            <span className="blog-search-icon" aria-hidden>🔍</span>
+            <span className="blog-search-icon" aria-hidden><SearchIcon size={16} /></span>
           </div>
         </div>
       </div>
@@ -110,7 +109,7 @@ export default function BlogIndex() {
             className={`blog-cat-pill${activeCategory === c.slug ? ' blog-cat-pill--active' : ''}`}
             onClick={e => { e.preventDefault(); handleCategory(c.slug); }}
           >
-            {c.icon} {c.label}
+            <CategoryIcon slug={c.slug} size={14} style={{ verticalAlign: 'middle', marginRight: 4 }} /> {c.label}
           </a>
         ))}
       </nav>
@@ -119,21 +118,21 @@ export default function BlogIndex() {
         {/* Featured post */}
         {showFeatured && featured && (
           <section className="blog-featured" aria-label="Featured article">
-            <div className="blog-featured__label">⭐ Featured Article</div>
+            <div className="blog-featured__label"><StarIcon size={14} style={{ verticalAlign: 'middle', marginRight: 4 }} />Featured Article</div>
             <a href={`/blog/${featured.slug}`} className="blog-featured__card">
               <div className="blog-featured__img">
                 <span style={{ position: 'relative', zIndex: 1 }}>
-                  {CATEGORY_ICON[featured.category] || <img src="/android-chrome-192x192.png" alt="" style={{ width: 72, height: 72, borderRadius: 16 }} />}
+                  <CategoryIcon slug={featured.category} size={56} />
                 </span>
               </div>
               <div className="blog-featured__body">
-                <span className="blog-badge">{CATEGORY_ICON[featured.category]} {featured.categoryLabel || featured.category.replace(/-/g, ' ')}</span>
+                <span className="blog-badge"><CategoryIcon slug={featured.category} size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} /> {featured.categoryLabel || featured.category.replace(/-/g, ' ')}</span>
                 <h2 className="blog-featured__title">{featured.title}</h2>
                 <p className="blog-featured__excerpt">{featured.excerpt}</p>
                 <div className="blog-featured__meta">
-                  <span>📅 {formatDate(featured.publishDate)}</span>
-                  <span>⏱ {featured.readingTime} min read</span>
-                  <span>✍️ {featured.author}</span>
+                  <span><CalendarIcon size={12} style={{ verticalAlign: 'middle', marginRight: 3 }} />{formatDate(featured.publishDate)}</span>
+                  <span><ClockIcon size={12} style={{ verticalAlign: 'middle', marginRight: 3 }} />{featured.readingTime} min read</span>
+                  <span><PencilIcon size={12} style={{ verticalAlign: 'middle', marginRight: 3 }} />{featured.author}</span>
                 </div>
                 <div className="blog-featured__cta">Read article →</div>
               </div>
@@ -156,12 +155,12 @@ export default function BlogIndex() {
               <article key={post.slug} className="blog-card" role="listitem">
                 <a href={`/blog/${post.slug}`} style={{ textDecoration: 'none', display: 'contents' }}>
                   <div className="blog-card__img" aria-hidden>
-                    {CATEGORY_ICON[post.category] || <img src="/android-chrome-192x192.png" alt="" style={{ width: 48, height: 48, borderRadius: 10 }} />}
+                    <CategoryIcon slug={post.category} size={36} />
                   </div>
                   <div className="blog-card__body">
                     <div className="blog-card__meta">
                       <span className="blog-badge" style={{ fontSize: 11 }}>
-                        {CATEGORY_ICON[post.category]} {post.category.replace(/-/g, ' ')}
+                        <CategoryIcon slug={post.category} size={11} style={{ verticalAlign: 'middle', marginRight: 3 }} /> {post.category.replace(/-/g, ' ')}
                       </span>
                       <time dateTime={post.publishDate}>{formatDate(post.publishDate)}</time>
                     </div>
@@ -169,7 +168,7 @@ export default function BlogIndex() {
                     <p className="blog-card__excerpt">{post.excerpt.slice(0, 120)}…</p>
                   </div>
                   <div className="blog-card__footer">
-                    <span style={{ fontSize: 12, color: '#94a3b8' }}>⏱ {post.readingTime} min read</span>
+                    <span style={{ fontSize: 12, color: '#94a3b8' }}><ClockIcon size={11} style={{ verticalAlign: 'middle', marginRight: 3 }} />{post.readingTime} min read</span>
                     <span className="blog-card__read-more">Read more →</span>
                   </div>
                 </a>
@@ -178,7 +177,7 @@ export default function BlogIndex() {
           </div>
         ) : (
           <div className="blog-no-results">
-            <div style={{ fontSize: 48 }}>🔍</div>
+            <div><SearchIcon size={48} /></div>
             <h3>No articles found</h3>
             <p>Try a different search term or browse by category.</p>
           </div>
@@ -217,7 +216,7 @@ export default function BlogIndex() {
         <div className="blog-categories-grid">
           {CATEGORIES.map(c => (
             <a key={c.slug} href={`/blog/category/${c.slug}`} className="blog-category-card">
-              <span className="blog-category-card__icon" aria-hidden>{c.icon}</span>
+              <span className="blog-category-card__icon" aria-hidden><CategoryIcon slug={c.slug} size={24} /></span>
               <div>
                 <div className="blog-category-card__name">{c.label}</div>
                 <p className="blog-category-card__desc">{c.description}</p>

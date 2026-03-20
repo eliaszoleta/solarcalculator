@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { supabase } from '../../lib/supabase';
+import { CreditCardIcon, CheckCircleIcon, MailIcon } from '../ui/Icons';
 import './ResultsScreen.css';
 
 function fmt(n) {
@@ -169,7 +170,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
 
           {hasFinancing && (
             <div className="financing-note">
-              💳 <strong>If financed:</strong> ~{fmtDollar(savings.monthlyPaymentFinanced)}/mo loan payment (25 yr, est. 5.99% APR — actual rate depends on credit and lender). Solar covers ~{system.offsetPercent}% of usage — <strong>net savings from day one: ~{fmtDollar(daySavings)}/mo</strong>.
+              <CreditCardIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} /><strong>If financed:</strong> ~{fmtDollar(savings.monthlyPaymentFinanced)}/mo loan payment (25 yr, est. 5.99% APR — actual rate depends on credit and lender). Solar covers ~{system.offsetPercent}% of usage — <strong>net savings from day one: ~{fmtDollar(daySavings)}/mo</strong>.
             </div>
           )}
 
@@ -248,7 +249,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
               </a>
               {cta.ctaPhone && (
                 <p style={{ color: '#93c5fd', fontSize: 14, marginTop: 12 }}>
-                  📞 {cta.ctaPhone}
+                  {cta.ctaPhone}
                 </p>
               )}
             </div>
@@ -304,7 +305,7 @@ function PublicEmailCapture({ results, form, savings, system }) {
   if (submitted) {
     return (
       <div className="lead-success">
-        <div className="lead-success-icon">✅</div>
+        <div className="lead-success-icon"><CheckCircleIcon size={40} color="#16a34a" /></div>
         <h3>Report sent!</h3>
         <p>Check your inbox for your personalized solar savings summary.</p>
       </div>
@@ -313,7 +314,7 @@ function PublicEmailCapture({ results, form, savings, system }) {
 
   return (
     <div style={{ textAlign: 'center', padding: '8px 0' }}>
-      <div style={{ fontSize: 32, marginBottom: 12 }}>📩</div>
+      <div style={{ marginBottom: 12 }}><MailIcon size={32} color="white" /></div>
       <h3 style={{ fontSize: 20, fontWeight: 800, color: 'white', marginBottom: 8 }}>
         Send report to your email
       </h3>

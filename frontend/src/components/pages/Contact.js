@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { MailIcon, LockIcon, WrenchIcon, CheckCircleIcon } from '../ui/Icons';
 
-const DOMAIN = 'https://www.mysolarcalculator.com';
+const DOMAIN = 'https://www.mysolarwidget.com';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: 'General Question', message: '' });
@@ -15,7 +16,7 @@ export default function Contact() {
     // Mailto fallback — opens email client. Can be swapped for an API endpoint later.
     const subject = encodeURIComponent(`[MySolarWidget] ${form.subject}`);
     const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
-    window.location.href = `mailto:hello@mysolarcalculator.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:hello@mysolarwidget.com?subject=${subject}&body=${body}`;
     setStatus('sent');
   };
 
@@ -37,9 +38,9 @@ export default function Contact() {
         {/* Contact cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 48 }}>
           {[
-            { icon: '✉️', label: 'General Inquiries', value: 'hello@mysolarcalculator.com', href: 'mailto:hello@mysolarcalculator.com' },
-            { icon: '🔒', label: 'Privacy & Data', value: 'privacy@mysolarcalculator.com', href: 'mailto:privacy@mysolarcalculator.com' },
-            { icon: '🏗️', label: 'Installer Partnerships', value: 'installers@mysolarcalculator.com', href: 'mailto:installers@mysolarcalculator.com' },
+            { icon: <MailIcon size={24} />, label: 'General Inquiries', value: 'hello@mysolarwidget.com', href: 'mailto:hello@mysolarwidget.com' },
+            { icon: <LockIcon size={24} />, label: 'Privacy & Data', value: 'privacy@mysolarwidget.com', href: 'mailto:privacy@mysolarwidget.com' },
+            { icon: <WrenchIcon size={24} />, label: 'Installer Partnerships', value: 'installers@mysolarwidget.com', href: 'mailto:installers@mysolarwidget.com' },
           ].map(item => (
             <a
               key={item.label}
@@ -54,7 +55,7 @@ export default function Contact() {
                 transition: 'border-color 0.15s'
               }}
             >
-              <div style={{ fontSize: 24, marginBottom: 8 }}>{item.icon}</div>
+              <div style={{ marginBottom: 8 }}>{item.icon}</div>
               <div style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', marginBottom: 4 }}>{item.label}</div>
               <div style={{ fontSize: 12, color: '#1e40af' }}>{item.value}</div>
             </a>
@@ -67,9 +68,9 @@ export default function Contact() {
 
           {status === 'sent' ? (
             <div style={{ textAlign: 'center', padding: '32px 0' }}>
-              <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
+              <div style={{ marginBottom: 12, color: '#16a34a' }}><CheckCircleIcon size={40} /></div>
               <p style={{ fontSize: 16, fontWeight: 600, color: '#0f172a', marginBottom: 8 }}>Your email client should open</p>
-              <p style={{ fontSize: 14, color: '#64748b' }}>If it didn't, email us directly at <a href="mailto:hello@mysolarcalculator.com" style={{ color: '#1e40af' }}>hello@mysolarcalculator.com</a></p>
+              <p style={{ fontSize: 14, color: '#64748b' }}>If it didn't, email us directly at <a href="mailto:hello@mysolarwidget.com" style={{ color: '#1e40af' }}>hello@mysolarwidget.com</a></p>
               <button onClick={() => setStatus(null)} style={{ marginTop: 16, padding: '8px 20px', background: '#1e40af', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600 }}>
                 Send Another
               </button>

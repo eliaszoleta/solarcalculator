@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SunIcon } from '../../ui/Icons';
 
 const TIMELINES = [
   { value: 'asap', label: 'ASAP', desc: 'Ready to move forward now' },
@@ -126,7 +127,7 @@ export default function StepLead({ onSubmit, loading, requireContact }) {
         </div>
 
         <button type="submit" className="btn btn-cta" disabled={loading} style={{ marginTop: 4 }}>
-          {loading ? 'Calculating...' : '☀️ Show My Free Estimate →'}
+          {loading ? 'Calculating...' : <><SunIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />Show My Free Estimate →</>}
         </button>
       </form>
 

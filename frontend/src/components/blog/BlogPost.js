@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { getPostBySlug, getRelatedPosts, getCategoryBySlug } from '../../data/blogPosts';
+import { CategoryIcon, SearchIcon, PencilIcon, CalendarIcon, ClockIcon, BoltIcon } from '../ui/Icons';
 import './Blog.css';
 
-const SITE_URL = 'https://www.mysolarcalculator.com';
+const SITE_URL = 'https://www.mysolarwidget.com';
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -110,7 +111,7 @@ function ShareButtons({ title }) {
           onClick={handleCopy}
           aria-label="Copy link"
         >
-          {copied ? '✓ Copied' : '🔗 Copy'}
+          {copied ? '✓ Copied' : 'Copy link'}
         </button>
       </div>
     </div>
@@ -146,7 +147,7 @@ export default function BlogPost({ slug }) {
   if (!post) {
     return (
       <div className="blog-page" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16, padding: 40 }}>
-        <div style={{ fontSize: 48 }}>🔍</div>
+        <div><SearchIcon size={48} /></div>
         <h1 style={{ fontSize: 24, color: '#0f172a', margin: 0 }}>Article not found</h1>
         <p style={{ color: '#64748b' }}>The article you're looking for doesn't exist.</p>
         <a href="/blog" style={{ color: '#1e40af', fontWeight: 700 }}>← Back to Blog</a>
@@ -257,13 +258,13 @@ export default function BlogPost({ slug }) {
       <header className="post-hero">
         <div className="post-hero__inner">
           <a href={`/blog/category/${post.category}`} className="blog-badge">
-            {category?.icon} {category?.label || post.category}
+            <CategoryIcon slug={post.category} size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} /> {category?.label || post.category}
           </a>
           <h1 className="post-hero__title">{post.title}</h1>
           <div className="post-hero__meta">
-            <span>✍️ {post.author}</span>
-            <span>📅 <time dateTime={post.publishDate}>{formatDate(post.publishDate)}</time></span>
-            <span>⏱ {post.readingTime} min read</span>
+            <span><PencilIcon size={12} style={{ verticalAlign: 'middle', marginRight: 3 }} />{post.author}</span>
+            <span><CalendarIcon size={12} style={{ verticalAlign: 'middle', marginRight: 3 }} /><time dateTime={post.publishDate}>{formatDate(post.publishDate)}</time></span>
+            <span><ClockIcon size={12} style={{ verticalAlign: 'middle', marginRight: 3 }} />{post.readingTime} min read</span>
           </div>
         </div>
       </header>
@@ -330,7 +331,7 @@ export default function BlogPost({ slug }) {
               and 25-year return — personalized to your home in under 2 minutes.
             </p>
             <a href="/" className="post-cta-block__btn">
-              ⚡ Get My Free Estimate
+              <BoltIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />Get My Free Estimate
             </a>
           </div>
 
@@ -343,9 +344,9 @@ export default function BlogPost({ slug }) {
                   const rc = getCategoryBySlug(rp.category);
                   return (
                     <a key={rp.slug} href={`/blog/${rp.slug}`} className="post-related__card">
-                      <span className="post-related__cat">{rc?.icon} {rc?.label}</span>
+                      <span className="post-related__cat"><CategoryIcon slug={rp.category} size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} />{rc?.label}</span>
                       <span className="post-related__title">{rp.title}</span>
-                      <span className="post-related__time">⏱ {rp.readingTime} min read</span>
+                      <span className="post-related__time"><ClockIcon size={11} style={{ verticalAlign: 'middle', marginRight: 3 }} />{rp.readingTime} min read</span>
                     </a>
                   );
                 })}

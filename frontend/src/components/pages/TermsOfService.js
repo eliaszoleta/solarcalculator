@@ -1,14 +1,14 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-const DOMAIN = 'https://www.mysolarcalculator.com';
+const DOMAIN = 'https://www.mysolarwidget.com';
 
 export default function TermsOfService() {
   return (
     <div style={{ background: 'white', minHeight: '100vh' }}>
       <Helmet>
         <title>Terms of Service — MySolarWidget</title>
-        <meta name="description" content="MySolarWidget terms of service. Read our terms and conditions for using the free solar savings calculator at mysolarcalculator.com." />
+        <meta name="description" content="MySolarWidget terms of service. Read our terms and conditions for using the free solar savings calculator at mysolarwidget.com." />
         <link rel="canonical" href={`${DOMAIN}/terms-of-service`} />
         <meta name="robots" content="index, follow" />
       </Helmet>
@@ -18,7 +18,7 @@ export default function TermsOfService() {
         <p style={{ color: '#64748b', fontSize: 14, marginBottom: 40 }}>Last updated: March 20, 2026</p>
 
         <Section title="1. Acceptance of Terms">
-          <p>By accessing or using the MySolarWidget website at mysolarcalculator.com (the "Site") or the solar savings calculator (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use the Site or Service.</p>
+          <p>By accessing or using the MySolarWidget website at mysolarwidget.com (the "Site") or the solar savings calculator (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use the Site or Service.</p>
           <p>We reserve the right to modify these Terms at any time. Continued use of the Site after changes constitutes acceptance of the updated Terms.</p>
         </Section>
 
@@ -96,8 +96,8 @@ export default function TermsOfService() {
           <div style={{ background: '#f8fafc', borderRadius: 12, padding: '20px 24px', marginTop: 12 }}>
             <p style={{ margin: 0, lineHeight: 2 }}>
               <strong>MySolarWidget</strong><br />
-              Email: <a href="mailto:legal@mysolarcalculator.com" style={linkStyle}>legal@mysolarcalculator.com</a><br />
-              Website: <a href={DOMAIN} style={linkStyle}>www.mysolarcalculator.com</a>
+              Email: <a href="mailto:legal@mysolarwidget.com" style={linkStyle}>legal@mysolarwidget.com</a><br />
+              Website: <a href={DOMAIN} style={linkStyle}>www.mysolarwidget.com</a>
             </p>
           </div>
         </Section>

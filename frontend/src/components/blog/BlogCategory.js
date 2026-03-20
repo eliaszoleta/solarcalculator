@@ -1,9 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { CATEGORIES, getPostsByCategory, getCategoryBySlug } from '../../data/blogPosts';
+import { CategoryIcon, StarIcon, ClockIcon, SearchIcon, BoltIcon } from '../ui/Icons';
 import './Blog.css';
 
-const SITE_URL = 'https://www.mysolarcalculator.com';
+const SITE_URL = 'https://www.mysolarwidget.com';
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -17,7 +18,7 @@ export default function BlogCategory({ category: categorySlug }) {
   if (!category) {
     return (
       <div className="blog-page" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16, padding: 40 }}>
-        <div style={{ fontSize: 48 }}>🔍</div>
+        <div><SearchIcon size={48} /></div>
         <h1 style={{ fontSize: 24, color: '#0f172a', margin: 0 }}>Category not found</h1>
         <a href="/blog" style={{ color: '#1e40af', fontWeight: 700 }}>← Back to Blog</a>
       </div>
@@ -77,7 +78,7 @@ export default function BlogCategory({ category: categorySlug }) {
 
       {/* Category hero */}
       <header className="category-hero">
-        <div className="category-hero__icon" aria-hidden>{category.icon}</div>
+        <div className="category-hero__icon" aria-hidden><CategoryIcon slug={categorySlug} size={40} /></div>
         <h1>{category.label}</h1>
         <p>{category.description}</p>
       </header>
@@ -92,20 +93,20 @@ export default function BlogCategory({ category: categorySlug }) {
               <article key={post.slug} className="blog-card" role="listitem">
                 <a href={`/blog/${post.slug}`} style={{ textDecoration: 'none', display: 'contents' }}>
                   <div className="blog-card__img" aria-hidden>
-                    {category.icon}
+                    <CategoryIcon slug={categorySlug} size={36} />
                   </div>
                   <div className="blog-card__body">
                     <div className="blog-card__meta">
                       <time dateTime={post.publishDate}>{formatDate(post.publishDate)}</time>
                       {post.featured && (
-                        <span style={{ fontSize: 11, color: '#f59e0b', fontWeight: 700 }}>⭐ Featured</span>
+                        <span style={{ fontSize: 11, color: '#f59e0b', fontWeight: 700 }}><StarIcon size={11} style={{ verticalAlign: 'middle', marginRight: 2 }} />Featured</span>
                       )}
                     </div>
                     <h3 className="blog-card__title">{post.title}</h3>
                     <p className="blog-card__excerpt">{post.excerpt.slice(0, 130)}…</p>
                   </div>
                   <div className="blog-card__footer">
-                    <span style={{ fontSize: 12, color: '#94a3b8' }}>⏱ {post.readingTime} min read</span>
+                    <span style={{ fontSize: 12, color: '#94a3b8' }}><ClockIcon size={11} style={{ verticalAlign: 'middle', marginRight: 3 }} />{post.readingTime} min read</span>
                     <span className="blog-card__read-more">Read more →</span>
                   </div>
                 </a>
@@ -114,7 +115,7 @@ export default function BlogCategory({ category: categorySlug }) {
           </div>
         ) : (
           <div className="blog-no-results">
-            <div style={{ fontSize: 48 }}>{category.icon}</div>
+            <div><CategoryIcon slug={categorySlug} size={48} /></div>
             <h3>No articles yet</h3>
             <p>Check back soon — we're adding new guides regularly.</p>
           </div>
@@ -128,7 +129,7 @@ export default function BlogCategory({ category: categorySlug }) {
             Use our free Solar Calculator to see your personalized cost, monthly savings,
             and 25-year return based on your real electricity bill and location.
           </p>
-          <a href="/" className="post-cta-block__btn">⚡ Get My Free Estimate</a>
+          <a href="/" className="post-cta-block__btn"><BoltIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />Get My Free Estimate</a>
         </div>
 
         {/* Other categories */}
@@ -137,7 +138,7 @@ export default function BlogCategory({ category: categorySlug }) {
           <div className="blog-categories-grid">
             {otherCategories.map(c => (
               <a key={c.slug} href={`/blog/category/${c.slug}`} className="blog-category-card">
-                <span className="blog-category-card__icon" aria-hidden>{c.icon}</span>
+                <span className="blog-category-card__icon" aria-hidden><CategoryIcon slug={c.slug} size={24} /></span>
                 <div>
                   <div className="blog-category-card__name">{c.label}</div>
                   <p className="blog-category-card__desc">{c.description}</p>

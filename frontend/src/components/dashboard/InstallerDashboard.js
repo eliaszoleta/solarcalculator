@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
+import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon } from '../ui/Icons';
 import './InstallerDashboard.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
@@ -144,11 +145,11 @@ export default function InstallerDashboard({ user, onLogout }) {
         </div>
         <nav className="dash-nav">
           {[
-            { id: 'pricing', icon: '💰', label: 'Pricing Settings' },
-            { id: 'appearance', icon: '🎨', label: 'Appearance' },
-            { id: 'embed', icon: '📋', label: 'Embed Code' },
-            { id: 'leads', icon: '📊', label: 'Leads' },
-            { id: 'subscription', icon: '💳', label: 'Subscription' },
+            { id: 'pricing', icon: <DollarSignIcon size={16} />, label: 'Pricing Settings' },
+            { id: 'appearance', icon: <PaintBrushIcon size={16} />, label: 'Appearance' },
+            { id: 'embed', icon: <ClipboardIcon size={16} />, label: 'Embed Code' },
+            { id: 'leads', icon: <ChartBarIcon size={16} />, label: 'Leads' },
+            { id: 'subscription', icon: <CreditCardIcon size={16} />, label: 'Subscription' },
           ].map(tab => (
             <button
               key={tab.id}
@@ -160,7 +161,7 @@ export default function InstallerDashboard({ user, onLogout }) {
             </button>
           ))}
           <button className="dash-nav-item" onClick={onLogout} style={{ marginTop: 'auto', color: '#f87171' }}>
-            <span>🚪</span>
+            <span><LogOutIcon size={16} /></span>
             <span>Sign Out</span>
           </button>
         </nav>
@@ -179,7 +180,7 @@ export default function InstallerDashboard({ user, onLogout }) {
             <p className="dash-page-sub">Configure how your solar calculator estimates costs</p>
           </div>
           <button className="btn-save" onClick={save} disabled={saving}>
-            {saving ? 'Saving...' : saved ? '✅ Saved' : 'Save Changes'}
+            {saving ? 'Saving...' : saved ? <><CheckCircleIcon size={14} style={{ verticalAlign: 'middle', marginRight: 4 }} />Saved</> : 'Save Changes'}
           </button>
         </div>
 
@@ -300,7 +301,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                   <code>{embedCode}</code>
                 </div>
                 <button className="btn-copy" onClick={() => navigator.clipboard.writeText(embedCode)}>
-                  📋 Copy Embed Code
+                  <ClipboardIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />Copy Embed Code
                 </button>
                 <div className="embed-instructions">
                   <h4>How to add it:</h4>
@@ -325,7 +326,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                   <p style={{ color: '#64748b', fontSize: 14 }}>Loading leads...</p>
                 ) : leads.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748b' }}>
-                    <div style={{ fontSize: 32, marginBottom: 12 }}>📋</div>
+                    <div style={{ marginBottom: 12 }}><ClipboardIcon size={32} /></div>
                     <p style={{ fontSize: 14 }}>No leads yet. They'll appear here once someone completes your calculator.</p>
                   </div>
                 ) : (
@@ -414,7 +415,7 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
 
         {justSubscribed && (
           <div style={{ background: '#dcfce7', border: '1px solid #86efac', borderRadius: 10, padding: '14px 18px', marginBottom: 20, color: '#15803d', fontSize: 14, fontWeight: 600 }}>
-            🎉 You're subscribed! Your embedded calculator is now active.
+            <SparklesIcon size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />You're subscribed! Your embedded calculator is now active.
           </div>
         )}
 

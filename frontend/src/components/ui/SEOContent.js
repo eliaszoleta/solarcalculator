@@ -1,4 +1,5 @@
 import React from 'react';
+import { BoltIcon, SunIcon, RulerIcon, DollarSignIcon } from './Icons';
 
 export default function SEOContent() {
   return (
@@ -14,13 +15,13 @@ export default function SEOContent() {
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 24 }}>
           {[
-            { icon: '⚡', title: 'Your Electric Bill', desc: 'We calculate exactly how much electricity your home uses based on your monthly bill and your state\'s electricity rate.' },
-            { icon: '🌞', title: 'Sunlight Data', desc: 'Enter your ZIP code and we pull real irradiance data from the NREL PVWatts API for your exact location. Without a ZIP, we use NREL peak sun hour averages by state.' },
-            { icon: '📐', title: 'System Sizing', desc: 'We recommend the ideal system size to offset your usage, then calculate the real installation cost based on current market rates.' },
-            { icon: '💰', title: 'Savings Projection', desc: 'We project 30 years of savings accounting for 4% annual utility rate increases, tax credits, and your financing options.' },
+            { icon: <BoltIcon size={32} />, title: 'Your Electric Bill', desc: 'We calculate exactly how much electricity your home uses based on your monthly bill and your state\'s electricity rate.' },
+            { icon: <SunIcon size={32} />, title: 'Sunlight Data', desc: 'Enter your ZIP code and we pull real irradiance data from the NREL PVWatts API for your exact location. Without a ZIP, we use NREL peak sun hour averages by state.' },
+            { icon: <RulerIcon size={32} />, title: 'System Sizing', desc: 'We recommend the ideal system size to offset your usage, then calculate the real installation cost based on current market rates.' },
+            { icon: <DollarSignIcon size={32} />, title: 'Savings Projection', desc: 'We project 30 years of savings accounting for 4% annual utility rate increases, tax credits, and your financing options.' },
           ].map(item => (
             <div key={item.title} style={{ padding: 24, background: '#f8fafc', borderRadius: 16 }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>{item.icon}</div>
+              <div style={{ marginBottom: 12 }}>{item.icon}</div>
               <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{item.title}</h3>
               <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>{item.desc}</p>
             </div>
