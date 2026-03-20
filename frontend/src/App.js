@@ -169,11 +169,11 @@ export default function App() {
         <meta property="og:description" content="Free solar savings calculator for US homeowners. Enter your electric bill and get an instant estimate of solar installation cost, monthly savings, and 30-year ROI." />
         <meta property="og:url" content="https://www.mysolarwidget.com/" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
+        <meta property="og:image" content="https://www.mysolarwidget.com/favicon-512x512.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Solar Panel Cost Calculator 2026" />
         <meta name="twitter:description" content="Instantly estimate your solar installation cost and 30-year savings. Free, powered by real NREL data. Takes under 2 minutes." />
-        <meta name="twitter:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
+        <meta name="twitter:image" content="https://www.mysolarwidget.com/favicon-512x512.png" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
@@ -193,7 +193,7 @@ export default function App() {
             "url": "https://www.mysolarwidget.com",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.mysolarwidget.com/android-chrome-512x512.png"
+              "url": "https://www.mysolarwidget.com/favicon-512x512.png"
             }
           },
           "aggregateRating": {

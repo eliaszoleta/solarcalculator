@@ -30,7 +30,7 @@ function LandingNav() {
       padding: '0 32px', height: 64,
     }}>
       <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-        <img src="/android-chrome-192x192.png" alt="MySolarWidget" style={{ width: 38, height: 38, borderRadius: 8 }} />
+        <img src="/favicon-192x192.png" alt="MySolarWidget" style={{ width: 38, height: 38, borderRadius: 8 }} />
         <span style={{ fontSize: 17, fontWeight: 800, color: '#0f172a' }}>
           MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
         </span>
@@ -497,7 +497,7 @@ function LandingFooter() {
   return (
     <footer style={{ background: '#0f172a', padding: '32px 24px', textAlign: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 12 }}>
-        <img src="/android-chrome-192x192.png" alt="MySolarWidget" style={{ width: 32, height: 32, borderRadius: 7 }} />
+        <img src="/favicon-192x192.png" alt="MySolarWidget" style={{ width: 32, height: 32, borderRadius: 7 }} />
         <span style={{ fontSize: 15, fontWeight: 800, color: 'white' }}>
           MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
         </span>
