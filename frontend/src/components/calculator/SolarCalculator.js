@@ -21,9 +21,6 @@ const initialForm = {
   monthlyBill: 200,
   zip: '',
   state: '',
-  address: '',
-  lat: null,
-  lng: null,
   homeType: 'house',
   ownsHome: null,
   sunExposure: 'full',
@@ -149,18 +146,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
 
           <div className="step-content">
             {step === 1 && <StepBill value={form.monthlyBill} onChange={v => update('monthlyBill', v)} />}
-            {step === 2 && <StepLocation
-              zip={form.zip}
-              state={form.state}
-              address={form.address}
-              lat={form.lat}
-              lng={form.lng}
-              onZipChange={v => update('zip', v)}
-              onStateChange={v => update('state', v)}
-              onAddressChange={v => update('address', v)}
-              onLatLngChange={(lat, lng) => setForm(prev => ({ ...prev, lat, lng }))}
-              serviceStates={serviceStates}
-            />}
+            {step === 2 && <StepLocation zip={form.zip} state={form.state} onZipChange={v => update('zip', v)} onStateChange={v => update('state', v)} serviceStates={serviceStates} />}
             {step === 3 && (
               <StepHome
                 homeType={form.homeType}
