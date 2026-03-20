@@ -30,9 +30,16 @@ export default function InstallerDashboard({ user, onLogout }) {
   const [config, setConfig] = useState(DEFAULT_CONFIG);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [activeTab, setActiveTab] = useState('pricing');
+  const [activeTab, setActiveTab] = useState(() => {
+    // Open subscription tab directly if redirected from Stripe
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('subscribed') === 'true' || params.get('tab') === 'subscription') return 'subscription';
+    return 'pricing';
+  });
   const [leads, setLeads] = useState([]);
   const [leadsLoading, setLeadsLoading] = useState(false);
+  const [subscription, setSubscription] = useState(null);
+  const [subLoading, setSubLoading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -63,6 +70,24 @@ export default function InstallerDashboard({ user, onLogout }) {
     loadLeads();
   }, [activeTab, installerId]);
 
+  useEffect(() => {
+    if (activeTab !== 'subscription') return;
+    const loadSub = async () => {
+      setSubLoading(true);
+      try {
+        const headers = await getAuthHeader();
+        const res = await axios.get(`${API_BASE}/api/subscription/status`, { headers });
+        setSubscription(res.data.data);
+      } catch {
+        // fallback: derive from config
+        setSubscription(null);
+      } finally {
+        setSubLoading(false);
+      }
+    };
+    loadSub();
+  }, [activeTab]);
+
 
   const update = (field, value) => {
     setConfig(prev => ({ ...prev, [field]: value }));
@@ -79,6 +104,26 @@ export default function InstallerDashboard({ user, onLogout }) {
       alert('Save failed. Please try again.');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleSubscribe = async () => {
+    try {
+      const headers = await getAuthHeader();
+      const res = await axios.post(`${API_BASE}/api/subscription/checkout`, {}, { headers });
+      if (res.data.url) window.location.href = res.data.url;
+    } catch {
+      alert('Could not open checkout. Please try again.');
+    }
+  };
+
+  const handleManageBilling = async () => {
+    try {
+      const headers = await getAuthHeader();
+      const res = await axios.post(`${API_BASE}/api/subscription/portal`, {}, { headers });
+      if (res.data.url) window.location.href = res.data.url;
+    } catch {
+      alert('Could not open billing portal. Please try again.');
     }
   };
 
@@ -103,6 +148,7 @@ export default function InstallerDashboard({ user, onLogout }) {
             { id: 'appearance', icon: '🎨', label: 'Appearance' },
             { id: 'embed', icon: '📋', label: 'Embed Code' },
             { id: 'leads', icon: '📊', label: 'Leads' },
+            { id: 'subscription', icon: '💳', label: 'Subscription' },
           ].map(tab => (
             <button
               key={tab.id}
@@ -128,6 +174,7 @@ export default function InstallerDashboard({ user, onLogout }) {
               {activeTab === 'appearance' && 'Appearance'}
               {activeTab === 'embed' && 'Embed Code'}
               {activeTab === 'leads' && 'Leads'}
+              {activeTab === 'subscription' && 'Subscription'}
             </h1>
             <p className="dash-page-sub">Configure how your solar calculator estimates costs</p>
           </div>
@@ -317,8 +364,120 @@ export default function InstallerDashboard({ user, onLogout }) {
             </div>
           )}
 
+          {activeTab === 'subscription' && (
+            <div className="settings-grid">
+              <SubscriptionPanel
+                subscription={subscription}
+                loading={subLoading}
+                onSubscribe={handleSubscribe}
+                onManage={handleManageBilling}
+                justSubscribed={new URLSearchParams(window.location.search).get('subscribed') === 'true'}
+              />
+            </div>
+          )}
+
         </div>
       </main>
+    </div>
+  );
+}
+
+function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justSubscribed }) {
+  if (loading) return (
+    <div className="setting-card">
+      <div className="setting-card-body" style={{ padding: 32, textAlign: 'center', color: '#64748b', fontSize: 14 }}>
+        Loading subscription details...
+      </div>
+    </div>
+  );
+
+  const status = subscription?.status || 'trialing';
+  const daysLeft = subscription?.daysLeft;
+  const isActive = subscription?.active !== false;
+  const hasStripe = !!subscription?.stripeCustomerId;
+
+  const statusColors = {
+    active: { bg: '#dcfce7', color: '#16a34a', label: 'Active' },
+    trialing: { bg: '#dbeafe', color: '#1d4ed8', label: `Free Trial${daysLeft != null ? ` — ${daysLeft} days left` : ''}` },
+    expired: { bg: '#fee2e2', color: '#dc2626', label: 'Trial Expired' },
+    canceled: { bg: '#fef3c7', color: '#d97706', label: 'Canceled' },
+  };
+  const badge = statusColors[status] || statusColors.trialing;
+
+  return (
+    <div className="setting-card">
+      <div className="setting-card-header">
+        <h3 className="setting-card-title">Plan & Billing</h3>
+        <p className="setting-card-desc">Manage your MySolarWidget subscription.</p>
+      </div>
+      <div className="setting-card-body">
+
+        {justSubscribed && (
+          <div style={{ background: '#dcfce7', border: '1px solid #86efac', borderRadius: 10, padding: '14px 18px', marginBottom: 20, color: '#15803d', fontSize: 14, fontWeight: 600 }}>
+            🎉 You're subscribed! Your embedded calculator is now active.
+          </div>
+        )}
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+          <span style={{ fontSize: 13, color: '#64748b' }}>Status:</span>
+          <span style={{ background: badge.bg, color: badge.color, borderRadius: 20, padding: '4px 12px', fontSize: 13, fontWeight: 700 }}>
+            {badge.label}
+          </span>
+        </div>
+
+        {status === 'trialing' && (
+          <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>
+              {daysLeft > 0 ? `${daysLeft} days remaining in your free trial` : 'Your free trial is ending soon'}
+            </h4>
+            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
+              Subscribe now to keep your embedded calculator active on your website after the trial ends. Your pricing settings, branding, and leads are all preserved.
+            </p>
+          </div>
+        )}
+
+        {!isActive && (
+          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#dc2626', marginBottom: 8 }}>
+              Your embedded calculator is paused
+            </h4>
+            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
+              Visitors to your website will see a notice that the calculator is temporarily unavailable. Subscribe below to reactivate it instantly.
+            </p>
+          </div>
+        )}
+
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          {!hasStripe && (
+            <button
+              onClick={onSubscribe}
+              style={{ padding: '12px 28px', background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: 'white', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}
+            >
+              Subscribe — Activate Calculator
+            </button>
+          )}
+          {hasStripe && (
+            <button
+              onClick={onManage}
+              style={{ padding: '12px 28px', background: '#1e293b', color: 'white', border: 'none', borderRadius: 10, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}
+            >
+              Manage Subscription
+            </button>
+          )}
+          {!hasStripe && status !== 'trialing' && (
+            <button
+              onClick={onSubscribe}
+              style={{ padding: '12px 28px', background: '#1e40af', color: 'white', border: 'none', borderRadius: 10, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}
+            >
+              Reactivate
+            </button>
+          )}
+        </div>
+
+        <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 20, lineHeight: 1.6 }}>
+          You can cancel anytime from the billing portal. No long-term commitment required.
+        </p>
+      </div>
     </div>
   );
 }

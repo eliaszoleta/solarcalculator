@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { supabase } from '../../lib/supabase';
 import './ResultsScreen.css';
 
 function fmt(n) {
@@ -16,16 +17,18 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
 
   const isCash = lead?.paymentMethod === 'cash';
 
+  // Scroll to top when results load
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   // Find payback year for chart reference line
   const paybackYear = chart.find(d => d.cumulativeSavings >= 0)?.year;
 
   const hasFinancing = !isCash && savings.monthlyPaymentFinanced > 0;
-  // True day-one savings = what solar saves off the bill minus the loan payment.
-  // Using bill - loan overstates savings because 85% offset leaves ~15% still owed to utility.
   const daySavings = hasFinancing
     ? savings.netMonthlyFinanced
     : savings.monthly;
-  // Total monthly outlay after going solar: loan payment + remaining utility bill
   const totalMonthlyCostWithSolar = hasFinancing
     ? savings.monthlyPaymentFinanced + Math.max(0, form.monthlyBill - savings.monthly)
     : null;
@@ -211,7 +214,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           </div>
         </div>
 
-        {/* CTA — installer-branded when embedded, generic thank-you otherwise */}
+        {/* CTA — installer-branded when embedded, email capture for public */}
         <div className="section-card lead-card">
           {embedded ? (
             <div style={{ textAlign: 'center', padding: '8px 0' }}>
@@ -250,11 +253,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
               )}
             </div>
           ) : (
-            <div className="lead-success">
-              <div className="lead-success-icon">✅</div>
-              <h3>You're all set!</h3>
-              <p>A solar specialist will reach out with a precise quote for your home. Check your email for your savings summary.</p>
-            </div>
+            <PublicEmailCapture results={results} form={form} savings={savings} system={system} />
           )}
         </div>
 
@@ -265,3 +264,108 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
     </section>
   );
 }
+
+function PublicEmailCapture({ results, form, savings, system }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!name.trim()) { setError('Please enter your name.'); return; }
+    if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) { setError('Please enter a valid email address.'); return; }
+    setError('');
+    setLoading(true);
+    try {
+      await supabase.from('leads').insert({
+        installer_id: null,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        phone: null,
+        timeline: null,
+        payment_method: null,
+        monthly_bill: parseFloat(form.monthlyBill),
+        state: form.state || null,
+        zip: form.zip || null,
+        system_size_kw: system?.sizeKw || null,
+        annual_savings: savings?.annual || null,
+        total_cost: results?.cost?.total || null,
+      });
+    } catch (_) {
+      // fire-and-forget — don't block UX on Supabase error
+    } finally {
+      setLoading(false);
+      setSubmitted(true);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <div className="lead-success">
+        <div className="lead-success-icon">✅</div>
+        <h3>Report sent!</h3>
+        <p>Check your inbox for your personalized solar savings summary.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ textAlign: 'center', padding: '8px 0' }}>
+      <div style={{ fontSize: 32, marginBottom: 12 }}>📩</div>
+      <h3 style={{ fontSize: 20, fontWeight: 800, color: 'white', marginBottom: 8 }}>
+        Send report to your email
+      </h3>
+      <p style={{ color: '#bfdbfe', fontSize: 14, marginBottom: 20, lineHeight: 1.6 }}>
+        Get your personalized solar savings summary delivered to your inbox.
+      </p>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 360, margin: '0 auto' }}>
+        <input
+          type="text"
+          placeholder="Your name"
+          value={name}
+          onChange={e => { setName(e.target.value); setError(''); }}
+          style={inputStyle}
+        />
+        <input
+          type="email"
+          placeholder="Email address"
+          value={email}
+          onChange={e => { setEmail(e.target.value); setError(''); }}
+          style={inputStyle}
+        />
+        {error && <p style={{ color: '#fca5a5', fontSize: 13, margin: 0 }}>{error}</p>}
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            padding: '13px 24px',
+            background: 'linear-gradient(135deg, #f59e0b, #f97316)',
+            color: 'white',
+            border: 'none',
+            borderRadius: 10,
+            fontWeight: 700,
+            fontSize: 15,
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.8 : 1,
+          }}
+        >
+          {loading ? 'Sending...' : 'Send My Report →'}
+        </button>
+      </form>
+    </div>
+  );
+}
+
+const inputStyle = {
+  padding: '12px 14px',
+  borderRadius: 10,
+  border: '1.5px solid rgba(255,255,255,0.2)',
+  background: 'rgba(255,255,255,0.12)',
+  color: 'white',
+  fontSize: 15,
+  outline: 'none',
+  width: '100%',
+  boxSizing: 'border-box',
+};

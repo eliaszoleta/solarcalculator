@@ -47,6 +47,20 @@ function EmbedWrapper({ installerId }) {
 
   if (!installerConfig) return null;
 
+  if (installerConfig.paused) {
+    return (
+      <div style={{ minHeight: 260, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 32, fontFamily: 'sans-serif' }}>
+        <div style={{ textAlign: 'center', maxWidth: 380 }}>
+          <div style={{ fontSize: 36, marginBottom: 12 }}>⚡</div>
+          <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Calculator Temporarily Unavailable</h3>
+          <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>
+            This solar calculator is currently paused. Please check back soon.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ background: 'white', minHeight: '100vh' }}>
       <SolarCalculator embedded installerConfig={installerConfig} installerId={installerId} />

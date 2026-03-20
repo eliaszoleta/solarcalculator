@@ -7,7 +7,11 @@ const rateLimit = require('express-rate-limit');
 const calculateRouter = require('./routes/calculate');
 const installerRouter = require('./routes/installer');
 const authRouter = require('./routes/auth');
+const subscriptionRouter = require('./routes/subscription');
 const { requireAuth } = require('./middleware/auth');
+const { getInstallerConfig } = require('./routes/installer');
+const { computeSubscriptionStatus } = require('./routes/subscription');
+const { DEFAULT_INSTALLER_CONFIG } = require('./config/defaults');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -34,31 +38,32 @@ app.use('/api/calculate', rateLimit({
   legacyHeaders: false,
 }));
 
+// Stripe webhook — raw body MUST come BEFORE express.json()
+app.post('/api/subscription/webhook', express.raw({ type: 'application/json' }), subscriptionRouter.webhookHandler);
+
 app.use(express.json({ limit: '10kb' }));
 
-// Routes
+// Auth routes
 app.use('/api/auth', authRouter);
+
+// Calculation routes
 app.use('/api/calculate', calculateRouter);
-// Public read-only endpoint for embedded calculator (no auth)
+
+// Public installer config (no auth) — registered BEFORE the auth-protected router
 app.get('/api/installer/:id/public', async (req, res) => {
-  const { DEFAULT_INSTALLER_CONFIG } = require('./config/defaults');
-  const { getInstallerConfig } = require('./routes/installer');
   try {
     const config = (await getInstallerConfig(req.params.id)) || DEFAULT_INSTALLER_CONFIG;
-    res.json({ success: true, data: {
-      companyName: config.companyName,
-      ctaHeadline: config.ctaHeadline,
-      ctaSubtext: config.ctaSubtext,
-      ctaButtonText: config.ctaButtonText,
-      ctaPhone: config.ctaPhone,
-      ctaButtonUrl: config.ctaButtonUrl,
-      primaryColor: config.primaryColor,
-    }});
+    const { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates } = config;
+    const sub = computeSubscriptionStatus(config);
+    res.json({ success: true, data: { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates, paused: !sub.active, trialDaysLeft: sub.daysLeft } });
   } catch {
     res.json({ success: true, data: DEFAULT_INSTALLER_CONFIG });
   }
 });
+
+// Auth-protected routes
 app.use('/api/installer', requireAuth, installerRouter);
+app.use('/api/subscription', requireAuth, subscriptionRouter);
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'ok' }));

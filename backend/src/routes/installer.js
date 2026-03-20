@@ -4,6 +4,7 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const { DEFAULT_INSTALLER_CONFIG } = require('../config/defaults');
+const { computeSubscriptionStatus } = require('./subscription');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://mhiwlqezyenwvzamviwy.supabase.co';
 const SERVICE_KEY = () => process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -79,7 +80,29 @@ async function saveInstallerConfig(installerId, config) {
 // GET /api/installer/:id
 router.get('/:id', async (req, res) => {
   try {
-    const config = (await getInstallerConfig(req.params.id)) || DEFAULT_INSTALLER_CONFIG;
+    let config = await getInstallerConfig(req.params.id);
+    if (!config) {
+      // First access — initialise config with trial start
+      config = {
+        ...DEFAULT_INSTALLER_CONFIG,
+        subscription: {
+          trialStartedAt: new Date().toISOString(),
+          status: 'trialing',
+          stripeCustomerId: null,
+          stripeSubscriptionId: null,
+          currentPeriodEnd: null,
+        },
+      };
+      await saveInstallerConfig(req.params.id, config);
+    } else if (!config.subscription?.trialStartedAt) {
+      // Existing account without trial date — backfill
+      config.subscription = {
+        ...(config.subscription || {}),
+        trialStartedAt: new Date().toISOString(),
+        status: config.subscription?.status || 'trialing',
+      };
+      await saveInstallerConfig(req.params.id, config);
+    }
     res.json({ success: true, data: config });
   } catch (err) {
     console.error('Failed to load installer config:', err.message);
@@ -135,7 +158,8 @@ router.get('/:id/public', async (req, res) => {
   try {
     const config = (await getInstallerConfig(req.params.id)) || DEFAULT_INSTALLER_CONFIG;
     const { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates } = config;
-    res.json({ success: true, data: { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates } });
+    const sub = computeSubscriptionStatus(config);
+    res.json({ success: true, data: { companyName, systemName, primaryColor, accentColor, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates, paused: !sub.active, trialDaysLeft: sub.daysLeft } });
   } catch (err) {
     console.error('Failed to load public config:', err.message);
     res.json({ success: true, data: DEFAULT_INSTALLER_CONFIG });
