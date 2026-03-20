@@ -2,8 +2,8 @@ import React from 'react';
 
 const links = {
   Resources: [
-    { label: 'How It Works', href: '#how-it-works' },
-    { label: 'FAQ', href: '#faq' },
+    { label: 'How It Works', href: '/#how-it-works' },
+    { label: 'FAQ', href: '/#faq' },
     { label: 'Solar Blog', href: '/blog' },
     { label: 'Solar Incentives', href: '/blog/category/solar-incentives' },
     { label: 'Solar Costs', href: '/blog/category/solar-costs' },

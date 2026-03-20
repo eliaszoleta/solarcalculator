@@ -19,9 +19,9 @@ export default function Header() {
   }, [menuOpen]);
 
   const navLinks = [
-    { label: 'How It Works', href: '#how-it-works' },
+    { label: 'How It Works', href: '/#how-it-works' },
     { label: 'Blog', href: '/blog' },
-    { label: 'FAQ', href: '#faq' },
+    { label: 'FAQ', href: '/#faq' },
   ];
 
   return (
