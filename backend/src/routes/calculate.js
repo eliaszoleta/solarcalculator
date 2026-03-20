@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { calculateSolarEstimate } = require('../services/solarCalculation');
-const { installerConfigs } = require('./installer');
+const { getInstallerConfig } = require('./installer');
 
 // POST /api/calculate
 router.post('/', async (req, res) => {
@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const resolvedConfig = installerConfig || (installerId ? installerConfigs.get(installerId) : null) || {};
+    const resolvedConfig = installerConfig || (installerId ? (await getInstallerConfig(installerId)) : null) || {};
     const result = await calculateSolarEstimate(
       {
         monthlyBill: parseFloat(monthlyBill),
