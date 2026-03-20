@@ -18,6 +18,13 @@ const PORT = process.env.PORT || 3001;
 
 // Security
 app.use(helmet());
+
+// Public embed routes — allow any origin (widget is embedded on installer sites)
+const publicCors = cors({ origin: '*', methods: ['GET', 'POST'], allowedHeaders: ['Content-Type'] });
+app.use('/api/calculate', publicCors);
+app.use('/api/installer/:id/public', publicCors);
+
+// All other routes — restrict to known origins
 app.use(cors({
   origin: [
     'http://localhost:3000',
