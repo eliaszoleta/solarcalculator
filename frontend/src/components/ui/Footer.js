@@ -35,8 +35,8 @@ export default function Footer() {
           {/* Brand */}
           <div style={{ maxWidth: 260 }}>
             <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 9, marginBottom: 16, textDecoration: 'none' }}>
-              <img src="/favicon-192x192.png" alt="MySolarWidget" style={{ width: 34, height: 34, borderRadius: 8 }} />
-              <span style={{ fontSize: 16, fontWeight: 800, color: '#ffffff', letterSpacing: '-0.03em' }}>
+              <img src="/favicon-192x192.png" alt="MySolarWidget" style={{ width: 58, height: 58, borderRadius: 12 }} />
+              <span style={{ fontSize: 27, fontWeight: 800, color: '#ffffff', letterSpacing: '-0.03em' }}>
                 MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
               </span>
             </a>
