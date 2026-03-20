@@ -217,26 +217,6 @@ export default function BlogIndex() {
         )}
       </div>
 
-      {/* Categories section */}
-      <section className="blog-categories-section" aria-label="Browse by category">
-        <h2>Browse by Category</h2>
-        <div className="blog-categories-grid">
-          {CATEGORIES.map(c => {
-            const colors = getCategoryColors(c.slug);
-            return (
-            <a key={c.slug} href={`/blog/category/${c.slug}`} className="blog-category-card" style={{ background: colors.bg, borderColor: colors.border }}>
-              <div className="blog-category-card__icon-box" aria-hidden style={{ background: colors.iconBg }}>
-                <CategoryIcon slug={c.slug} size={24} color={colors.iconColor} />
-              </div>
-              <div>
-                <div className="blog-category-card__name">{c.label}</div>
-                <p className="blog-category-card__desc">{c.description}</p>
-              </div>
-            </a>
-            );
-          })}
-        </div>
-      </section>
     </div>
   );
 }
