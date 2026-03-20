@@ -28,15 +28,8 @@ export function BoltIcon(p) {
 export function SunIcon(p) {
   return (
     <Icon {...p}>
-      <circle cx="12" cy="12" r="4" />
-      <line x1="12" y1="2" x2="12" y2="4" />
-      <line x1="12" y1="20" x2="12" y2="22" />
-      <line x1="2" y1="12" x2="4" y2="12" />
-      <line x1="20" y1="12" x2="22" y2="12" />
-      <line x1="4.93" y1="4.93" x2="6.34" y2="6.34" />
-      <line x1="17.66" y1="17.66" x2="19.07" y2="19.07" />
-      <line x1="4.93" y1="19.07" x2="6.34" y2="17.66" />
-      <line x1="17.66" y1="6.34" x2="19.07" y2="4.93" />
+      <circle cx="12" cy="12" r="4" fill="currentColor" />
+      <path d="M12 2v2.5M12 19.5V22M4.22 4.22l1.77 1.77M18.01 18.01l1.77 1.77M2 12h2.5M19.5 12H22M4.22 19.78l1.77-1.77M18.01 5.99l1.77-1.77" />
     </Icon>
   );
 }
@@ -131,8 +124,11 @@ export function DollarSignIcon(p) {
 export function PaintBrushIcon(p) {
   return (
     <Icon {...p}>
-      <path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3z" />
-      <path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7" />
+      <path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10c0 2.76-2.24 5-5 5h-1.77a1 1 0 0 0-1 1.11l.17 1.16c.14.95-.57 1.73-1.4 1.73z" />
+      <circle cx="6.5" cy="12.5" r="1.25" fill="currentColor" />
+      <circle cx="9" cy="8" r="1.25" fill="currentColor" />
+      <circle cx="14" cy="7" r="1.25" fill="currentColor" />
+      <circle cx="17" cy="10.5" r="1.25" fill="currentColor" />
     </Icon>
   );
 }
@@ -405,9 +401,12 @@ export function CloudIcon(p) {
 export function SunCloudIcon(p) {
   return (
     <Icon {...p}>
-      <path d="M12 2v2M12 18v2M4.93 4.93l1.41 1.41M16.24 16.24l1.41 1.41M2 12h2M18 12h2M4.93 19.07l1.41-1.41" />
-      <circle cx="10" cy="10" r="3" />
-      <path d="M17 14h-1a6 6 0 1 0-6 6h7a3 3 0 0 0 0-6z" />
+      <path d="M12 2v2" />
+      <path d="m4.93 4.93 1.41 1.41" />
+      <path d="M20 12h2" />
+      <path d="m19.07 4.93-1.41 1.41" />
+      <path d="M15.95 12.65a4 4 0 0 0-5.93-4.13" />
+      <path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6z" />
     </Icon>
   );
 }
