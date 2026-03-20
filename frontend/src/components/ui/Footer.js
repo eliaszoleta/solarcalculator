@@ -37,14 +37,23 @@ export default function Footer() {
               <div style={{ fontSize: 13, fontWeight: 700, color: 'white', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>For Installers</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <a href="/installer" style={{ fontSize: 13, color: '#94a3b8' }}>Dashboard</a>
-                <a href="#embed" style={{ fontSize: 13, color: '#94a3b8' }}>Embed Widget</a>
-                <a href="#pricing" style={{ fontSize: 13, color: '#94a3b8' }}>Pricing</a>
+                <a href="/for-installers#embed" style={{ fontSize: 13, color: '#94a3b8' }}>Embed Widget</a>
+                <a href="/for-installers#pricing" style={{ fontSize: 13, color: '#94a3b8' }}>Pricing</a>
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: 'white', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Company</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <a href="/about" style={{ fontSize: 13, color: '#94a3b8' }}>About Us</a>
+                <a href="/contact" style={{ fontSize: 13, color: '#94a3b8' }}>Contact</a>
+                <a href="/privacy-policy" style={{ fontSize: 13, color: '#94a3b8' }}>Privacy Policy</a>
+                <a href="/terms-of-service" style={{ fontSize: 13, color: '#94a3b8' }}>Terms of Service</a>
               </div>
             </div>
           </div>
         </div>
         <div style={{ borderTop: '1px solid #1e293b', paddingTop: 20, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-          <p style={{ fontSize: 12 }}>© {new Date().getFullYear()} MySolarWidget. Estimates are for informational purposes only.</p>
+          <p style={{ fontSize: 12 }}>© {new Date().getFullYear()} MySolarWidget. Estimates are for informational purposes only. <a href="/privacy-policy" style={{ color: '#64748b' }}>Privacy</a> · <a href="/terms-of-service" style={{ color: '#64748b' }}>Terms</a></p>
           <p style={{ fontSize: 12 }}>Solar production data powered by <a href="https://developer.nrel.gov/docs/solar/pvwatts/" target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa' }}>NREL PVWatts</a></p>
         </div>
       </div>

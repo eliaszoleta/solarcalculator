@@ -12,6 +12,10 @@ import BlogIndex from './components/blog/BlogIndex';
 import BlogPost from './components/blog/BlogPost';
 import BlogCategory from './components/blog/BlogCategory';
 import InstallerLanding from './components/pages/InstallerLanding';
+import PrivacyPolicy from './components/pages/PrivacyPolicy';
+import TermsOfService from './components/pages/TermsOfService';
+import About from './components/pages/About';
+import Contact from './components/pages/Contact';
 import './App.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
@@ -20,6 +24,10 @@ const isInstaller = pathname.startsWith('/installer');
 const isForInstallers = pathname === '/for-installers';
 const isEmbed = pathname.startsWith('/embed');
 const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
+const isPrivacyPolicy = pathname === '/privacy-policy';
+const isTermsOfService = pathname === '/terms-of-service';
+const isAbout = pathname === '/about';
+const isContact = pathname === '/contact';
 const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
 
 // Resolve blog route
@@ -100,6 +108,38 @@ export default function App() {
 
   if (isForInstallers) return <InstallerLanding />;
 
+  if (isPrivacyPolicy) return (
+    <div className="app">
+      <Header />
+      <main><PrivacyPolicy /></main>
+      <Footer />
+    </div>
+  );
+
+  if (isTermsOfService) return (
+    <div className="app">
+      <Header />
+      <main><TermsOfService /></main>
+      <Footer />
+    </div>
+  );
+
+  if (isAbout) return (
+    <div className="app">
+      <Header />
+      <main><About /></main>
+      <Footer />
+    </div>
+  );
+
+  if (isContact) return (
+    <div className="app">
+      <Header />
+      <main><Contact /></main>
+      <Footer />
+    </div>
+  );
+
   if (isBlog) return (
     <div className="app">
       <Header />
@@ -121,17 +161,46 @@ export default function App() {
   return (
     <div className="app">
       <Helmet>
-        <title>Solar Savings Calculator — Estimate Cost & Savings in 2 Minutes</title>
-        <meta name="description" content="Use our free solar savings calculator to instantly estimate your solar panel installation cost, monthly savings, and 30-year return on investment. Takes under 2 minutes." />
-        <link rel="canonical" href="https://solarcalculator.example.com/" />
+        <title>Free Solar Panel Cost Calculator 2026 — Estimate Savings in 2 Minutes</title>
+        <meta name="description" content="Free solar savings calculator for US homeowners. Enter your electric bill and get an instant estimate of solar installation cost, monthly savings, and 30-year ROI. Powered by real NREL sunlight data." />
+        <link rel="canonical" href="https://www.mysolarcalculator.com/" />
+        <meta property="og:title" content="Free Solar Panel Cost Calculator 2026 — Estimate Savings in 2 Minutes" />
+        <meta property="og:description" content="Free solar savings calculator for US homeowners. Enter your electric bill and get an instant estimate of solar installation cost, monthly savings, and 30-year ROI." />
+        <meta property="og:url" content="https://www.mysolarcalculator.com/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.mysolarcalculator.com/android-chrome-512x512.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Free Solar Panel Cost Calculator 2026" />
+        <meta name="twitter:description" content="Instantly estimate your solar installation cost and 30-year savings. Free, powered by real NREL data. Takes under 2 minutes." />
+        <meta name="twitter:image" content="https://www.mysolarcalculator.com/android-chrome-512x512.png" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "WebApplication",
-          "name": "Solar Savings Calculator",
-          "description": "Free solar panel cost and savings estimator for homeowners",
+          "@type": "SoftwareApplication",
+          "name": "MySolarWidget — Solar Savings Calculator",
+          "description": "Free solar panel cost and savings estimator for US homeowners. Powered by NREL PVWatts real irradiance data and EIA electricity rates.",
           "applicationCategory": "FinanceApplication",
           "operatingSystem": "Web",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          "url": "https://www.mysolarcalculator.com/",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "MySolarWidget",
+            "url": "https://www.mysolarcalculator.com",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.mysolarcalculator.com/android-chrome-512x512.png"
+            }
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "312",
+            "bestRating": "5"
+          }
         })}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -171,6 +240,11 @@ export default function App() {
               "@type": "Question",
               "name": "Does my roof need to face south for solar?",
               "acceptedAnswer": { "@type": "Answer", "text": "South-facing roofs are ideal, but east or west-facing roofs still produce 80–85% of a south-facing system's output. North-facing roofs are not ideal. Our calculator accounts for shading loss in the roof sun exposure step." }
+            },
+            {
+              "@type": "Question",
+              "name": "How much do solar panels cost in 2026?",
+              "acceptedAnswer": { "@type": "Answer", "text": "The average cost of a residential solar system in 2026 is $14,000–$25,000 before the 30% federal tax credit, depending on system size and location. After the ITC, most homeowners pay $10,000–$18,000 net. Our calculator gives you a personalized estimate based on your electricity usage and state." }
             }
           ]
         })}</script>

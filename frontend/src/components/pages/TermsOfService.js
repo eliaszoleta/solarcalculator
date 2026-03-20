@@ -1,0 +1,121 @@
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+
+const DOMAIN = 'https://www.mysolarcalculator.com';
+
+export default function TermsOfService() {
+  return (
+    <div style={{ background: 'white', minHeight: '100vh' }}>
+      <Helmet>
+        <title>Terms of Service — MySolarWidget</title>
+        <meta name="description" content="MySolarWidget terms of service. Read our terms and conditions for using the free solar savings calculator at mysolarcalculator.com." />
+        <link rel="canonical" href={`${DOMAIN}/terms-of-service`} />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
+
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '48px 24px 80px' }}>
+        <h1 style={{ fontSize: 32, fontWeight: 800, color: '#0f172a', marginBottom: 8 }}>Terms of Service</h1>
+        <p style={{ color: '#64748b', fontSize: 14, marginBottom: 40 }}>Last updated: March 20, 2026</p>
+
+        <Section title="1. Acceptance of Terms">
+          <p>By accessing or using the MySolarWidget website at mysolarcalculator.com (the "Site") or the solar savings calculator (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use the Site or Service.</p>
+          <p>We reserve the right to modify these Terms at any time. Continued use of the Site after changes constitutes acceptance of the updated Terms.</p>
+        </Section>
+
+        <Section title="2. Description of Service">
+          <p>MySolarWidget provides a free online solar savings calculator that estimates solar panel installation costs, monthly savings, and return on investment for residential homeowners in the United States. The calculator uses publicly available data including:</p>
+          <ul style={ulStyle}>
+            <li>Solar irradiance data from the NREL PVWatts API</li>
+            <li>Electricity rate data from the U.S. Energy Information Administration (EIA)</li>
+            <li>Current market installation cost estimates</li>
+            <li>Federal Investment Tax Credit (ITC) rates</li>
+          </ul>
+        </Section>
+
+        <Section title="3. Estimates & Disclaimers">
+          <p><strong>The calculator provides estimates only.</strong> All results are approximations intended for informational and educational purposes. They do not constitute professional financial, engineering, or installation advice.</p>
+          <ul style={ulStyle}>
+            <li>Estimates may vary 10–20% from actual installer quotes</li>
+            <li>Actual savings depend on your specific home, usage patterns, local rates, and equipment</li>
+            <li>Tax credit eligibility depends on your individual tax situation — consult a tax professional</li>
+            <li>Solar production will vary with weather, shading, and panel degradation over time</li>
+          </ul>
+          <p>Always obtain quotes from multiple licensed solar installers before making any purchasing decision.</p>
+        </Section>
+
+        <Section title="4. User Responsibilities">
+          <p>By using the Service you agree to:</p>
+          <ul style={ulStyle}>
+            <li>Provide accurate information when requested</li>
+            <li>Use the Service only for lawful purposes</li>
+            <li>Not attempt to reverse-engineer, scrape, or systematically extract data from the Site</li>
+            <li>Not use automated tools to access the Service without prior written consent</li>
+            <li>Not submit false or misleading information</li>
+          </ul>
+        </Section>
+
+        <Section title="5. Lead Submission & Installer Connection">
+          <p>The calculator includes an optional lead capture form. By submitting your contact information:</p>
+          <ul style={ulStyle}>
+            <li>You consent to being contacted by MySolarWidget and/or solar installers in your area</li>
+            <li>You understand that submitting the form does not obligate you to purchase anything</li>
+            <li>You may opt out of communications at any time</li>
+          </ul>
+          <p>MySolarWidget is not a solar installer and does not endorse or guarantee any specific installer. We are not responsible for the products, services, or representations made by any installer.</p>
+        </Section>
+
+        <Section title="6. Intellectual Property">
+          <p>All content on the Site, including but not limited to text, graphics, logos, icons, images, audio clips, and software, is the property of MySolarWidget or its content suppliers and is protected by applicable copyright and intellectual property laws.</p>
+          <p>You may use the Site for personal, non-commercial purposes. You may not reproduce, distribute, modify, or create derivative works without our prior written permission.</p>
+        </Section>
+
+        <Section title="7. Third-Party Data & Services">
+          <p>Our Service incorporates data from third-party sources including NREL, the EIA, and others. We make no representations about the accuracy, completeness, or reliability of such third-party data. References to third-party resources do not constitute an endorsement.</p>
+        </Section>
+
+        <Section title="8. Disclaimer of Warranties">
+          <p>THE SITE AND SERVICE ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+          <p>WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.</p>
+        </Section>
+
+        <Section title="9. Limitation of Liability">
+          <p>TO THE FULLEST EXTENT PERMITTED BY LAW, MYSOLARWIDGET SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR RELATED TO YOUR USE OF THE SITE OR SERVICE, INCLUDING ANY DECISIONS MADE BASED ON CALCULATOR ESTIMATES.</p>
+          <p>Our total liability to you for any claim shall not exceed $100.</p>
+        </Section>
+
+        <Section title="10. Indemnification">
+          <p>You agree to indemnify, defend, and hold harmless MySolarWidget and its officers, directors, employees, and agents from any claims, damages, losses, and expenses (including reasonable attorneys' fees) arising from your use of the Site or violation of these Terms.</p>
+        </Section>
+
+        <Section title="11. Governing Law">
+          <p>These Terms are governed by and construed in accordance with the laws of the United States. Any disputes shall be resolved in the applicable courts, and you consent to personal jurisdiction in such courts.</p>
+        </Section>
+
+        <Section title="12. Contact Us">
+          <p>For questions about these Terms, please contact us:</p>
+          <div style={{ background: '#f8fafc', borderRadius: 12, padding: '20px 24px', marginTop: 12 }}>
+            <p style={{ margin: 0, lineHeight: 2 }}>
+              <strong>MySolarWidget</strong><br />
+              Email: <a href="mailto:legal@mysolarcalculator.com" style={linkStyle}>legal@mysolarcalculator.com</a><br />
+              Website: <a href={DOMAIN} style={linkStyle}>www.mysolarcalculator.com</a>
+            </p>
+          </div>
+        </Section>
+      </div>
+    </div>
+  );
+}
+
+function Section({ title, children }) {
+  return (
+    <section style={{ marginBottom: 40 }}>
+      <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 16, paddingBottom: 8, borderBottom: '1px solid #e2e8f0' }}>{title}</h2>
+      <div style={{ fontSize: 15, color: '#374151', lineHeight: 1.8, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+const ulStyle = { paddingLeft: 20, margin: '4px 0', lineHeight: 1.8 };
+const linkStyle = { color: '#1e40af', textDecoration: 'underline' };
