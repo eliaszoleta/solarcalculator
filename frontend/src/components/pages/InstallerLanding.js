@@ -305,7 +305,7 @@ function CalculatorPreview() {
       <div style={{ maxWidth: 960, margin: '0 auto', textAlign: 'center' }}>
         <SectionLabel light>The Calculator Experience</SectionLabel>
         <h2 style={{ ...sectionTitle, color: 'white', marginBottom: 12 }}>6 questions. Instant results.</h2>
-        <p style={{ ...sectionSub, color: '#93c5fd', marginBottom: 56 }}>
+        <p style={{ ...sectionSub, color: '#93c5fd', marginBottom: 56, margin: '0 auto 56px' }}>
           Homeowners complete the flow in under 2 minutes — then see a full savings breakdown with 30-year projection, before submitting their contact info to you.
         </p>
 
@@ -322,7 +322,7 @@ function CalculatorPreview() {
           ))}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, maxWidth: 700, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16, maxWidth: 560, margin: '0 auto' }}>
           {[
             { label: 'Monthly savings', example: '$187/mo' },
             { label: '30-year savings', example: '$68,400' },
