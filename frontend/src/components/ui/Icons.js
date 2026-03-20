@@ -455,8 +455,8 @@ export function LayoutIcon(p) {
 }
 
 /* Returns the correct icon component for a blog category slug */
-export function CategoryIcon({ slug, size = 18, style }) {
-  const props = { size, style };
+export function CategoryIcon({ slug, size = 18, style, color }) {
+  const props = { size, style, ...(color ? { color } : {}) };
   switch (slug) {
     case 'solar-costs':       return <DollarSignIcon {...props} />;
     case 'solar-financing':   return <BanknotesIcon {...props} />;
@@ -466,4 +466,18 @@ export function CategoryIcon({ slug, size = 18, style }) {
     case 'solar-basics':      return <SunIcon {...props} />;
     default:                  return <SunIcon {...props} />;
   }
+}
+
+/* Per-category color themes — matches reference card style */
+export const CATEGORY_COLORS = {
+  'solar-costs':        { bg: '#fffbeb', border: '#fde68a', iconBg: '#fef3c7', iconColor: '#d97706' },
+  'solar-financing':    { bg: '#eff6ff', border: '#bfdbfe', iconBg: '#dbeafe', iconColor: '#2563eb' },
+  'solar-savings':      { bg: '#f0fdf4', border: '#bbf7d0', iconBg: '#dcfce7', iconColor: '#16a34a' },
+  'solar-incentives':   { bg: '#faf5ff', border: '#e9d5ff', iconBg: '#f3e8ff', iconColor: '#9333ea' },
+  'solar-installation': { bg: '#fff7ed', border: '#fed7aa', iconBg: '#ffedd5', iconColor: '#ea580c' },
+  'solar-basics':       { bg: '#fefce8', border: '#fef08a', iconBg: '#fef9c3', iconColor: '#ca8a04' },
+};
+
+export function getCategoryColors(slug) {
+  return CATEGORY_COLORS[slug] || { bg: '#f8fafc', border: '#e2e8f0', iconBg: '#f1f5f9', iconColor: '#1e40af' };
 }

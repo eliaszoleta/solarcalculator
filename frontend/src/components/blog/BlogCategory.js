@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { CATEGORIES, getPostsByCategory, getCategoryBySlug } from '../../data/blogPosts';
-import { CategoryIcon, StarIcon, ClockIcon, SearchIcon, BoltIcon } from '../ui/Icons';
+import { CategoryIcon, StarIcon, ClockIcon, SearchIcon, BoltIcon, getCategoryColors } from '../ui/Icons';
 import './Blog.css';
 
 const SITE_URL = 'https://www.mysolarwidget.com';
@@ -48,6 +48,8 @@ export default function BlogCategory({ category: categorySlug }) {
     'publisher': { '@type': 'Organization', 'name': 'MySolarWidget', 'url': SITE_URL },
   };
 
+  const colors = getCategoryColors(categorySlug);
+
   return (
     <div className="blog-page">
       <Helmet>
@@ -77,8 +79,10 @@ export default function BlogCategory({ category: categorySlug }) {
       </div>
 
       {/* Category hero */}
-      <header className="category-hero">
-        <div className="category-hero__icon" aria-hidden><CategoryIcon slug={categorySlug} size={40} /></div>
+      <header className="category-hero" style={{ background: `linear-gradient(135deg, ${colors.bg} 0%, #fff 100%)` }}>
+        <div className="category-hero__icon" aria-hidden style={{ background: colors.iconBg, borderRadius: 20, width: 80, height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `2px solid ${colors.border}` }}>
+          <CategoryIcon slug={categorySlug} size={40} color={colors.iconColor} />
+        </div>
         <h1>{category.label}</h1>
         <p>{category.description}</p>
       </header>
@@ -92,8 +96,10 @@ export default function BlogCategory({ category: categorySlug }) {
             {posts.map(post => (
               <article key={post.slug} className="blog-card" role="listitem">
                 <a href={`/blog/${post.slug}`} style={{ textDecoration: 'none', display: 'contents' }}>
-                  <div className="blog-card__img" aria-hidden>
-                    <CategoryIcon slug={categorySlug} size={36} />
+                  <div className="blog-card__img" aria-hidden style={{ background: colors.iconBg }}>
+                    <div style={{ width: 60, height: 60, borderRadius: 14, background: colors.bg, border: `1.5px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <CategoryIcon slug={categorySlug} size={30} color={colors.iconColor} />
+                    </div>
                   </div>
                   <div className="blog-card__body">
                     <div className="blog-card__meta">
@@ -136,15 +142,20 @@ export default function BlogCategory({ category: categorySlug }) {
         <section className="category-other-cats" aria-label="Other categories">
           <h2>Explore Other Topics</h2>
           <div className="blog-categories-grid">
-            {otherCategories.map(c => (
-              <a key={c.slug} href={`/blog/category/${c.slug}`} className="blog-category-card">
-                <span className="blog-category-card__icon" aria-hidden><CategoryIcon slug={c.slug} size={24} /></span>
+            {otherCategories.map(c => {
+              const oc = getCategoryColors(c.slug);
+              return (
+              <a key={c.slug} href={`/blog/category/${c.slug}`} className="blog-category-card" style={{ background: oc.bg, borderColor: oc.border }}>
+                <div className="blog-category-card__icon-box" aria-hidden style={{ background: oc.iconBg }}>
+                  <CategoryIcon slug={c.slug} size={24} color={oc.iconColor} />
+                </div>
                 <div>
                   <div className="blog-category-card__name">{c.label}</div>
                   <p className="blog-category-card__desc">{c.description}</p>
                 </div>
               </a>
-            ))}
+              );
+            })}
           </div>
         </section>
       </div>

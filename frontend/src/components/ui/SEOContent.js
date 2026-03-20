@@ -15,13 +15,15 @@ export default function SEOContent() {
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 24 }}>
           {[
-            { icon: <BoltIcon size={32} />, title: 'Your Electric Bill', desc: 'We calculate exactly how much electricity your home uses based on your monthly bill and your state\'s electricity rate.' },
-            { icon: <SunIcon size={32} />, title: 'Sunlight Data', desc: 'Enter your ZIP code and we pull real irradiance data from the NREL PVWatts API for your exact location. Without a ZIP, we use NREL peak sun hour averages by state.' },
-            { icon: <RulerIcon size={32} />, title: 'System Sizing', desc: 'We recommend the ideal system size to offset your usage, then calculate the real installation cost based on current market rates.' },
-            { icon: <DollarSignIcon size={32} />, title: 'Savings Projection', desc: 'We project 30 years of savings accounting for 4% annual utility rate increases, tax credits, and your financing options.' },
+            { icon: <BoltIcon size={28} />, iconBg: '#fef3c7', iconColor: '#d97706', title: 'Your Electric Bill', desc: 'We calculate exactly how much electricity your home uses based on your monthly bill and your state\'s electricity rate.' },
+            { icon: <SunIcon size={28} />, iconBg: '#fef9c3', iconColor: '#ca8a04', title: 'Sunlight Data', desc: 'Enter your ZIP code and we pull real irradiance data from the NREL PVWatts API for your exact location. Without a ZIP, we use NREL peak sun hour averages by state.' },
+            { icon: <RulerIcon size={28} />, iconBg: '#dbeafe', iconColor: '#2563eb', title: 'System Sizing', desc: 'We recommend the ideal system size to offset your usage, then calculate the real installation cost based on current market rates.' },
+            { icon: <DollarSignIcon size={28} />, iconBg: '#dcfce7', iconColor: '#16a34a', title: 'Savings Projection', desc: 'We project 30 years of savings accounting for 4% annual utility rate increases, tax credits, and your financing options.' },
           ].map(item => (
-            <div key={item.title} style={{ padding: 24, background: '#f8fafc', borderRadius: 16 }}>
-              <div style={{ marginBottom: 12 }}>{item.icon}</div>
+            <div key={item.title} style={{ padding: 24, background: '#f8fafc', borderRadius: 16, border: '1px solid #e2e8f0' }}>
+              <div style={{ width: 56, height: 56, borderRadius: 14, background: item.iconBg, color: item.iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+                {item.icon}
+              </div>
               <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{item.title}</h3>
               <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>{item.desc}</p>
             </div>

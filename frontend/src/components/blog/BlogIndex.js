@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { POSTS, CATEGORIES, getFeaturedPost } from '../../data/blogPosts';
-import { CategoryIcon, StarIcon, CalendarIcon, ClockIcon, PencilIcon, SearchIcon } from '../ui/Icons';
+import { CategoryIcon, StarIcon, CalendarIcon, ClockIcon, PencilIcon, SearchIcon, getCategoryColors } from '../ui/Icons';
 import './Blog.css';
 
 const SITE_URL = 'https://www.mysolarwidget.com';
@@ -120,11 +120,13 @@ export default function BlogIndex() {
           <section className="blog-featured" aria-label="Featured article">
             <div className="blog-featured__label"><StarIcon size={14} style={{ verticalAlign: 'middle', marginRight: 4 }} />Featured Article</div>
             <a href={`/blog/${featured.slug}`} className="blog-featured__card">
-              <div className="blog-featured__img">
-                <span style={{ position: 'relative', zIndex: 1 }}>
-                  <CategoryIcon slug={featured.category} size={56} />
-                </span>
+              {(() => { const fc = getCategoryColors(featured.category); return (
+              <div className="blog-featured__img" style={{ background: fc.iconBg }}>
+                <div style={{ width: 88, height: 88, borderRadius: 20, background: fc.bg, border: `2px solid ${fc.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <CategoryIcon slug={featured.category} size={48} color={fc.iconColor} />
+                </div>
               </div>
+              ); })()}
               <div className="blog-featured__body">
                 <span className="blog-badge"><CategoryIcon slug={featured.category} size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} /> {featured.categoryLabel || featured.category.replace(/-/g, ' ')}</span>
                 <h2 className="blog-featured__title">{featured.title}</h2>
@@ -151,11 +153,15 @@ export default function BlogIndex() {
         {/* Grid */}
         {paginated.length > 0 ? (
           <div className="blog-grid" role="list">
-            {paginated.map(post => (
+            {paginated.map(post => {
+              const cc = getCategoryColors(post.category);
+              return (
               <article key={post.slug} className="blog-card" role="listitem">
                 <a href={`/blog/${post.slug}`} style={{ textDecoration: 'none', display: 'contents' }}>
-                  <div className="blog-card__img" aria-hidden>
-                    <CategoryIcon slug={post.category} size={36} />
+                  <div className="blog-card__img" aria-hidden style={{ background: cc.iconBg }}>
+                    <div style={{ width: 60, height: 60, borderRadius: 14, background: cc.bg, border: `1.5px solid ${cc.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <CategoryIcon slug={post.category} size={30} color={cc.iconColor} />
+                    </div>
                   </div>
                   <div className="blog-card__body">
                     <div className="blog-card__meta">
@@ -173,7 +179,8 @@ export default function BlogIndex() {
                   </div>
                 </a>
               </article>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="blog-no-results">
@@ -214,15 +221,20 @@ export default function BlogIndex() {
       <section className="blog-categories-section" aria-label="Browse by category">
         <h2>Browse by Category</h2>
         <div className="blog-categories-grid">
-          {CATEGORIES.map(c => (
-            <a key={c.slug} href={`/blog/category/${c.slug}`} className="blog-category-card">
-              <span className="blog-category-card__icon" aria-hidden><CategoryIcon slug={c.slug} size={24} /></span>
+          {CATEGORIES.map(c => {
+            const colors = getCategoryColors(c.slug);
+            return (
+            <a key={c.slug} href={`/blog/category/${c.slug}`} className="blog-category-card" style={{ background: colors.bg, borderColor: colors.border }}>
+              <div className="blog-category-card__icon-box" aria-hidden style={{ background: colors.iconBg }}>
+                <CategoryIcon slug={c.slug} size={24} color={colors.iconColor} />
+              </div>
               <div>
                 <div className="blog-category-card__name">{c.label}</div>
                 <p className="blog-category-card__desc">{c.description}</p>
               </div>
             </a>
-          ))}
+            );
+          })}
         </div>
       </section>
     </div>

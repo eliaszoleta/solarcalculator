@@ -134,19 +134,19 @@ function HowItWorks() {
   const steps = [
     {
       num: '01',
-      icon: <ClipboardIcon size={24} />,
+      icon: <ClipboardIcon size={24} />, iconBg: '#dbeafe', iconColor: '#2563eb',
       title: 'Create your account',
       desc: 'Sign up in 60 seconds. Set your pricing per watt, service area, battery costs, and company branding — all from a simple dashboard.',
     },
     {
       num: '02',
-      icon: <LinkIcon size={24} />,
+      icon: <LinkIcon size={24} />, iconBg: '#fef3c7', iconColor: '#d97706',
       title: 'Paste one line of code',
       desc: 'Copy the embed snippet from your dashboard and paste it anywhere on your website. The calculator appears instantly, fully branded to your business.',
     },
     {
       num: '03',
-      icon: <ChartBarIcon size={24} />,
+      icon: <ChartBarIcon size={24} />, iconBg: '#dcfce7', iconColor: '#16a34a',
       title: 'Receive qualified leads',
       desc: 'Every homeowner who completes the calculator submits their name, email, phone, timeline, and payment preference — sent straight to your leads dashboard.',
     },
@@ -163,7 +163,7 @@ function HowItWorks() {
           {steps.map(s => (
             <div key={s.num} style={{ position: 'relative' }}>
               <div style={{ fontSize: 11, fontWeight: 800, color: '#1e40af', letterSpacing: '0.1em', marginBottom: 16, opacity: 0.5 }}>STEP {s.num}</div>
-              <div style={{ width: 52, height: 52, background: 'linear-gradient(135deg, #eff6ff, #dbeafe)', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
+              <div style={{ width: 52, height: 52, background: s.iconBg, color: s.iconColor, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
                 {s.icon}
               </div>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 10 }}>{s.title}</h3>
@@ -180,32 +180,38 @@ function HowItWorks() {
 function Features() {
   const features = [
     {
-      icon: <PaintBrushIcon size={28} />,
+      icon: <PaintBrushIcon size={26} />,
+      iconBg: '#fef3c7', iconColor: '#d97706',
       title: 'Fully white-labeled',
       desc: 'Your company name, your colors, your CTA. Homeowners see your brand — not ours. Customize the headline, subtext, phone number, and button that appear after the estimate.',
     },
     {
-      icon: <DollarSignIcon size={28} />,
+      icon: <DollarSignIcon size={26} />,
+      iconBg: '#dcfce7', iconColor: '#16a34a',
       title: 'Your pricing, your margin',
       desc: 'Set your own price per watt ($2.50–$4.00 typical), roof surcharges for tile/metal/flat, battery costs, and system size limits. Every estimate reflects your real quote structure.',
     },
     {
-      icon: <MapPinIcon size={28} />,
+      icon: <MapPinIcon size={26} />,
+      iconBg: '#ffedd5', iconColor: '#ea580c',
       title: 'Service area control',
       desc: "Restrict the calculator to your service states. Homeowners outside your area are told you don't serve their location — so you only get leads you can actually close.",
     },
     {
-      icon: <BatteryIcon size={28} />,
+      icon: <BatteryIcon size={26} />,
+      iconBg: '#f3e8ff', iconColor: '#9333ea',
       title: 'Battery storage options',
       desc: 'Let homeowners compare estimates with no battery, one Powerwall, or two. Configure your exact installed battery costs so estimates match your actual proposals.',
     },
     {
-      icon: <ChartBarIcon size={28} />,
+      icon: <ChartBarIcon size={26} />,
+      iconBg: '#dbeafe', iconColor: '#2563eb',
       title: 'Live leads dashboard',
       desc: 'Every lead — name, email, phone, system size, annual savings, payment preference, and timeline — appears in your dashboard the moment someone submits the calculator.',
     },
     {
-      icon: <RulerIcon size={28} />,
+      icon: <RulerIcon size={26} />,
+      iconBg: '#fef9c3', iconColor: '#ca8a04',
       title: 'Auto-resizing iframe',
       desc: 'The embedded calculator automatically resizes to fit its content on any device. No scrollbars, no fixed heights to maintain. Just drop it in and it works.',
     },
@@ -220,8 +226,13 @@ function Features() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24, marginTop: 56 }}>
           {features.map(f => (
-            <div key={f.title} style={{ background: 'white', borderRadius: 16, padding: '28px 24px', border: '1px solid #e2e8f0' }}>
-              <div style={{ marginBottom: 14 }}>{f.icon}</div>
+            <div key={f.title} style={{ background: 'white', borderRadius: 16, padding: '28px 24px', border: '1px solid #e2e8f0', transition: 'box-shadow 0.2s, transform 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = ''; }}
+            >
+              <div style={{ width: 52, height: 52, borderRadius: 14, background: f.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18, color: f.iconColor }}>
+                {f.icon}
+              </div>
               <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{f.title}</h3>
               <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7 }}>{f.desc}</p>
             </div>
@@ -236,22 +247,22 @@ function Features() {
 function AccuracySection() {
   const items = [
     {
-      icon: <SunIcon size={20} />,
+      icon: <SunIcon size={20} />, iconBg: '#fef9c3', iconColor: '#ca8a04',
       title: 'Real irradiance data from NREL',
       desc: 'When a homeowner enters their ZIP code, the calculator calls the NREL PVWatts API — the same dataset used by the US Department of Energy — to get precise solar production estimates for their exact location.',
     },
     {
-      icon: <BoltIcon size={20} />,
+      icon: <BoltIcon size={20} />, iconBg: '#fef3c7', iconColor: '#d97706',
       title: 'EIA electricity rates by state',
       desc: 'Monthly bills are converted to kWh usage using the US Energy Information Administration\'s latest average electricity rates by state — not guesses.',
     },
     {
-      icon: <HomeIcon size={20} />,
+      icon: <HomeIcon size={20} />, iconBg: '#ffedd5', iconColor: '#ea580c',
       title: 'Right-sized for each home',
       desc: 'The calculator targets 85% energy offset, accounting for roof type, sun exposure, shading, and your min/max system size settings. Panel count is calculated at 400W per panel.',
     },
     {
-      icon: <TrendingDownIcon size={20} />,
+      icon: <TrendingDownIcon size={20} />, iconBg: '#dcfce7', iconColor: '#16a34a',
       title: '30-year savings projection',
       desc: 'Savings are modeled at a 4%/year utility rate increase — a conservative assumption based on the historical EIA trend. Financed estimates include a 25-year loan at 5.99% APR as a reference point.',
     },
@@ -269,7 +280,7 @@ function AccuracySection() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 28, marginTop: 52 }}>
           {items.map(item => (
             <div key={item.title} style={{ display: 'flex', gap: 16 }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 12, background: item.iconBg, color: item.iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 {item.icon}
               </div>
               <div>

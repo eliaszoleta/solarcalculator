@@ -70,28 +70,30 @@ export default function About() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20, marginTop: 24 }}>
             {[
               {
-                icon: <SunIcon size={28} />,
+                icon: <SunIcon size={26} />, iconBg: '#fef9c3', iconColor: '#ca8a04',
                 title: 'NREL PVWatts API',
                 desc: "When you enter a ZIP code, we query the National Renewable Energy Laboratory's PVWatts database for your exact location's peak sun hours and irradiance. This is the same dataset used by professional installers."
               },
               {
-                icon: <BoltIcon size={28} />,
+                icon: <BoltIcon size={26} />, iconBg: '#fef3c7', iconColor: '#d97706',
                 title: 'EIA Electricity Rates',
                 desc: "We use real residential electricity rates from the U.S. Energy Information Administration (EIA) for each state, updated regularly. Your savings estimate reflects what you actually pay per kWh."
               },
               {
-                icon: <WrenchIcon size={28} />,
+                icon: <WrenchIcon size={26} />, iconBg: '#ffedd5', iconColor: '#ea580c',
                 title: 'Market Installation Costs',
                 desc: "Our installation cost estimates ($2.50–$3.50/watt) are based on current national averages from SEIA and Lawrence Berkeley National Laboratory's Tracking the Sun report."
               },
               {
-                icon: <DollarSignIcon size={28} />,
+                icon: <DollarSignIcon size={26} />, iconBg: '#dcfce7', iconColor: '#16a34a',
                 title: 'Federal Tax Credit',
                 desc: "We apply the current 30% Investment Tax Credit (ITC) and project savings over 30 years with a 4% annual electricity rate increase, consistent with historical averages."
               }
             ].map(item => (
-              <div key={item.title} style={{ background: '#f8fafc', borderRadius: 14, padding: 24 }}>
-                <div style={{ marginBottom: 10 }}>{item.icon}</div>
+              <div key={item.title} style={{ background: '#f8fafc', borderRadius: 16, padding: 24, border: '1px solid #e2e8f0' }}>
+                <div style={{ width: 52, height: 52, borderRadius: 13, background: item.iconBg, color: item.iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                  {item.icon}
+                </div>
                 <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{item.title}</h3>
                 <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6 }}>{item.desc}</p>
               </div>
