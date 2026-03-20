@@ -1,156 +1,122 @@
-/* ── Hero / Page shell ──────────────────────────────────────────────────── */
 .calculator-section {
-  padding: 72px 24px 96px;
-  background:
-    radial-gradient(ellipse 90% 55% at 50% -10%, rgba(245,158,11,0.07) 0%, transparent 70%),
-    #ffffff;
+  padding: 48px 16px 64px;
+  background: linear-gradient(135deg, #fefce8 0%, #f0f9ff 100%);
   min-height: calc(100vh - 64px);
 }
 
 .calculator-container {
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
 }
 
-/* ── Hero text ──────────────────────────────────────────────────────────── */
 .calculator-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
 }
 
 .calc-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: transparent;
+  display: inline-block;
+  background: #fef3c7;
   color: #92400e;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 5px 14px;
+  padding: 4px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(245,158,11,0.3);
-  background: rgba(245,158,11,0.06);
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
 
 .calc-title {
-  font-size: clamp(30px, 5vw, 52px);
-  font-weight: 900;
-  color: #0a0a0a;
-  line-height: 1.1;
-  letter-spacing: -0.035em;
-  margin-bottom: 16px;
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+  margin-bottom: 12px;
 }
 
 .calc-subtitle {
-  font-size: 17px;
-  color: #6b7280;
-  max-width: 440px;
+  font-size: 16px;
+  color: #64748b;
+  max-width: 480px;
   margin: 0 auto;
-  line-height: 1.65;
-  font-weight: 400;
 }
 
-/* ── Calculator card ────────────────────────────────────────────────────── */
 .calculator-card {
-  background: #ffffff;
-  border-radius: 24px;
-  border: 1px solid #e5e7eb;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.04),
-    0 4px 8px rgba(0,0,0,0.03),
-    0 24px 64px rgba(0,0,0,0.07);
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 20px 40px -10px rgba(0,0,0,0.1);
   overflow: hidden;
 }
 
-/* ── Step content ───────────────────────────────────────────────────────── */
 .step-content {
-  padding: 36px 36px 24px;
-  min-height: 288px;
+  padding: 32px 32px 24px;
+  min-height: 280px;
 }
 
-/* ── Nav row ────────────────────────────────────────────────────────────── */
 .step-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 36px 28px;
-  border-top: 1px solid #f3f4f6;
+  padding: 20px 32px 28px;
+  border-top: 1px solid #f1f5f9;
   gap: 12px;
 }
 
 .step-counter {
   font-size: 13px;
-  color: #9ca3af;
+  color: #94a3b8;
   font-weight: 500;
-  letter-spacing: 0.01em;
 }
 
-/* ── Buttons ────────────────────────────────────────────────────────────── */
 .btn {
-  padding: 11px 22px;
+  padding: 12px 24px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   border: none;
-  cursor: pointer;
   transition: all 0.15s ease;
-  letter-spacing: -0.01em;
-  font-family: inherit;
 }
 
 .btn:disabled {
-  opacity: 0.4;
+  opacity: 0.6;
   cursor: not-allowed;
-  transform: none !important;
 }
 
 .btn-primary {
-  background: #0a0a0a;
-  color: #ffffff;
-  min-width: 110px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  background: #1e40af;
+  color: white;
+  min-width: 120px;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #1a1a1a;
+  background: #1d3a9e;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .btn-secondary {
-  background: transparent;
-  color: #6b7280;
-  border: 1px solid #e5e7eb;
+  background: #f1f5f9;
+  color: #475569;
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: #f9fafb;
-  color: #374151;
-  border-color: #d1d5db;
+  background: #e2e8f0;
 }
 
 .btn-cta {
-  background: #f59e0b;
-  color: #ffffff;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  color: white;
   min-width: 200px;
-  font-size: 15px;
-  padding: 13px 28px;
-  border-radius: 10px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  box-shadow: 0 1px 2px rgba(245,158,11,0.25), 0 4px 16px rgba(245,158,11,0.2);
+  font-size: 16px;
+  padding: 14px 28px;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
 }
 
 .btn-cta:hover:not(:disabled) {
-  background: #d97706;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(245,158,11,0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
 }
 
-/* ── Loading spinner ────────────────────────────────────────────────────── */
 .loading-spinner {
   display: inline-flex;
   align-items: center;
@@ -159,75 +125,59 @@
 
 .loading-spinner::before {
   content: '';
-  width: 15px;
-  height: 15px;
-  border: 2px solid rgba(255,255,255,0.3);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.4);
   border-top-color: white;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
-  flex-shrink: 0;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* ── Error banner ───────────────────────────────────────────────────────── */
 .error-banner {
-  margin: 0 36px 16px;
+  margin: 0 32px 16px;
   padding: 12px 16px;
-  background: #fff1f2;
-  border: 1px solid #fecdd3;
-  border-radius: 10px;
-  color: #be123c;
-  font-size: 13px;
-  line-height: 1.5;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 14px;
 }
 
-/* ── Trust badges ───────────────────────────────────────────────────────── */
 .trust-badges {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 0;
-  margin-top: 24px;
+  gap: 24px;
+  margin-top: 20px;
   flex-wrap: wrap;
 }
 
 .trust-badges span {
-  font-size: 12px;
-  color: #9ca3af;
+  font-size: 13px;
+  color: #64748b;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0 16px;
 }
 
-.trust-badges span + span {
-  border-left: 1px solid #e5e7eb;
-}
-
-/* ── Step shared styles ─────────────────────────────────────────────────── */
+/* Step common styles */
 .step-title {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 700;
-  color: #0a0a0a;
-  margin-bottom: 6px;
-  letter-spacing: -0.02em;
+  color: #0f172a;
+  margin-bottom: 8px;
 }
 
 .step-desc {
   font-size: 14px;
-  color: #6b7280;
-  margin-bottom: 28px;
-  line-height: 1.55;
+  color: #64748b;
+  margin-bottom: 24px;
 }
 
-/* ── Option grid ────────────────────────────────────────────────────────── */
 .option-grid {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .option-grid-2 {
@@ -239,66 +189,57 @@
 }
 
 .option-card {
-  border: 1.5px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 18px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
   cursor: pointer;
-  transition: border-color 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+  transition: all 0.15s ease;
   text-align: center;
-  background: #ffffff;
+  background: white;
 }
 
 .option-card:hover {
-  border-color: #d1d5db;
-  background: #fafafa;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-color: #93c5fd;
+  background: #eff6ff;
 }
 
 .option-card.selected {
-  border-color: #0a0a0a;
-  background: #fafafa;
-  box-shadow: 0 0 0 1px #0a0a0a;
+  border-color: #1e40af;
+  background: #eff6ff;
 }
 
 .option-icon {
-  font-size: 26px;
-  margin-bottom: 8px;
+  font-size: 28px;
+  margin-bottom: 6px;
   display: block;
 }
 
 .option-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  color: #111827;
-  letter-spacing: -0.01em;
+  color: #1e293b;
 }
 
 .option-desc {
-  font-size: 11.5px;
-  color: #6b7280;
+  font-size: 12px;
+  color: #64748b;
   margin-top: 3px;
-  line-height: 1.4;
 }
 
 .option-price {
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   color: #059669;
-  margin-top: 5px;
+  margin-top: 4px;
 }
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 520px) {
-  .calculator-section {
-    padding: 48px 16px 72px;
-  }
-
+@media (max-width: 480px) {
   .step-content {
-    padding: 28px 22px 18px;
+    padding: 24px 20px 16px;
   }
 
   .step-nav {
-    padding: 16px 22px 22px;
+    padding: 16px 20px 20px;
   }
 
   .option-grid-3 {
@@ -306,11 +247,8 @@
   }
 
   .btn-cta {
-    min-width: 150px;
+    min-width: 160px;
     font-size: 14px;
-  }
-
-  .trust-badges span {
-    padding: 0 10px;
+    padding: 12px 20px;
   }
 }
