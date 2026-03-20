@@ -111,7 +111,7 @@ function LogoBar() {
   const stats = [
     { value: '< 2 min', label: 'Setup time' },
     { value: 'NREL', label: 'Powered by real solar data' },
-    { value: '10–15%', label: 'Estimate accuracy' },
+    { value: '±10%', label: 'Margin vs. real installer quotes' },
     { value: '30 days', label: 'Free trial' },
   ];
   return (
@@ -262,7 +262,7 @@ function AccuracySection() {
         <SectionLabel>Accuracy</SectionLabel>
         <h2 style={sectionTitle}>Estimates homeowners can trust</h2>
         <p style={sectionSub}>
-          Our calculator is accurate to within <strong>10–15%</strong> of real installer quotes — good enough to start a serious conversation, not a throwaway number.
+          Our estimates consistently land <strong>within 10–15% of what installers actually quote</strong> for the same home — tight enough to set real expectations, and compelling enough to get homeowners to pick up the phone.
         </p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 28, marginTop: 52 }}>
