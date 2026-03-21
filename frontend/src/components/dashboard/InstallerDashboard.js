@@ -1105,16 +1105,30 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
           </span>
         </div>
 
-        {status === 'trialing' && (
-          <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>
-              {daysLeft > 0 ? `${daysLeft} days remaining in your free trial` : 'Your free trial is ending soon'}
-            </h4>
-            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
-              Subscribe now to keep your embedded calculator active on your website after the trial ends. Your pricing settings, branding, and leads are all preserved.
-            </p>
-          </div>
-        )}
+        {status === 'trialing' && (() => {
+          const TRIAL_DAYS = 30;
+          const days = daysLeft != null ? daysLeft : TRIAL_DAYS;
+          const pct = Math.max(0, Math.min(100, (days / TRIAL_DAYS) * 100));
+          const barColor = days > 10 ? '#3b82f6' : days > 3 ? '#f59e0b' : '#ef4444';
+          return (
+            <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
+                <h4 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: 0 }}>
+                  Free Trial
+                </h4>
+                <span style={{ fontSize: 22, fontWeight: 800, color: barColor, letterSpacing: '-0.5px' }}>
+                  {days} <span style={{ fontSize: 13, fontWeight: 600, color: '#64748b' }}>day{days !== 1 ? 's' : ''} left</span>
+                </span>
+              </div>
+              <div style={{ background: '#e2e8f0', borderRadius: 99, height: 8, marginBottom: 14, overflow: 'hidden' }}>
+                <div style={{ width: `${pct}%`, height: '100%', background: barColor, borderRadius: 99, transition: 'width 0.4s' }} />
+              </div>
+              <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
+                Subscribe now to keep your embedded calculator active on your website after the trial ends. Your pricing settings, branding, and leads are all preserved.
+              </p>
+            </div>
+          );
+        })()}
 
         {!isActive && (
           <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
