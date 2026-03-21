@@ -130,7 +130,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
         )}
 
         <div className={`calculator-card${embedded ? ' embed-card' : ''}`} style={installerConfig?.formBgColor ? { background: installerConfig.formBgColor } : {}}>
-          <ProgressBar current={step} total={TOTAL_STEPS} steps={steps} embedded={embedded} />
+          <ProgressBar current={step} total={TOTAL_STEPS} steps={steps} embedded={embedded} primaryColor={installerConfig?.primaryColor} />
 
           <div className={`step-content${embedded ? ' embed-content' : ''}`}>
             {step === 1 && <StepBill value={form.monthlyBill} onChange={v => update('monthlyBill', v)} />}
