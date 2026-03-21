@@ -35,7 +35,7 @@ export default function Footer() {
           {/* Brand */}
           <div style={{ maxWidth: 260 }}>
             <a href="/" style={{ display: 'inline-flex', alignItems: 'center', marginBottom: 16, textDecoration: 'none' }}>
-              <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 36, width: 'auto' }} />
+              <img src="/logo-horizontal-dark.svg" alt="MySolarWidget" style={{ height: 48, width: 'auto' }} />
             </a>
             <p style={{ fontSize: 13.5, color: '#6b7280', lineHeight: 1.65 }}>
               Free solar savings calculator for US homeowners — powered by real NREL data and EIA electricity rates.

@@ -39,7 +39,7 @@ export default function About() {
         {/* Hero */}
         <div style={{ textAlign: 'center', marginBottom: 64 }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', marginBottom: 20 }}>
-            <img src="/logo-horizontal-dark.svg" alt="MySolarWidget logo" style={{ height: 40, width: 'auto' }} />
+            <img src="/logo-horizontal-light.svg" alt="MySolarWidget logo" style={{ height: 48, width: 'auto' }} />
           </div>
           <h1 style={{ fontSize: 36, fontWeight: 800, color: '#0f172a', marginBottom: 16 }}>
             About MySolarWidget

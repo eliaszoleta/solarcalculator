@@ -45,9 +45,9 @@ export default function Header() {
           {/* Logo */}
           <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
             <img
-              src="/logo-horizontal-dark.svg"
+              src="/logo-horizontal-light.svg"
               alt="MySolarWidget"
-              style={{ height: 36, width: 'auto' }}
+              style={{ height: 44, width: 'auto' }}
             />
           </a>
 

@@ -77,7 +77,7 @@ export default function AuthPage({ onAuth }) {
     }}>
       <div style={{ width: '100%', maxWidth: 420 }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 44, width: 'auto' }} />
+          <img src="/logo-horizontal-dark.svg" alt="MySolarWidget" style={{ height: 52, width: 'auto' }} />
           <div style={{ fontSize: 14, color: '#93c5fd', marginTop: 4 }}>Installer Dashboard</div>
         </div>
 
