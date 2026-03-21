@@ -5,7 +5,6 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { DEFAULT_INSTALLER_CONFIG } = require('../config/defaults');
-const { computeSubscriptionStatus } = require('./subscription');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://mhiwlqezyenwvzamviwy.supabase.co';
 const SERVICE_KEY = () => process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -161,6 +160,7 @@ router.get('/:id/public', async (req, res) => {
   try {
     const config = (await getInstallerConfig(req.params.id)) || DEFAULT_INSTALLER_CONFIG;
     const { companyName, systemName, primaryColor, accentColor, formBgColor, borderRadius, frameHeight, fontFamily, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates, customSteps } = config;
+    const { computeSubscriptionStatus } = require('./subscription');
     const sub = computeSubscriptionStatus(config);
     res.json({ success: true, data: { companyName, systemName, primaryColor, accentColor, formBgColor, borderRadius, frameHeight, fontFamily, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates, customSteps, paused: !sub.active, trialDaysLeft: sub.daysLeft } });
   } catch (err) {
@@ -202,4 +202,5 @@ router.post('/:id/api-key/regenerate', async (req, res) => {
 
 module.exports = router;
 module.exports.getInstallerConfig = getInstallerConfig;
+module.exports.saveInstallerConfig = saveInstallerConfig;
 module.exports.dbHeaders = dbHeaders;
