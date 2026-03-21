@@ -574,7 +574,16 @@ export default function InstallerDashboard({ user, onLogout }) {
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Name</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Email</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Phone</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Answers</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Bill</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Location</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Home Type</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Owns Home</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Sun Exposure</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Roof Type</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Battery</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Payment</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Timeline</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Custom</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Estimate</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Date</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Actions</th>
@@ -584,45 +593,43 @@ export default function InstallerDashboard({ user, onLogout }) {
                         {leads.map(lead => {
                           const fmt = v => v ? String(v).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : null;
                           const batteryLabel = { none: 'No Battery', one: '1 Battery', two: '2 Batteries' }[lead.battery] || fmt(lead.battery);
-                          const rows = [
-                            lead.monthly_bill != null && `Bill: $${lead.monthly_bill}/mo`,
-                            (lead.zip || lead.state) && `Location: ${[lead.zip, lead.state].filter(Boolean).join(', ')}`,
-                            lead.home_type && `Home: ${fmt(lead.home_type)}`,
-                            lead.owns_home != null && `Owns home: ${lead.owns_home ? 'Yes' : 'No'}`,
-                            lead.sun_exposure && `Sun: ${fmt(lead.sun_exposure)}`,
-                            lead.roof_type && `Roof type: ${fmt(lead.roof_type)}`,
-                            lead.battery && `Battery: ${batteryLabel}`,
-                            lead.payment_method && `Payment: ${fmt(lead.payment_method)}`,
-                            lead.timeline && `Timeline: ${fmt(lead.timeline)}`,
-                          ].filter(Boolean);
-                          // Show all custom answers — match label from config if available, else prettify the key
                           const customRows = lead.custom_answers
                             ? Object.entries(lead.custom_answers).map(([id, val]) => {
                                 const step = (config.customSteps || []).find(s => s.id === id);
-                                const label = step ? step.label : fmt(id.replace(/^custom_\d+_?/, '')) || id;
+                                const label = step ? step.title || step.label : fmt(id.replace(/^custom_\d+_?/, '')) || id;
                                 return `${label}: ${val}`;
                               })
                             : [];
+                          const cell = val => <span style={{ fontSize: 12, color: '#475569' }}>{val || <span style={{ color: '#94a3b8' }}>—</span>}</span>;
                           return (
                             <tr key={lead.id} style={{ borderBottom: '1px solid #f1f5f9', verticalAlign: 'top' }}>
                               <td style={{ padding: '10px 12px', fontWeight: 500, whiteSpace: 'nowrap' }}>{lead.name || '—'}</td>
                               <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
-                                {lead.email ? <a href={`mailto:${lead.email}`} style={{ color: '#1e40af' }}>{lead.email}</a> : '—'}
+                                {lead.email ? <a href={`mailto:${lead.email}`} style={{ color: '#1e40af', fontSize: 12 }}>{lead.email}</a> : '—'}
                               </td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{lead.phone || '—'}</td>
-                              <td style={{ padding: '10px 12px', minWidth: 200 }}>
-                                {[...rows, ...customRows].length > 0
-                                  ? [...rows, ...customRows].map((r, i) => (
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap', fontSize: 12, color: '#475569' }}>{lead.phone || '—'}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(lead.monthly_bill != null ? `$${lead.monthly_bill}/mo` : null)}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell([lead.zip, lead.state].filter(Boolean).join(', ') || null)}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(fmt(lead.home_type))}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(lead.owns_home != null ? (lead.owns_home ? 'Yes' : 'No') : null)}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(fmt(lead.sun_exposure))}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(fmt(lead.roof_type))}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(batteryLabel)}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(fmt(lead.payment_method))}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(fmt(lead.timeline))}</td>
+                              <td style={{ padding: '10px 12px', minWidth: 160 }}>
+                                {customRows.length > 0
+                                  ? customRows.map((r, i) => (
                                       <div key={i} style={{ fontSize: 12, color: '#475569', lineHeight: '1.7' }}>{r}</div>
                                     ))
-                                  : <span style={{ color: '#94a3b8' }}>—</span>}
+                                  : <span style={{ color: '#94a3b8', fontSize: 12 }}>—</span>}
                               </td>
                               <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
                                 {lead.system_size_kw ? <div style={{ fontSize: 12 }}>{lead.system_size_kw} kW</div> : null}
                                 {lead.annual_savings ? <div style={{ fontSize: 12, color: '#16a34a' }}>${lead.annual_savings.toLocaleString()}/yr</div> : null}
                                 {!lead.system_size_kw && !lead.annual_savings ? '—' : null}
                               </td>
-                              <td style={{ padding: '10px 12px', color: '#64748b', whiteSpace: 'nowrap' }}>{new Date(lead.created_at).toLocaleDateString()}</td>
+                              <td style={{ padding: '10px 12px', color: '#64748b', whiteSpace: 'nowrap', fontSize: 12 }}>{new Date(lead.created_at).toLocaleDateString()}</td>
                               <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
                                 <button
                                   onClick={() => { setEditingLead(lead); setEditDraft({ name: lead.name || '', email: lead.email || '', phone: lead.phone || '' }); }}
