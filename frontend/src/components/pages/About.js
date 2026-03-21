@@ -20,7 +20,7 @@ export default function About() {
           "description": "Free solar savings calculator for US homeowners. Powered by NREL PVWatts real sunlight data.",
           "logo": {
             "@type": "ImageObject",
-            "url": `${DOMAIN}/favicon-512x512.png`,
+            "url": `${DOMAIN}/android-chrome-512x512.png`,
             "width": 512,
             "height": 512
           },
@@ -38,11 +38,8 @@ export default function About() {
 
         {/* Hero */}
         <div style={{ textAlign: 'center', marginBottom: 64 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-            <img src="/favicon-192x192.png" alt="MySolarWidget logo" style={{ width: 56, height: 56, borderRadius: 12 }} />
-            <span style={{ fontSize: 26, fontWeight: 800, color: '#0f172a' }}>
-              MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
-            </span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', marginBottom: 20 }}>
+            <img src="/logo-horizontal-dark.svg" alt="MySolarWidget logo" style={{ height: 40, width: 'auto' }} />
           </div>
           <h1 style={{ fontSize: 36, fontWeight: 800, color: '#0f172a', marginBottom: 16 }}>
             About MySolarWidget

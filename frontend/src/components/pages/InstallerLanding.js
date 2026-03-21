@@ -29,11 +29,8 @@ function LandingNav() {
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       padding: '0 32px', height: 64,
     }}>
-      <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-        <img src="/favicon-192x192.png" alt="MySolarWidget" style={{ width: 38, height: 38, borderRadius: 8 }} />
-        <span style={{ fontSize: 17, fontWeight: 800, color: '#0f172a' }}>
-          MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
-        </span>
+      <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+        <img src="/logo-horizontal-dark.svg" alt="MySolarWidget" style={{ height: 28, width: 'auto' }} />
       </a>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         <a href="/installer" style={{ fontSize: 14, color: '#64748b', fontWeight: 500, textDecoration: 'none' }}>
@@ -496,11 +493,8 @@ function FinalCTA() {
 function LandingFooter() {
   return (
     <footer style={{ background: '#0f172a', padding: '32px 24px', textAlign: 'center' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 12 }}>
-        <img src="/favicon-192x192.png" alt="MySolarWidget" style={{ width: 32, height: 32, borderRadius: 7 }} />
-        <span style={{ fontSize: 15, fontWeight: 800, color: 'white' }}>
-          MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
-        </span>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+        <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 28, width: 'auto' }} />
       </div>
       <div style={{ display: 'flex', gap: 24, justifyContent: 'center', marginBottom: 20, flexWrap: 'wrap' }}>
         <a href="/" style={footerLink}>Home</a>

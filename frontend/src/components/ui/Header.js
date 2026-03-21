@@ -42,16 +42,13 @@ export default function Header() {
       }}>
         <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
-          {/* Logo — 70% larger: 54px icon, 27px text */}
-          <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0 }}>
+          {/* Logo */}
+          <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
             <img
-              src="/favicon-192x192.png"
-              alt="MySolarWidget logo"
-              style={{ width: 54, height: 54, borderRadius: 10 }}
+              src="/logo-horizontal-dark.svg"
+              alt="MySolarWidget"
+              style={{ height: 36, width: 'auto' }}
             />
-            <span style={{ fontSize: 27, fontWeight: 800, color: '#0a0a0a', letterSpacing: '-0.03em' }}>
-              MySolar<span style={{ color: '#f59e0b' }}>Widget</span>
-            </span>
           </a>
 
           {/* Desktop nav — hidden on mobile */}
