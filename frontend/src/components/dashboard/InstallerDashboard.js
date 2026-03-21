@@ -348,7 +348,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                   <input type="text" placeholder="https://yoursite.com/contact" value={config.ctaButtonUrl || ''} onChange={e => update('ctaButtonUrl', e.target.value)} className="dash-input dash-input-text" />
                 </SettingRow>
               </SettingCard>
-              </div>{/* end settings-grid */}
+              </div>
 
               <div className="appearance-preview-panel">
                 <div className="appearance-preview-label">Live Preview</div>
@@ -360,7 +360,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                   />
                 </div>
               </div>
-            </div>{/* end appearance-layout */}
+            </div>
           )}
 
           {activeTab === 'embed' && (
