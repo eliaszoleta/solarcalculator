@@ -120,7 +120,10 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
           annual_savings: data.data.savings?.annual || null,
           total_cost: data.data.cost?.total || null,
           custom_answers: Object.keys(form.customAnswers || {}).length > 0 ? form.customAnswers : null,
-        }).then(({ error }) => { if (error) console.error('Lead save error:', error.message); });
+        }).then(({ data: leadRow, error }) => {
+          if (error) console.error('Lead save error:', error.message, error.details, error.hint);
+          else console.log('Lead saved:', leadRow);
+        });
       } else {
         setError('Calculation failed. Please check your inputs and try again.');
       }
