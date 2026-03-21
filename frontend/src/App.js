@@ -81,15 +81,41 @@ function ResultsPage() {
   );
 }
 
-// Fetches installer config then renders the calculator with it
+// Fetches installer config then renders the calculator with it.
+// Config is read directly from Supabase (always up-to-date, no backend redeploy needed).
+// The backend is still called for the subscription paused check.
 function EmbedWrapper({ installerId }) {
   const [installerConfig, setInstallerConfig] = useState(null);
 
   useEffect(() => {
     if (!installerId) { setInstallerConfig({}); return; }
-    axios.get(`${API_BASE}/api/installer/${installerId}/public`)
-      .then(res => setInstallerConfig(res.data.data || {}))
-      .catch(() => setInstallerConfig({}));
+
+    const load = async () => {
+      try {
+        // Fetch paused/subscription status from backend
+        const backendRes = await axios.get(`${API_BASE}/api/installer/${installerId}/public`).catch(() => ({ data: { data: {} } }));
+        const backendData = backendRes.data?.data || {};
+
+        // Fetch full config (including customSteps) directly from Supabase
+        const { data: supaRows } = await supabase
+          .from('installer_configs')
+          .select('config')
+          .eq('installer_id', installerId)
+          .limit(1);
+        const supaConfig = supaRows?.[0]?.config || {};
+
+        // Merge: Supabase has the latest full config, backend adds paused/trialDaysLeft
+        setInstallerConfig({
+          ...supaConfig,
+          paused: backendData.paused ?? false,
+          trialDaysLeft: backendData.trialDaysLeft,
+        });
+      } catch {
+        setInstallerConfig({});
+      }
+    };
+
+    load();
   }, [installerId]);
 
   if (!installerConfig) return null;
