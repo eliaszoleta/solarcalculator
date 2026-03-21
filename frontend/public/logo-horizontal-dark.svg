@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 88" width="480" height="88">
+  <rect x="0" y="0" width="480" height="88" fill="#0f172a"/>
+  <!-- Icon: minimal circle mark -->
+  <circle cx="44" cy="44" r="36" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+  <rect x="22" y="29" width="44" height="7" rx="1.5" fill="#e2e8f0" opacity="0.15"/>
+  <rect x="22" y="40" width="44" height="7" rx="1.5" fill="#e2e8f0" opacity="0.15"/>
+  <rect x="22" y="51" width="44" height="7" rx="1.5" fill="#e2e8f0" opacity="0.15"/>
+  <line x1="37" y1="29" x2="37" y2="58" stroke="#e2e8f0" stroke-width="1" opacity="0.2"/>
+  <line x1="51" y1="29" x2="51" y2="58" stroke="#e2e8f0" stroke-width="1" opacity="0.2"/>
+  <path d="M16 39 A28 28 0 0 1 72 39" fill="none" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="44" cy="11" r="4" fill="#f59e0b"/>
+  <!-- Wordmark -->
+  <text x="96" y="48" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="36" fill="#f1f5f9" letter-spacing="-1">My<tspan fill="#f59e0b">Solar</tspan>Widget</text>
+  <text x="98" y="68" font-family="Arial, sans-serif" font-size="11.5" fill="#64748b" letter-spacing="3">SOLAR SAVINGS CALCULATOR</text>
+</svg>
