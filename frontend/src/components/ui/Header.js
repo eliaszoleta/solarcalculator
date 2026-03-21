@@ -47,7 +47,7 @@ export default function Header() {
             <img
               src="/logo-horizontal-light.svg"
               alt="MySolarWidget"
-              style={{ height: 36, width: 'auto' }}
+              style={{ height: 44, width: 'auto' }}
             />
           </a>
 
