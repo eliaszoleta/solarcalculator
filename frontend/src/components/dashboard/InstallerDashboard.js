@@ -485,6 +485,7 @@ export default function InstallerDashboard({ user, onLogout }) {
           )}
 
           {activeTab === 'leads' && (
+            <>
             <div className="setting-card">
               {/* Edit Lead Modal */}
               {editingLead && (
@@ -685,6 +686,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                 <p style={{ margin: '12px 0 0', fontSize: 12, color: '#94a3b8' }}>Keep your API key secret. Regenerating it will invalidate all existing integrations.</p>
               </div>
             </div>
+            </>
           )}
 
           {activeTab === 'subscription' && (
