@@ -141,7 +141,7 @@
 }
 
 .appearance-preview-panel {
-  flex: 0 0 380px;
+  flex: 0 0 480px;
   position: sticky;
   top: 24px;
 }
@@ -160,7 +160,7 @@
   overflow: hidden;
   border: 1px solid #e2e8f0;
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  height: 620px;
+  height: 650px;
   display: flex;
   flex-direction: column;
   background: #f8fafc;
