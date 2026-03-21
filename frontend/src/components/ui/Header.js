@@ -30,10 +30,10 @@ export default function Header() {
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        height: 68,
+        height: 60,
         display: 'flex',
         alignItems: 'center',
-        padding: '0 24px',
+        padding: '0 12px',
         background: scrolled ? 'rgba(255,255,255,0.92)' : '#ffffff',
         backdropFilter: scrolled ? 'blur(16px)' : 'none',
         borderBottom: `1px solid ${scrolled ? 'rgba(0,0,0,0.06)' : '#f3f4f6'}`,
@@ -47,7 +47,7 @@ export default function Header() {
             <img
               src="/logo-horizontal-light.svg"
               alt="MySolarWidget"
-              style={{ height: 44, width: 'auto' }}
+              style={{ height: 36, width: 'auto' }}
             />
           </a>
 
@@ -97,8 +97,26 @@ export default function Header() {
             </a>
           </nav>
 
-          {/* Mobile right side — hamburger only */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }} className="header-mobile-nav">
+          {/* Mobile right side — "Get Solar Widget" + hamburger */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }} className="header-mobile-nav">
+            <a
+              href="/for-installers"
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                color: '#0a0a0a',
+                padding: '5px 10px',
+                borderRadius: 8,
+                border: '1.5px solid #e5e7eb',
+                background: '#ffffff',
+                textDecoration: 'none',
+                whiteSpace: 'nowrap',
+                letterSpacing: '-0.01em',
+              }}
+            >
+              Get Solar Widget
+            </a>
+
             {/* Hamburger button */}
             <button
               onClick={e => { e.stopPropagation(); setMenuOpen(o => !o); }}
@@ -133,7 +151,7 @@ export default function Header() {
           onClick={e => e.stopPropagation()}
           style={{
             position: 'fixed',
-            top: 68,
+            top: 60,
             left: 0,
             right: 0,
             zIndex: 99,
@@ -162,20 +180,6 @@ export default function Header() {
               {item.label}
             </a>
           ))}
-          <a
-            href="/for-installers"
-            onClick={() => setMenuOpen(false)}
-            style={{
-              display: 'block',
-              fontSize: 15,
-              fontWeight: 600,
-              color: '#f59e0b',
-              padding: '12px 0',
-              textDecoration: 'none',
-            }}
-          >
-            Get Solar Widget →
-          </a>
         </div>
       )}
 

@@ -34,20 +34,11 @@ function LandingNav() {
           <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 38, width: 'auto', maxWidth: '100%' }} />
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-          <a href="/installer" style={{ fontSize: 14, color: '#64748b', fontWeight: 500, textDecoration: 'none', whiteSpace: 'nowrap' }} className="landing-nav-login">
+          <a href="/installer" style={{ fontSize: 14, color: '#64748b', fontWeight: 500, textDecoration: 'none', whiteSpace: 'nowrap' }}>
             Log in
-          </a>
-          <a href="/installer" style={ctaBtn}>
-            Start Free Trial
           </a>
         </div>
       </div>
-      <style>{`
-        .landing-nav-login { display: inline; }
-        @media (max-width: 420px) {
-          .landing-nav-login { display: none !important; }
-        }
-      `}</style>
     </nav>
   );
 }
