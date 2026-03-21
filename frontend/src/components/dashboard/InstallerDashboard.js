@@ -308,6 +308,25 @@ export default function InstallerDashboard({ user, onLogout }) {
                 <SettingRow label="Form Background">
                   <ColorInput value={config.formBgColor || '#ffffff'} onChange={v => update('formBgColor', v)} />
                 </SettingRow>
+                <SettingRow label="Font Style" hint="Applied to the calculator widget on your site">
+                  <select
+                    value={config.fontFamily || ''}
+                    onChange={e => update('fontFamily', e.target.value)}
+                    className="dash-input dash-input-text"
+                    style={{ fontFamily: config.fontFamily ? `'${config.fontFamily}', sans-serif` : undefined }}
+                  >
+                    <option value="">Default (Inter)</option>
+                    <option value="Poppins">Poppins — friendly &amp; modern</option>
+                    <option value="Montserrat">Montserrat — bold &amp; strong</option>
+                    <option value="Lato">Lato — clean &amp; professional</option>
+                    <option value="Raleway">Raleway — elegant &amp; sleek</option>
+                    <option value="Nunito">Nunito — soft &amp; rounded</option>
+                    <option value="Open Sans">Open Sans — neutral &amp; readable</option>
+                    <option value="DM Sans">DM Sans — minimal &amp; sharp</option>
+                    <option value="Playfair Display">Playfair Display — premium &amp; luxe</option>
+                    <option value="Roboto">Roboto — clean &amp; technical</option>
+                  </select>
+                </SettingRow>
               </SettingCard>
 
               <SettingCard title="Results Page CTA" desc="What visitors see after they get their savings estimate — shown on your embedded calculator.">

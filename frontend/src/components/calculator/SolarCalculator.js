@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
 import StepBill from './steps/StepBill';
@@ -36,6 +36,18 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   const [lead, setLead] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const fontLinkRef = useRef(null);
+  useEffect(() => {
+    const font = installerConfig?.fontFamily;
+    if (!font) return;
+    if (fontLinkRef.current) fontLinkRef.current.remove();
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, '+')}:wght@400;500;600;700;800&display=swap`;
+    document.head.appendChild(link);
+    fontLinkRef.current = link;
+  }, [installerConfig?.fontFamily]);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
@@ -119,7 +131,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   const canProceed = !isOutOfArea && !isDisqualified && !step3Incomplete;
 
   return (
-    <section className={`calculator-section${embedded ? ' embed-mode' : ''}`}>
+    <section className={`calculator-section${embedded ? ' embed-mode' : ''}`} style={installerConfig?.fontFamily ? { fontFamily: `'${installerConfig.fontFamily}', sans-serif` } : {}}>
       <div className="calculator-container">
         {!embedded && (
           <div className="calculator-header">

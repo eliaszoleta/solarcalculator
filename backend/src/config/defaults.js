@@ -25,6 +25,7 @@ const DEFAULT_INSTALLER_CONFIG = {
   accentColor: "#1e40af",
   formBgColor: "#ffffff",
   frameHeight: 620,
+  fontFamily: "",
   // Lead CTA shown on results screen when embedded
   ctaHeadline: "Ready to Go Solar?",
   ctaSubtext: "Our team will design a custom solar system for your home — free, no obligation.",

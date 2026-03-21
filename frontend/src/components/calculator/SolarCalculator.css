@@ -295,7 +295,10 @@
   min-height: unset;
   overflow-y: auto;
   padding: 12px 28px 16px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.embed-content::-webkit-scrollbar { display: none; }
 
 /* Tighten inner element spacing so everything fits without scroll */
 .embed-content .step-title  { margin-bottom: 4px; font-size: 18px; }
