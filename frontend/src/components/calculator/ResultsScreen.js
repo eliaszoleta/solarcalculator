@@ -12,6 +12,17 @@ function fmtDollar(n) {
   return '$' + fmt(Math.abs(n));
 }
 
+const SITE_URL = process.env.REACT_APP_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+
+function buildFullReportUrl(results, form, lead) {
+  try {
+    const payload = JSON.stringify({ r: results, b: form.monthlyBill, s: form.state || results.inputs?.state, p: lead?.paymentMethod });
+    return `${SITE_URL}/results#${btoa(unescape(encodeURIComponent(payload)))}`;
+  } catch {
+    return `${SITE_URL}/`;
+  }
+}
+
 export default function ResultsScreen({ results, onReset, form, lead, installerConfig, embedded }) {
   const { system, cost, incentives, savings, chart } = results;
   const cta = installerConfig || {};
@@ -22,6 +33,85 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
+
+  // Compact embed view — keeps the iframe frame fixed; full report opens in a new tab
+  if (embedded) {
+    const hasFinancing = !isCash && savings.monthlyPaymentFinanced > 0;
+    const daySavings = hasFinancing ? savings.netMonthlyFinanced : savings.monthly;
+    const fullReportUrl = buildFullReportUrl(results, form, lead);
+
+    return (
+      <div style={{ padding: '28px 20px 32px', fontFamily: 'Inter, sans-serif', maxWidth: 540, margin: '0 auto' }}>
+
+        {/* Headline */}
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
+          <span style={{ display: 'inline-block', background: '#dcfce7', color: '#166534', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: 999, marginBottom: 10 }}>
+            Your Solar Estimate
+          </span>
+          <div style={{ fontSize: 28, fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>
+            {isCash
+              ? <>{fmtDollar(incentives.netCost)} net cost — paid off in {savings.paybackYears} yrs</>
+              : <>Save <span style={{ color: '#1e40af' }}>{fmtDollar(daySavings)}/mo</span> from day one</>
+            }
+          </div>
+        </div>
+
+        {/* Key metrics */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 20 }}>
+          {[
+            { label: isCash ? 'Net Cost' : 'Day-1 Savings', value: isCash ? fmtDollar(incentives.netCost) : fmtDollar(daySavings) + '/mo' },
+            { label: '30-Year Savings', value: fmtDollar(savings.thirtyYear), highlight: true },
+            { label: 'Payback', value: savings.paybackYears ? `${savings.paybackYears} yrs` : 'N/A' },
+          ].map(({ label, value, highlight }) => (
+            <div key={label} style={{ background: highlight ? '#1e3a8a' : '#f8fafc', border: `1px solid ${highlight ? '#1e3a8a' : '#e2e8f0'}`, borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
+              <div style={{ fontSize: 11, color: highlight ? '#bfdbfe' : '#64748b', fontWeight: 600, marginBottom: 4 }}>{label}</div>
+              <div style={{ fontSize: 18, fontWeight: 800, color: highlight ? 'white' : '#0f172a' }}>{value}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* System size pill */}
+        <div style={{ textAlign: 'center', marginBottom: 20 }}>
+          <span style={{ fontSize: 13, color: '#64748b' }}>
+            Recommended: <strong style={{ color: '#0f172a' }}>{system.sizeKw} kW</strong> ({system.panelCount} panels) · {system.offsetPercent}% energy offset
+          </span>
+        </div>
+
+        {/* Installer CTA */}
+        <div style={{ background: 'linear-gradient(135deg, #1e3a8a, #1e40af)', borderRadius: 16, padding: '20px 20px', textAlign: 'center', marginBottom: 16 }}>
+          <div style={{ fontSize: 17, fontWeight: 800, color: 'white', marginBottom: 6 }}>
+            {cta.ctaHeadline || 'Ready to Go Solar?'}
+          </div>
+          <div style={{ fontSize: 13, color: '#bfdbfe', marginBottom: 16, lineHeight: 1.5 }}>
+            {cta.ctaSubtext || 'Get a custom quote from a local installer — free, no obligation.'}
+          </div>
+          {cta.companyName && (
+            <div style={{ fontSize: 12, color: '#93c5fd', fontWeight: 600, marginBottom: 12 }}>{cta.companyName}</div>
+          )}
+          <a
+            href={cta.ctaButtonUrl || (cta.ctaPhone ? `tel:${cta.ctaPhone}` : '#')}
+            style={{ display: 'inline-block', padding: '12px 28px', background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: 'white', borderRadius: 10, fontWeight: 700, fontSize: 15, textDecoration: 'none' }}
+          >
+            {cta.ctaButtonText || 'Contact Us'}
+          </a>
+          {cta.ctaPhone && (
+            <div style={{ fontSize: 13, color: '#93c5fd', marginTop: 10 }}>{cta.ctaPhone}</div>
+          )}
+        </div>
+
+        {/* Full report link */}
+        <div style={{ textAlign: 'center' }}>
+          <a href={fullReportUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: '#1e40af', fontWeight: 600, textDecoration: 'none' }}>
+            View Full Solar Report →
+          </a>
+          <span style={{ color: '#cbd5e1', margin: '0 8px' }}>·</span>
+          <button onClick={onReset} style={{ fontSize: 13, color: '#64748b', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+            Recalculate
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Find payback year for chart reference line
   const paybackYear = chart.find(d => d.cumulativeSavings >= 0)?.year;

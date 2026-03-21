@@ -4,6 +4,7 @@ import axios from 'axios';
 import { BoltIcon } from './components/ui/Icons';
 import { supabase } from './lib/supabase';
 import SolarCalculator from './components/calculator/SolarCalculator';
+import ResultsScreen from './components/calculator/ResultsScreen';
 import InstallerDashboard from './components/dashboard/InstallerDashboard';
 import AuthPage from './components/dashboard/AuthPage';
 import Header from './components/ui/Header';
@@ -29,6 +30,7 @@ const isPrivacyPolicy = pathname === '/privacy-policy';
 const isTermsOfService = pathname === '/terms-of-service';
 const isAbout = pathname === '/about';
 const isContact = pathname === '/contact';
+const isResults = pathname === '/results';
 const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
 
 // Resolve blog route
@@ -43,6 +45,40 @@ function BlogRouter() {
     return <BlogPost slug={slug} />;
   }
   return <BlogIndex />;
+}
+
+// Standalone full-results page — reads encoded data from URL hash
+function ResultsPage() {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    try {
+      const hash = window.location.hash.slice(1);
+      if (hash) setData(JSON.parse(decodeURIComponent(escape(atob(hash)))));
+    } catch {}
+  }, []);
+
+  if (!data) return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', fontFamily: 'sans-serif' }}>
+      Report not found. <a href="/" style={{ color: '#1e40af', marginLeft: 6 }}>Start a new estimate →</a>
+    </div>
+  );
+
+  return (
+    <div className="app">
+      <Header />
+      <main>
+        <ResultsScreen
+          results={data.r}
+          form={{ monthlyBill: data.b, state: data.s }}
+          lead={{ paymentMethod: data.p }}
+          installerConfig={null}
+          embedded={false}
+          onReset={() => { window.location.href = '/'; }}
+        />
+      </main>
+      <Footer />
+    </div>
+  );
 }
 
 // Fetches installer config then renders the calculator with it
@@ -73,8 +109,10 @@ function EmbedWrapper({ installerId }) {
   }
 
   return (
-    <div style={{ background: 'white', minHeight: '100vh' }}>
-      <SolarCalculator embedded installerConfig={installerConfig} installerId={installerId} />
+    <div style={{ height: '100vh', overflow: 'hidden', background: 'white' }}>
+      <div style={{ height: '100%', overflowY: 'auto', overflowX: 'hidden' }}>
+        <SolarCalculator embedded installerConfig={installerConfig} installerId={installerId} />
+      </div>
     </div>
   );
 }
@@ -106,6 +144,8 @@ export default function App() {
   };
 
   if (isEmbed) return <EmbedWrapper installerId={embedInstallerId} />;
+
+  if (isResults) return <ResultsPage />;
 
   if (isForInstallers) return <InstallerLanding />;
 

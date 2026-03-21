@@ -24,6 +24,7 @@ const DEFAULT_CONFIG = {
   },
   roofSurcharges: { asphalt: 0, metal: 500, tile: 1500, flat: 800 },
   systemName: 'Solar Calculator', companyName: '', primaryColor: '#f59e0b',
+  frameHeight: 620,
 };
 
 export default function InstallerDashboard({ user, onLogout }) {
@@ -129,9 +130,9 @@ export default function InstallerDashboard({ user, onLogout }) {
   };
 
   const siteUrl = process.env.REACT_APP_SITE_URL || window.location.origin;
-  const embedCode = `<!-- Solar Savings Calculator -->
-<iframe id="sc-iframe" src="${siteUrl}/embed?installer=${installerId}" width="100%" height="700" frameborder="0" scrolling="no" style="border:none;width:100%;display:block;" title="Solar Savings Calculator"></iframe>
-<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='sc-resize'){var f=document.getElementById('sc-iframe');if(f)f.style.height=(e.data.height+20)+'px';}});<\/script>`;
+  const frameHeight = config.frameHeight || 620;
+  const embedCode = `<!-- MySolarWidget Solar Calculator -->
+<iframe src="${siteUrl}/embed?installer=${installerId}" width="100%" height="${frameHeight}" frameborder="0" scrolling="no" style="border:none;width:100%;max-width:100%;display:block;" title="Solar Savings Calculator"></iframe>`;
 
   return (
     <div className="dash-layout">
@@ -295,6 +296,19 @@ export default function InstallerDashboard({ user, onLogout }) {
 
           {activeTab === 'embed' && (
             <div className="settings-grid">
+              <SettingCard title="Widget Frame Height" desc="Set the fixed height of your embedded calculator. Content inside scrolls — your page layout stays perfectly intact.">
+                <SettingRow label="Height (px)" hint="Recommended: 580 – 800px depending on your layout">
+                  <input
+                    type="number"
+                    min="480"
+                    max="1200"
+                    step="10"
+                    value={config.frameHeight || 620}
+                    onChange={e => update('frameHeight', parseInt(e.target.value) || 620)}
+                    className="dash-input"
+                  />
+                </SettingRow>
+              </SettingCard>
               <SettingCard title="Embed on Your Website" desc="Add the solar calculator to any page on your website with one line of code.">
                 <div className="embed-code-box">
                   <code>{embedCode}</code>
