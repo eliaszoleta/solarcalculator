@@ -26,19 +26,21 @@ function LandingNav() {
       position: 'sticky', top: 0, zIndex: 100,
       background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)',
       borderBottom: '1px solid #e2e8f0',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      padding: '0 32px', height: 64,
+      padding: '0 24px', height: 64,
+      display: 'flex', alignItems: 'center',
     }}>
-      <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-        <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 36, width: 'auto' }} />
-      </a>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <a href="/installer" style={{ fontSize: 14, color: '#64748b', fontWeight: 500, textDecoration: 'none' }}>
-          Log in
+      <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 36, width: 'auto' }} />
         </a>
-        <a href="/installer" style={ctaBtn}>
-          Start Free Trial
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <a href="/installer" style={{ fontSize: 14, color: '#64748b', fontWeight: 500, textDecoration: 'none' }}>
+            Log in
+          </a>
+          <a href="/installer" style={ctaBtn}>
+            Start Free Trial
+          </a>
+        </div>
       </div>
     </nav>
   );
@@ -180,7 +182,7 @@ function Features() {
       icon: <PaintBrushIcon size={26} />,
       iconBg: '#fef3c7', iconColor: '#d97706',
       title: 'Fully white-labeled',
-      desc: 'Your company name, your colors, your CTA. Homeowners see your brand — not ours. Customize the headline, subtext, phone number, and button that appear after the estimate.',
+      desc: 'Your company name, your colors, your font, your CTA. Homeowners see your brand — not ours. Customize the headline, subtext, phone number, and button that appear after the estimate.',
     },
     {
       icon: <DollarSignIcon size={26} />,
@@ -207,10 +209,10 @@ function Features() {
       desc: 'Every lead — name, email, phone, system size, annual savings, payment preference, and timeline — appears in your dashboard the moment someone submits the calculator.',
     },
     {
-      icon: <RulerIcon size={26} />,
+      icon: <WrenchIcon size={26} />,
       iconBg: '#fef9c3', iconColor: '#ca8a04',
-      title: 'Auto-resizing iframe',
-      desc: 'The embedded calculator automatically resizes to fit its content on any device. No scrollbars, no fixed heights to maintain. Just drop it in and it works.',
+      title: 'Custom question steps',
+      desc: 'Add your own questions between the standard calculator steps — checkboxes, radio buttons, or open text. Collect the exact qualifying info your sales team needs, before the first call.',
     },
   ];
 
@@ -313,9 +315,9 @@ function CalculatorPreview() {
     <section style={{ padding: '96px 24px', background: 'linear-gradient(135deg, #0f172a, #1e3a8a)' }}>
       <div style={{ maxWidth: 960, margin: '0 auto', textAlign: 'center' }}>
         <SectionLabel light>The Calculator Experience</SectionLabel>
-        <h2 style={{ ...sectionTitle, color: 'white', marginBottom: 12 }}>6 questions. Instant results.</h2>
+        <h2 style={{ ...sectionTitle, color: 'white', marginBottom: 12 }}>6 built-in steps + your custom questions.</h2>
         <p style={{ ...sectionSub, color: '#93c5fd', marginBottom: 56, margin: '0 auto 56px' }}>
-          Homeowners complete the flow in under 2 minutes — then see a full savings breakdown with 30-year projection, before submitting their contact info to you.
+          Homeowners complete the flow in under 2 minutes — then see a full savings breakdown with 30-year projection, before submitting their contact info to you. Add your own questions anywhere in the flow.
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', marginBottom: 48 }}>

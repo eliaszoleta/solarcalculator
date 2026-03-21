@@ -177,7 +177,9 @@ export default function InstallerDashboard({ user, onLogout }) {
     <div className="dash-layout">
       <aside className="dash-sidebar">
         <div className="dash-brand">
-          <img src="/logo-icon-light.svg" alt="MySolarWidget" style={{ width: 36, height: 36, borderRadius: 8 }} />
+          <div style={{ background: 'white', borderRadius: 8, padding: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img src="/logo-icon-light.svg" alt="MySolarWidget" style={{ width: 28, height: 28, display: 'block' }} />
+          </div>
         </div>
         <div style={{ padding: '0 16px 16px', fontSize: 12, color: '#64748b', borderBottom: '1px solid #1e293b', marginBottom: 8 }}>
           {config.companyName || user?.user_metadata?.company_name || 'My Company'}
