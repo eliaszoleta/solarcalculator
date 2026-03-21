@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
-import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon, PencilIcon } from '../ui/Icons';
+import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon, PencilIcon, SettingsIcon } from '../ui/Icons';
 import SolarCalculator from '../calculator/SolarCalculator';
 import './InstallerDashboard.css';
 
@@ -88,6 +88,11 @@ export default function InstallerDashboard({ user, onLogout }) {
   const [apiKeyRegenerating, setApiKeyRegenerating] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [subLoading, setSubLoading] = useState(false);
+  const [pwCurrent, setPwCurrent] = useState('');
+  const [pwNew, setPwNew] = useState('');
+  const [pwConfirm, setPwConfirm] = useState('');
+  const [pwLoading, setPwLoading] = useState(false);
+  const [pwMsg, setPwMsg] = useState(null); // { type: 'success'|'error', text: string }
 
   useEffect(() => {
     const load = async () => {
@@ -104,7 +109,7 @@ export default function InstallerDashboard({ user, onLogout }) {
   }, [installerId, onLogout]);
 
   useEffect(() => {
-    if (activeTab !== 'leads' || apiKey) return;
+    if ((activeTab !== 'leads' && activeTab !== 'settings') || apiKey) return;
     const loadApiKey = async () => {
       try {
         const headers = await getAuthHeader();
@@ -130,6 +135,32 @@ export default function InstallerDashboard({ user, onLogout }) {
     navigator.clipboard.writeText(apiKey);
     setApiKeyCopied(true);
     setTimeout(() => setApiKeyCopied(false), 2000);
+  };
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    if (pwNew !== pwConfirm) {
+      setPwMsg({ type: 'error', text: 'New passwords do not match.' });
+      return;
+    }
+    if (pwNew.length < 8) {
+      setPwMsg({ type: 'error', text: 'New password must be at least 8 characters.' });
+      return;
+    }
+    setPwLoading(true);
+    setPwMsg(null);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: pwNew });
+      if (error) throw error;
+      setPwMsg({ type: 'success', text: 'Password updated successfully.' });
+      setPwCurrent('');
+      setPwNew('');
+      setPwConfirm('');
+    } catch (err) {
+      setPwMsg({ type: 'error', text: err.message || 'Failed to update password.' });
+    } finally {
+      setPwLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -255,6 +286,7 @@ export default function InstallerDashboard({ user, onLogout }) {
             { id: 'embed', icon: <ClipboardIcon size={16} />, label: 'Embed Code' },
             { id: 'leads', icon: <ChartBarIcon size={16} />, label: 'Leads' },
             { id: 'subscription', icon: <CreditCardIcon size={16} />, label: 'Subscription' },
+            { id: 'settings', icon: <SettingsIcon size={16} />, label: 'Settings' },
           ].map(tab => (
             <button
               key={tab.id}
@@ -282,6 +314,7 @@ export default function InstallerDashboard({ user, onLogout }) {
               {activeTab === 'embed' && 'Embed Code'}
               {activeTab === 'leads' && 'Leads'}
               {activeTab === 'subscription' && 'Subscription'}
+              {activeTab === 'settings' && 'Settings'}
             </h1>
             <p className="dash-page-sub">Configure how your solar calculator estimates costs</p>
           </div>
@@ -656,44 +689,105 @@ export default function InstallerDashboard({ user, onLogout }) {
               </div>
             </div>
 
-            {/* API Access card */}
-            <div className="setting-card" style={{ marginTop: 20 }}>
-              <div className="setting-card-header">
-                <h3 className="setting-card-title">API Access</h3>
-                <p className="setting-card-desc">Pull your leads in real time into any CRM, Zapier, Make, or custom integration.</p>
-              </div>
-              <div className="setting-card-body">
-                <div style={{ marginBottom: 16 }}>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Your API Key</label>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            </>
+          )}
+
+          {activeTab === 'settings' && (
+            <div className="settings-grid">
+              {/* Account */}
+              <div className="setting-card">
+                <div className="setting-card-header">
+                  <h3 className="setting-card-title">Account</h3>
+                  <p className="setting-card-desc">Your login email and password.</p>
+                </div>
+                <div className="setting-card-body">
+                  <div style={{ marginBottom: 20 }}>
+                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Email</label>
                     <input
                       readOnly
                       type="text"
-                      value={apiKey || 'Loading…'}
-                      style={{ flex: 1, padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 13, fontFamily: 'monospace', background: '#f8fafc', color: '#0f172a' }}
+                      value={user?.email || ''}
+                      style={{ width: '100%', padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 13, background: '#f8fafc', color: '#64748b', boxSizing: 'border-box' }}
                     />
-                    <button onClick={handleCopyApiKey} style={{ padding: '8px 14px', border: '1px solid #e2e8f0', borderRadius: 8, background: '#fff', fontSize: 13, fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap', color: apiKeyCopied ? '#16a34a' : '#0f172a' }}>
-                      {apiKeyCopied ? 'Copied!' : 'Copy'}
-                    </button>
-                    <button onClick={handleRegenerateApiKey} disabled={apiKeyRegenerating} style={{ padding: '8px 14px', border: '1px solid #fecaca', borderRadius: 8, background: '#fff', fontSize: 13, fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap', color: '#dc2626' }}>
-                      {apiKeyRegenerating ? 'Regenerating…' : 'Regenerate'}
-                    </button>
                   </div>
-                </div>
 
-                <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, padding: 16 }}>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 10 }}>Usage Examples</div>
-                  <div style={{ fontSize: 12, color: '#64748b', marginBottom: 6 }}>Fetch all leads:</div>
-                  <pre style={{ margin: '0 0 12px', fontSize: 11, background: '#0f172a', color: '#e2e8f0', padding: '10px 14px', borderRadius: 6, overflowX: 'auto' }}>{`curl ${API_BASE}/api/leads \\
-  -H "X-API-Key: ${apiKey || 'YOUR_API_KEY'}"`}</pre>
-                  <div style={{ fontSize: 12, color: '#64748b', marginBottom: 6 }}>Fetch leads since a date (for polling):</div>
-                  <pre style={{ margin: 0, fontSize: 11, background: '#0f172a', color: '#e2e8f0', padding: '10px 14px', borderRadius: 6, overflowX: 'auto' }}>{`curl "${API_BASE}/api/leads?since=2026-01-01T00:00:00Z" \\
-  -H "X-API-Key: ${apiKey || 'YOUR_API_KEY'}"`}</pre>
+                  <form onSubmit={handleChangePassword}>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', marginBottom: 12 }}>Change Password</div>
+                    <div style={{ marginBottom: 12 }}>
+                      <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 4 }}>New Password</label>
+                      <input
+                        type="password"
+                        value={pwNew}
+                        onChange={e => setPwNew(e.target.value)}
+                        placeholder="Min. 8 characters"
+                        required
+                        style={{ width: '100%', padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: 16 }}>
+                      <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 4 }}>Confirm New Password</label>
+                      <input
+                        type="password"
+                        value={pwConfirm}
+                        onChange={e => setPwConfirm(e.target.value)}
+                        placeholder="Repeat new password"
+                        required
+                        style={{ width: '100%', padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }}
+                      />
+                    </div>
+                    {pwMsg && (
+                      <div style={{ marginBottom: 12, fontSize: 13, color: pwMsg.type === 'success' ? '#16a34a' : '#dc2626', background: pwMsg.type === 'success' ? '#f0fdf4' : '#fef2f2', border: `1px solid ${pwMsg.type === 'success' ? '#bbf7d0' : '#fecaca'}`, borderRadius: 7, padding: '8px 12px' }}>
+                        {pwMsg.text}
+                      </div>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={pwLoading}
+                      style={{ padding: '8px 18px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: pwLoading ? 'not-allowed' : 'pointer', opacity: pwLoading ? 0.7 : 1 }}
+                    >
+                      {pwLoading ? 'Updating…' : 'Update Password'}
+                    </button>
+                  </form>
                 </div>
-                <p style={{ margin: '12px 0 0', fontSize: 12, color: '#94a3b8' }}>Keep your API key secret. Regenerating it will invalidate all existing integrations.</p>
+              </div>
+
+              {/* API Access */}
+              <div className="setting-card">
+                <div className="setting-card-header">
+                  <h3 className="setting-card-title">API Access</h3>
+                  <p className="setting-card-desc">Pull your leads in real time into any CRM, Zapier, Make, or custom integration.</p>
+                </div>
+                <div className="setting-card-body">
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Your API Key</label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <input
+                        readOnly
+                        type="text"
+                        value={apiKey || 'Loading…'}
+                        style={{ flex: 1, padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 13, fontFamily: 'monospace', background: '#f8fafc', color: '#0f172a' }}
+                      />
+                      <button onClick={handleCopyApiKey} style={{ padding: '8px 14px', border: '1px solid #e2e8f0', borderRadius: 8, background: '#fff', fontSize: 13, fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap', color: apiKeyCopied ? '#16a34a' : '#0f172a' }}>
+                        {apiKeyCopied ? 'Copied!' : 'Copy'}
+                      </button>
+                      <button onClick={handleRegenerateApiKey} disabled={apiKeyRegenerating} style={{ padding: '8px 14px', border: '1px solid #fecaca', borderRadius: 8, background: '#fff', fontSize: 13, fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap', color: '#dc2626' }}>
+                        {apiKeyRegenerating ? 'Regenerating…' : 'Regenerate'}
+                      </button>
+                    </div>
+                  </div>
+                  <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, padding: 16 }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 10 }}>Usage Examples</div>
+                    <div style={{ fontSize: 12, color: '#64748b', marginBottom: 6 }}>Fetch all leads:</div>
+                    <pre style={{ margin: '0 0 12px', fontSize: 11, background: '#0f172a', color: '#e2e8f0', padding: '10px 14px', borderRadius: 6, overflowX: 'auto' }}>{`curl ${API_BASE}/api/leads \\
+  -H "X-API-Key: ${apiKey || 'YOUR_API_KEY'}"`}</pre>
+                    <div style={{ fontSize: 12, color: '#64748b', marginBottom: 6 }}>Fetch leads since a date (for polling):</div>
+                    <pre style={{ margin: 0, fontSize: 11, background: '#0f172a', color: '#e2e8f0', padding: '10px 14px', borderRadius: 6, overflowX: 'auto' }}>{`curl "${API_BASE}/api/leads?since=2026-01-01T00:00:00Z" \\
+  -H "X-API-Key: ${apiKey || 'YOUR_API_KEY'}"`}</pre>
+                  </div>
+                  <p style={{ margin: '12px 0 0', fontSize: 12, color: '#94a3b8' }}>Keep your API key secret. Regenerating it will invalidate all existing integrations.</p>
+                </div>
               </div>
             </div>
-            </>
           )}
 
           {activeTab === 'subscription' && (
