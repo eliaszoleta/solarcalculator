@@ -97,26 +97,8 @@ export default function Header() {
             </a>
           </nav>
 
-          {/* Mobile right side — "For Installers" always visible + hamburger */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} className="header-mobile-nav">
-            <a
-              href="/for-installers"
-              style={{
-                fontSize: 12,
-                fontWeight: 600,
-                color: '#0a0a0a',
-                padding: '6px 13px',
-                borderRadius: 8,
-                border: '1.5px solid #e5e7eb',
-                background: '#ffffff',
-                textDecoration: 'none',
-                whiteSpace: 'nowrap',
-                letterSpacing: '-0.01em',
-              }}
-            >
-              Get Solar Widget
-            </a>
-
+          {/* Mobile right side — hamburger only */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }} className="header-mobile-nav">
             {/* Hamburger button */}
             <button
               onClick={e => { e.stopPropagation(); setMenuOpen(o => !o); }}
@@ -180,6 +162,20 @@ export default function Header() {
               {item.label}
             </a>
           ))}
+          <a
+            href="/for-installers"
+            onClick={() => setMenuOpen(false)}
+            style={{
+              display: 'block',
+              fontSize: 15,
+              fontWeight: 600,
+              color: '#f59e0b',
+              padding: '12px 0',
+              textDecoration: 'none',
+            }}
+          >
+            Get Solar Widget →
+          </a>
         </div>
       )}
 

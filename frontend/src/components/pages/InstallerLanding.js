@@ -26,15 +26,15 @@ function LandingNav() {
       position: 'sticky', top: 0, zIndex: 100,
       background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)',
       borderBottom: '1px solid #e2e8f0',
-      padding: '0 24px', height: 64,
+      padding: '0 16px', height: 64,
       display: 'flex', alignItems: 'center',
     }}>
-      <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 44, width: 'auto' }} />
+      <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, minWidth: 0 }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 1, minWidth: 0, overflow: 'hidden' }}>
+          <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 38, width: 'auto', maxWidth: '100%' }} />
         </a>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <a href="/installer" style={{ fontSize: 14, color: '#64748b', fontWeight: 500, textDecoration: 'none' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          <a href="/installer" style={{ fontSize: 14, color: '#64748b', fontWeight: 500, textDecoration: 'none', whiteSpace: 'nowrap' }} className="landing-nav-login">
             Log in
           </a>
           <a href="/installer" style={ctaBtn}>
@@ -42,6 +42,12 @@ function LandingNav() {
           </a>
         </div>
       </div>
+      <style>{`
+        .landing-nav-login { display: inline; }
+        @media (max-width: 420px) {
+          .landing-nav-login { display: none !important; }
+        }
+      `}</style>
     </nav>
   );
 }
@@ -534,9 +540,9 @@ const sectionSub = {
 };
 
 const ctaBtn = {
-  padding: '10px 22px', background: 'linear-gradient(135deg, #f59e0b, #f97316)',
-  color: 'white', borderRadius: 10, fontWeight: 700, fontSize: 14,
-  textDecoration: 'none',
+  padding: '9px 16px', background: 'linear-gradient(135deg, #f59e0b, #f97316)',
+  color: 'white', borderRadius: 10, fontWeight: 700, fontSize: 13,
+  textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0,
 };
 
 const footerLink = { fontSize: 13, color: '#64748b', textDecoration: 'none' };
