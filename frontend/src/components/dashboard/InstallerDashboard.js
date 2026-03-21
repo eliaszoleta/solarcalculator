@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
 import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon } from '../ui/Icons';
@@ -12,6 +12,42 @@ async function getAuthHeader() {
 }
 
 const ALL_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC'];
+
+function ColorInput({ value, onChange }) {
+  const pickerRef = useRef(null);
+  const [localText, setLocalText] = useState(value || '');
+
+  useEffect(() => { setLocalText(value || ''); }, [value]);
+
+  const handleText = (e) => {
+    const raw = e.target.value;
+    setLocalText(raw);
+    const normalized = /^#/.test(raw) ? raw : '#' + raw;
+    if (/^#[0-9A-Fa-f]{6}$/.test(normalized)) onChange(normalized.toLowerCase());
+  };
+
+  const handlePicker = (e) => {
+    setLocalText(e.target.value);
+    onChange(e.target.value);
+  };
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div
+        onClick={() => pickerRef.current?.click()}
+        style={{ width: 36, height: 36, background: value || '#ffffff', borderRadius: 6, border: '1px solid #cbd5e1', cursor: 'pointer', flexShrink: 0 }}
+      />
+      <input ref={pickerRef} type="color" value={value || '#ffffff'} onChange={handlePicker} style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', width: 0, height: 0 }} tabIndex={-1} />
+      <input
+        type="text"
+        value={localText}
+        onChange={handleText}
+        placeholder="#f59e0b"
+        style={{ width: 100, padding: '6px 10px', border: '1px solid #e2e8f0', borderRadius: 6, fontSize: 13, fontFamily: 'monospace', letterSpacing: '0.05em' }}
+      />
+    </div>
+  );
+}
 
 const DEFAULT_CONFIG = {
   minSystemSize: 4, maxSystemSize: 20,
@@ -267,16 +303,10 @@ export default function InstallerDashboard({ user, onLogout }) {
                   <input type="text" value={config.systemName || ''} onChange={e => update('systemName', e.target.value)} className="dash-input dash-input-text" />
                 </SettingRow>
                 <SettingRow label="Primary Color">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <input type="color" value={config.primaryColor || '#f59e0b'} onChange={e => update('primaryColor', e.target.value)} style={{ width: 40, height: 36, border: 'none', padding: 2, borderRadius: 6, cursor: 'pointer' }} />
-                    <span className="color-value">{config.primaryColor}</span>
-                  </div>
+                  <ColorInput value={config.primaryColor || '#f59e0b'} onChange={v => update('primaryColor', v)} />
                 </SettingRow>
                 <SettingRow label="Form Background">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <input type="color" value={config.formBgColor || '#ffffff'} onChange={e => update('formBgColor', e.target.value)} style={{ width: 40, height: 36, border: 'none', padding: 2, borderRadius: 6, cursor: 'pointer' }} />
-                    <span className="color-value">{config.formBgColor || '#ffffff'}</span>
-                  </div>
+                  <ColorInput value={config.formBgColor || '#ffffff'} onChange={v => update('formBgColor', v)} />
                 </SettingRow>
               </SettingCard>
 
