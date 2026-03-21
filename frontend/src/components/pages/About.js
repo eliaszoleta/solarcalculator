@@ -126,7 +126,7 @@ export default function About() {
         <section style={{ marginBottom: 56, background: '#fffbeb', borderRadius: 16, padding: '28px 32px', border: '1px solid #fde68a' }}>
           <h2 style={{ ...h2Style, marginTop: 0 }}>A Note on Accuracy</h2>
           <p style={pStyle}>
-            Our estimates are within <strong>10–20% of real installer quotes</strong> for most homes. With a ZIP code we typically hit 10–15%. That's accurate enough to know whether solar makes financial sense for you and to spot an overpriced quote — but not precise enough to replace an on-site assessment.
+            Our estimates are <strong>80–90% accurate</strong> compared to real installer quotes. On a typical $25,000 system, that's within $2,500–$5,000 of what an installer would actually propose. That's accurate enough to know whether solar makes financial sense for you and to spot an overpriced quote — but not a substitute for an on-site assessment.
           </p>
           <p style={{ ...pStyle, marginBottom: 0 }}>
             For a final price, you'll always need a site visit from a licensed installer who can assess your roof, shade, electrical panel, and local permitting costs. Our goal isn't to replace that — it's to make sure you go into it informed.

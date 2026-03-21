@@ -111,7 +111,7 @@ function LogoBar() {
   const stats = [
     { value: '< 2 min', label: 'Setup time' },
     { value: 'NREL', label: 'Powered by real solar data' },
-    { value: '±10%', label: 'Margin vs. real installer quotes' },
+    { value: '85–90%', label: 'Accurate vs. real installer quotes' },
     { value: '30 days', label: 'Free trial' },
   ];
   return (
@@ -273,7 +273,7 @@ function AccuracySection() {
         <SectionLabel>Accuracy</SectionLabel>
         <h2 style={sectionTitle}>Estimates homeowners can trust</h2>
         <p style={sectionSub}>
-          Our estimates consistently land <strong>within 10–15% of what installers actually quote</strong> for the same home — tight enough to set real expectations, and compelling enough to get homeowners to pick up the phone.
+          Our estimates are <strong>85–90% accurate</strong> compared to real installer quotes for the same home. On a typical $25,000 system, that's within $2,500–$3,500 of what an installer would actually propose — close enough to set real expectations and compelling enough to get homeowners to call.
         </p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 28, marginTop: 52 }}>

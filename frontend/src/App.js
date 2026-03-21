@@ -274,7 +274,7 @@ export default function App() {
             {
               "@type": "Question",
               "name": "How accurate is this solar calculator?",
-              "acceptedAnswer": { "@type": "Answer", "text": "Our estimates are within 10–20% of real installer quotes for most homes. When you enter a ZIP code, we use real irradiance data from the NREL PVWatts API for your exact location, which improves accuracy to roughly 10–15%. Without a ZIP we use NREL state averages (15–20% range). We also use EIA electricity rates by state and current market installation costs ($2.50–$3.50/watt). For an exact price, you'll still need a site visit from a certified installer." }
+              "acceptedAnswer": { "@type": "Answer", "text": "Our estimates are 80–90% accurate compared to real installer quotes. On a typical $25,000 system, that means your estimate is within $2,500–$5,000 of what an installer would actually propose. We use real irradiance data from the NREL PVWatts API for your exact ZIP code, EIA electricity rates by state, and current market installation costs ($2.50–$3.50/watt). For a final price, you'll still need a site visit from a certified installer." }
             },
             {
               "@type": "Question",
