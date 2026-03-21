@@ -15,7 +15,7 @@ const PAYMENT_METHODS = [
   { value: 'unsure', label: 'Not sure yet', desc: 'Help me decide' },
 ];
 
-export default function StepLead({ onSubmit, loading, requireContact }) {
+export default function StepLead({ onSubmit, loading, requireContact, embedded }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', timeline: '', paymentMethod: '' });
   const [errors, setErrors] = useState({});
 
@@ -49,7 +49,7 @@ export default function StepLead({ onSubmit, loading, requireContact }) {
           : 'Tell us a bit about your solar plans to get your free estimate.'}
       </p>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: embedded ? 6 : 12 }}>
         {requireContact && (
           <>
             <div>
@@ -91,7 +91,7 @@ export default function StepLead({ onSubmit, loading, requireContact }) {
         )}
 
         <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 8 }}>How are you planning to pay?</p>
+          <p style={{ fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: embedded ? 4 : 8 }}>How are you planning to pay?</p>
           <div className="option-grid option-grid-2">
             {PAYMENT_METHODS.map(t => (
               <button
@@ -109,7 +109,7 @@ export default function StepLead({ onSubmit, loading, requireContact }) {
         </div>
 
         <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 8 }}>When are you looking to go solar?</p>
+          <p style={{ fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: embedded ? 4 : 8 }}>When are you looking to go solar?</p>
           <div className="option-grid option-grid-2">
             {TIMELINES.map(t => (
               <button
@@ -139,7 +139,7 @@ export default function StepLead({ onSubmit, loading, requireContact }) {
 
       <style>{`
         .sl-input {
-          padding: 12px 14px;
+          padding: ${embedded ? '8px 10px' : '12px 14px'};
           border: 1.5px solid #e2e8f0;
           border-radius: 10px;
           font-size: 15px;
@@ -152,7 +152,7 @@ export default function StepLead({ onSubmit, loading, requireContact }) {
         .sl-input:focus { border-color: #1e40af; }
         .sl-input::placeholder { color: #94a3b8; }
         .field-error { color: #dc2626; font-size: 12px; margin-top: 4px; }
-        .option-card-sm { padding: 10px 12px; }
+        .option-card-sm { padding: ${embedded ? '6px 8px' : '10px 12px'}; }
         .option-grid-2 { grid-template-columns: 1fr 1fr; }
       `}</style>
     </div>

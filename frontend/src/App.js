@@ -109,10 +109,8 @@ function EmbedWrapper({ installerId }) {
   }
 
   return (
-    <div style={{ height: '100vh', overflow: 'hidden', background: 'white' }}>
-      <div style={{ height: '100%', overflowY: 'auto', overflowX: 'hidden' }}>
-        <SolarCalculator embedded installerConfig={installerConfig} installerId={installerId} />
-      </div>
+    <div style={{ height: '100vh', overflow: 'hidden', background: 'white', display: 'flex', flexDirection: 'column' }}>
+      <SolarCalculator embedded installerConfig={installerConfig} installerId={installerId} />
     </div>
   );
 }

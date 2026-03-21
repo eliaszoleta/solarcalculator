@@ -252,3 +252,60 @@
     padding: 12px 20px;
   }
 }
+
+/* ─── Embedded / iframe layout ──────────────────────────────────────
+   The goal: card fills 100% of the iframe height, step-content takes
+   all remaining space, content is vertically centred, and overflow is
+   hidden so a scrollbar can never appear.
+──────────────────────────────────────────────────────────────────── */
+.embed-mode {
+  height: 100%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  min-height: unset;
+}
+
+.embed-mode .calculator-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  margin: 0;
+}
+
+/* Card stretches to fill all available height */
+.embed-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+/* Step-content takes all leftover space and centres its child */
+.embed-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: unset;
+  overflow: hidden;
+  padding: 12px 28px 16px;
+}
+
+/* Tighten inner element spacing so everything fits without scroll */
+.embed-content .step-title  { margin-bottom: 4px; font-size: 18px; }
+.embed-content .step-desc   { margin-bottom: 10px; font-size: 13px; }
+.embed-content .option-grid { gap: 8px; }
+.embed-content .option-card { padding: 10px 12px; }
+.embed-content .option-icon { font-size: 22px; margin-bottom: 3px; }
+.embed-content .option-label { font-size: 13px; }
+.embed-content .option-desc  { font-size: 11px; }
+
+/* Compact nav bar */
+.embed-nav {
+  padding: 10px 28px 12px;
+}

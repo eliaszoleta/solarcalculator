@@ -119,18 +119,20 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   const canProceed = !isOutOfArea && !isDisqualified && !step3Incomplete;
 
   return (
-    <section className="calculator-section" style={embedded ? { padding: '24px 16px 32px', minHeight: 'unset' } : {}}>
+    <section className={`calculator-section${embedded ? ' embed-mode' : ''}`}>
       <div className="calculator-container">
-        <div className="calculator-header">
-          <span className="calc-badge">Free Estimate</span>
-          <h1 className="calc-title">How Much Will You Save Going Solar?</h1>
-          <p className="calc-subtitle">Answer 5 quick questions and get your personalized solar savings estimate instantly.</p>
-        </div>
+        {!embedded && (
+          <div className="calculator-header">
+            <span className="calc-badge">Free Estimate</span>
+            <h1 className="calc-title">How Much Will You Save Going Solar?</h1>
+            <p className="calc-subtitle">Answer 5 quick questions and get your personalized solar savings estimate instantly.</p>
+          </div>
+        )}
 
-        <div className="calculator-card">
-          <ProgressBar current={step} total={TOTAL_STEPS} steps={steps} />
+        <div className={`calculator-card${embedded ? ' embed-card' : ''}`}>
+          <ProgressBar current={step} total={TOTAL_STEPS} steps={steps} embedded={embedded} />
 
-          <div className="step-content">
+          <div className={`step-content${embedded ? ' embed-content' : ''}`}>
             {step === 1 && <StepBill value={form.monthlyBill} onChange={v => update('monthlyBill', v)} />}
             {step === 2 && <StepLocation zip={form.zip} state={form.state} onZipChange={v => update('zip', v)} onStateChange={v => update('state', v)} serviceStates={serviceStates} />}
             {step === 3 && (
@@ -143,14 +145,14 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
             )}
             {step === 4 && <StepRoof sunExposure={form.sunExposure} roofType={form.roofType} onExposureChange={v => update('sunExposure', v)} onRoofChange={v => update('roofType', v)} />}
             {step === 5 && <StepBattery value={form.battery} onChange={v => update('battery', v)} />}
-            {step === 6 && <StepLead onSubmit={handleLeadSubmit} loading={loading} requireContact={!!installerId} />}
+            {step === 6 && <StepLead onSubmit={handleLeadSubmit} loading={loading} requireContact={!!installerId} embedded={embedded} />}
           </div>
 
           {error && <div className="error-banner">{error}</div>}
 
           {/* Nav — hidden on step 6 (lead form has its own submit button) */}
           {step < 6 && (
-            <div className="step-nav">
+            <div className={`step-nav${embedded ? ' embed-nav' : ''}`}>
               {step > 1 && (
                 <button className="btn btn-secondary" onClick={back}>
                   ← Back
@@ -169,7 +171,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
           )}
 
           {step === 6 && (
-            <div className="step-nav">
+            <div className={`step-nav${embedded ? ' embed-nav' : ''}`}>
               <button className="btn btn-secondary" onClick={back} disabled={loading}>
                 ← Back
               </button>
@@ -179,11 +181,13 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
           )}
         </div>
 
-        <div className="trust-badges">
-          <span><LockIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />No account needed</span>
-          <span><BoltIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />Instant results</span>
-          <span><CheckCircleIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />Free to use</span>
-        </div>
+        {!embedded && (
+          <div className="trust-badges">
+            <span><LockIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />No account needed</span>
+            <span><BoltIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />Instant results</span>
+            <span><CheckCircleIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />Free to use</span>
+          </div>
+        )}
       </div>
     </section>
   );

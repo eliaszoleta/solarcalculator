@@ -1,11 +1,11 @@
 import React from 'react';
 
-export default function ProgressBar({ current, total, steps }) {
+export default function ProgressBar({ current, total, steps, embedded }) {
   return (
-    <div style={{ padding: '28px 36px 0' }}>
+    <div style={{ padding: embedded ? '14px 28px 0' : '28px 36px 0' }}>
 
       {/* Step dots */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 20 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: embedded ? 10 : 20 }}>
         {steps.map((s, i) => {
           const stepNum = i + 1;
           const isDone = stepNum < current;
@@ -58,7 +58,7 @@ export default function ProgressBar({ current, total, steps }) {
       </div>
 
       {/* Current step label */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: embedded ? 2 : 4 }}>
         <span style={{ fontSize: 13, fontWeight: 600, color: '#0a0a0a', display: 'flex', alignItems: 'center', gap: 6 }}>
           {steps[current - 1]?.icon}
           {steps[current - 1]?.label}
