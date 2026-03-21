@@ -2,21 +2,9 @@ import React from 'react';
 
 export default function ProgressBar({ current, total, steps, embedded, primaryColor }) {
   const accent = primaryColor || '#f59e0b';
-  const progressPct = Math.round(((current - 1) / (total - 1)) * 100);
 
   return (
     <div style={{ padding: embedded ? '14px 24px 10px' : '26px 32px 14px' }}>
-
-      {/* Animated progress track */}
-      <div style={{ position: 'relative', height: 3, background: '#f1f5f9', borderRadius: 999, marginBottom: embedded ? 14 : 22, overflow: 'hidden' }}>
-        <div style={{
-          position: 'absolute', left: 0, top: 0, height: '100%',
-          width: `${progressPct}%`,
-          background: `linear-gradient(90deg, ${accent}, ${accent}cc)`,
-          borderRadius: 999,
-          transition: 'width 0.45s cubic-bezier(0.4,0,0.2,1)',
-        }} />
-      </div>
 
       {/* Step dots + connectors */}
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: embedded ? 10 : 16 }}>
@@ -58,9 +46,7 @@ export default function ProgressBar({ current, total, steps, embedded, primaryCo
                 }}
               >
                 {isDone ? (
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                    <path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: '#fff', lineHeight: 1 }}>{stepNum}</span>
                 ) : isActive ? (
                   <span style={{ fontSize: 11, fontWeight: 700, color: accent, lineHeight: 1 }}>{stepNum}</span>
                 ) : (
