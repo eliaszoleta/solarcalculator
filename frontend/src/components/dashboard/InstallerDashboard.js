@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
-import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon } from '../ui/Icons';
+import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon, PencilIcon } from '../ui/Icons';
 import SolarCalculator from '../calculator/SolarCalculator';
 import './InstallerDashboard.css';
 
@@ -79,6 +79,10 @@ export default function InstallerDashboard({ user, onLogout }) {
   });
   const [leads, setLeads] = useState([]);
   const [leadsLoading, setLeadsLoading] = useState(false);
+  const [trashView, setTrashView] = useState(false);
+  const [trashedLeads, setTrashedLeads] = useState([]);
+  const [editingLead, setEditingLead] = useState(null); // lead object being edited
+  const [editDraft, setEditDraft] = useState({});
   const [subscription, setSubscription] = useState(null);
   const [subLoading, setSubLoading] = useState(false);
 
@@ -100,16 +104,43 @@ export default function InstallerDashboard({ user, onLogout }) {
     if (activeTab !== 'leads') return;
     const loadLeads = async () => {
       setLeadsLoading(true);
-      const { data, error } = await supabase
-        .from('leads')
-        .select('*')
-        .eq('installer_id', installerId)
-        .order('created_at', { ascending: false });
-      if (!error) setLeads(data || []);
+      const [activeRes, trashedRes] = await Promise.all([
+        supabase.from('leads').select('*').eq('installer_id', installerId).is('deleted_at', null).order('created_at', { ascending: false }),
+        supabase.from('leads').select('*').eq('installer_id', installerId).not('deleted_at', 'is', null).order('deleted_at', { ascending: false }),
+      ]);
+      if (!activeRes.error) setLeads(activeRes.data || []);
+      if (!trashedRes.error) setTrashedLeads(trashedRes.data || []);
       setLeadsLoading(false);
     };
     loadLeads();
   }, [activeTab, installerId]);
+
+  const handleDeleteLead = async (lead) => {
+    const now = new Date().toISOString();
+    await supabase.from('leads').update({ deleted_at: now }).eq('id', lead.id);
+    setLeads(prev => prev.filter(l => l.id !== lead.id));
+    setTrashedLeads(prev => [{ ...lead, deleted_at: now }, ...prev]);
+  };
+
+  const handleRestoreLead = async (lead) => {
+    await supabase.from('leads').update({ deleted_at: null }).eq('id', lead.id);
+    setTrashedLeads(prev => prev.filter(l => l.id !== lead.id));
+    setLeads(prev => [{ ...lead, deleted_at: null }, ...prev]);
+  };
+
+  const handlePermanentDelete = async (lead) => {
+    if (!window.confirm('Permanently delete this lead? This cannot be undone.')) return;
+    await supabase.from('leads').delete().eq('id', lead.id);
+    setTrashedLeads(prev => prev.filter(l => l.id !== lead.id));
+  };
+
+  const handleSaveLead = async () => {
+    const { id } = editingLead;
+    const patch = { name: editDraft.name, email: editDraft.email, phone: editDraft.phone };
+    await supabase.from('leads').update(patch).eq('id', id);
+    setLeads(prev => prev.map(l => l.id === id ? { ...l, ...patch } : l));
+    setEditingLead(null);
+  };
 
   useEffect(() => {
     if (activeTab !== 'subscription') return;
@@ -423,13 +454,80 @@ export default function InstallerDashboard({ user, onLogout }) {
 
           {activeTab === 'leads' && (
             <div className="setting-card">
-              <div className="setting-card-header">
-                <h3 className="setting-card-title">Leads ({leads.length})</h3>
-                <p className="setting-card-desc">Contacts collected through your solar calculator.</p>
+              {/* Edit Lead Modal */}
+              {editingLead && (
+                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ background: '#fff', borderRadius: 12, padding: 28, width: 380, boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
+                    <h3 style={{ margin: '0 0 20px', fontSize: 16, fontWeight: 700 }}>Edit Lead</h3>
+                    {[['Name', 'name', 'text'], ['Email', 'email', 'email'], ['Phone', 'phone', 'tel']].map(([label, field, type]) => (
+                      <div key={field} style={{ marginBottom: 14 }}>
+                        <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 4 }}>{label}</label>
+                        <input
+                          type={type}
+                          value={editDraft[field] || ''}
+                          onChange={e => setEditDraft(d => ({ ...d, [field]: e.target.value }))}
+                          style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: 7, fontSize: 13, boxSizing: 'border-box' }}
+                        />
+                      </div>
+                    ))}
+                    <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 20 }}>
+                      <button onClick={() => setEditingLead(null)} style={{ padding: '8px 16px', border: '1px solid #e2e8f0', borderRadius: 7, background: '#fff', fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+                      <button onClick={handleSaveLead} style={{ padding: '8px 16px', border: 'none', borderRadius: 7, background: '#0f172a', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>Save</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="setting-card-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+                <div>
+                  <h3 className="setting-card-title">{trashView ? 'Trash' : `Leads (${leads.length})`}</h3>
+                  <p className="setting-card-desc">{trashView ? 'Deleted leads — restore or permanently remove them.' : 'Contacts collected through your solar calculator.'}</p>
+                </div>
+                <button
+                  onClick={() => setTrashView(v => !v)}
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', border: '1px solid #e2e8f0', borderRadius: 8, background: trashView ? '#0f172a' : '#fff', color: trashView ? '#fff' : '#64748b', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}
+                >
+                  <TrashIcon size={14} />
+                  Trash {trashedLeads.length > 0 && `(${trashedLeads.length})`}
+                </button>
               </div>
+
               <div className="setting-card-body">
                 {leadsLoading ? (
                   <p style={{ color: '#64748b', fontSize: 14 }}>Loading leads...</p>
+                ) : trashView ? (
+                  trashedLeads.length === 0 ? (
+                    <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748b' }}>
+                      <div style={{ marginBottom: 12 }}><TrashIcon size={32} /></div>
+                      <p style={{ fontSize: 14 }}>Trash is empty.</p>
+                    </div>
+                  ) : (
+                    <div style={{ overflowX: 'auto' }}>
+                      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                        <thead>
+                          <tr style={{ borderBottom: '1px solid #e2e8f0', color: '#64748b', textAlign: 'left' }}>
+                            <th style={{ padding: '8px 12px', fontWeight: 600 }}>Name</th>
+                            <th style={{ padding: '8px 12px', fontWeight: 600 }}>Email</th>
+                            <th style={{ padding: '8px 12px', fontWeight: 600 }}>Deleted</th>
+                            <th style={{ padding: '8px 12px', fontWeight: 600 }}>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {trashedLeads.map(lead => (
+                            <tr key={lead.id} style={{ borderBottom: '1px solid #f1f5f9', verticalAlign: 'middle' }}>
+                              <td style={{ padding: '10px 12px', fontWeight: 500 }}>{lead.name || '—'}</td>
+                              <td style={{ padding: '10px 12px', color: '#475569' }}>{lead.email || '—'}</td>
+                              <td style={{ padding: '10px 12px', color: '#94a3b8', whiteSpace: 'nowrap' }}>{new Date(lead.deleted_at).toLocaleDateString()}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
+                                <button onClick={() => handleRestoreLead(lead)} style={{ marginRight: 8, padding: '5px 12px', border: '1px solid #e2e8f0', borderRadius: 6, background: '#fff', fontSize: 12, fontWeight: 500, cursor: 'pointer', color: '#0f172a' }}>Restore</button>
+                                <button onClick={() => handlePermanentDelete(lead)} style={{ padding: '5px 12px', border: '1px solid #fecaca', borderRadius: 6, background: '#fff', fontSize: 12, fontWeight: 500, cursor: 'pointer', color: '#dc2626' }}>Delete forever</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )
                 ) : leads.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748b' }}>
                     <div style={{ marginBottom: 12 }}><ClipboardIcon size={32} /></div>
@@ -446,6 +544,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Answers</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Estimate</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Date</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -486,6 +585,22 @@ export default function InstallerDashboard({ user, onLogout }) {
                                 {!lead.system_size_kw && !lead.annual_savings ? '—' : null}
                               </td>
                               <td style={{ padding: '10px 12px', color: '#64748b', whiteSpace: 'nowrap' }}>{new Date(lead.created_at).toLocaleDateString()}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
+                                <button
+                                  onClick={() => { setEditingLead(lead); setEditDraft({ name: lead.name || '', email: lead.email || '', phone: lead.phone || '' }); }}
+                                  title="Edit"
+                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#475569', padding: '4px 6px', borderRadius: 6, marginRight: 4 }}
+                                >
+                                  <PencilIcon size={15} />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteLead(lead)}
+                                  title="Move to trash"
+                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: '4px 6px', borderRadius: 6 }}
+                                >
+                                  <TrashIcon size={15} />
+                                </button>
+                              </td>
                             </tr>
                           );
                         })}
