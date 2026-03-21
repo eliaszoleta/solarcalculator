@@ -3,6 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { DEFAULT_INSTALLER_CONFIG } = require('../config/defaults');
 const { computeSubscriptionStatus } = require('./subscription');
 
@@ -173,5 +174,32 @@ router.get('/:id/defaults', (req, res) => {
   res.json({ success: true, data: DEFAULT_INSTALLER_CONFIG });
 });
 
+// GET /api/installer/:id/api-key — return current API key (masked) or generate one
+router.get('/:id/api-key', async (req, res) => {
+  try {
+    const config = (await getInstallerConfig(req.params.id)) || { ...DEFAULT_INSTALLER_CONFIG };
+    if (!config.apiKey) {
+      config.apiKey = `sk_${crypto.randomBytes(24).toString('hex')}`;
+      await saveInstallerConfig(req.params.id, config);
+    }
+    res.json({ success: true, data: { apiKey: config.apiKey } });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to retrieve API key' });
+  }
+});
+
+// POST /api/installer/:id/api-key/regenerate — generate a fresh API key
+router.post('/:id/api-key/regenerate', async (req, res) => {
+  try {
+    const config = (await getInstallerConfig(req.params.id)) || { ...DEFAULT_INSTALLER_CONFIG };
+    config.apiKey = `sk_${crypto.randomBytes(24).toString('hex')}`;
+    await saveInstallerConfig(req.params.id, config);
+    res.json({ success: true, data: { apiKey: config.apiKey } });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to regenerate API key' });
+  }
+});
+
 module.exports = router;
 module.exports.getInstallerConfig = getInstallerConfig;
+module.exports.dbHeaders = dbHeaders;

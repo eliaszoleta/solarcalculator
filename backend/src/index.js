@@ -8,6 +8,7 @@ const calculateRouter = require('./routes/calculate');
 const installerRouter = require('./routes/installer');
 const authRouter = require('./routes/auth');
 const subscriptionRouter = require('./routes/subscription');
+const leadsRouter = require('./routes/leads');
 const { requireAuth } = require('./middleware/auth');
 const { getInstallerConfig } = require('./routes/installer');
 const { computeSubscriptionStatus } = require('./routes/subscription');
@@ -20,9 +21,11 @@ const PORT = process.env.PORT || 3001;
 app.use(helmet());
 
 // Public embed routes — allow any origin (widget is embedded on installer sites)
-const publicCors = cors({ origin: '*', methods: ['GET', 'POST'], allowedHeaders: ['Content-Type'] });
+const publicCors = cors({ origin: '*', methods: ['GET', 'POST'], allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'] });
 app.use('/api/calculate', publicCors);
 app.use('/api/installer/:id/public', publicCors);
+// Leads API — open CORS, authenticated by API key
+app.use('/api/leads', publicCors);
 
 // All other routes — restrict to known origins
 app.use(cors({
@@ -71,6 +74,9 @@ app.get('/api/installer/:id/public', async (req, res) => {
 // Auth-protected routes
 app.use('/api/installer', requireAuth, installerRouter);
 app.use('/api/subscription', requireAuth, subscriptionRouter);
+
+// Leads API — API key authenticated (no session required)
+app.use('/api/leads', leadsRouter);
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'ok' }));

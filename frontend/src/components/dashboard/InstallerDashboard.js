@@ -83,6 +83,9 @@ export default function InstallerDashboard({ user, onLogout }) {
   const [trashedLeads, setTrashedLeads] = useState([]);
   const [editingLead, setEditingLead] = useState(null); // lead object being edited
   const [editDraft, setEditDraft] = useState({});
+  const [apiKey, setApiKey] = useState(null);
+  const [apiKeyCopied, setApiKeyCopied] = useState(false);
+  const [apiKeyRegenerating, setApiKeyRegenerating] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [subLoading, setSubLoading] = useState(false);
 
@@ -99,6 +102,35 @@ export default function InstallerDashboard({ user, onLogout }) {
     };
     load();
   }, [installerId, onLogout]);
+
+  useEffect(() => {
+    if (activeTab !== 'leads' || apiKey) return;
+    const loadApiKey = async () => {
+      try {
+        const headers = await getAuthHeader();
+        const res = await axios.get(`${API_BASE}/api/installer/${installerId}/api-key`, { headers });
+        setApiKey(res.data.data.apiKey);
+      } catch {}
+    };
+    loadApiKey();
+  }, [activeTab, installerId, apiKey]);
+
+  const handleRegenerateApiKey = async () => {
+    if (!window.confirm('Regenerating will invalidate the current key. Any integrations using it will stop working until updated. Continue?')) return;
+    setApiKeyRegenerating(true);
+    try {
+      const headers = await getAuthHeader();
+      const res = await axios.post(`${API_BASE}/api/installer/${installerId}/api-key/regenerate`, {}, { headers });
+      setApiKey(res.data.data.apiKey);
+    } catch {}
+    setApiKeyRegenerating(false);
+  };
+
+  const handleCopyApiKey = () => {
+    navigator.clipboard.writeText(apiKey);
+    setApiKeyCopied(true);
+    setTimeout(() => setApiKeyCopied(false), 2000);
+  };
 
   useEffect(() => {
     if (activeTab !== 'leads') return;
@@ -550,20 +582,25 @@ export default function InstallerDashboard({ user, onLogout }) {
                       <tbody>
                         {leads.map(lead => {
                           const fmt = v => v ? String(v).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : null;
+                          const batteryLabel = { none: 'No Battery', one: '1 Battery', two: '2 Batteries' }[lead.battery] || fmt(lead.battery);
                           const rows = [
                             lead.monthly_bill != null && `Bill: $${lead.monthly_bill}/mo`,
                             (lead.zip || lead.state) && `Location: ${[lead.zip, lead.state].filter(Boolean).join(', ')}`,
                             lead.home_type && `Home: ${fmt(lead.home_type)}`,
-                            lead.owns_home != null && `Owns: ${lead.owns_home ? 'Yes' : 'No'}`,
+                            lead.owns_home != null && `Owns home: ${lead.owns_home ? 'Yes' : 'No'}`,
                             lead.sun_exposure && `Sun: ${fmt(lead.sun_exposure)}`,
-                            lead.roof_type && `Roof: ${fmt(lead.roof_type)}`,
-                            lead.battery != null && `Battery: ${lead.battery ? 'Yes' : 'No'}`,
+                            lead.roof_type && `Roof type: ${fmt(lead.roof_type)}`,
+                            lead.battery && `Battery: ${batteryLabel}`,
                             lead.payment_method && `Payment: ${fmt(lead.payment_method)}`,
                             lead.timeline && `Timeline: ${fmt(lead.timeline)}`,
                           ].filter(Boolean);
+                          // Show all custom answers — match label from config if available, else prettify the key
                           const customRows = lead.custom_answers
-                            ? (config.customSteps || []).filter(s => lead.custom_answers[s.id] !== undefined)
-                                .map(s => `${s.label}: ${lead.custom_answers[s.id]}`)
+                            ? Object.entries(lead.custom_answers).map(([id, val]) => {
+                                const step = (config.customSteps || []).find(s => s.id === id);
+                                const label = step ? step.label : fmt(id.replace(/^custom_\d+_?/, '')) || id;
+                                return `${label}: ${val}`;
+                              })
                             : [];
                           return (
                             <tr key={lead.id} style={{ borderBottom: '1px solid #f1f5f9', verticalAlign: 'top' }}>
@@ -608,6 +645,44 @@ export default function InstallerDashboard({ user, onLogout }) {
                     </table>
                   </div>
                 )}
+              </div>
+            </div>
+
+            {/* API Access card */}
+            <div className="setting-card" style={{ marginTop: 20 }}>
+              <div className="setting-card-header">
+                <h3 className="setting-card-title">API Access</h3>
+                <p className="setting-card-desc">Pull your leads in real time into any CRM, Zapier, Make, or custom integration.</p>
+              </div>
+              <div className="setting-card-body">
+                <div style={{ marginBottom: 16 }}>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Your API Key</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <input
+                      readOnly
+                      type="text"
+                      value={apiKey || 'Loading…'}
+                      style={{ flex: 1, padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 13, fontFamily: 'monospace', background: '#f8fafc', color: '#0f172a' }}
+                    />
+                    <button onClick={handleCopyApiKey} style={{ padding: '8px 14px', border: '1px solid #e2e8f0', borderRadius: 8, background: '#fff', fontSize: 13, fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap', color: apiKeyCopied ? '#16a34a' : '#0f172a' }}>
+                      {apiKeyCopied ? 'Copied!' : 'Copy'}
+                    </button>
+                    <button onClick={handleRegenerateApiKey} disabled={apiKeyRegenerating} style={{ padding: '8px 14px', border: '1px solid #fecaca', borderRadius: 8, background: '#fff', fontSize: 13, fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap', color: '#dc2626' }}>
+                      {apiKeyRegenerating ? 'Regenerating…' : 'Regenerate'}
+                    </button>
+                  </div>
+                </div>
+
+                <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, padding: 16 }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 10 }}>Usage Examples</div>
+                  <div style={{ fontSize: 12, color: '#64748b', marginBottom: 6 }}>Fetch all leads:</div>
+                  <pre style={{ margin: '0 0 12px', fontSize: 11, background: '#0f172a', color: '#e2e8f0', padding: '10px 14px', borderRadius: 6, overflowX: 'auto' }}>{`curl ${API_BASE}/api/leads \\
+  -H "X-API-Key: ${apiKey || 'YOUR_API_KEY'}"`}</pre>
+                  <div style={{ fontSize: 12, color: '#64748b', marginBottom: 6 }}>Fetch leads since a date (for polling):</div>
+                  <pre style={{ margin: 0, fontSize: 11, background: '#0f172a', color: '#e2e8f0', padding: '10px 14px', borderRadius: 6, overflowX: 'auto' }}>{`curl "${API_BASE}/api/leads?since=2026-01-01T00:00:00Z" \\
+  -H "X-API-Key: ${apiKey || 'YOUR_API_KEY'}"`}</pre>
+                </div>
+                <p style={{ margin: '12px 0 0', fontSize: 12, color: '#94a3b8' }}>Keep your API key secret. Regenerating it will invalidate all existing integrations.</p>
               </div>
             </div>
           )}

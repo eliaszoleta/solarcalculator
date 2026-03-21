@@ -101,7 +101,6 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
       if (data.success) {
         setResults(data.data);
         setStep(TOTAL_STEPS + 1);
-        const hasCustomAnswers = Object.keys(form.customAnswers || {}).length > 0;
         supabase.from('leads').insert({
           installer_id: installerId || null,
           name: leadData.name,
@@ -116,11 +115,11 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
           owns_home: form.ownsHome != null ? form.ownsHome : null,
           sun_exposure: form.sunExposure || null,
           roof_type: form.roofType || null,
-          battery: form.battery != null ? form.battery : null,
+          battery: form.battery || null,
           system_size_kw: data.data.system?.sizeKw || null,
           annual_savings: data.data.savings?.annual || null,
           total_cost: data.data.cost?.total || null,
-          ...(hasCustomAnswers ? { custom_answers: form.customAnswers } : {}),
+          custom_answers: Object.keys(form.customAnswers || {}).length > 0 ? form.customAnswers : null,
         }).then(({ error }) => { if (error) console.error('Lead save error:', error.message); });
       } else {
         setError('Calculation failed. Please check your inputs and try again.');
