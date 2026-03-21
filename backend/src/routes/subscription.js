@@ -135,7 +135,7 @@ async function findInstallerByCustomer(customerId) {
   if (!SERVICE_KEY()) return null;
   try {
     const res = await axios.get(
-      `${SUPABASE_URL}/rest/v1/installer_configs?select=installer_id,config&config->>stripeCustomerId=eq.${customerId}`,
+      `${SUPABASE_URL}/rest/v1/installer_configs?select=installer_id,config&config->subscription->>stripeCustomerId=eq.${customerId}`,
       { headers: { apikey: SERVICE_KEY(), Authorization: `Bearer ${SERVICE_KEY()}` } }
     );
     return res.data?.[0]?.installer_id || null;

@@ -207,15 +207,13 @@ export default function InstallerDashboard({ user, onLogout }) {
   };
 
   useEffect(() => {
-    if (activeTab !== 'subscription') return;
     const loadSub = async () => {
-      setSubLoading(true);
+      if (activeTab === 'subscription') setSubLoading(true);
       try {
         const headers = await getAuthHeader();
         const res = await axios.get(`${API_BASE}/api/subscription/status`, { headers });
         setSubscription(res.data.data);
       } catch {
-        // fallback: derive from config
         setSubscription(null);
       } finally {
         setSubLoading(false);
@@ -325,6 +323,21 @@ export default function InstallerDashboard({ user, onLogout }) {
         </div>
 
         <div className="dash-content">
+
+          {subscription?.status === 'expired' && (
+            <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 12, padding: '16px 20px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontWeight: 700, fontSize: 14, color: '#dc2626', margin: '0 0 2px' }}>Your free trial has ended</p>
+                <p style={{ fontSize: 13, color: '#7f1d1d', margin: 0, lineHeight: 1.5 }}>Your embedded solar calculator is now paused and no longer visible to visitors. Subscribe to reactivate it.</p>
+              </div>
+              <button
+                onClick={handleSubscribe}
+                style={{ whiteSpace: 'nowrap', padding: '10px 22px', background: '#dc2626', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}
+              >
+                Subscribe Now
+              </button>
+            </div>
+          )}
 
           {activeTab === 'pricing' && (
             <div className="settings-grid">
