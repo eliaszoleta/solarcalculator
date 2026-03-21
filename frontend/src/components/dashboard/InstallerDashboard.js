@@ -93,6 +93,7 @@ export default function InstallerDashboard({ user, onLogout }) {
   const [pwConfirm, setPwConfirm] = useState('');
   const [pwLoading, setPwLoading] = useState(false);
   const [pwMsg, setPwMsg] = useState(null); // { type: 'success'|'error', text: string }
+  const [embedCopied, setEmbedCopied] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -502,8 +503,8 @@ export default function InstallerDashboard({ user, onLogout }) {
                 <div className="embed-code-box">
                   <code>{embedCode}</code>
                 </div>
-                <button className="btn-copy" onClick={() => navigator.clipboard.writeText(embedCode)}>
-                  <ClipboardIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />Copy Embed Code
+                <button className="btn-copy" onClick={() => { navigator.clipboard.writeText(embedCode); setEmbedCopied(true); setTimeout(() => setEmbedCopied(false), 2000); }}>
+                  <ClipboardIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />{embedCopied ? 'Copied!' : 'Copy Embed Code'}
                 </button>
                 <div className="embed-instructions">
                   <h4>How to add it:</h4>
