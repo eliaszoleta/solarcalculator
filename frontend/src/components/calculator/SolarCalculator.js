@@ -129,7 +129,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
           </div>
         )}
 
-        <div className={`calculator-card${embedded ? ' embed-card' : ''}`}>
+        <div className={`calculator-card${embedded ? ' embed-card' : ''}`} style={installerConfig?.formBgColor ? { background: installerConfig.formBgColor } : {}}>
           <ProgressBar current={step} total={TOTAL_STEPS} steps={steps} embedded={embedded} />
 
           <div className={`step-content${embedded ? ' embed-content' : ''}`}>
@@ -145,7 +145,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
             )}
             {step === 4 && <StepRoof sunExposure={form.sunExposure} roofType={form.roofType} onExposureChange={v => update('sunExposure', v)} onRoofChange={v => update('roofType', v)} />}
             {step === 5 && <StepBattery value={form.battery} onChange={v => update('battery', v)} />}
-            {step === 6 && <StepLead onSubmit={handleLeadSubmit} loading={loading} requireContact={!!installerId} embedded={embedded} />}
+            {step === 6 && <StepLead onSubmit={handleLeadSubmit} loading={loading} requireContact={!!installerId} embedded={embedded} primaryColor={installerConfig?.primaryColor} formBgColor={installerConfig?.formBgColor} />}
           </div>
 
           {error && <div className="error-banner">{error}</div>}
@@ -164,6 +164,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
                 onClick={next}
                 disabled={!canProceed}
                 title={isDisqualified ? "Solar is not available for this home type" : step3Incomplete ? "Please answer the ownership question" : ""}
+                style={installerConfig?.primaryColor ? { background: installerConfig.primaryColor } : {}}
               >
                 Next →
               </button>

@@ -15,9 +15,12 @@ const PAYMENT_METHODS = [
   { value: 'unsure', label: 'Not sure yet', desc: 'Help me decide' },
 ];
 
-export default function StepLead({ onSubmit, loading, requireContact, embedded }) {
+export default function StepLead({ onSubmit, loading, requireContact, embedded, primaryColor, formBgColor }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', timeline: '', paymentMethod: '' });
   const [errors, setErrors] = useState({});
+
+  const accentColor = primaryColor || '#1e40af';
+  const accentBg = accentColor + '18';
 
   const validate = () => {
     const e = {};
@@ -38,8 +41,10 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded }
     onSubmit(form);
   };
 
+  const gap = embedded ? 6 : 10;
+
   return (
-    <div>
+    <div style={formBgColor ? { background: formBgColor, borderRadius: 12, padding: embedded ? '8px 4px' : '12px 4px' } : {}}>
       <h2 className="step-title">
         {requireContact ? "You're one step away from your estimate" : 'Almost there!'}
       </h2>
@@ -49,21 +54,36 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded }
           : 'Tell us a bit about your solar plans to get your free estimate.'}
       </p>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: embedded ? 6 : 12 }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap }}>
         {requireContact && (
           <>
-            <div>
-              <input
-                type="text"
-                placeholder="Your full name"
-                value={form.name}
-                onChange={e => { setForm(p => ({ ...p, name: e.target.value })); setErrors(p => ({ ...p, name: null })); }}
-                className="sl-input"
-                style={{ width: '100%' }}
-              />
-              {errors.name && <div className="field-error">{errors.name}</div>}
+            {/* Name + Phone side by side */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap }}>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Your full name"
+                  value={form.name}
+                  onChange={e => { setForm(p => ({ ...p, name: e.target.value })); setErrors(p => ({ ...p, name: null })); }}
+                  className="sl-input"
+                  style={{ width: '100%' }}
+                />
+                {errors.name && <div className="field-error">{errors.name}</div>}
+              </div>
+              <div>
+                <input
+                  type="tel"
+                  placeholder="Phone number"
+                  value={form.phone}
+                  onChange={e => { setForm(p => ({ ...p, phone: e.target.value })); setErrors(p => ({ ...p, phone: null })); }}
+                  className="sl-input"
+                  style={{ width: '100%' }}
+                />
+                {errors.phone && <div className="field-error">{errors.phone}</div>}
+              </div>
             </div>
 
+            {/* Email full width */}
             <div>
               <input
                 type="email"
@@ -75,18 +95,6 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded }
               />
               {errors.email && <div className="field-error">{errors.email}</div>}
             </div>
-
-            <div>
-              <input
-                type="tel"
-                placeholder="Phone number"
-                value={form.phone}
-                onChange={e => { setForm(p => ({ ...p, phone: e.target.value })); setErrors(p => ({ ...p, phone: null })); }}
-                className="sl-input"
-                style={{ width: '100%' }}
-              />
-              {errors.phone && <div className="field-error">{errors.phone}</div>}
-            </div>
           </>
         )}
 
@@ -97,7 +105,7 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded }
               <button
                 key={t.value}
                 type="button"
-                className={`option-card option-card-sm ${form.paymentMethod === t.value ? 'selected' : ''}`}
+                className={`option-card option-card-sm${form.paymentMethod === t.value ? ' sl-selected' : ''}`}
                 onClick={() => { setForm(p => ({ ...p, paymentMethod: t.value })); setErrors(p => ({ ...p, paymentMethod: null })); }}
               >
                 <div className="option-label">{t.label}</div>
@@ -115,7 +123,7 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded }
               <button
                 key={t.value}
                 type="button"
-                className={`option-card option-card-sm ${form.timeline === t.value ? 'selected' : ''}`}
+                className={`option-card option-card-sm${form.timeline === t.value ? ' sl-selected' : ''}`}
                 onClick={() => { setForm(p => ({ ...p, timeline: t.value })); setErrors(p => ({ ...p, timeline: null })); }}
               >
                 <div className="option-label">{t.label}</div>
@@ -126,7 +134,16 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded }
           {errors.timeline && <div className="field-error">{errors.timeline}</div>}
         </div>
 
-        <button type="submit" className="btn btn-cta" disabled={loading} style={{ marginTop: 4 }}>
+        <button
+          type="submit"
+          className="btn btn-cta"
+          disabled={loading}
+          style={{
+            marginTop: 4,
+            background: accentColor,
+            boxShadow: `0 4px 14px ${accentColor}66`,
+          }}
+        >
           {loading ? 'Calculating...' : <><SunIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />Show My Free Estimate →</>}
         </button>
       </form>
@@ -139,7 +156,7 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded }
 
       <style>{`
         .sl-input {
-          padding: ${embedded ? '8px 10px' : '12px 14px'};
+          padding: ${embedded ? '8px 10px' : '11px 14px'};
           border: 1.5px solid #e2e8f0;
           border-radius: 10px;
           font-size: 15px;
@@ -149,11 +166,13 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded }
           box-sizing: border-box;
           transition: border-color 0.12s;
         }
-        .sl-input:focus { border-color: #1e40af; }
+        .sl-input:focus { border-color: ${accentColor}; }
         .sl-input::placeholder { color: #94a3b8; }
         .field-error { color: #dc2626; font-size: 12px; margin-top: 4px; }
-        .option-card-sm { padding: ${embedded ? '6px 8px' : '10px 12px'}; }
-        .option-grid-2 { grid-template-columns: 1fr 1fr; }
+        .option-card-sm { padding: ${embedded ? '6px 8px' : '9px 12px'}; }
+        .option-grid-2 { grid-template-columns: 1fr 1fr; gap: ${embedded ? '6px' : '8px'}; }
+        .sl-selected { border-color: ${accentColor} !important; background: ${accentBg} !important; }
+        .btn-cta:hover:not(:disabled) { opacity: 0.9; transform: translateY(-2px); }
       `}</style>
     </div>
   );

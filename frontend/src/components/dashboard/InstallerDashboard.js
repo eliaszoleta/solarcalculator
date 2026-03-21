@@ -23,7 +23,7 @@ const DEFAULT_CONFIG = {
     two: { label: '2 Batteries (Tesla Powerwall)', cost: 23000 },
   },
   roofSurcharges: { asphalt: 0, metal: 500, tile: 1500, flat: 800 },
-  systemName: 'Solar Calculator', companyName: '', primaryColor: '#f59e0b',
+  systemName: 'Solar Calculator', companyName: '', primaryColor: '#f59e0b', formBgColor: '#ffffff',
   frameHeight: 620,
 };
 
@@ -270,6 +270,12 @@ export default function InstallerDashboard({ user, onLogout }) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <input type="color" value={config.primaryColor || '#f59e0b'} onChange={e => update('primaryColor', e.target.value)} style={{ width: 40, height: 36, border: 'none', padding: 2, borderRadius: 6, cursor: 'pointer' }} />
                     <span className="color-value">{config.primaryColor}</span>
+                  </div>
+                </SettingRow>
+                <SettingRow label="Form Background">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <input type="color" value={config.formBgColor || '#ffffff'} onChange={e => update('formBgColor', e.target.value)} style={{ width: 40, height: 36, border: 'none', padding: 2, borderRadius: 6, cursor: 'pointer' }} />
+                    <span className="color-value">{config.formBgColor || '#ffffff'}</span>
                   </div>
                 </SettingRow>
               </SettingCard>
