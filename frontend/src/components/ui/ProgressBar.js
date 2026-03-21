@@ -4,7 +4,7 @@ export default function ProgressBar({ current, total, steps, embedded, primaryCo
   const accent = primaryColor || '#f59e0b';
 
   return (
-    <div style={{ padding: embedded ? '14px 24px 10px' : '26px 32px 14px' }}>
+    <div style={{ padding: embedded ? '24px 24px 10px' : '26px 32px 14px' }}>
 
       {/* Step dots + connectors */}
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: embedded ? 10 : 16 }}>
