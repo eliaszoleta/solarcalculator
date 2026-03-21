@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
 import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon } from '../ui/Icons';
+import SolarCalculator from '../calculator/SolarCalculator';
 import './InstallerDashboard.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
@@ -174,7 +175,7 @@ export default function InstallerDashboard({ user, onLogout }) {
     <div className="dash-layout">
       <aside className="dash-sidebar">
         <div className="dash-brand">
-          <img src="/logo-icon-navy.svg" alt="MySolarWidget" style={{ width: 36, height: 36, borderRadius: 8 }} />
+          <img src="/logo-icon-light.svg" alt="MySolarWidget" style={{ width: 36, height: 36, borderRadius: 8 }} />
         </div>
         <div style={{ padding: '0 16px 16px', fontSize: 12, color: '#64748b', borderBottom: '1px solid #1e293b', marginBottom: 8 }}>
           {config.companyName || user?.user_metadata?.company_name || 'My Company'}
@@ -294,7 +295,8 @@ export default function InstallerDashboard({ user, onLogout }) {
           )}
 
           {activeTab === 'appearance' && (
-            <div className="settings-grid">
+            <div className="appearance-layout">
+              <div className="settings-grid">
               <SettingCard title="Branding" desc="Customize the calculator appearance on your website.">
                 <SettingRow label="Company Name">
                   <input type="text" placeholder="Your Solar Company" value={config.companyName || ''} onChange={e => update('companyName', e.target.value)} className="dash-input dash-input-text" />
@@ -346,7 +348,19 @@ export default function InstallerDashboard({ user, onLogout }) {
                   <input type="text" placeholder="https://yoursite.com/contact" value={config.ctaButtonUrl || ''} onChange={e => update('ctaButtonUrl', e.target.value)} className="dash-input dash-input-text" />
                 </SettingRow>
               </SettingCard>
-            </div>
+              </div>{/* end settings-grid */}
+
+              <div className="appearance-preview-panel">
+                <div className="appearance-preview-label">Live Preview</div>
+                <div className="appearance-preview-frame">
+                  <SolarCalculator
+                    embedded
+                    installerConfig={config}
+                    installerId={null}
+                  />
+                </div>
+              </div>
+            </div>{/* end appearance-layout */}
           )}
 
           {activeTab === 'embed' && (

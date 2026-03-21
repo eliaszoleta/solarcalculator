@@ -129,7 +129,46 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 720px;
+  max-width: 560px;
+  min-width: 0;
+}
+
+/* Two-column layout for appearance tab */
+.appearance-layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.appearance-preview-panel {
+  flex: 0 0 380px;
+  position: sticky;
+  top: 24px;
+}
+
+.appearance-preview-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.appearance-preview-frame {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  height: 620px;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+}
+
+.appearance-preview-frame > section.calculator-section {
+  flex: 1;
+  height: 100%;
 }
 
 .setting-card {
