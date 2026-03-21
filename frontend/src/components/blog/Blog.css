@@ -1004,7 +1004,7 @@
 
 .category-hero {
   padding: 56px 24px;
-  color: white;
+  color: #0f172a;
   text-align: center;
 }
 
@@ -1023,7 +1023,7 @@
 
 .category-hero p {
   font-size: 16px;
-  color: rgba(255,255,255,0.8);
+  color: #64748b;
   max-width: 480px;
   margin: 0 auto;
   line-height: 1.65;
