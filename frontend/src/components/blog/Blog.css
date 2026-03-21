@@ -1009,7 +1009,7 @@
 }
 
 .category-hero__icon {
-  margin-bottom: 16px;
+  margin: 0 auto 16px;
   display: flex;
   justify-content: center;
 }
