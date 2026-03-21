@@ -1,5 +1,5 @@
 .calculator-section {
-  padding: 48px 16px 64px;
+  padding: 80px 16px 64px;
   background: linear-gradient(135deg, #fefce8 0%, #f0f9ff 100%);
   min-height: calc(100vh - 64px);
 }
