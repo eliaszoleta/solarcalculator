@@ -80,18 +80,18 @@ export default function Header() {
                 marginLeft: 8,
                 fontSize: 13,
                 fontWeight: 600,
-                color: '#0a0a0a',
+                color: '#ffffff',
                 padding: '7px 16px',
                 borderRadius: 9,
-                border: '1.5px solid #e5e7eb',
-                background: '#ffffff',
+                border: '1.5px solid #f59e0b',
+                background: '#f59e0b',
                 textDecoration: 'none',
-                transition: 'border-color 0.12s, background 0.12s',
+                transition: 'background 0.12s, border-color 0.12s',
                 letterSpacing: '-0.01em',
                 whiteSpace: 'nowrap',
               }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = '#d1d5db'; e.currentTarget.style.background = '#f9fafb'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.background = '#ffffff'; }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#e58e00'; e.currentTarget.style.borderColor = '#e58e00'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = '#f59e0b'; e.currentTarget.style.borderColor = '#f59e0b'; }}
             >
               Get Solar Widget
             </a>
@@ -104,11 +104,11 @@ export default function Header() {
               style={{
                 fontSize: 11,
                 fontWeight: 600,
-                color: '#0a0a0a',
+                color: '#ffffff',
                 padding: '5px 10px',
                 borderRadius: 8,
-                border: '1.5px solid #e5e7eb',
-                background: '#ffffff',
+                border: '1.5px solid #f59e0b',
+                background: '#f59e0b',
                 textDecoration: 'none',
                 whiteSpace: 'nowrap',
                 letterSpacing: '-0.01em',

@@ -373,6 +373,21 @@
   .dash-content {
     padding: 20px 16px;
   }
+
+  .appearance-layout {
+    flex-direction: column;
+  }
+
+  .appearance-preview-panel {
+    flex: 1 1 auto;
+    width: 100%;
+    position: static;
+  }
+
+  .appearance-preview-frame {
+    height: auto;
+    min-height: 0;
+  }
 }
 
 /* ─── Custom Steps ─────────────────────────────────────────── */
