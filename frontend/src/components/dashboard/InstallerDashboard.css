@@ -351,6 +351,15 @@
     position: static;
   }
 
+  .dash-brand {
+    justify-content: center;
+    padding-bottom: 16px;
+  }
+
+  .dash-brand img {
+    height: 44px !important;
+  }
+
   .dash-nav {
     flex-direction: row;
     overflow-x: auto;

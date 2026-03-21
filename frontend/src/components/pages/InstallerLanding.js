@@ -31,10 +31,17 @@ function LandingNav() {
     }}>
       <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, minWidth: 0 }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 1, minWidth: 0, overflow: 'hidden' }}>
-          <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 38, width: 'auto', maxWidth: '100%' }} />
+          <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 44, width: 'auto', maxWidth: '100%' }} />
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-          <a href="/installer" style={{ fontSize: 14, color: '#64748b', fontWeight: 500, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+          <a href="/installer" style={{
+            fontSize: 14, color: '#1e40af', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap',
+            padding: '8px 18px', border: '1.5px solid #1e40af', borderRadius: 8,
+            transition: 'background 0.15s, color 0.15s',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#1e40af'; e.currentTarget.style.color = 'white'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1e40af'; }}
+          >
             Log in
           </a>
         </div>

@@ -178,7 +178,7 @@ export default function InstallerDashboard({ user, onLogout }) {
       <aside className="dash-sidebar">
         <div className="dash-brand">
           <div style={{ background: 'white', borderRadius: 8, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 24, width: 'auto', display: 'block' }} />
+            <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 36, width: 'auto', display: 'block' }} />
           </div>
         </div>
         <div style={{ padding: '0 16px 16px', fontSize: 12, color: '#64748b', borderBottom: '1px solid #1e293b', marginBottom: 8 }}>
