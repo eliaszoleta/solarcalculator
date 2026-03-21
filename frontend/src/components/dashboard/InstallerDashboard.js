@@ -246,8 +246,10 @@ export default function InstallerDashboard({ user, onLogout }) {
       const headers = await getAuthHeader();
       const res = await axios.post(`${API_BASE}/api/subscription/checkout`, {}, { headers });
       if (res.data.url) window.location.href = res.data.url;
-    } catch {
-      alert('Could not open checkout. Please try again.');
+      else alert('No checkout URL returned. Please try again.');
+    } catch (err) {
+      const msg = err.response?.data?.error || err.message || 'Unknown error';
+      alert(`Could not open checkout: ${msg}`);
     }
   };
 
