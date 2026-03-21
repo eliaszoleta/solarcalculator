@@ -443,34 +443,52 @@ export default function InstallerDashboard({ user, onLogout }) {
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Name</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Email</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Phone</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Payment</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Timeline</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>System</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Annual Savings</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Custom Answers</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Answers</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Estimate</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Date</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {leads.map(lead => (
-                          <tr key={lead.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                            <td style={{ padding: '10px 12px', fontWeight: 500 }}>{lead.name}</td>
-                            <td style={{ padding: '10px 12px' }}><a href={`mailto:${lead.email}`} style={{ color: '#1e40af' }}>{lead.email}</a></td>
-                            <td style={{ padding: '10px 12px' }}>{lead.phone}</td>
-                            <td style={{ padding: '10px 12px', textTransform: 'capitalize' }}>{lead.payment_method || '—'}</td>
-                            <td style={{ padding: '10px 12px', textTransform: 'capitalize' }}>{lead.timeline || '—'}</td>
-                            <td style={{ padding: '10px 12px' }}>{lead.system_size_kw ? `${lead.system_size_kw} kW` : '—'}</td>
-                            <td style={{ padding: '10px 12px' }}>{lead.annual_savings ? `$${lead.annual_savings.toLocaleString()}` : '—'}</td>
-                            <td style={{ padding: '10px 12px', maxWidth: 200 }}>
-                              {lead.custom_answers && Object.keys(lead.custom_answers).length > 0
-                                ? (config.customSteps || []).map(s => lead.custom_answers[s.id] !== undefined
-                                    ? <div key={s.id} style={{ fontSize: 12, color: '#475569' }}><b>{s.label}:</b> {lead.custom_answers[s.id]}</div>
-                                    : null)
-                                : <span style={{ color: '#94a3b8' }}>—</span>}
-                            </td>
-                            <td style={{ padding: '10px 12px', color: '#64748b' }}>{new Date(lead.created_at).toLocaleDateString()}</td>
-                          </tr>
-                        ))}
+                        {leads.map(lead => {
+                          const fmt = v => v ? String(v).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : null;
+                          const rows = [
+                            lead.monthly_bill != null && `Bill: $${lead.monthly_bill}/mo`,
+                            (lead.zip || lead.state) && `Location: ${[lead.zip, lead.state].filter(Boolean).join(', ')}`,
+                            lead.home_type && `Home: ${fmt(lead.home_type)}`,
+                            lead.owns_home != null && `Owns: ${lead.owns_home ? 'Yes' : 'No'}`,
+                            lead.sun_exposure && `Sun: ${fmt(lead.sun_exposure)}`,
+                            lead.roof_type && `Roof: ${fmt(lead.roof_type)}`,
+                            lead.battery != null && `Battery: ${lead.battery ? 'Yes' : 'No'}`,
+                            lead.payment_method && `Payment: ${fmt(lead.payment_method)}`,
+                            lead.timeline && `Timeline: ${fmt(lead.timeline)}`,
+                          ].filter(Boolean);
+                          const customRows = lead.custom_answers
+                            ? (config.customSteps || []).filter(s => lead.custom_answers[s.id] !== undefined)
+                                .map(s => `${s.label}: ${lead.custom_answers[s.id]}`)
+                            : [];
+                          return (
+                            <tr key={lead.id} style={{ borderBottom: '1px solid #f1f5f9', verticalAlign: 'top' }}>
+                              <td style={{ padding: '10px 12px', fontWeight: 500, whiteSpace: 'nowrap' }}>{lead.name || '—'}</td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
+                                {lead.email ? <a href={`mailto:${lead.email}`} style={{ color: '#1e40af' }}>{lead.email}</a> : '—'}
+                              </td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{lead.phone || '—'}</td>
+                              <td style={{ padding: '10px 12px', minWidth: 200 }}>
+                                {[...rows, ...customRows].length > 0
+                                  ? [...rows, ...customRows].map((r, i) => (
+                                      <div key={i} style={{ fontSize: 12, color: '#475569', lineHeight: '1.7' }}>{r}</div>
+                                    ))
+                                  : <span style={{ color: '#94a3b8' }}>—</span>}
+                              </td>
+                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
+                                {lead.system_size_kw ? <div style={{ fontSize: 12 }}>{lead.system_size_kw} kW</div> : null}
+                                {lead.annual_savings ? <div style={{ fontSize: 12, color: '#16a34a' }}>${lead.annual_savings.toLocaleString()}/yr</div> : null}
+                                {!lead.system_size_kw && !lead.annual_savings ? '—' : null}
+                              </td>
+                              <td style={{ padding: '10px 12px', color: '#64748b', whiteSpace: 'nowrap' }}>{new Date(lead.created_at).toLocaleDateString()}</td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>

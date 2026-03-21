@@ -62,7 +62,7 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
               <div>
                 <input
                   type="text"
-                  placeholder="Your full name"
+                  placeholder="Full Name"
                   value={form.name}
                   onChange={e => { setForm(p => ({ ...p, name: e.target.value })); setErrors(p => ({ ...p, name: null })); }}
                   className="sl-input"

@@ -22,7 +22,7 @@ const BUILTIN_META = [
   { label: 'Home Type',     icon: <HomeIcon size={14} /> },
   { label: 'Roof',          icon: <BuildingIcon size={14} /> },
   { label: 'Battery',       icon: <BatteryIcon size={14} /> },
-  { label: 'Your Info',     icon: <UserIcon size={14} /> },
+  { label: 'Info',          icon: <UserIcon size={14} /> },
 ];
 
 // Build an ordered list of all steps (built-in + custom interleaved)
@@ -109,9 +109,14 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
           phone: leadData.phone,
           timeline: leadData.timeline,
           payment_method: leadData.paymentMethod,
-          monthly_bill: parseFloat(form.monthlyBill),
+          monthly_bill: parseFloat(form.monthlyBill) || null,
           state: form.state || null,
           zip: form.zip || null,
+          home_type: form.homeType || null,
+          owns_home: form.ownsHome != null ? form.ownsHome : null,
+          sun_exposure: form.sunExposure || null,
+          roof_type: form.roofType || null,
+          battery: form.battery != null ? form.battery : null,
           system_size_kw: data.data.system?.sizeKw || null,
           annual_savings: data.data.savings?.annual || null,
           total_cost: data.data.cost?.total || null,
