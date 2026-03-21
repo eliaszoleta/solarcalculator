@@ -41,7 +41,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
     const fullReportUrl = buildFullReportUrl(results, form, lead);
 
     return (
-      <div style={{ padding: '28px 20px 32px', fontFamily: 'Inter, sans-serif', maxWidth: 540, margin: '0 auto' }}>
+      <div style={{ padding: '28px 20px 32px', fontFamily: installerConfig?.fontFamily ? `'${installerConfig.fontFamily}', sans-serif` : "'Poppins', sans-serif", maxWidth: 540, margin: '0 auto' }}>
 
         {/* Headline */}
         <div style={{ textAlign: 'center', marginBottom: 24 }}>

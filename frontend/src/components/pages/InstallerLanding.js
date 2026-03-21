@@ -3,7 +3,7 @@ import { ClipboardIcon, LinkIcon, ChartBarIcon, PaintBrushIcon, DollarSignIcon, 
 
 export default function InstallerLanding() {
   return (
-    <div style={{ fontFamily: "'Inter', system-ui, sans-serif", color: '#0f172a', overflowX: 'hidden' }}>
+    <div style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: '#0f172a', overflowX: 'hidden' }}>
       <LandingNav />
       <Hero />
       <LogoBar />
