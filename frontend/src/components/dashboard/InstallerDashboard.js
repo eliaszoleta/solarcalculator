@@ -631,7 +631,9 @@ export default function InstallerDashboard({ user, onLogout }) {
                             ? Object.entries(lead.custom_answers).map(([id, val]) => {
                                 const step = (config.customSteps || []).find(s => s.id === id);
                                 const label = step ? step.title || step.label : fmt(id.replace(/^custom_\d+_?/, '')) || id;
-                                return `${label}: ${val}`;
+                                const opt = step?.options?.find(o => o.value === val);
+                                const display = opt ? opt.label : val;
+                                return `${label}: ${display}`;
                               })
                             : [];
                           const cell = val => <span style={{ fontSize: 12, color: '#475569' }}>{val || <span style={{ color: '#94a3b8' }}>—</span>}</span>;
