@@ -93,7 +93,7 @@ export default function Header() {
               onMouseEnter={e => { e.currentTarget.style.borderColor = '#d1d5db'; e.currentTarget.style.background = '#f9fafb'; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.background = '#ffffff'; }}
             >
-              For Installers
+              Get Solar Widget
             </a>
           </nav>
 
@@ -114,7 +114,7 @@ export default function Header() {
                 letterSpacing: '-0.01em',
               }}
             >
-              For Installers
+              Get Solar Widget
             </a>
 
             {/* Hamburger button */}
