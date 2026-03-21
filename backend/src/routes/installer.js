@@ -119,8 +119,9 @@ router.put('/:id', async (req, res) => {
     'minSystemSize', 'maxSystemSize', 'pricePerWatt', 'serviceStates', 'batteries',
     'roofSurcharges', 'federalTaxCredit', 'panelWattage',
     'systemName', 'companyName', 'primaryColor', 'accentColor', 'formBgColor',
-    'frameHeight', 'fontFamily',
+    'borderRadius', 'frameHeight', 'fontFamily',
     'ctaHeadline', 'ctaSubtext', 'ctaButtonText', 'ctaPhone', 'ctaButtonUrl',
+    'customSteps',
   ];
 
   try {
@@ -158,9 +159,9 @@ router.post('/', async (req, res) => {
 router.get('/:id/public', async (req, res) => {
   try {
     const config = (await getInstallerConfig(req.params.id)) || DEFAULT_INSTALLER_CONFIG;
-    const { companyName, systemName, primaryColor, accentColor, formBgColor, frameHeight, fontFamily, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates } = config;
+    const { companyName, systemName, primaryColor, accentColor, formBgColor, borderRadius, frameHeight, fontFamily, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates, customSteps } = config;
     const sub = computeSubscriptionStatus(config);
-    res.json({ success: true, data: { companyName, systemName, primaryColor, accentColor, formBgColor, frameHeight, fontFamily, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates, paused: !sub.active, trialDaysLeft: sub.daysLeft } });
+    res.json({ success: true, data: { companyName, systemName, primaryColor, accentColor, formBgColor, borderRadius, frameHeight, fontFamily, ctaHeadline, ctaSubtext, ctaButtonText, ctaPhone, ctaButtonUrl, serviceStates, customSteps, paused: !sub.active, trialDaysLeft: sub.daysLeft } });
   } catch (err) {
     console.error('Failed to load public config:', err.message);
     res.json({ success: true, data: DEFAULT_INSTALLER_CONFIG });

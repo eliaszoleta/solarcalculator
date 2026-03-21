@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
-import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon } from '../ui/Icons';
+import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon } from '../ui/Icons';
 import SolarCalculator from '../calculator/SolarCalculator';
 import './InstallerDashboard.css';
 
@@ -61,7 +61,9 @@ const DEFAULT_CONFIG = {
   },
   roofSurcharges: { asphalt: 0, metal: 500, tile: 1500, flat: 800 },
   systemName: 'Solar Calculator', companyName: '', primaryColor: '#f59e0b', formBgColor: '#ffffff',
+  borderRadius: 12,
   frameHeight: 620,
+  customSteps: [],
 };
 
 export default function InstallerDashboard({ user, onLogout }) {
@@ -184,6 +186,7 @@ export default function InstallerDashboard({ user, onLogout }) {
           {[
             { id: 'pricing', icon: <DollarSignIcon size={16} />, label: 'Pricing Settings' },
             { id: 'appearance', icon: <PaintBrushIcon size={16} />, label: 'Appearance' },
+            { id: 'steps', icon: <LayersIcon size={16} />, label: 'Custom Steps' },
             { id: 'embed', icon: <ClipboardIcon size={16} />, label: 'Embed Code' },
             { id: 'leads', icon: <ChartBarIcon size={16} />, label: 'Leads' },
             { id: 'subscription', icon: <CreditCardIcon size={16} />, label: 'Subscription' },
@@ -210,6 +213,7 @@ export default function InstallerDashboard({ user, onLogout }) {
             <h1 className="dash-page-title">
               {activeTab === 'pricing' && 'Pricing Settings'}
               {activeTab === 'appearance' && 'Appearance'}
+              {activeTab === 'steps' && 'Custom Steps'}
               {activeTab === 'embed' && 'Embed Code'}
               {activeTab === 'leads' && 'Leads'}
               {activeTab === 'subscription' && 'Subscription'}
@@ -329,6 +333,17 @@ export default function InstallerDashboard({ user, onLogout }) {
                     <option value="Roboto">Roboto — clean &amp; technical</option>
                   </select>
                 </SettingRow>
+                <SettingRow label="Corner Radius" hint="Rounded corners on the calculator widget (0 = sharp, 24 = very round)">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <input
+                      type="range" min="0" max="24" step="2"
+                      value={config.borderRadius !== undefined ? config.borderRadius : 12}
+                      onChange={e => update('borderRadius', parseInt(e.target.value))}
+                      style={{ flex: 1 }}
+                    />
+                    <span style={{ fontSize: 13, color: '#64748b', minWidth: 36 }}>{config.borderRadius !== undefined ? config.borderRadius : 12}px</span>
+                  </div>
+                </SettingRow>
               </SettingCard>
 
               <SettingCard title="Results Page CTA" desc="What visitors see after they get their savings estimate — shown on your embedded calculator.">
@@ -361,6 +376,13 @@ export default function InstallerDashboard({ user, onLogout }) {
                 </div>
               </div>
             </div>
+          )}
+
+          {activeTab === 'steps' && (
+            <CustomStepsPanel
+              steps={config.customSteps || []}
+              onChange={steps => update('customSteps', steps)}
+            />
           )}
 
           {activeTab === 'embed' && (
@@ -423,6 +445,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Timeline</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>System</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Annual Savings</th>
+                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Custom Answers</th>
                           <th style={{ padding: '8px 12px', fontWeight: 600 }}>Date</th>
                         </tr>
                       </thead>
@@ -436,6 +459,13 @@ export default function InstallerDashboard({ user, onLogout }) {
                             <td style={{ padding: '10px 12px', textTransform: 'capitalize' }}>{lead.timeline || '—'}</td>
                             <td style={{ padding: '10px 12px' }}>{lead.system_size_kw ? `${lead.system_size_kw} kW` : '—'}</td>
                             <td style={{ padding: '10px 12px' }}>{lead.annual_savings ? `$${lead.annual_savings.toLocaleString()}` : '—'}</td>
+                            <td style={{ padding: '10px 12px', maxWidth: 200 }}>
+                              {lead.custom_answers && Object.keys(lead.custom_answers).length > 0
+                                ? (config.customSteps || []).map(s => lead.custom_answers[s.id] !== undefined
+                                    ? <div key={s.id} style={{ fontSize: 12, color: '#475569' }}><b>{s.label}:</b> {lead.custom_answers[s.id]}</div>
+                                    : null)
+                                : <span style={{ color: '#94a3b8' }}>—</span>}
+                            </td>
                             <td style={{ padding: '10px 12px', color: '#64748b' }}>{new Date(lead.created_at).toLocaleDateString()}</td>
                           </tr>
                         ))}
@@ -461,6 +491,257 @@ export default function InstallerDashboard({ user, onLogout }) {
 
         </div>
       </main>
+    </div>
+  );
+}
+
+const POSITION_LABELS = {
+  0: 'Before all questions',
+  1: 'After Electric Bill',
+  2: 'After Location',
+  3: 'After Home Type',
+  4: 'After Roof',
+  5: 'After Battery',
+};
+
+const STEP_TYPES = [
+  { value: 'choice', label: 'Multiple Choice' },
+  { value: 'yes-no', label: 'Yes / No' },
+  { value: 'text', label: 'Text Input' },
+];
+
+function CustomStepsPanel({ steps, onChange }) {
+  const [editing, setEditing] = useState(null); // null = list view, 'new' or index = form view
+  const [draft, setDraft] = useState(null);
+
+  const startNew = () => {
+    setDraft({
+      id: `custom_${Date.now()}`,
+      label: '',
+      title: '',
+      description: '',
+      type: 'choice',
+      insertAfterStep: 5,
+      required: true,
+      options: [{ label: '', value: 'opt_0' }, { label: '', value: 'opt_1' }],
+    });
+    setEditing('new');
+  };
+
+  const startEdit = (idx) => {
+    setDraft({ ...steps[idx], options: steps[idx].options ? [...steps[idx].options.map(o => ({ ...o }))] : [] });
+    setEditing(idx);
+  };
+
+  const saveDraft = () => {
+    if (!draft.label.trim() || !draft.title.trim()) return;
+    if (draft.type === 'choice' && draft.options.filter(o => o.label.trim()).length < 1) return;
+    const clean = {
+      ...draft,
+      label: draft.label.trim(),
+      title: draft.title.trim(),
+      description: draft.description.trim(),
+      options: draft.type === 'choice'
+        ? draft.options.filter(o => o.label.trim()).map((o, i) => ({
+            label: o.label.trim(),
+            value: o.value || `opt_${i}`,
+          }))
+        : undefined,
+    };
+    if (editing === 'new') {
+      onChange([...steps, clean]);
+    } else {
+      const next = [...steps];
+      next[editing] = clean;
+      onChange(next);
+    }
+    setEditing(null);
+    setDraft(null);
+  };
+
+  const deleteStep = (idx) => {
+    const next = [...steps];
+    next.splice(idx, 1);
+    onChange(next);
+  };
+
+  const moveStep = (idx, dir) => {
+    const next = [...steps];
+    const swap = idx + dir;
+    if (swap < 0 || swap >= next.length) return;
+    [next[idx], next[swap]] = [next[swap], next[idx]];
+    onChange(next);
+  };
+
+  const updateDraft = (field, val) => setDraft(prev => ({ ...prev, [field]: val }));
+
+  const updateOption = (i, val) => {
+    const opts = [...(draft.options || [])];
+    opts[i] = { ...opts[i], label: val };
+    updateDraft('options', opts);
+  };
+
+  const addOption = () => {
+    const opts = [...(draft.options || [])];
+    opts.push({ label: '', value: `opt_${Date.now()}` });
+    updateDraft('options', opts);
+  };
+
+  const removeOption = (i) => {
+    const opts = [...(draft.options || [])];
+    opts.splice(i, 1);
+    updateDraft('options', opts);
+  };
+
+  if (editing !== null && draft) {
+    const isValid = draft.label.trim() && draft.title.trim() &&
+      (draft.type !== 'choice' || draft.options.filter(o => o.label.trim()).length >= 1);
+    return (
+      <div className="setting-card" style={{ maxWidth: 620 }}>
+        <div className="setting-card-header">
+          <h3 className="setting-card-title">{editing === 'new' ? 'Add Custom Step' : 'Edit Step'}</h3>
+          <p className="setting-card-desc">Define a question to collect extra info from your leads.</p>
+        </div>
+        <div className="setting-card-body" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+
+          <div className="setting-row">
+            <div className="setting-row-label">Step Label <span style={{ color: '#94a3b8', fontWeight: 400 }}>(progress bar)</span></div>
+            <input className="dash-input dash-input-text" placeholder="e.g. Roof Age" value={draft.label} onChange={e => updateDraft('label', e.target.value)} />
+          </div>
+
+          <div className="setting-row">
+            <div className="setting-row-label">Question Title</div>
+            <input className="dash-input dash-input-text" placeholder="e.g. How old is your roof?" value={draft.title} onChange={e => updateDraft('title', e.target.value)} />
+          </div>
+
+          <div className="setting-row">
+            <div className="setting-row-label">Description <span style={{ color: '#94a3b8', fontWeight: 400 }}>(optional)</span></div>
+            <input className="dash-input dash-input-text" placeholder="e.g. We use this to estimate if replacement is needed." value={draft.description} onChange={e => updateDraft('description', e.target.value)} />
+          </div>
+
+          <div className="setting-row">
+            <div className="setting-row-label">Answer Type</div>
+            <select className="dash-input dash-input-text" value={draft.type} onChange={e => updateDraft('type', e.target.value)}>
+              {STEP_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+            </select>
+          </div>
+
+          {draft.type === 'text' && (
+            <div className="setting-row">
+              <div className="setting-row-label">Placeholder text</div>
+              <input className="dash-input dash-input-text" placeholder="e.g. Your answer…" value={draft.placeholder || ''} onChange={e => updateDraft('placeholder', e.target.value)} />
+            </div>
+          )}
+
+          {draft.type === 'choice' && (
+            <div>
+              <div className="setting-row-label" style={{ marginBottom: 8 }}>Answer Options</div>
+              {(draft.options || []).map((opt, i) => (
+                <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'center' }}>
+                  <input
+                    className="dash-input dash-input-text"
+                    style={{ flex: 1 }}
+                    placeholder={`Option ${i + 1}`}
+                    value={opt.label}
+                    onChange={e => updateOption(i, e.target.value)}
+                  />
+                  {(draft.options || []).length > 1 && (
+                    <button onClick={() => removeOption(i)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 4 }}>
+                      <TrashIcon size={15} />
+                    </button>
+                  )}
+                </div>
+              ))}
+              {(draft.options || []).length < 8 && (
+                <button onClick={addOption} style={{ background: 'none', border: '1px dashed #cbd5e1', borderRadius: 8, padding: '6px 14px', fontSize: 13, color: '#64748b', cursor: 'pointer', marginTop: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <PlusIcon size={13} /> Add option
+                </button>
+              )}
+            </div>
+          )}
+
+          <div className="setting-row">
+            <div className="setting-row-label">Insert position</div>
+            <select className="dash-input dash-input-text" value={draft.insertAfterStep} onChange={e => updateDraft('insertAfterStep', parseInt(e.target.value))}>
+              {Object.entries(POSITION_LABELS).map(([val, label]) => (
+                <option key={val} value={val}>{label}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="setting-row">
+            <div className="setting-row-label">Required</div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
+              <input type="checkbox" checked={draft.required} onChange={e => updateDraft('required', e.target.checked)} style={{ width: 16, height: 16 }} />
+              Visitor must answer before proceeding
+            </label>
+          </div>
+
+          <div style={{ display: 'flex', gap: 10, paddingTop: 8, borderTop: '1px solid #f1f5f9' }}>
+            <button
+              className="btn-save"
+              onClick={saveDraft}
+              disabled={!isValid}
+              style={{ opacity: isValid ? 1 : 0.5 }}
+            >
+              {editing === 'new' ? 'Add Step' : 'Save Step'}
+            </button>
+            <button
+              onClick={() => { setEditing(null); setDraft(null); }}
+              style={{ background: '#f1f5f9', border: 'none', borderRadius: 8, padding: '8px 18px', fontSize: 14, cursor: 'pointer', color: '#475569' }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="settings-grid">
+      <div className="setting-card">
+        <div className="setting-card-header">
+          <h3 className="setting-card-title">Custom Steps ({steps.length})</h3>
+          <p className="setting-card-desc">Add your own questions between the default calculator steps. Answers are recorded in the Leads tab.</p>
+        </div>
+        <div className="setting-card-body">
+          {steps.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '32px 0', color: '#94a3b8' }}>
+              <LayersIcon size={28} style={{ marginBottom: 10 }} />
+              <p style={{ fontSize: 14, marginBottom: 16 }}>No custom steps yet. Add one to collect extra info from your leads.</p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+              {steps.map((s, idx) => (
+                <div key={s.id} className="custom-step-row">
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, fontSize: 14 }}>{s.label}</div>
+                    <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>{s.title}</div>
+                    <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 2 }}>
+                      {POSITION_LABELS[s.insertAfterStep] || ''} · {STEP_TYPES.find(t => t.value === s.type)?.label}
+                      {s.required ? ' · Required' : ' · Optional'}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                    {idx > 0 && (
+                      <button onClick={() => moveStep(idx, -1)} style={{ background: 'none', border: '1px solid #e2e8f0', borderRadius: 6, padding: '3px 8px', cursor: 'pointer', fontSize: 12, color: '#64748b' }}>↑</button>
+                    )}
+                    {idx < steps.length - 1 && (
+                      <button onClick={() => moveStep(idx, 1)} style={{ background: 'none', border: '1px solid #e2e8f0', borderRadius: 6, padding: '3px 8px', cursor: 'pointer', fontSize: 12, color: '#64748b' }}>↓</button>
+                    )}
+                    <button onClick={() => startEdit(idx)} style={{ background: 'none', border: '1px solid #e2e8f0', borderRadius: 6, padding: '4px 10px', cursor: 'pointer', fontSize: 12, color: '#1e40af' }}>Edit</button>
+                    <button onClick={() => deleteStep(idx)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 4 }}><TrashIcon size={15} /></button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          <button onClick={startNew} className="custom-step-add-btn">
+            <PlusIcon size={15} /> Add Custom Step
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
