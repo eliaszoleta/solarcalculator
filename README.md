@@ -87,17 +87,72 @@ The app is built for organic search traffic and AdSense monetization:
 
 ## Installer SaaS Features
 
-Installers can configure via `/installer` dashboard:
-- Price per watt + profit margin
-- Labor, permit, inverter costs
-- Roof type surcharges
-- Battery pricing
-- Equipment tier labels & pricing
-- Company branding
+Installers manage everything via the `/installer` dashboard:
+- **Pricing Settings** — price per watt, profit margin, labor, permits, inverter, battery, roof type surcharges, equipment tiers
+- **Appearance** — company name, branding colors, CTA text, phone, button URL
+- **Custom Steps** — add custom questions to the calculator flow
+- **Embed Code** — copy/paste script tag for their website
+- **Leads** — view all submitted leads from the embedded widget
+- **Subscription** — manage plan & billing
 
-## Production Notes
+## Subscription & Billing
 
-- Replace in-memory config store with a real database (PostgreSQL recommended)
-- Add authentication for installer dashboard (JWT or session-based)
-- Set up proper CORS for production domain
-- Consider adding PVWatts caching to reduce API calls
+Billing is handled via **Stripe** with a 30-day free trial on every new account.
+
+### How it works
+
+| Status | Calculator |
+|--------|-----------|
+| Free trial (≤ 30 days) | Active |
+| Trial expired, no subscription | Paused |
+| Stripe subscription active | Active |
+| Cancelled (at period end) | Active until period ends, then paused |
+| Cancelled (immediately) | Paused |
+| Past due / unpaid | Paused |
+
+The embedded widget calls `/api/installer/:id/public` on load. If the account is inactive, it shows a "Calculator Temporarily Unavailable" screen instead.
+
+### Required environment variables (backend)
+
+```
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_PRICE_ID=price_...           # Your monthly subscription price ID
+STRIPE_WEBHOOK_SECRET=whsec_...     # From Stripe Dashboard → Webhooks
+```
+
+### Stripe webhook setup
+
+1. In Stripe Dashboard → **Developers → Webhooks**, add endpoint:
+   ```
+   https://your-backend.railway.app/api/subscription/webhook
+   ```
+2. Subscribe to these events:
+   - `checkout.session.completed`
+   - `customer.subscription.updated`
+   - `customer.subscription.deleted`
+   - `invoice.payment_failed`
+3. Copy the signing secret → set as `STRIPE_WEBHOOK_SECRET`
+
+> **Note:** The frontend also calls `/api/subscription/verify-checkout` on return from Stripe checkout, so activation works even if the webhook is delayed.
+
+## Environment Variables
+
+### Backend (Railway)
+
+```
+SUPABASE_URL=https://xxx.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=...
+JWT_SECRET=...
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_PRICE_ID=price_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+FRONTEND_URL=https://your-frontend.vercel.app
+```
+
+### Frontend (Vercel)
+
+```
+REACT_APP_API_BASE=https://your-backend.railway.app
+REACT_APP_SUPABASE_URL=https://xxx.supabase.co
+REACT_APP_SUPABASE_ANON_KEY=...
+```
