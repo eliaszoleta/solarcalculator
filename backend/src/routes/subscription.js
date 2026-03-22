@@ -75,6 +75,50 @@ router.get('/status', async (req, res) => {
   }
 });
 
+// POST /api/subscription/verify-checkout — verify a completed Stripe checkout session
+// Called by frontend on return from Stripe when webhook may not have fired yet
+router.post('/verify-checkout', async (req, res) => {
+  const installerId = req.user.id;
+  const { sessionId } = req.body;
+  if (!sessionId) return res.status(400).json({ success: false, error: 'sessionId is required' });
+
+  try {
+    const stripe = getStripe();
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ['subscription'],
+    });
+
+    // Verify this session belongs to this installer
+    if (session.metadata?.installerId !== installerId) {
+      return res.status(403).json({ success: false, error: 'Session does not belong to this account' });
+    }
+
+    if (session.payment_status !== 'paid' && session.status !== 'complete') {
+      const config = (await getInstallerConfig(installerId)) || {};
+      return res.json({ success: true, data: computeSubscriptionStatus(config) });
+    }
+
+    // Session is paid — update config if not already active
+    const config = (await getInstallerConfig(installerId)) || {};
+    const sub = session.subscription;
+    config.subscription = {
+      ...(config.subscription || {}),
+      stripeCustomerId: session.customer,
+      stripeSubscriptionId: typeof sub === 'string' ? sub : sub?.id,
+      status: 'active',
+      currentPeriodEnd: sub?.current_period_end
+        ? new Date(sub.current_period_end * 1000).toISOString()
+        : null,
+    };
+    await saveInstallerConfig(installerId, config);
+
+    res.json({ success: true, data: computeSubscriptionStatus(config) });
+  } catch (err) {
+    console.error('verify-checkout error:', err.message);
+    res.status(500).json({ success: false, error: 'Failed to verify checkout session' });
+  }
+});
+
 
 async function handleStripeEvent(event) {
   const stripe = getStripe();

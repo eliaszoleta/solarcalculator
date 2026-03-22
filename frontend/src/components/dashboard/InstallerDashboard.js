@@ -211,8 +211,23 @@ export default function InstallerDashboard({ user, onLogout }) {
       if (activeTab === 'subscription') setSubLoading(true);
       try {
         const headers = await getAuthHeader();
-        const res = await axios.get(`${API_BASE}/api/subscription/status`, { headers });
-        setSubscription(res.data.data);
+        const params = new URLSearchParams(window.location.search);
+        const sessionId = params.get('session_id');
+        const justSubscribed = params.get('subscribed') === 'true';
+
+        // If returning from Stripe checkout, verify the session directly
+        // so we don't depend solely on the webhook to activate the account
+        if (justSubscribed && sessionId) {
+          const verifyRes = await axios.post(
+            `${API_BASE}/api/subscription/verify-checkout`,
+            { sessionId },
+            { headers }
+          );
+          setSubscription(verifyRes.data.data);
+        } else {
+          const res = await axios.get(`${API_BASE}/api/subscription/status`, { headers });
+          setSubscription(res.data.data);
+        }
       } catch {
         setSubscription(null);
       } finally {
