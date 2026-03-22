@@ -132,19 +132,27 @@ async function handleStripeEvent(event) {
         break;
       }
       try {
+        console.log(`Webhook: checkout.session.completed for installer ${installerId}, session ${session.id}`);
+        // Retrieve full session with subscription expanded (same approach as verify-checkout)
+        const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
+          expand: ['subscription'],
+        });
+        console.log(`Webhook: retrieved session, subscription status: ${fullSession.subscription?.status}`);
         const config = (await getInstallerConfig(installerId)) || {};
-        const subscription = await stripe.subscriptions.retrieve(session.subscription);
+        const sub = fullSession.subscription;
         config.subscription = {
           ...(config.subscription || {}),
-          stripeCustomerId: session.customer,
-          stripeSubscriptionId: session.subscription,
+          stripeCustomerId: fullSession.customer,
+          stripeSubscriptionId: typeof sub === 'string' ? sub : sub?.id,
           status: 'active',
-          currentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString(),
+          currentPeriodEnd: sub && typeof sub !== 'string'
+            ? new Date(sub.current_period_end * 1000).toISOString()
+            : (config.subscription?.currentPeriodEnd || null),
         };
         await saveInstallerConfig(installerId, config);
         console.log(`Webhook: activated installer ${installerId}`);
       } catch (err) {
-        console.error(`Webhook checkout.session.completed failed for installer ${installerId}:`, err.message);
+        console.error(`Webhook checkout.session.completed failed for installer ${installerId}:`, err.message, err.stack);
         throw err;
       }
       break;
