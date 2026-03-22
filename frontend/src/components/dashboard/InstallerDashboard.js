@@ -1193,7 +1193,7 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
               Your subscription was canceled
             </h4>
             <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
-              Your embedded calculator is paused. Click <strong>Reactivate Plan</strong> below to restart your subscription through the billing portal — your settings and leads are still saved.
+              Your embedded calculator is paused. Click <strong>Reactivate Plan</strong> below to restart your subscription — your settings and leads are still saved.
             </p>
           </div>
         )}
@@ -1244,10 +1244,10 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
             </button>
           )}
 
-          {/* Canceled — show Reactivate (→ billing portal) */}
+          {/* Canceled — show Reactivate (→ new checkout with existing customer) */}
           {hasStripe && status === 'canceled' && (
             <button
-              onClick={onManage}
+              onClick={onSubscribe}
               style={{ padding: '12px 28px', background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: 'white', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}
             >
               Reactivate Plan
