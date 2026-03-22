@@ -49,7 +49,7 @@ router.post('/portal', async (req, res) => {
     const stripe = getStripe();
     const config = (await getInstallerConfig(installerId)) || {};
     const customerId = config.subscription?.stripeCustomerId;
-    if (!customerId) return res.status(400).json({ success: false, error: 'No active subscription found' });
+    if (!customerId) return res.status(400).json({ success: false, error: 'No Stripe customer found. Please subscribe first.' });
 
     const session = await stripe.billingPortal.sessions.create({
       customer: customerId,
@@ -59,7 +59,7 @@ router.post('/portal', async (req, res) => {
     res.json({ success: true, url: session.url });
   } catch (err) {
     console.error('Stripe portal error:', err.message);
-    res.status(500).json({ success: false, error: 'Failed to open billing portal' });
+    res.status(500).json({ success: false, error: 'Failed to open billing portal. Please try again.' });
   }
 });
 
@@ -75,8 +75,8 @@ router.get('/status', async (req, res) => {
   }
 });
 
-// POST /api/subscription/verify-checkout — verify a completed Stripe checkout session
-// Called by frontend on return from Stripe when webhook may not have fired yet
+// POST /api/subscription/verify-checkout — verify a completed Stripe checkout session.
+// Called by frontend on return from Stripe so activation doesn't depend solely on the webhook.
 router.post('/verify-checkout', async (req, res) => {
   const installerId = req.user.id;
   const { sessionId } = req.body;
@@ -88,18 +88,16 @@ router.post('/verify-checkout', async (req, res) => {
       expand: ['subscription'],
     });
 
-    // Verify this session belongs to this installer
     if (session.metadata?.installerId !== installerId) {
       return res.status(403).json({ success: false, error: 'Session does not belong to this account' });
     }
 
+    const config = (await getInstallerConfig(installerId)) || {};
+
     if (session.payment_status !== 'paid' && session.status !== 'complete') {
-      const config = (await getInstallerConfig(installerId)) || {};
       return res.json({ success: true, data: computeSubscriptionStatus(config) });
     }
 
-    // Session is paid — update config if not already active
-    const config = (await getInstallerConfig(installerId)) || {};
     const sub = session.subscription;
     config.subscription = {
       ...(config.subscription || {}),
@@ -119,58 +117,103 @@ router.post('/verify-checkout', async (req, res) => {
   }
 });
 
+// --- Webhook event handler ---
 
 async function handleStripeEvent(event) {
   const stripe = getStripe();
+
   switch (event.type) {
     case 'checkout.session.completed': {
       const session = event.data.object;
       if (session.mode !== 'subscription') break;
       const installerId = session.metadata?.installerId;
-      if (!installerId) break;
-      const config = (await getInstallerConfig(installerId)) || {};
-      const subscription = await stripe.subscriptions.retrieve(session.subscription);
-      config.subscription = {
-        ...(config.subscription || {}),
-        stripeCustomerId: session.customer,
-        stripeSubscriptionId: session.subscription,
-        status: 'active',
-        currentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString(),
-      };
-      await saveInstallerConfig(installerId, config);
+      if (!installerId) {
+        console.error('Webhook checkout.session.completed: missing installerId in metadata');
+        break;
+      }
+      try {
+        const config = (await getInstallerConfig(installerId)) || {};
+        const subscription = await stripe.subscriptions.retrieve(session.subscription);
+        config.subscription = {
+          ...(config.subscription || {}),
+          stripeCustomerId: session.customer,
+          stripeSubscriptionId: session.subscription,
+          status: 'active',
+          currentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString(),
+        };
+        await saveInstallerConfig(installerId, config);
+        console.log(`Webhook: activated installer ${installerId}`);
+      } catch (err) {
+        console.error(`Webhook checkout.session.completed failed for installer ${installerId}:`, err.message);
+        throw err;
+      }
       break;
     }
+
     case 'customer.subscription.updated': {
       const sub = event.data.object;
-      const installerId = await findInstallerByCustomer(sub.customer);
-      if (!installerId) break;
-      const config = (await getInstallerConfig(installerId)) || {};
-      config.subscription = {
-        ...(config.subscription || {}),
-        status: sub.status === 'active' ? 'active' : sub.status === 'canceled' ? 'canceled' : sub.status,
-        currentPeriodEnd: new Date(sub.current_period_end * 1000).toISOString(),
-        stripeSubscriptionId: sub.id,
-      };
-      await saveInstallerConfig(installerId, config);
+      try {
+        const installerId = await findInstallerByCustomer(sub.customer);
+        if (!installerId) break;
+        const config = (await getInstallerConfig(installerId)) || {};
+        config.subscription = {
+          ...(config.subscription || {}),
+          status: sub.status,
+          currentPeriodEnd: new Date(sub.current_period_end * 1000).toISOString(),
+          stripeSubscriptionId: sub.id,
+        };
+        await saveInstallerConfig(installerId, config);
+        console.log(`Webhook: updated subscription status to "${sub.status}" for installer ${installerId}`);
+      } catch (err) {
+        console.error(`Webhook customer.subscription.updated failed for customer ${sub.customer}:`, err.message);
+        throw err;
+      }
       break;
     }
+
     case 'customer.subscription.deleted': {
       const sub = event.data.object;
-      const installerId = await findInstallerByCustomer(sub.customer);
-      if (!installerId) break;
-      const config = (await getInstallerConfig(installerId)) || {};
-      config.subscription = {
-        ...(config.subscription || {}),
-        status: 'canceled',
-        stripeSubscriptionId: sub.id,
-      };
-      await saveInstallerConfig(installerId, config);
+      try {
+        const installerId = await findInstallerByCustomer(sub.customer);
+        if (!installerId) break;
+        const config = (await getInstallerConfig(installerId)) || {};
+        config.subscription = {
+          ...(config.subscription || {}),
+          status: 'canceled',
+          stripeSubscriptionId: sub.id,
+        };
+        await saveInstallerConfig(installerId, config);
+        console.log(`Webhook: canceled subscription for installer ${installerId}`);
+      } catch (err) {
+        console.error(`Webhook customer.subscription.deleted failed for customer ${sub.customer}:`, err.message);
+        throw err;
+      }
+      break;
+    }
+
+    case 'invoice.payment_failed': {
+      const invoice = event.data.object;
+      if (!invoice.subscription) break;
+      try {
+        const installerId = await findInstallerByCustomer(invoice.customer);
+        if (!installerId) break;
+        const config = (await getInstallerConfig(installerId)) || {};
+        config.subscription = {
+          ...(config.subscription || {}),
+          status: 'past_due',
+        };
+        await saveInstallerConfig(installerId, config);
+        console.log(`Webhook: marked past_due for installer ${installerId}`);
+      } catch (err) {
+        console.error(`Webhook invoice.payment_failed failed for customer ${invoice.customer}:`, err.message);
+        throw err;
+      }
       break;
     }
   }
 }
 
-// Looks up installer by stripeCustomerId — used in webhook handlers
+// Looks up installer by stripeCustomerId in Supabase
 const axios = require('axios');
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://mhiwlqezyenwvzamviwy.supabase.co';
 const SERVICE_KEY = () => process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -179,31 +222,67 @@ async function findInstallerByCustomer(customerId) {
   if (!SERVICE_KEY()) return null;
   try {
     const res = await axios.get(
-      `${SUPABASE_URL}/rest/v1/installer_configs?select=installer_id,config&config->subscription->>stripeCustomerId=eq.${customerId}`,
+      `${SUPABASE_URL}/rest/v1/installer_configs?select=installer_id&config->subscription->>stripeCustomerId=eq.${encodeURIComponent(customerId)}`,
       { headers: { apikey: SERVICE_KEY(), Authorization: `Bearer ${SERVICE_KEY()}` } }
     );
     return res.data?.[0]?.installer_id || null;
-  } catch {
+  } catch (err) {
+    console.error('findInstallerByCustomer error:', err.message);
     return null;
   }
 }
 
-// Exported utility used by installer routes
+// Compute the effective subscription status from stored config.
+// Handles all Stripe statuses: active, canceled, past_due, unpaid, trialing, etc.
 function computeSubscriptionStatus(config) {
   const sub = config.subscription || {};
   const TRIAL_DAYS = 30;
   const trialStart = sub.trialStartedAt ? new Date(sub.trialStartedAt) : null;
 
-  if (sub.status === 'active') {
+  // If a Stripe subscription exists, its status is authoritative
+  if (sub.stripeSubscriptionId) {
+    if (sub.status === 'active') {
+      return {
+        active: true,
+        status: 'active',
+        daysLeft: null,
+        currentPeriodEnd: sub.currentPeriodEnd || null,
+        stripeCustomerId: sub.stripeCustomerId || null,
+        stripeSubscriptionId: sub.stripeSubscriptionId,
+      };
+    }
+    if (sub.status === 'past_due' || sub.status === 'unpaid') {
+      return {
+        active: false,
+        status: 'past_due',
+        daysLeft: null,
+        currentPeriodEnd: sub.currentPeriodEnd || null,
+        stripeCustomerId: sub.stripeCustomerId || null,
+        stripeSubscriptionId: sub.stripeSubscriptionId,
+      };
+    }
+    if (sub.status === 'canceled') {
+      return {
+        active: false,
+        status: 'canceled',
+        daysLeft: null,
+        currentPeriodEnd: sub.currentPeriodEnd || null,
+        stripeCustomerId: sub.stripeCustomerId || null,
+        stripeSubscriptionId: sub.stripeSubscriptionId,
+      };
+    }
+    // Any other Stripe status (incomplete, paused, etc.) — treat as inactive
     return {
-      active: true,
-      status: 'active',
+      active: false,
+      status: sub.status || 'inactive',
       daysLeft: null,
       currentPeriodEnd: sub.currentPeriodEnd || null,
       stripeCustomerId: sub.stripeCustomerId || null,
+      stripeSubscriptionId: sub.stripeSubscriptionId,
     };
   }
 
+  // No Stripe subscription yet — check free trial
   if (trialStart) {
     const daysElapsed = (Date.now() - trialStart.getTime()) / (1000 * 60 * 60 * 24);
     if (daysElapsed < TRIAL_DAYS) {
@@ -213,6 +292,7 @@ function computeSubscriptionStatus(config) {
         daysLeft: Math.ceil(TRIAL_DAYS - daysElapsed),
         currentPeriodEnd: null,
         stripeCustomerId: sub.stripeCustomerId || null,
+        stripeSubscriptionId: null,
       };
     }
     return {
@@ -221,20 +301,22 @@ function computeSubscriptionStatus(config) {
       daysLeft: 0,
       currentPeriodEnd: null,
       stripeCustomerId: sub.stripeCustomerId || null,
+      stripeSubscriptionId: null,
     };
   }
 
-  // No trial record yet — treat as fresh trial
+  // No trial record yet — fresh account, 30-day trial starts now
   return {
     active: true,
     status: 'trialing',
     daysLeft: TRIAL_DAYS,
     currentPeriodEnd: null,
     stripeCustomerId: null,
+    stripeSubscriptionId: null,
   };
 }
 
-// Exported raw webhook handler (needs raw body, registered before express.json in index.js)
+// Raw webhook handler — registered before express.json() in index.js
 async function webhookHandler(req, res) {
   const secret = STRIPE_WEBHOOK_SECRET();
   let event;
@@ -246,14 +328,17 @@ async function webhookHandler(req, res) {
       event = JSON.parse(req.body.toString());
     }
   } catch (err) {
+    console.error('Webhook signature verification failed:', err.message);
     return res.status(400).send(`Webhook error: ${err.message}`);
   }
+
   try {
     await handleStripeEvent(event);
     res.json({ received: true });
   } catch (err) {
-    console.error('Webhook handler error:', err.message);
-    res.status(500).send('Webhook handler failed');
+    console.error(`Webhook handler error for ${event.type}:`, err.message);
+    // Return the actual error so it shows up in Stripe's dashboard delivery log
+    res.status(500).send(`Webhook handler failed: ${err.message}`);
   }
 }
 

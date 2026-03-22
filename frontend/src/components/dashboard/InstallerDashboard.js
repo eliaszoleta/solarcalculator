@@ -1105,14 +1105,18 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
   const daysLeft = subscription?.daysLeft;
   const isActive = subscription?.active !== false;
   const hasStripe = !!subscription?.stripeCustomerId;
+  const currentPeriodEnd = subscription?.currentPeriodEnd
+    ? new Date(subscription.currentPeriodEnd).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+    : null;
 
-  const statusColors = {
-    active: { bg: '#dcfce7', color: '#16a34a', label: 'Active' },
+  const statusBadge = {
+    active:   { bg: '#dcfce7', color: '#16a34a', label: 'Active' },
     trialing: { bg: '#dbeafe', color: '#1d4ed8', label: `Free Trial${daysLeft != null ? ` — ${daysLeft} days left` : ''}` },
-    expired: { bg: '#fee2e2', color: '#dc2626', label: 'Trial Expired' },
-    canceled: { bg: '#fef3c7', color: '#d97706', label: 'Canceled' },
+    expired:  { bg: '#fee2e2', color: '#dc2626', label: 'Trial Expired' },
+    canceled: { bg: '#fef3c7', color: '#b45309', label: 'Canceled' },
+    past_due: { bg: '#fef3c7', color: '#b45309', label: 'Past Due — Payment Failed' },
   };
-  const badge = statusColors[status] || statusColors.trialing;
+  const badge = statusBadge[status] || { bg: '#f1f5f9', color: '#64748b', label: status };
 
   return (
     <div className="setting-card">
@@ -1122,19 +1126,37 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
       </div>
       <div className="setting-card-body">
 
-        {justSubscribed && (
+        {/* Success banner after returning from Stripe checkout */}
+        {justSubscribed && status === 'active' && (
           <div style={{ background: '#dcfce7', border: '1px solid #86efac', borderRadius: 10, padding: '14px 18px', marginBottom: 20, color: '#15803d', fontSize: 14, fontWeight: 600 }}>
-            <SparklesIcon size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />You're subscribed! Your embedded calculator is now active.
+            <SparklesIcon size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />
+            You're subscribed! Your embedded calculator is now active.
           </div>
         )}
 
+        {/* Status badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
           <span style={{ fontSize: 13, color: '#64748b' }}>Status:</span>
-          <span style={{ background: badge.bg, color: badge.color, borderRadius: 20, padding: '4px 12px', fontSize: 13, fontWeight: 700 }}>
+          <span style={{ background: badge.bg, color: badge.color, borderRadius: 20, padding: '4px 14px', fontSize: 13, fontWeight: 700 }}>
             {badge.label}
           </span>
         </div>
 
+        {/* ACTIVE — show billing date + manage button */}
+        {status === 'active' && (
+          <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#15803d', marginBottom: 6 }}>
+              Your calculator is active
+            </h4>
+            {currentPeriodEnd && (
+              <p style={{ fontSize: 13, color: '#64748b', marginBottom: 0 }}>
+                Next billing date: <strong style={{ color: '#0f172a' }}>{currentPeriodEnd}</strong>
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* TRIALING — show progress bar */}
         {status === 'trialing' && (() => {
           const TRIAL_DAYS = 30;
           const days = daysLeft != null ? daysLeft : TRIAL_DAYS;
@@ -1143,9 +1165,7 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
           return (
             <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
-                <h4 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: 0 }}>
-                  Free Trial
-                </h4>
+                <h4 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: 0 }}>Free Trial</h4>
                 <span style={{ fontSize: 22, fontWeight: 800, color: barColor, letterSpacing: '-0.5px' }}>
                   {days} <span style={{ fontSize: 13, fontWeight: 600, color: '#64748b' }}>day{days !== 1 ? 's' : ''} left</span>
                 </span>
@@ -1154,24 +1174,51 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
                 <div style={{ width: `${pct}%`, height: '100%', background: barColor, borderRadius: 99, transition: 'width 0.4s' }} />
               </div>
               <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
-                Subscribe now to keep your embedded calculator active on your website after the trial ends. Your pricing settings, branding, and leads are all preserved.
+                Subscribe before your trial ends to keep your calculator live. Your settings, branding, and leads are all preserved.
               </p>
             </div>
           );
         })()}
 
-        {!isActive && (
-          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#dc2626', marginBottom: 8 }}>
-              Your embedded calculator is paused
+        {/* CANCELED — show reactivation prompt */}
+        {status === 'canceled' && (
+          <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#92400e', marginBottom: 8 }}>
+              Your subscription was canceled
             </h4>
             <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
-              Visitors to your website will see a notice that the calculator is temporarily unavailable. Subscribe below to reactivate it instantly.
+              Your embedded calculator is paused. Click <strong>Reactivate Plan</strong> below to restart your subscription through the billing portal — your settings and leads are still saved.
             </p>
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        {/* PAST DUE — payment failed */}
+        {status === 'past_due' && (
+          <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#c2410c', marginBottom: 8 }}>
+              Payment failed — action required
+            </h4>
+            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
+              We couldn't process your last payment. Update your payment method to keep your calculator active.
+            </p>
+          </div>
+        )}
+
+        {/* EXPIRED trial */}
+        {status === 'expired' && (
+          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#dc2626', marginBottom: 8 }}>
+              Your free trial has ended
+            </h4>
+            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
+              Your embedded calculator is paused. Subscribe below to reactivate it instantly — all your settings and leads are still saved.
+            </p>
+          </div>
+        )}
+
+        {/* Action buttons */}
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+          {/* Not yet subscribed — show Subscribe button */}
           {!hasStripe && (
             <button
               onClick={onSubscribe}
@@ -1180,7 +1227,9 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
               Subscribe — Activate Calculator
             </button>
           )}
-          {hasStripe && (
+
+          {/* Active — show Manage Subscription */}
+          {hasStripe && status === 'active' && (
             <button
               onClick={onManage}
               style={{ padding: '12px 28px', background: '#1e293b', color: 'white', border: 'none', borderRadius: 10, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}
@@ -1188,19 +1237,49 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
               Manage Subscription
             </button>
           )}
-          {!hasStripe && status !== 'trialing' && (
+
+          {/* Canceled — show Reactivate (→ billing portal) */}
+          {hasStripe && status === 'canceled' && (
+            <button
+              onClick={onManage}
+              style={{ padding: '12px 28px', background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: 'white', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}
+            >
+              Reactivate Plan
+            </button>
+          )}
+
+          {/* Past due — show Update Payment Method (→ billing portal) */}
+          {hasStripe && status === 'past_due' && (
+            <button
+              onClick={onManage}
+              style={{ padding: '12px 28px', background: '#dc2626', color: 'white', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}
+            >
+              Update Payment Method
+            </button>
+          )}
+
+          {/* Expired trial without Stripe — show Subscribe */}
+          {!hasStripe && status === 'expired' && (
             <button
               onClick={onSubscribe}
               style={{ padding: '12px 28px', background: '#1e40af', color: 'white', border: 'none', borderRadius: 10, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}
             >
-              Reactivate
+              Subscribe Now
             </button>
           )}
         </div>
 
-        <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 20, lineHeight: 1.6 }}>
-          You can cancel anytime from the billing portal. No long-term commitment required.
-        </p>
+        {/* Footer note */}
+        {status === 'active' && (
+          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 16, lineHeight: 1.6 }}>
+            Cancel, update your payment method, or download invoices anytime from the billing portal.
+          </p>
+        )}
+        {(status === 'trialing' || status === 'expired') && !hasStripe && (
+          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 16, lineHeight: 1.6 }}>
+            No long-term commitment. Cancel anytime from the billing portal.
+          </p>
+        )}
       </div>
     </div>
   );
