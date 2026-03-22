@@ -145,7 +145,7 @@ async function handleStripeEvent(event) {
           stripeCustomerId: fullSession.customer,
           stripeSubscriptionId: typeof sub === 'string' ? sub : sub?.id,
           status: 'active',
-          currentPeriodEnd: sub && typeof sub !== 'string'
+          currentPeriodEnd: sub && typeof sub !== 'string' && sub.current_period_end
             ? new Date(sub.current_period_end * 1000).toISOString()
             : (config.subscription?.currentPeriodEnd || null),
         };
