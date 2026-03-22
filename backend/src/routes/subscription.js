@@ -167,7 +167,10 @@ async function handleStripeEvent(event) {
         config.subscription = {
           ...(config.subscription || {}),
           status: sub.status,
-          currentPeriodEnd: new Date(sub.current_period_end * 1000).toISOString(),
+          cancelAtPeriodEnd: sub.cancel_at_period_end || false,
+          currentPeriodEnd: sub.current_period_end
+            ? new Date(sub.current_period_end * 1000).toISOString()
+            : (config.subscription?.currentPeriodEnd || null),
           stripeSubscriptionId: sub.id,
         };
         await saveInstallerConfig(installerId, config);
@@ -253,6 +256,7 @@ function computeSubscriptionStatus(config) {
       return {
         active: true,
         status: 'active',
+        cancelAtPeriodEnd: sub.cancelAtPeriodEnd || false,
         daysLeft: null,
         currentPeriodEnd: sub.currentPeriodEnd || null,
         stripeCustomerId: sub.stripeCustomerId || null,

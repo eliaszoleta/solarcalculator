@@ -1108,6 +1108,7 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
   const currentPeriodEnd = subscription?.currentPeriodEnd
     ? new Date(subscription.currentPeriodEnd).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : null;
+  const cancelAtPeriodEnd = subscription?.cancelAtPeriodEnd || false;
 
   const statusBadge = {
     active:   { bg: '#dcfce7', color: '#16a34a', label: 'Active' },
@@ -1144,11 +1145,16 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
 
         {/* ACTIVE — show billing date + manage button */}
         {status === 'active' && (
-          <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#15803d', marginBottom: 6 }}>
-              Your calculator is active
+          <div style={{ background: cancelAtPeriodEnd ? '#fffbeb' : '#f0fdf4', border: `1px solid ${cancelAtPeriodEnd ? '#fde68a' : '#bbf7d0'}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <h4 style={{ fontSize: 15, fontWeight: 700, color: cancelAtPeriodEnd ? '#92400e' : '#15803d', marginBottom: 6 }}>
+              {cancelAtPeriodEnd ? 'Cancellation scheduled' : 'Your calculator is active'}
             </h4>
-            {currentPeriodEnd && (
+            {cancelAtPeriodEnd && currentPeriodEnd && (
+              <p style={{ fontSize: 13, color: '#78350f', marginBottom: 0 }}>
+                You've cancelled your subscription. Your calculator will remain active until <strong>{currentPeriodEnd}</strong>, then it will be deactivated.
+              </p>
+            )}
+            {!cancelAtPeriodEnd && currentPeriodEnd && (
               <p style={{ fontSize: 13, color: '#64748b', marginBottom: 0 }}>
                 Next billing date: <strong style={{ color: '#0f172a' }}>{currentPeriodEnd}</strong>
               </p>
