@@ -63,6 +63,7 @@ const DEFAULT_CONFIG = {
   systemName: 'Solar Calculator', companyName: '', primaryColor: '#f59e0b', formBgColor: '#ffffff',
   borderRadius: 12,
   frameHeight: 620,
+  frameWidth: null,
   customSteps: [],
 };
 
@@ -280,8 +281,11 @@ export default function InstallerDashboard({ user, onLogout }) {
 
   const siteUrl = process.env.REACT_APP_SITE_URL || window.location.origin;
   const frameHeight = config.frameHeight || 620;
+  const frameWidth = config.frameWidth;
+  const iframeWidth = frameWidth ? `${frameWidth}px` : '100%';
+  const maxWidth = frameWidth ? `${frameWidth}px` : '100%';
   const embedCode = `<!-- MySolarWidget Solar Calculator -->
-<iframe src="${siteUrl}/embed?installer=${installerId}" width="100%" height="${frameHeight}" frameborder="0" scrolling="no" style="border:none;width:100%;max-width:100%;display:block;" title="Solar Savings Calculator"></iframe>`;
+<iframe src="${siteUrl}/embed?installer=${installerId}" width="${iframeWidth}" height="${frameHeight}" frameborder="0" scrolling="no" style="border:none;width:${iframeWidth};max-width:${maxWidth};display:block;" title="Solar Savings Calculator"></iframe>`;
 
   return (
     <div className="dash-layout">
@@ -516,7 +520,7 @@ export default function InstallerDashboard({ user, onLogout }) {
 
           {activeTab === 'embed' && (
             <div className="settings-grid">
-              <SettingCard title="Widget Frame Height" desc="Set the fixed height of your embedded calculator. Content inside scrolls — your page layout stays perfectly intact.">
+              <SettingCard title="Widget Frame Size" desc="Set the fixed dimensions of your embedded calculator. Leave width empty to span the full container width.">
                 <SettingRow label="Height (px)" hint="Recommended: 580 – 800px depending on your layout">
                   <input
                     type="number"
@@ -525,6 +529,18 @@ export default function InstallerDashboard({ user, onLogout }) {
                     step="10"
                     value={config.frameHeight || 620}
                     onChange={e => update('frameHeight', parseInt(e.target.value) || 620)}
+                    className="dash-input"
+                  />
+                </SettingRow>
+                <SettingRow label="Width (px)" hint="Leave blank for 100% width — or set a fixed px value (e.g. 480)">
+                  <input
+                    type="number"
+                    min="320"
+                    max="1400"
+                    step="10"
+                    placeholder="Auto (100%)"
+                    value={config.frameWidth || ''}
+                    onChange={e => update('frameWidth', e.target.value ? parseInt(e.target.value) : null)}
                     className="dash-input"
                   />
                 </SettingRow>
