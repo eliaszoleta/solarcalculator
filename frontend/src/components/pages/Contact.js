@@ -22,7 +22,7 @@ export default function Contact() {
   return (
     <div style={{ background: 'var(--bg, #f1f5f9)', minHeight: '100vh' }}>
       <Helmet>
-        <title>Contact Us — MySolarWidget</title>
+        <title>Contact Us | MySolarWidget</title>
         <meta name="description" content="Contact MySolarWidget with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message." />
         <link rel="canonical" href={`${DOMAIN}/contact`} />
         <meta name="robots" content="index, follow" />
