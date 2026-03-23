@@ -26,7 +26,10 @@ function IconTile({ color, bg, children, compact }) {
   );
 }
 
-export default function StepRoof({ sunExposure, roofType, onExposureChange, onRoofChange }) {
+export default function StepRoof({ sunExposure, roofType, onExposureChange, onRoofChange, primaryColor }) {
+  const accent = primaryColor || '#2563eb';
+  const accentBg = accent + '18'; // ~9% opacity tint
+
   return (
     <div>
       <h2 className="step-title">Tell us about your roof</h2>
@@ -39,7 +42,7 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
             key={opt.value}
             className={`option-card ${sunExposure === opt.value ? 'selected' : ''}`}
             onClick={() => onExposureChange(opt.value)}
-            style={sunExposure === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
+            style={sunExposure === opt.value ? { borderColor: accent, background: accentBg } : {}}
           >
             <span className="option-icon">
               <IconTile color={opt.color} bg={opt.bg}>
@@ -61,7 +64,7 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
             onClick={() => onRoofChange(opt.value)}
             style={{
               padding: '8px 10px',
-              ...(roofType === opt.value ? { borderColor: opt.color, background: opt.bg } : {}),
+              ...(roofType === opt.value ? { borderColor: accent, background: accentBg } : {}),
             }}
           >
             <span style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
