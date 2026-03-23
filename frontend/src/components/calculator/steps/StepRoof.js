@@ -14,11 +14,11 @@ const ROOF_TYPES = [
   { value: 'flat',    Icon: MinusSquareIcon, color: '#4f46e5', bg: '#eef2ff', label: 'Flat Roof',        desc: 'Requires tilt mounting',        extra: '+$800' },
 ];
 
-function IconTile({ color, bg, children }) {
+function IconTile({ color, bg, children, compact }) {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      width: 48, height: 48, borderRadius: 12,
+      width: compact ? 36 : 48, height: compact ? 36 : 48, borderRadius: compact ? 8 : 12,
       background: bg, transition: 'all 0.15s',
     }}>
       {React.cloneElement(children, { color })}
@@ -57,13 +57,13 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
         {ROOF_TYPES.map(opt => (
           <button
             key={opt.value}
-            className={`option-card ${roofType === opt.value ? 'selected' : ''}`}
+            className={`option-card option-card-compact ${roofType === opt.value ? 'selected' : ''}`}
             onClick={() => onRoofChange(opt.value)}
             style={roofType === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
           >
-            <span className="option-icon">
-              <IconTile color={opt.color} bg={opt.bg}>
-                <opt.Icon size={22} />
+            <span className="option-icon option-icon-compact">
+              <IconTile color={opt.color} bg={opt.bg} compact>
+                <opt.Icon size={18} />
               </IconTile>
             </span>
             <div className="option-label">{opt.label}</div>
@@ -81,6 +81,18 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
           margin-bottom: 10px;
           text-transform: uppercase;
           letter-spacing: 0.06em;
+        }
+        .option-card-compact {
+          padding: 10px 12px;
+        }
+        .option-icon-compact {
+          margin-bottom: 6px;
+        }
+        .option-card-compact .option-label {
+          font-size: 13px;
+        }
+        .option-card-compact .option-desc {
+          font-size: 11px;
         }
       `}</style>
     </div>
