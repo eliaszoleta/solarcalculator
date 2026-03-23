@@ -82,18 +82,6 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
           text-transform: uppercase;
           letter-spacing: 0.06em;
         }
-        .option-card-compact {
-          padding: 10px 12px;
-        }
-        .option-icon-compact {
-          margin-bottom: 6px;
-        }
-        .option-card-compact .option-label {
-          font-size: 13px;
-        }
-        .option-card-compact .option-desc {
-          font-size: 11px;
-        }
       `}</style>
     </div>
   );
