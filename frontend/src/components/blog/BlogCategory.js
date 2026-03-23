@@ -81,23 +81,23 @@ export default function BlogCategory({ category: categorySlug }) {
       {/* Category hero */}
       <header style={{
         background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1e40af 100%)',
-        padding: '64px 24px 56px',
+        padding: '44px 24px 40px',
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
       }}>
         <div style={{ position: 'absolute', top: -60, right: -60, width: 280, height: 280, borderRadius: '50%', background: 'rgba(245,158,11,0.1)', filter: 'blur(50px)' }} />
         <div style={{ position: 'relative' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-            <div style={{ width: 72, height: 72, borderRadius: 18, background: colors.iconBg, border: `2px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <CategoryIcon slug={categorySlug} size={36} color={colors.iconColor} />
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
+            <div style={{ width: 56, height: 56, borderRadius: 14, background: colors.iconBg, border: `2px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <CategoryIcon slug={categorySlug} size={28} color={colors.iconColor} />
             </div>
           </div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(147,197,253,0.12)', border: '1px solid rgba(147,197,253,0.25)', borderRadius: 999, padding: '3px 12px', marginBottom: 14 }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#93c5fd', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Category</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(147,197,253,0.12)', border: '1px solid rgba(147,197,253,0.25)', borderRadius: 999, padding: '3px 10px', marginBottom: 10 }}>
+            <span style={{ fontSize: 10, fontWeight: 700, color: '#93c5fd', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Category</span>
           </div>
-          <h1 style={{ fontSize: 'clamp(24px, 4vw, 38px)', fontWeight: 900, letterSpacing: '-0.025em', margin: '0 0 12px', color: 'white', lineHeight: 1.15 }}>{category.label}</h1>
-          <p style={{ fontSize: 16, color: '#93c5fd', maxWidth: 480, margin: '0 auto', lineHeight: 1.65 }}>{category.description}</p>
+          <h1 style={{ fontSize: 'clamp(20px, 3.5vw, 30px)', fontWeight: 900, letterSpacing: '-0.025em', margin: '0 0 8px', color: 'white', lineHeight: 1.2 }}>{category.label}</h1>
+          <p style={{ fontSize: 14, color: '#93c5fd', maxWidth: 440, margin: '0 auto', lineHeight: 1.6 }}>{category.description}</p>
         </div>
       </header>
 
@@ -142,8 +142,8 @@ export default function BlogCategory({ category: categorySlug }) {
         )}
 
         {/* CTA */}
-        <div className="post-cta-block" style={{ marginTop: 48 }}>
-          <img src="/logo-icon-navy.svg" alt="" aria-hidden className="post-cta-block__icon" style={{ width: 64, height: 64, borderRadius: 14, marginBottom: 12 }} />
+        <div className="post-cta-block" style={{ marginTop: 32 }}>
+          <img src="/logo-icon-navy.svg" alt="" aria-hidden className="post-cta-block__icon" style={{ width: 48, height: 48, borderRadius: 12, marginBottom: 10 }} />
           <h3>Estimate Your Solar Savings</h3>
           <p>
             Use our free Solar Calculator to see your personalized cost, monthly savings,
