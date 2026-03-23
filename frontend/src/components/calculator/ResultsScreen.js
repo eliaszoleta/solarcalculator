@@ -61,8 +61,8 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
 
           {/* Headline */}
           <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <span style={{ display: 'inline-block', background: '#dcfce7', color: '#166534', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: 999, marginBottom: 10 }}>
-              Your Solar Estimate
+            <span style={{ display: 'inline-block', background: `${cta.accentColor || '#166534'}20`, color: cta.accentColor || '#166534', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: 999, marginBottom: 10 }}>
+              Solar Estimate
             </span>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>
               {isCash
@@ -120,9 +120,9 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           <div style={{ textAlign: 'center' }}>
             <button
               onClick={handleViewFullReport}
-              style={{ fontSize: 13, color: '#2563eb', fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+              style={{ fontSize: 16, color: cta.accentColor || '#2563eb', fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
             >
-              View Full Solar Report
+              Open Full Solar Report
             </button>
             <span style={{ color: '#cbd5e1', margin: '0 8px' }}>·</span>
             <button onClick={onReset} style={{ fontSize: 13, color: '#64748b', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
