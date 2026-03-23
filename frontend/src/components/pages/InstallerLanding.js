@@ -35,12 +35,12 @@ function LandingNav() {
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <a href="/installer" style={{
-            fontSize: 14, color: '#1e40af', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap',
-            padding: '8px 18px', border: '1.5px solid #1e40af', borderRadius: 8,
+            fontSize: 14, color: '#2563eb', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap',
+            padding: '8px 18px', border: '1.5px solid #2563eb', borderRadius: 8,
             transition: 'background 0.15s, color 0.15s',
           }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#1e40af'; e.currentTarget.style.color = 'white'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1e40af'; }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#2563eb'; e.currentTarget.style.color = 'white'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#2563eb'; }}
           >
             Log in
           </a>
@@ -91,7 +91,7 @@ function Hero() {
             textDecoration: 'none', boxShadow: '0 8px 24px rgba(245,158,11,0.35)',
             transition: 'transform 0.15s',
           }}>
-            Start 30-Day Free Trial →
+            Start 30-Day Free Trial
           </a>
           <a href="#how-it-works" style={{
             padding: '16px 28px', background: 'rgba(255,255,255,0.1)',
@@ -123,7 +123,7 @@ function LogoBar() {
       <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 24 }}>
         {stats.map(s => (
           <div key={s.label} style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: '#1e40af' }}>{s.value}</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: '#2563eb' }}>{s.value}</div>
             <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>{s.label}</div>
           </div>
         ))}
@@ -165,7 +165,7 @@ function HowItWorks() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 32, marginTop: 56 }}>
           {steps.map(s => (
             <div key={s.num} style={{ position: 'relative' }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: '#1e40af', letterSpacing: '0.1em', marginBottom: 16, opacity: 0.5 }}>STEP {s.num}</div>
+              <div style={{ fontSize: 11, fontWeight: 800, color: '#2563eb', letterSpacing: '0.1em', marginBottom: 16, opacity: 0.5 }}>STEP {s.num}</div>
               <div style={{ width: 52, height: 52, background: s.iconBg, color: s.iconColor, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
                 {s.icon}
               </div>
@@ -295,7 +295,7 @@ function AccuracySection() {
         </div>
 
         <div style={{ marginTop: 48, background: '#eff6ff', borderRadius: 16, padding: '24px 28px', border: '1px solid #bfdbfe' }}>
-          <p style={{ fontSize: 14, color: '#1e40af', lineHeight: 1.7, margin: 0 }}>
+          <p style={{ fontSize: 14, color: '#2563eb', lineHeight: 1.7, margin: 0 }}>
             <strong>Why not 100% accurate?</strong> A precise quote requires a roof inspection, shading analysis, and utility interconnection review that only a site visit can provide. The calculator's job is to give homeowners a confident starting point — and give you a warm, pre-qualified lead who already understands solar's value before they speak to you.
           </p>
         </div>
@@ -398,7 +398,7 @@ function WhatItDoesForYou() {
                 <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7 }}>{b.desc}</p>
               </div>
               <div style={{ textAlign: 'center', minWidth: 140 }}>
-                <div style={{ fontSize: 36, fontWeight: 900, color: '#1e40af' }}>{b.stat}</div>
+                <div style={{ fontSize: 36, fontWeight: 900, color: '#2563eb' }}>{b.stat}</div>
                 <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4, maxWidth: 130 }}>{b.statLabel}</div>
               </div>
             </div>
@@ -474,7 +474,7 @@ function FinalCTA() {
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 900, color: '#0f172a', lineHeight: 1.2, marginBottom: 16 }}>
           Your competitors' websites have a contact form.<br />
-          <span style={{ color: '#1e40af' }}>Yours will have a solar calculator.</span>
+          <span style={{ color: '#2563eb' }}>Yours will have a solar calculator.</span>
         </h2>
         <p style={{ fontSize: 16, color: '#64748b', marginBottom: 36, lineHeight: 1.7 }}>
           Start your 30-day free trial today. Be live on your website today.
@@ -485,7 +485,7 @@ function FinalCTA() {
           color: 'white', borderRadius: 14, fontWeight: 800, fontSize: 18,
           textDecoration: 'none', boxShadow: '0 10px 30px rgba(245,158,11,0.3)',
         }}>
-          Get Started Free →
+          Get Started Free
         </a>
         <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 16 }}>
           No credit card · 30-day free trial · Cancel anytime

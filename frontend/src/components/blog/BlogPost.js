@@ -76,7 +76,7 @@ function SidebarCTA() {
       <img src="/logo-icon-navy.svg" alt="MySolarWidget" className="sidebar-cta__icon" style={{ width: 48, height: 48, borderRadius: 12, marginBottom: 10 }} />
       <h4>Free Solar Calculator</h4>
       <p>See how much solar saves you based on your real electricity bill and location.</p>
-      <a href="/" className="sidebar-cta__btn">Get My Estimate →</a>
+      <a href="/" className="sidebar-cta__btn">Get My Estimate</a>
     </div>
   );
 }
@@ -150,7 +150,7 @@ export default function BlogPost({ slug }) {
         <div><SearchIcon size={48} /></div>
         <h1 style={{ fontSize: 24, color: '#0f172a', margin: 0 }}>Article not found</h1>
         <p style={{ color: '#64748b' }}>The article you're looking for doesn't exist.</p>
-        <a href="/blog" style={{ color: '#1e40af', fontWeight: 700 }}>← Back to Blog</a>
+        <a href="/blog" style={{ color: '#2563eb', fontWeight: 700 }}>← Back to Blog</a>
       </div>
     );
   }
@@ -289,7 +289,7 @@ export default function BlogPost({ slug }) {
               <h4>Free Solar Savings Calculator</h4>
               <p>See your personalized cost, savings, and payback period based on your home and location.</p>
             </div>
-            <a href="/" className="post-cta-inline__btn">Calculate My Savings →</a>
+            <a href="/" className="post-cta-inline__btn">Calculate My Savings</a>
           </div>
 
           {/* Sections */}
@@ -311,7 +311,7 @@ export default function BlogPost({ slug }) {
                     <h4>Estimate Your Solar Savings</h4>
                     <p>Enter your monthly bill and ZIP code for a personalized estimate powered by real NREL solar data.</p>
                   </div>
-                  <a href="/" className="post-cta-inline__btn">Try the Calculator →</a>
+                  <a href="/" className="post-cta-inline__btn">Try the Calculator</a>
                 </div>
               )}
             </section>
