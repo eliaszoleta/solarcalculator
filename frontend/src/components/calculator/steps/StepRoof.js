@@ -57,18 +57,21 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
         {ROOF_TYPES.map(opt => (
           <button
             key={opt.value}
-            className={`option-card option-card-compact ${roofType === opt.value ? 'selected' : ''}`}
+            className={`option-card ${roofType === opt.value ? 'selected' : ''}`}
             onClick={() => onRoofChange(opt.value)}
-            style={roofType === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
+            style={{
+              padding: '8px 10px',
+              ...(roofType === opt.value ? { borderColor: opt.color, background: opt.bg } : {}),
+            }}
           >
-            <span className="option-icon option-icon-compact">
+            <span style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
               <IconTile color={opt.color} bg={opt.bg} compact>
-                <opt.Icon size={18} />
+                <opt.Icon size={16} />
               </IconTile>
             </span>
-            <div className="option-label">{opt.label}</div>
-            <div className="option-desc">{opt.desc}</div>
-            {opt.extra && <div className="option-price">{opt.extra}</div>}
+            <div className="option-label" style={{ fontSize: 12 }}>{opt.label}</div>
+            <div className="option-desc" style={{ fontSize: 11 }}>{opt.desc}</div>
+            {opt.extra && <div className="option-price" style={{ fontSize: 11 }}>{opt.extra}</div>}
           </button>
         ))}
       </div>
