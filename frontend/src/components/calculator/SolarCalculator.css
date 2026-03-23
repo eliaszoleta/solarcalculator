@@ -233,6 +233,22 @@
   margin-top: 4px;
 }
 
+.option-card.option-card-compact {
+  padding: 10px 12px;
+}
+
+.option-card.option-card-compact .option-icon {
+  margin-bottom: 4px;
+}
+
+.option-card.option-card-compact .option-label {
+  font-size: 13px;
+}
+
+.option-card.option-card-compact .option-desc {
+  font-size: 11px;
+}
+
 @media (max-width: 480px) {
   .step-content {
     padding: 24px 20px 16px;
