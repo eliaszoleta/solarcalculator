@@ -1,37 +1,39 @@
 import React from 'react';
 
 export default function ProgressBar({ current, total, steps, embedded, primaryColor }) {
-  const pct = Math.round(((current - 1) / (total - 1)) * 100);
+  const accent = primaryColor || '#2563eb';
+  const progressStep = current - 1; // 0-based index of current step
+  const pct = total > 1 ? (progressStep / (total - 1)) * 100 : 0;
 
   return (
-    <div style={{ padding: embedded ? '20px 24px 10px' : '22px 32px 14px' }}>
+    <div style={{
+      background: '#f8fafc',
+      borderBottom: '1px solid #e2e8f0',
+      padding: embedded ? '12px 16px' : '14px 24px',
+    }}>
+      {/* Step labels */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+        {steps.map((s, i) => (
+          <span key={s.label} style={{
+            fontSize: 12,
+            fontWeight: 600,
+            color: i <= progressStep ? accent : '#94a3b8',
+            transition: 'color 0.3s ease',
+          }}>
+            {s.label}
+          </span>
+        ))}
+      </div>
 
-      {/* Thin fill bar */}
-      <div style={{
-        height: 4,
-        borderRadius: 999,
-        background: '#e9ecef',
-        marginBottom: embedded ? 10 : 14,
-        overflow: 'hidden',
-      }}>
+      {/* Fill bar */}
+      <div style={{ height: 3, background: '#e2e8f0', borderRadius: 2, overflow: 'hidden' }}>
         <div style={{
           height: '100%',
           width: `${pct}%`,
-          borderRadius: 999,
-          background: '#94a3b8',
-          transition: 'width 0.4s ease',
+          background: accent,
+          borderRadius: 2,
+          transition: 'width 0.35s ease',
         }} />
-      </div>
-
-      {/* Step label + counter */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: '#64748b', display: 'flex', alignItems: 'center' }}>{steps[current - 1]?.icon}</span>
-          {steps[current - 1]?.label}
-        </span>
-        <span style={{ fontSize: 12, color: '#94a3b8', fontWeight: 500 }}>
-          {current} of {total}
-        </span>
       </div>
     </div>
   );
