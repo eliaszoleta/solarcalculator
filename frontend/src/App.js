@@ -50,6 +50,9 @@ function BlogRouter() {
 // Standalone full-results page — reads encoded data from URL hash
 function ResultsPage() {
   const [data, setData] = useState(null);
+  // ?popup=1 = loaded inside the embed popup iframe — hide site chrome
+  const isPopup = new URLSearchParams(window.location.search).get('popup') === '1';
+
   useEffect(() => {
     try {
       const hash = window.location.hash.slice(1);
@@ -63,19 +66,27 @@ function ResultsPage() {
     </div>
   );
 
+  const screen = (
+    <ResultsScreen
+      results={data.r}
+      form={{ monthlyBill: data.b, state: data.s }}
+      lead={{ paymentMethod: data.p }}
+      installerConfig={null}
+      embedded={false}
+      popup={isPopup}
+      onReset={() => { window.location.href = '/'; }}
+    />
+  );
+
+  if (isPopup) {
+    // Strip all site chrome — only the results content
+    return <div className="app"><main>{screen}</main></div>;
+  }
+
   return (
     <div className="app">
       <Header />
-      <main>
-        <ResultsScreen
-          results={data.r}
-          form={{ monthlyBill: data.b, state: data.s }}
-          lead={{ paymentMethod: data.p }}
-          installerConfig={null}
-          embedded={false}
-          onReset={() => { window.location.href = '/'; }}
-        />
-      </main>
+      <main>{screen}</main>
       <Footer />
     </div>
   );
