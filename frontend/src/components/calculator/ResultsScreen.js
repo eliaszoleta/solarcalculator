@@ -14,16 +14,17 @@ function fmtDollar(n) {
 
 const SITE_URL = process.env.REACT_APP_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
 
-function buildFullReportUrl(results, form, lead) {
+function buildFullReportUrl(results, form, lead, forPopup = false) {
   try {
     const payload = JSON.stringify({ r: results, b: form.monthlyBill, s: form.state || results.inputs?.state, p: lead?.paymentMethod });
-    return `${SITE_URL}/results#${btoa(unescape(encodeURIComponent(payload)))}`;
+    const hash = btoa(unescape(encodeURIComponent(payload)));
+    return `${SITE_URL}/results${forPopup ? '?popup=1' : ''}#${hash}`;
   } catch {
     return `${SITE_URL}/`;
   }
 }
 
-export default function ResultsScreen({ results, onReset, form, lead, installerConfig, embedded }) {
+export default function ResultsScreen({ results, onReset, form, lead, installerConfig, embedded, popup }) {
   const { system, cost, incentives, savings, chart } = results;
   const cta = installerConfig || {};
 
@@ -39,7 +40,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
 
   // Open full report: postMessage to parent page (iframe) or fallback modal (standalone)
   const handleViewFullReport = () => {
-    const fullReportUrl = buildFullReportUrl(results, form, lead);
+    const fullReportUrl = buildFullReportUrl(results, form, lead, true);
     if (window !== window.parent) {
       // Inside an external iframe — let the parent page render the fullscreen overlay
       window.parent.postMessage({ type: 'MSW_OPEN_REPORT', url: fullReportUrl }, '*');
@@ -92,25 +93,26 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
             </span>
           </div>
 
-          {/* Installer CTA */}
-          <div style={{ background: 'linear-gradient(135deg, #1e3a8a, #1e40af)', borderRadius: 16, padding: '20px 20px', textAlign: 'center', marginBottom: 16 }}>
-            <div style={{ fontSize: 17, fontWeight: 800, color: 'white', marginBottom: 6 }}>
-              {cta.ctaHeadline || 'Ready to Go Solar?'}
+          {/* Installer CTA — compact modern card */}
+          <div style={{ background: '#0f172a', borderRadius: 12, padding: '14px 16px', marginBottom: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: 'white', marginBottom: 2 }}>
+                  {cta.ctaHeadline || 'Ready to Go Solar?'}
+                </div>
+                <div style={{ fontSize: 11, color: '#64748b', lineHeight: 1.4 }}>
+                  {cta.companyName ? cta.companyName : (cta.ctaSubtext || 'Free, no obligation quote')}
+                </div>
+              </div>
+              <a
+                href={cta.ctaButtonUrl || (cta.ctaPhone ? `tel:${cta.ctaPhone}` : '#')}
+                style={{ display: 'inline-block', padding: '9px 18px', background: cta.accentColor || '#2563eb', color: 'white', borderRadius: 8, fontWeight: 700, fontSize: 13, textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap' }}
+              >
+                {cta.ctaButtonText || 'Contact Us'}
+              </a>
             </div>
-            <div style={{ fontSize: 13, color: '#bfdbfe', marginBottom: 16, lineHeight: 1.5 }}>
-              {cta.ctaSubtext || 'Get a custom quote from a local installer — free, no obligation.'}
-            </div>
-            {cta.companyName && (
-              <div style={{ fontSize: 12, color: '#93c5fd', fontWeight: 600, marginBottom: 12 }}>{cta.companyName}</div>
-            )}
-            <a
-              href={cta.ctaButtonUrl || (cta.ctaPhone ? `tel:${cta.ctaPhone}` : '#')}
-              style={{ display: 'inline-block', padding: '12px 28px', background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: 'white', borderRadius: 10, fontWeight: 700, fontSize: 15, textDecoration: 'none' }}
-            >
-              {cta.ctaButtonText || 'Contact Us'}
-            </a>
             {cta.ctaPhone && (
-              <div style={{ fontSize: 13, color: '#93c5fd', marginTop: 10 }}>{cta.ctaPhone}</div>
+              <div style={{ fontSize: 11, color: '#475569', marginTop: 8, textAlign: 'center' }}>{cta.ctaPhone}</div>
             )}
           </div>
 
@@ -336,8 +338,8 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           </div>
         </div>
 
-        {/* CTA — installer-branded when embedded, email capture for public */}
-        <div className="section-card lead-card">
+        {/* CTA — hidden in popup mode (user already submitted contact info in the calculator) */}
+        {!popup && <div className="section-card lead-card">
           {embedded ? (
             <div style={{ textAlign: 'center', padding: '8px 0' }}>
               <img src="/logo-icon-navy.svg" alt="MySolarWidget" style={{ width: 56, height: 56, borderRadius: 14, marginBottom: 12 }} />
@@ -377,7 +379,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           ) : (
             <PublicEmailCapture results={results} form={form} savings={savings} system={system} />
           )}
-        </div>
+        </div>}
 
         <button className="btn btn-secondary recalc-btn" onClick={onReset}>
           ← Recalculate with different inputs
