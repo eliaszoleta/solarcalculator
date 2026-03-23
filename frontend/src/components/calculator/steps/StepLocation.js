@@ -56,10 +56,21 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
       </div>
 
       {isOutOfArea ? (
-        <div className="disqualify-box" style={{ textAlign: 'center', padding: 20, background: '#fef3c7', border: '1px solid #fbbf24', borderRadius: 12, color: '#92400e' }}>
-          <div style={{ marginBottom: 8 }}><MapPinIcon size={28} /></div>
-          <h4 style={{ margin: '0 0 8px', fontWeight: 700 }}>We don't currently serve {state}</h4>
-          <p style={{ margin: 0, fontSize: 13, lineHeight: 1.6 }}>This installer operates in a specific service area. Try selecting a different state or contact them directly to check availability.</p>
+        <div style={{
+          marginTop: 14,
+          padding: '8px 12px',
+          background: '#fffbeb',
+          border: '1px solid #fde68a',
+          borderRadius: 8,
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 8,
+          color: '#92400e',
+        }}>
+          <MapPinIcon size={14} color="#d97706" style={{ flexShrink: 0, marginTop: 1 }} />
+          <span style={{ fontSize: 12, lineHeight: 1.5 }}>
+            <strong>We don't currently serve {state}.</strong> This installer operates in a specific service area — try a different state or contact them directly.
+          </span>
         </div>
       ) : (
         <div className="location-note">
