@@ -381,9 +381,11 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           )}
         </div>}
 
-        <button className="btn btn-secondary recalc-btn" onClick={onReset}>
-          ← Recalculate with different inputs
-        </button>
+        {!popup && (
+          <button className="btn btn-secondary recalc-btn" onClick={onReset}>
+            ← Recalculate with different inputs
+          </button>
+        )}
       </div>
     </section>
   );
