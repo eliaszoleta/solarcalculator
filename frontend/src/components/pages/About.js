@@ -145,7 +145,7 @@ export default function About() {
                 transition: 'background 0.15s',
               }}
             >
-              Learn about the Installer Widget →
+              Learn about the Installer Widget
             </a>
           </div>
         </section>

@@ -136,7 +136,7 @@ export default function BlogIndex() {
                   <span><ClockIcon size={12} style={{ verticalAlign: 'middle', marginRight: 3 }} />{featured.readingTime} min read</span>
                   <span><PencilIcon size={12} style={{ verticalAlign: 'middle', marginRight: 3 }} />{featured.author}</span>
                 </div>
-                <div className="blog-featured__cta">Read article →</div>
+                <div className="blog-featured__cta">Read article</div>
               </div>
             </a>
           </section>
@@ -175,7 +175,7 @@ export default function BlogIndex() {
                   </div>
                   <div className="blog-card__footer">
                     <span style={{ fontSize: 12, color: '#94a3b8' }}><ClockIcon size={11} style={{ verticalAlign: 'middle', marginRight: 3 }} />{post.readingTime} min read</span>
-                    <span className="blog-card__read-more">Read more →</span>
+                    <span className="blog-card__read-more">Read more</span>
                   </div>
                 </a>
               </article>
