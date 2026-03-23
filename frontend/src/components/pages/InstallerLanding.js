@@ -518,10 +518,15 @@ function LandingFooter() {
 function SectionLabel({ children, light }) {
   return (
     <div style={{
-      display: 'inline-block',
-      fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
-      color: light ? '#60a5fa' : '#1e40af',
-      marginBottom: 14,
+      display: 'inline-flex',
+      alignItems: 'center',
+      fontSize: 11.5, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
+      color: light ? '#93c5fd' : '#2563eb',
+      background: light ? 'rgba(147,197,253,0.12)' : '#eff6ff',
+      border: `1px solid ${light ? 'rgba(147,197,253,0.25)' : 'rgba(37,99,235,0.15)'}`,
+      borderRadius: 999,
+      padding: '4px 12px',
+      marginBottom: 16,
     }}>
       {children}
     </div>
