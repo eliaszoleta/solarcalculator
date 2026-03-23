@@ -26,10 +26,7 @@ function IconTile({ color, bg, children, compact }) {
   );
 }
 
-export default function StepRoof({ sunExposure, roofType, onExposureChange, onRoofChange, primaryColor }) {
-  const accent = primaryColor || '#2563eb';
-  const accentBg = accent + '18'; // ~9% opacity tint
-
+export default function StepRoof({ sunExposure, roofType, onExposureChange, onRoofChange }) {
   return (
     <div>
       <h2 className="step-title">Tell us about your roof</h2>
@@ -42,7 +39,7 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
             key={opt.value}
             className={`option-card ${sunExposure === opt.value ? 'selected' : ''}`}
             onClick={() => onExposureChange(opt.value)}
-            style={sunExposure === opt.value ? { borderColor: accent, background: accentBg } : {}}
+            style={sunExposure === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
           >
             <span className="option-icon">
               <IconTile color={opt.color} bg={opt.bg}>
@@ -60,21 +57,18 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
         {ROOF_TYPES.map(opt => (
           <button
             key={opt.value}
-            className={`option-card ${roofType === opt.value ? 'selected' : ''}`}
+            className={`option-card option-card-compact ${roofType === opt.value ? 'selected' : ''}`}
             onClick={() => onRoofChange(opt.value)}
-            style={{
-              padding: '8px 10px',
-              ...(roofType === opt.value ? { borderColor: accent, background: accentBg } : {}),
-            }}
+            style={roofType === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
           >
-            <span style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
+            <span className="option-icon option-icon-compact">
               <IconTile color={opt.color} bg={opt.bg} compact>
-                <opt.Icon size={16} />
+                <opt.Icon size={18} />
               </IconTile>
             </span>
-            <div className="option-label" style={{ fontSize: 12 }}>{opt.label}</div>
-            <div className="option-desc" style={{ fontSize: 11 }}>{opt.desc}</div>
-            {opt.extra && <div className="option-price" style={{ fontSize: 11 }}>{opt.extra}</div>}
+            <div className="option-label">{opt.label}</div>
+            <div className="option-desc">{opt.desc}</div>
+            {opt.extra && <div className="option-price">{opt.extra}</div>}
           </button>
         ))}
       </div>
