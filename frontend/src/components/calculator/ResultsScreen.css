@@ -1,3 +1,9 @@
+/* Modern slim scrollbar for popup iframe */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
 .results-section {
   background: var(--bg, #f1f5f9);
   padding: 28px 16px 48px;
@@ -17,6 +23,9 @@
 }
 
 .results-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   padding: 8px 0;
 }
