@@ -79,8 +79,45 @@ function ResultsPage() {
   );
 
   if (isPopup) {
-    // Strip all site chrome — only the results content
-    return <div className="app"><main>{screen}</main></div>;
+    // Popup mode: render our own premium header (close via postMessage) + content only
+    const closePopup = () => window.parent.postMessage({ type: 'MSW_CLOSE_REPORT' }, '*');
+    return (
+      <div style={{ background: '#f1f5f9', minHeight: '100vh', fontFamily: "'Poppins', -apple-system, sans-serif" }}>
+        {/* Premium sticky header — dark navy, rendered inside our iframe */}
+        <div style={{
+          position: 'sticky', top: 0, zIndex: 100,
+          background: '#0f172a',
+          padding: '0 20px',
+          height: 52,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          flexShrink: 0,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#2563eb' }} />
+            <span style={{ fontSize: 14, fontWeight: 700, color: 'white', letterSpacing: '-0.01em' }}>
+              Full Solar Report
+            </span>
+          </div>
+          <button
+            onClick={closePopup}
+            style={{
+              width: 30, height: 30, borderRadius: '50%',
+              background: 'rgba(255,255,255,0.1)', border: 'none',
+              color: 'rgba(255,255,255,0.7)', fontSize: 15, lineHeight: 1,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', transition: 'background 0.15s, color 0.15s',
+              flexShrink: 0,
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = 'white'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; }}
+            title="Close"
+          >
+            ✕
+          </button>
+        </div>
+        <main>{screen}</main>
+      </div>
+    );
   }
 
   return (
