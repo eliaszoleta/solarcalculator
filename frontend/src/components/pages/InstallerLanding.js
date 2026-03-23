@@ -55,7 +55,7 @@ function Hero() {
   return (
     <section style={{
       background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1e40af 100%)',
-      padding: '96px 24px 80px',
+      padding: '72px 24px 64px',
       textAlign: 'center',
       position: 'relative',
       overflow: 'hidden',
@@ -73,29 +73,29 @@ function Hero() {
           <span style={{ fontSize: 13, color: '#fbbf24', fontWeight: 600 }}>For Solar Installers</span>
         </div>
 
-        <h1 style={{ fontSize: 'clamp(36px, 5vw, 58px)', fontWeight: 900, color: 'white', lineHeight: 1.1, marginBottom: 20, letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 900, color: 'white', lineHeight: 1.1, marginBottom: 16, letterSpacing: '-0.02em' }}>
           Give every homeowner<br />
           <span style={{ color: '#f59e0b' }}>an instant solar estimate</span><br />
           on your website
         </h1>
 
-        <p style={{ fontSize: 'clamp(16px, 2vw, 19px)', color: '#93c5fd', lineHeight: 1.7, marginBottom: 40, maxWidth: 580, margin: '0 auto 40px' }}>
+        <p style={{ fontSize: 'clamp(14px, 1.8vw, 16px)', color: '#93c5fd', lineHeight: 1.65, marginBottom: 32, maxWidth: 520, margin: '0 auto 32px' }}>
           Embed a fully branded, real-data solar savings calculator on your site in minutes.
           Capture leads automatically — no developer needed.
         </p>
 
         <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
           <a href="/installer" style={{
-            padding: '16px 36px', background: 'linear-gradient(135deg, #f59e0b, #f97316)',
-            color: 'white', borderRadius: 12, fontWeight: 800, fontSize: 17,
-            textDecoration: 'none', boxShadow: '0 8px 24px rgba(245,158,11,0.35)',
+            padding: '13px 28px', background: '#2563eb',
+            color: 'white', borderRadius: 10, fontWeight: 700, fontSize: 15,
+            textDecoration: 'none', boxShadow: '0 4px 16px rgba(37,99,235,0.4)',
             transition: 'transform 0.15s',
           }}>
             Start 30-Day Free Trial
           </a>
           <a href="#how-it-works" style={{
-            padding: '16px 28px', background: 'rgba(255,255,255,0.1)',
-            color: 'white', borderRadius: 12, fontWeight: 600, fontSize: 16,
+            padding: '13px 24px', background: 'rgba(255,255,255,0.1)',
+            color: 'white', borderRadius: 10, fontWeight: 600, fontSize: 15,
             textDecoration: 'none', border: '1px solid rgba(255,255,255,0.2)',
           }}>
             See how it works
@@ -156,13 +156,13 @@ function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" style={{ padding: '96px 24px', background: 'white' }}>
+    <section id="how-it-works" style={{ padding: '72px 24px', background: 'white' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
         <SectionLabel>How It Works</SectionLabel>
         <h2 style={sectionTitle}>From signup to live on your site in minutes</h2>
         <p style={sectionSub}>No developers. No complex setup. Just copy, paste, and watch leads come in.</p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 32, marginTop: 56 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 24, marginTop: 40 }}>
           {steps.map(s => (
             <div key={s.num} style={{ position: 'relative' }}>
               <div style={{ fontSize: 11, fontWeight: 800, color: '#2563eb', letterSpacing: '0.1em', marginBottom: 16, opacity: 0.5 }}>STEP {s.num}</div>
@@ -221,13 +221,13 @@ function Features() {
   ];
 
   return (
-    <section style={{ padding: '96px 24px', background: '#f8fafc' }}>
+    <section style={{ padding: '72px 24px', background: '#f8fafc' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
         <SectionLabel>Features</SectionLabel>
         <h2 style={sectionTitle}>Everything you need. Nothing you don't.</h2>
         <p style={sectionSub}>Built specifically for solar installers who want leads — not a full CRM.</p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24, marginTop: 56 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginTop: 40 }}>
           {features.map(f => (
             <div key={f.title} style={{ background: 'white', borderRadius: 16, padding: '28px 24px', border: '1px solid #e2e8f0', transition: 'box-shadow 0.2s, transform 0.2s' }}
               onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
@@ -272,7 +272,7 @@ function AccuracySection() {
   ];
 
   return (
-    <section style={{ padding: '96px 24px', background: 'white' }}>
+    <section style={{ padding: '72px 24px', background: 'white' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
         <SectionLabel>Accuracy</SectionLabel>
         <h2 style={sectionTitle}>Estimates homeowners can trust</h2>
@@ -280,7 +280,7 @@ function AccuracySection() {
           Our estimates are <strong>85–90% accurate</strong> compared to real installer quotes for the same home. On a typical $25,000 system, that's within $2,500–$3,500 of what an installer would actually propose — close enough to set real expectations and compelling enough to get homeowners to call.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 28, marginTop: 52 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24, marginTop: 40 }}>
           {items.map(item => (
             <div key={item.title} style={{ display: 'flex', gap: 16 }}>
               <div style={{ width: 48, height: 48, borderRadius: 12, background: item.iconBg, color: item.iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -316,7 +316,7 @@ function CalculatorPreview() {
   ];
 
   return (
-    <section style={{ padding: '96px 24px', background: 'linear-gradient(135deg, #0f172a, #1e3a8a)' }}>
+    <section style={{ padding: '72px 24px', background: 'linear-gradient(135deg, #0f172a, #1e3a8a)' }}>
       <div style={{ maxWidth: 960, margin: '0 auto', textAlign: 'center' }}>
         <SectionLabel light>The Calculator Experience</SectionLabel>
         <h2 style={{ ...sectionTitle, color: 'white', marginBottom: 12 }}>6 built-in steps + your custom questions.</h2>
@@ -380,26 +380,26 @@ function WhatItDoesForYou() {
   ];
 
   return (
-    <section style={{ padding: '96px 24px', background: '#f8fafc' }}>
+    <section style={{ padding: '72px 24px', background: '#f8fafc' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
         <SectionLabel>Business Impact</SectionLabel>
         <h2 style={sectionTitle}>What it actually does for your pipeline</h2>
         <p style={sectionSub}>More than a widget — a 24/7 lead qualification machine for your solar business.</p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginTop: 52 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 40 }}>
           {benefits.map(b => (
             <div key={b.title} style={{
-              background: 'white', borderRadius: 18, padding: '32px 36px',
+              background: 'white', borderRadius: 14, padding: '24px 28px',
               border: '1px solid #e2e8f0',
-              display: 'flex', gap: 40, flexWrap: 'wrap', alignItems: 'center',
+              display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'center',
             }}>
               <div style={{ flex: 1, minWidth: 240 }}>
                 <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 10 }}>{b.title}</h3>
                 <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7 }}>{b.desc}</p>
               </div>
-              <div style={{ textAlign: 'center', minWidth: 140 }}>
-                <div style={{ fontSize: 36, fontWeight: 900, color: '#2563eb' }}>{b.stat}</div>
-                <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4, maxWidth: 130 }}>{b.statLabel}</div>
+              <div style={{ textAlign: 'center', minWidth: 120 }}>
+                <div style={{ fontSize: 28, fontWeight: 900, color: '#2563eb' }}>{b.stat}</div>
+                <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 3, maxWidth: 120 }}>{b.statLabel}</div>
               </div>
             </div>
           ))}
@@ -412,15 +412,15 @@ function WhatItDoesForYou() {
 /* ─── Pricing ─────────────────────────────────────────── */
 function Pricing() {
   return (
-    <section id="pricing" style={{ padding: '96px 24px', background: 'white' }}>
+    <section id="pricing" style={{ padding: '72px 24px', background: 'white' }}>
       <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
         <SectionLabel>Pricing</SectionLabel>
         <h2 style={sectionTitle}>Simple, transparent pricing</h2>
         <p style={sectionSub}>One plan. Everything included. Cancel anytime.</p>
 
         <div style={{
-          marginTop: 48, background: 'linear-gradient(135deg, #0f172a, #1e3a8a)',
-          borderRadius: 24, padding: '48px 40px', position: 'relative', overflow: 'hidden',
+          marginTop: 36, background: 'linear-gradient(135deg, #0f172a, #1e3a8a)',
+          borderRadius: 20, padding: '36px 32px', position: 'relative', overflow: 'hidden',
         }}>
           <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, borderRadius: '50%', background: 'rgba(245,158,11,0.12)', filter: 'blur(40px)' }} />
 
@@ -429,10 +429,10 @@ function Pricing() {
               30-Day Free Trial
             </div>
 
-            <div style={{ fontSize: 56, fontWeight: 900, color: 'white', lineHeight: 1 }}>
+            <div style={{ fontSize: 44, fontWeight: 900, color: 'white', lineHeight: 1 }}>
               $0
             </div>
-            <div style={{ fontSize: 16, color: '#93c5fd', marginTop: 4, marginBottom: 32 }}>
+            <div style={{ fontSize: 14, color: '#93c5fd', marginTop: 4, marginBottom: 24 }}>
               for 30 days, then subscribe to continue
             </div>
 
@@ -470,7 +470,7 @@ function Pricing() {
 /* ─── Final CTA ───────────────────────────────────────── */
 function FinalCTA() {
   return (
-    <section style={{ padding: '80px 24px', background: '#f8fafc', textAlign: 'center' }}>
+    <section style={{ padding: '64px 24px', background: '#f8fafc', textAlign: 'center' }}>
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 900, color: '#0f172a', lineHeight: 1.2, marginBottom: 16 }}>
           Your competitors' websites have a contact form.<br />
@@ -480,10 +480,10 @@ function FinalCTA() {
           Start your 30-day free trial today. Be live on your website today.
         </p>
         <a href="/installer" style={{
-          display: 'inline-block', padding: '18px 48px',
-          background: 'linear-gradient(135deg, #f59e0b, #f97316)',
-          color: 'white', borderRadius: 14, fontWeight: 800, fontSize: 18,
-          textDecoration: 'none', boxShadow: '0 10px 30px rgba(245,158,11,0.3)',
+          display: 'inline-block', padding: '14px 36px',
+          background: '#2563eb',
+          color: 'white', borderRadius: 10, fontWeight: 800, fontSize: 16,
+          textDecoration: 'none', boxShadow: '0 4px 16px rgba(37,99,235,0.3)',
         }}>
           Get Started Free
         </a>
@@ -534,12 +534,12 @@ function SectionLabel({ children, light }) {
 }
 
 const sectionTitle = {
-  fontSize: 'clamp(26px, 3.5vw, 38px)', fontWeight: 900, color: '#0f172a',
-  lineHeight: 1.2, marginBottom: 12, letterSpacing: '-0.02em',
+  fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0f172a',
+  lineHeight: 1.2, marginBottom: 10, letterSpacing: '-0.02em',
 };
 
 const sectionSub = {
-  fontSize: 16, color: '#64748b', lineHeight: 1.7, maxWidth: 560,
+  fontSize: 15, color: '#64748b', lineHeight: 1.65, maxWidth: 540,
 };
 
 const ctaBtn = {
