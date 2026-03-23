@@ -4,7 +4,8 @@ import { PlugIcon, BatteryIcon, BoltIcon } from '../../ui/Icons';
 const BATTERY_OPTIONS = [
   {
     value: 'none',
-    icon: <PlugIcon size={24} />,
+    Icon: PlugIcon,
+    color: '#64748b', bg: '#f1f5f9',
     label: 'No Battery',
     desc: 'Grid-tied system. Power from grid at night.',
     price: 'Included',
@@ -12,7 +13,8 @@ const BATTERY_OPTIONS = [
   },
   {
     value: 'one',
-    icon: <BatteryIcon size={24} />,
+    Icon: BatteryIcon,
+    color: '#059669', bg: '#ecfdf5',
     label: '1 Battery',
     desc: 'Tesla Powerwall or similar. Backup power + night use.',
     price: '+$11,500',
@@ -20,7 +22,8 @@ const BATTERY_OPTIONS = [
   },
   {
     value: 'two',
-    icon: <BoltIcon size={24} />,
+    Icon: BoltIcon,
+    color: '#d97706', bg: '#fffbeb',
     label: '2 Batteries',
     desc: 'Maximum storage. Nearly full energy independence.',
     price: '+$23,000',
@@ -40,15 +43,22 @@ export default function StepBattery({ value, onChange }) {
             key={opt.value}
             className={`option-card battery-card ${value === opt.value ? 'selected' : ''}`}
             onClick={() => onChange(opt.value)}
+            style={value === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
           >
             {opt.popular && <span className="popular-badge">Most Popular</span>}
             <div className="battery-row">
-              <span className="option-icon" style={{ marginBottom: 0 }}>{opt.icon}</span>
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                width: 44, height: 44, borderRadius: 11, flexShrink: 0,
+                background: opt.bg, transition: 'all 0.15s',
+              }}>
+                <opt.Icon size={21} color={opt.color} />
+              </span>
               <div className="battery-info">
                 <div className="option-label">{opt.label}</div>
                 <div className="option-desc">{opt.desc}</div>
               </div>
-              <div className="battery-price">{opt.price}</div>
+              <div className="battery-price" style={{ color: opt.color }}>{opt.price}</div>
             </div>
           </button>
         ))}
@@ -71,14 +81,13 @@ export default function StepBattery({ value, onChange }) {
         .battery-price {
           font-size: 13px;
           font-weight: 700;
-          color: #1e40af;
           white-space: nowrap;
         }
         .popular-badge {
           position: absolute;
           top: -1px;
           right: 12px;
-          background: #f59e0b;
+          background: #059669;
           color: white;
           font-size: 10px;
           font-weight: 700;

@@ -199,19 +199,19 @@
 }
 
 .option-card:hover {
-  border-color: #93c5fd;
-  background: #eff6ff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
 }
 
 .option-card.selected {
-  border-color: #1e40af;
-  background: #eff6ff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
 }
 
 .option-icon {
-  font-size: 28px;
-  margin-bottom: 6px;
-  display: block;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 
 .option-label {
@@ -307,7 +307,7 @@
 .embed-content .step-desc   { margin-bottom: 10px; font-size: 13px; }
 .embed-content .option-grid { gap: 8px; }
 .embed-content .option-card { padding: 10px 12px; }
-.embed-content .option-icon { font-size: 22px; margin-bottom: 3px; }
+.embed-content .option-icon { margin-bottom: 6px; }
 .embed-content .option-label { font-size: 13px; }
 .embed-content .option-desc  { font-size: 11px; }
 

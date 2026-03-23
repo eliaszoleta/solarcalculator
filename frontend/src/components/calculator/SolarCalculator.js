@@ -259,9 +259,9 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
 
         {!embedded && (
           <div className="trust-badges">
-            <span><LockIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />No account needed</span>
-            <span><BoltIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />Instant results</span>
-            <span><CheckCircleIcon size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />Free to use</span>
+            <span><LockIcon size={13} color="#7c3aed" style={{ verticalAlign: 'middle', marginRight: 4 }} />No account needed</span>
+            <span><BoltIcon size={13} color="#d97706" style={{ verticalAlign: 'middle', marginRight: 4 }} />Instant results</span>
+            <span><CheckCircleIcon size={13} color="#059669" style={{ verticalAlign: 'middle', marginRight: 4 }} />Free to use</span>
           </div>
         )}
       </div>
