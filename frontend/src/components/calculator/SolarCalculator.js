@@ -207,7 +207,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
               />
             )}
             {currentStepDef?.kind === 'builtin' && currentStepDef.index === 4 && (
-              <StepRoof sunExposure={form.sunExposure} roofType={form.roofType} onExposureChange={v => update('sunExposure', v)} onRoofChange={v => update('roofType', v)} primaryColor={installerConfig?.primaryColor} />
+              <StepRoof sunExposure={form.sunExposure} roofType={form.roofType} onExposureChange={v => update('sunExposure', v)} onRoofChange={v => update('roofType', v)} />
             )}
             {currentStepDef?.kind === 'builtin' && currentStepDef.index === 5 && (
               <StepBattery value={form.battery} onChange={v => update('battery', v)} />
