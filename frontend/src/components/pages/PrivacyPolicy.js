@@ -5,7 +5,7 @@ const DOMAIN = 'https://www.mysolarwidget.com';
 
 export default function PrivacyPolicy() {
   return (
-    <div style={{ background: 'white', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--bg, #f1f5f9)', minHeight: '100vh' }}>
       <Helmet>
         <title>Privacy Policy — MySolarWidget</title>
         <meta name="description" content="MySolarWidget privacy policy. Learn how we collect, use, and protect your personal information when you use our free solar savings calculator." />
@@ -13,9 +13,16 @@ export default function PrivacyPolicy() {
         <meta name="robots" content="index, follow" />
       </Helmet>
 
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '48px 24px 80px' }}>
-        <h1 style={{ fontSize: 32, fontWeight: 800, color: '#0f172a', marginBottom: 8 }}>Privacy Policy</h1>
-        <p style={{ color: '#64748b', fontSize: 14, marginBottom: 40 }}>Last updated: March 20, 2026</p>
+      {/* Page Hero */}
+      <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', padding: '56px 24px 48px', textAlign: 'center' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(147,197,253,0.12)', border: '1px solid rgba(147,197,253,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 18 }}>
+          <span style={{ fontSize: 11.5, fontWeight: 700, color: '#93c5fd', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Legal</span>
+        </div>
+        <h1 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 10, letterSpacing: '-0.02em' }}>Privacy Policy</h1>
+        <p style={{ fontSize: 14, color: '#64748b', margin: 0 }}>Last updated: March 20, 2026</p>
+      </div>
+
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '40px 24px 80px' }}>
 
         <Section title="1. Introduction">
           <p>MySolarWidget ("we," "us," or "our") operates the website at mysolarwidget.com (the "Site"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our Site or use our free solar savings calculator.</p>
@@ -134,15 +141,19 @@ export default function PrivacyPolicy() {
 
 function Section({ title, children }) {
   return (
-    <section style={{ marginBottom: 40 }}>
-      <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 16, paddingBottom: 8, borderBottom: '1px solid #e2e8f0' }}>{title}</h2>
-      <div style={{ fontSize: 15, color: '#374151', lineHeight: 1.8, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {children}
+    <section style={{ marginBottom: 24 }}>
+      <div style={{ background: 'white', borderRadius: 14, border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', overflow: 'hidden' }}>
+        <div style={{ padding: '16px 22px 12px', borderBottom: '1px solid #f1f5f9' }}>
+          <h2 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: 0 }}>{title}</h2>
+        </div>
+        <div style={{ padding: '14px 22px 18px', fontSize: 14, color: '#374151', lineHeight: 1.8, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {children}
+        </div>
       </div>
     </section>
   );
 }
 
-const h3Style = { fontSize: 16, fontWeight: 600, color: '#0f172a', marginTop: 8, marginBottom: 4 };
+const h3Style = { fontSize: 14, fontWeight: 700, color: '#0f172a', marginTop: 6, marginBottom: 4 };
 const ulStyle = { paddingLeft: 20, margin: '4px 0', lineHeight: 1.8 };
-const linkStyle = { color: '#1e40af', textDecoration: 'underline' };
+const linkStyle = { color: '#2563eb', textDecoration: 'underline' };

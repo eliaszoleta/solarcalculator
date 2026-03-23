@@ -1,5 +1,5 @@
 .results-section {
-  background: linear-gradient(135deg, #fefce8 0%, #f0f9ff 100%);
+  background: var(--bg, #f1f5f9);
   padding: 40px 16px 64px;
 }
 
@@ -55,9 +55,10 @@
 
 .metric-card {
   background: white;
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 18px 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid #e2e8f0;
   text-align: center;
 }
 
@@ -100,9 +101,10 @@
 /* Section Cards */
 .section-card {
   background: white;
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid #e2e8f0;
 }
 
 .section-title {

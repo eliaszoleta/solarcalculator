@@ -2,27 +2,38 @@ import React from 'react';
 
 export default function ProgressBar({ current, total, steps, embedded, primaryColor }) {
   const accent = primaryColor || '#2563eb';
-  const progressStep = current - 1; // 0-based index of current step
+  const progressStep = current - 1; // 0-based index
   const pct = total > 1 ? (progressStep / (total - 1)) * 100 : 0;
+  const currentLabel = steps[progressStep]?.label || '';
 
   return (
     <div style={{
       background: '#f8fafc',
       borderBottom: '1px solid #e2e8f0',
-      padding: embedded ? '12px 16px' : '14px 24px',
+      padding: embedded ? '10px 16px 12px' : '12px 24px 14px',
     }}>
-      {/* Step labels */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-        {steps.map((s, i) => (
-          <span key={s.label} style={{
-            fontSize: 12,
-            fontWeight: 600,
-            color: i <= progressStep ? accent : '#94a3b8',
-            transition: 'color 0.3s ease',
-          }}>
-            {s.label}
-          </span>
-        ))}
+      {/* Step name + counter on one line */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 8,
+      }}>
+        <span style={{
+          fontSize: 12,
+          fontWeight: 700,
+          color: accent,
+          letterSpacing: '0.02em',
+        }}>
+          {currentLabel}
+        </span>
+        <span style={{
+          fontSize: 11,
+          fontWeight: 500,
+          color: '#94a3b8',
+        }}>
+          {current} / {total}
+        </span>
       </div>
 
       {/* Fill bar */}
