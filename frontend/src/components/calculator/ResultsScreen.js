@@ -37,7 +37,19 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
     if (!embedded) window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [embedded]);
 
-  // Compact embed view — keeps the iframe frame fixed; full report opens in a popup modal
+  // Open full report: postMessage to parent page (iframe) or fallback modal (standalone)
+  const handleViewFullReport = () => {
+    const fullReportUrl = buildFullReportUrl(results, form, lead);
+    if (window !== window.parent) {
+      // Inside an external iframe — let the parent page render the fullscreen overlay
+      window.parent.postMessage({ type: 'MSW_OPEN_REPORT', url: fullReportUrl }, '*');
+    } else {
+      // Standalone (e.g. testing on mysolarwidget.com directly) — show inline modal
+      setShowModal(true);
+    }
+  };
+
+  // Compact embed view — keeps the iframe frame fixed; full report opens via postMessage
   if (embedded) {
     const hasFinancing = !isCash && savings.monthlyPaymentFinanced > 0;
     const daySavings = hasFinancing ? savings.netMonthlyFinanced : savings.monthly;
@@ -105,7 +117,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           {/* Full report button + recalculate */}
           <div style={{ textAlign: 'center' }}>
             <button
-              onClick={() => setShowModal(true)}
+              onClick={handleViewFullReport}
               style={{ fontSize: 13, color: '#2563eb', fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
             >
               View Full Solar Report
@@ -117,7 +129,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           </div>
         </div>
 
-        {/* Full report modal popup */}
+        {/* Fallback modal — only used when NOT inside an external iframe */}
         {showModal && (
           <FullReportModal
             results={results}
