@@ -7,8 +7,8 @@ export default function TermsOfService() {
   return (
     <div style={{ background: 'var(--bg, #f1f5f9)', minHeight: '100vh' }}>
       <Helmet>
-        <title>Terms of Service — MySolarWidget</title>
-        <meta name="description" content="MySolarWidget terms of service. Read our terms and conditions for using the free solar savings calculator at mysolarwidget.com." />
+        <title>Terms of Service | MySolarWidget</title>
+        <meta name="description" content="MySolarWidget terms of service. Read our terms and conditions for using the MySolarWidget free solar savings calculator." />
         <link rel="canonical" href={`${DOMAIN}/terms-of-service`} />
         <meta name="robots" content="index, follow" />
       </Helmet>

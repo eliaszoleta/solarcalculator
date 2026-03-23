@@ -177,7 +177,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
         {!embedded && (
           <div className="calculator-header">
             <span className="calc-badge">Free Estimate</span>
-            <h1 className="calc-title">How Much Will You Save Going Solar?</h1>
+            <h1 className="calc-title">Free Solar Savings Calculator — MySolarWidget</h1>
             <p className="calc-subtitle">Answer 5 quick questions and get your personalized solar savings estimate instantly.</p>
           </div>
         )}

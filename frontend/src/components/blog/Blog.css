@@ -620,8 +620,8 @@
   margin-bottom: 6px;
 }
 
-.post-section a { color: #2563eb; font-weight: 600; }
-.post-section a:hover { text-decoration: underline; }
+.post-section a:not([class]) { color: #2563eb; font-weight: 600; }
+.post-section a:not([class]):hover { text-decoration: underline; }
 .post-section strong { color: #0f172a; }
 
 /* ── Tables ── */

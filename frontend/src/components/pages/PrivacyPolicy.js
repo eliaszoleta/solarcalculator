@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
   return (
     <div style={{ background: 'var(--bg, #f1f5f9)', minHeight: '100vh' }}>
       <Helmet>
-        <title>Privacy Policy — MySolarWidget</title>
+        <title>Privacy Policy | MySolarWidget</title>
         <meta name="description" content="MySolarWidget privacy policy. Learn how we collect, use, and protect your personal information when you use our free solar savings calculator." />
         <link rel="canonical" href={`${DOMAIN}/privacy-policy`} />
         <meta name="robots" content="index, follow" />

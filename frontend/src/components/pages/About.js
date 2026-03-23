@@ -8,7 +8,7 @@ export default function About() {
   return (
     <div style={{ background: 'var(--bg, #f1f5f9)', minHeight: '100vh' }}>
       <Helmet>
-        <title>About MySolarWidget — Free Solar Savings Calculator</title>
+        <title>About MySolarWidget | Free Solar Savings Calculator</title>
         <meta name="description" content="MySolarWidget is a free solar savings calculator for US homeowners. We use NREL PVWatts data and real electricity rates to estimate your solar costs and savings in under 2 minutes." />
         <link rel="canonical" href={`${DOMAIN}/about`} />
         <meta name="robots" content="index, follow" />
