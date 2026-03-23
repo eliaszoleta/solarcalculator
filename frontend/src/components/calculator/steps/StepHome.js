@@ -75,40 +75,27 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
       )}
 
       {isDisqualified && (
-        <div className="disqualify-box">
-          <div className="disqualify-icon">
-            <span style={{ display: 'inline-flex', width: 52, height: 52, borderRadius: 14, background: '#fef3c7', alignItems: 'center', justifyContent: 'center' }}>
-              <AlertTriangleIcon size={26} color="#d97706" />
-            </span>
-          </div>
-          {(homeType === 'apartment' || homeType === 'condo') ? (
-            <>
-              <h4>Solar isn't available for {homeType} units</h4>
-              <p>Rooftop solar requires ownership of a single-family home. However, <strong>community solar programs</strong> let you subscribe to a local solar farm and get credits on your electric bill — no rooftop needed.</p>
-            </>
-          ) : (
-            <>
-              <h4>You need to own your home to go solar</h4>
-              <p>Solar panels are a permanent home improvement that require owner approval. If you're planning to buy, come back when you're ready — this calculator will still be here.</p>
-            </>
-          )}
+        <div style={{
+          marginTop: 14,
+          padding: '8px 12px',
+          background: '#fffbeb',
+          border: '1px solid #fde68a',
+          borderRadius: 8,
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 8,
+          color: '#92400e',
+        }}>
+          <AlertTriangleIcon size={14} color="#d97706" style={{ flexShrink: 0, marginTop: 1 }} />
+          <span style={{ fontSize: 12, lineHeight: 1.5 }}>
+            {(homeType === 'apartment' || homeType === 'condo') ? (
+              <><strong>Solar isn't available for {homeType} units.</strong> However, <strong>community solar programs</strong> let you subscribe to a local solar farm and get credits on your bill — no rooftop needed.</>
+            ) : (
+              <><strong>You need to own your home to go solar.</strong> Solar panels are a permanent improvement requiring owner approval.</>
+            )}
+          </span>
         </div>
       )}
-
-      <style>{`
-        .disqualify-box {
-          margin-top: 20px;
-          padding: 20px;
-          background: #fffbeb;
-          border: 1px solid #fde68a;
-          border-radius: 12px;
-          text-align: center;
-          color: #92400e;
-        }
-        .disqualify-icon { margin-bottom: 12px; }
-        .disqualify-box h4 { font-size: 16px; font-weight: 700; margin: 0 0 8px; }
-        .disqualify-box p { font-size: 13px; line-height: 1.6; margin: 0; }
-      `}</style>
     </div>
   );
 }
