@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
-import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon, PencilIcon, SettingsIcon } from '../ui/Icons';
+import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon, PencilIcon, SettingsIcon, LayoutIcon, MailIcon, PhoneIcon, XIcon, DownloadIcon, RefreshCwIcon, InboxIcon, GlobeIcon, CalendarIcon, TrendingUpIcon, SearchIcon } from '../ui/Icons';
 import SolarCalculator from '../calculator/SolarCalculator';
 import './InstallerDashboard.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
+const SITE_URL = process.env.REACT_APP_SITE_URL || window.location.origin;
+
+const fmt = v => v ? String(v).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : null;
 
 async function getAuthHeader() {
   const { data: { session } } = await supabase.auth.getSession();
@@ -76,7 +79,7 @@ export default function InstallerDashboard({ user, onLogout }) {
     // Open subscription tab directly if redirected from Stripe
     const params = new URLSearchParams(window.location.search);
     if (params.get('subscribed') === 'true' || params.get('tab') === 'subscription') return 'subscription';
-    return 'pricing';
+    return 'overview';
   });
   const [leads, setLeads] = useState([]);
   const [leadsLoading, setLeadsLoading] = useState(false);
@@ -95,6 +98,13 @@ export default function InstallerDashboard({ user, onLogout }) {
   const [pwLoading, setPwLoading] = useState(false);
   const [pwMsg, setPwMsg] = useState(null); // { type: 'success'|'error', text: string }
   const [embedCopied, setEmbedCopied] = useState(false);
+  const [scriptCopied, setScriptCopied] = useState(false);
+  const [wpCopied, setWpCopied] = useState(false);
+  const [leadSearch, setLeadSearch] = useState('');
+  const [leadFilter, setLeadFilter] = useState('all');
+  const [selectedLead, setSelectedLead] = useState(null);
+  const [leadNotes, setLeadNotes] = useState('');
+  const [savingNote, setSavingNote] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -166,7 +176,7 @@ export default function InstallerDashboard({ user, onLogout }) {
   };
 
   useEffect(() => {
-    if (activeTab !== 'leads') return;
+    if (activeTab !== 'leads' && activeTab !== 'overview') return;
     const loadLeads = async () => {
       setLeadsLoading(true);
       const [activeRes, trashedRes] = await Promise.all([
@@ -205,6 +215,48 @@ export default function InstallerDashboard({ user, onLogout }) {
     await supabase.from('leads').update(patch).eq('id', id);
     setLeads(prev => prev.map(l => l.id === id ? { ...l, ...patch } : l));
     setEditingLead(null);
+  };
+
+  const handleSaveNote = async () => {
+    if (!selectedLead) return;
+    setSavingNote(true);
+    try {
+      await supabase.from('leads').update({ notes: leadNotes }).eq('id', selectedLead.id);
+      setLeads(prev => prev.map(l => l.id === selectedLead.id ? { ...l, notes: leadNotes } : l));
+      setSelectedLead(prev => ({ ...prev, notes: leadNotes }));
+    } catch {}
+    setSavingNote(false);
+  };
+
+  const openLead = (lead) => { setSelectedLead(lead); setLeadNotes(lead.notes || ''); };
+
+  const exportCSV = () => {
+    const batteryLabel = b => ({ none: 'No Battery', one: '1 Battery', two: '2 Batteries' }[b] || fmt(b) || '');
+    const activeLeads = leads.filter(l => !l.deleted_at);
+    const filtered = activeLeads.filter(l => {
+      if (leadFilter !== 'all' && l.home_type !== leadFilter) return false;
+      if (leadSearch) {
+        const q = leadSearch.toLowerCase();
+        return (l.name || '').toLowerCase().includes(q) || (l.email || '').toLowerCase().includes(q) || (l.zip || '').includes(q);
+      }
+      return true;
+    });
+    const headers = ['Name', 'Email', 'Phone', 'Monthly Bill', 'Location', 'Home Type', 'Owns Home', 'Sun Exposure', 'Roof Type', 'Battery', 'Payment', 'Timeline', 'System kW', 'Annual Savings', 'Date'];
+    const rows = filtered.map(l => [
+      l.name || '', l.email || '', l.phone || '',
+      l.monthly_bill != null ? `$${l.monthly_bill}/mo` : '',
+      [l.zip, l.state].filter(Boolean).join(', '),
+      fmt(l.home_type) || '', l.owns_home != null ? (l.owns_home ? 'Yes' : 'No') : '',
+      fmt(l.sun_exposure) || '', fmt(l.roof_type) || '',
+      batteryLabel(l.battery), fmt(l.payment_method) || '', fmt(l.timeline) || '',
+      l.system_size_kw || '', l.annual_savings ? `$${l.annual_savings.toLocaleString()}/yr` : '',
+      new Date(l.created_at).toLocaleDateString(),
+    ]);
+    const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'mysolarwidget-leads.csv'; a.click();
+    URL.revokeObjectURL(url);
   };
 
   useEffect(() => {
@@ -303,13 +355,14 @@ export default function InstallerDashboard({ user, onLogout }) {
         </div>
         <nav className="dash-nav">
           {[
-            { id: 'pricing', icon: <DollarSignIcon size={16} />, label: 'Pricing Settings' },
-            { id: 'appearance', icon: <PaintBrushIcon size={16} />, label: 'Appearance' },
-            { id: 'steps', icon: <LayersIcon size={16} />, label: 'Custom Steps' },
-            { id: 'embed', icon: <ClipboardIcon size={16} />, label: 'Embed Code' },
-            { id: 'leads', icon: <ChartBarIcon size={16} />, label: 'Leads' },
-            { id: 'subscription', icon: <CreditCardIcon size={16} />, label: 'Subscription' },
-            { id: 'settings', icon: <SettingsIcon size={16} />, label: 'Settings' },
+            { id: 'overview',     icon: <LayoutIcon size={16} />,      label: 'Overview' },
+            { id: 'pricing',      icon: <DollarSignIcon size={16} />,  label: 'Pricing Settings' },
+            { id: 'appearance',   icon: <PaintBrushIcon size={16} />,  label: 'Appearance' },
+            { id: 'steps',        icon: <LayersIcon size={16} />,      label: 'Custom Steps' },
+            { id: 'embed',        icon: <ClipboardIcon size={16} />,   label: 'Embed Code' },
+            { id: 'leads',        icon: <ChartBarIcon size={16} />,    label: 'Leads', count: leads.filter(l => !l.deleted_at).length },
+            { id: 'subscription', icon: <CreditCardIcon size={16} />,  label: 'Subscription' },
+            { id: 'settings',     icon: <SettingsIcon size={16} />,    label: 'Settings' },
           ].map(tab => (
             <button
               key={tab.id}
@@ -317,7 +370,12 @@ export default function InstallerDashboard({ user, onLogout }) {
               onClick={() => setActiveTab(tab.id)}
             >
               <span>{tab.icon}</span>
-              <span>{tab.label}</span>
+              <span style={{ flex: 1 }}>{tab.label}</span>
+              {tab.count > 0 && (
+                <span style={{ background: activeTab === tab.id ? '#f59e0b' : '#e2e8f0', color: activeTab === tab.id ? '#78350f' : '#64748b', borderRadius: 20, padding: '1px 7px', fontSize: 11, fontWeight: 700 }}>
+                  {tab.count}
+                </span>
+              )}
             </button>
           ))}
           <button className="dash-nav-item" onClick={onLogout} style={{ marginTop: 'auto', color: '#f87171' }}>
@@ -331,15 +389,18 @@ export default function InstallerDashboard({ user, onLogout }) {
         <div className="dash-topbar">
           <div>
             <h1 className="dash-page-title">
-              {activeTab === 'pricing' && 'Pricing Settings'}
-              {activeTab === 'appearance' && 'Appearance'}
-              {activeTab === 'steps' && 'Custom Steps'}
-              {activeTab === 'embed' && 'Embed Code'}
-              {activeTab === 'leads' && 'Leads'}
-              {activeTab === 'subscription' && 'Subscription'}
-              {activeTab === 'settings' && 'Settings'}
+              {activeTab === 'overview'    && 'Dashboard Overview'}
+              {activeTab === 'pricing'     && 'Pricing Settings'}
+              {activeTab === 'appearance'  && 'Appearance'}
+              {activeTab === 'steps'       && 'Custom Steps'}
+              {activeTab === 'embed'       && 'Embed Code'}
+              {activeTab === 'leads'       && 'Leads'}
+              {activeTab === 'subscription'&& 'Subscription'}
+              {activeTab === 'settings'    && 'Settings'}
             </h1>
-            <p className="dash-page-sub">Configure how your solar calculator estimates costs</p>
+            <p className="dash-page-sub">
+              {activeTab === 'overview' ? `Welcome back${config.companyName ? `, ${config.companyName}` : ''}.` : 'Configure how your solar calculator estimates costs'}
+            </p>
           </div>
           <button className="btn-save" onClick={save} disabled={saving}>
             {saving ? 'Saving...' : saved ? <><CheckCircleIcon size={14} style={{ verticalAlign: 'middle', marginRight: 4 }} />Saved</> : 'Save Changes'}
@@ -362,6 +423,108 @@ export default function InstallerDashboard({ user, onLogout }) {
               </button>
             </div>
           )}
+
+          {activeTab === 'overview' && (() => {
+            const activeLeads = leads.filter(l => !l.deleted_at);
+            const thisMonth = activeLeads.filter(l => new Date(l.created_at) > new Date(Date.now() - 30 * 86400000));
+            const avgSavings = activeLeads.length > 0
+              ? activeLeads.reduce((s, l) => s + (l.annual_savings || 0), 0) / activeLeads.filter(l => l.annual_savings).length
+              : 0;
+            const recentLeads = activeLeads.slice(0, 5);
+            const isActive = subscription?.active !== false;
+
+            const stats = [
+              { label: 'Total Leads',    value: activeLeads.length,                                   Icon: ChartBarIcon, color: '#d97706', bg: '#fffbeb' },
+              { label: 'This Month',     value: thisMonth.length,                                      Icon: CalendarIcon, color: '#16a34a', bg: '#f0fdf4' },
+              { label: 'Avg Savings/yr', value: avgSavings > 0 ? `$${Math.round(avgSavings).toLocaleString()}` : '—', Icon: TrendingUpIcon, color: '#2563eb', bg: '#eff6ff' },
+              { label: 'Widget Status',  value: isActive ? 'Active' : 'Inactive',                     Icon: GlobeIcon,    color: isActive ? '#16a34a' : '#dc2626', bg: isActive ? '#f0fdf4' : '#fef2f2' },
+            ];
+
+            return (
+              <div>
+                {/* Stat cards */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 14, marginBottom: 24 }}>
+                  {stats.map(({ label, value, Icon, color, bg }) => (
+                    <div key={label} style={{ background: 'white', borderRadius: 12, border: '1px solid #e2e8f0', padding: '18px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</div>
+                        <div style={{ width: 34, height: 34, borderRadius: 9, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Icon size={17} color={color} />
+                        </div>
+                      </div>
+                      <div style={{ fontSize: 28, fontWeight: 800, color, letterSpacing: '-0.5px' }}>{value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Quick actions */}
+                <div style={{ background: 'white', borderRadius: 12, border: '1px solid #e2e8f0', padding: '18px 22px', marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>Quick Actions</div>
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {[
+                      { label: 'Customize Appearance', tab: 'appearance', Icon: PaintBrushIcon },
+                      { label: 'Get Embed Code',        tab: 'embed',       Icon: ClipboardIcon },
+                      { label: 'View All Leads',         tab: 'leads',       Icon: ChartBarIcon },
+                      { label: 'Manage Billing',         tab: 'subscription',Icon: CreditCardIcon },
+                    ].map(({ label, tab, Icon }) => (
+                      <button key={label} onClick={() => setActiveTab(tab)}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 16px', border: '1px solid #e2e8f0', borderRadius: 8, background: 'white', cursor: 'pointer', color: '#374151', fontWeight: 600, fontSize: 13, transition: 'all 0.15s' }}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = '#f59e0b'; e.currentTarget.style.color = '#d97706'; e.currentTarget.style.background = '#fffbeb'; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#374151'; e.currentTarget.style.background = 'white'; }}
+                      >
+                        <Icon size={14} /> {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Recent leads */}
+                <div style={{ background: 'white', borderRadius: 12, border: '1px solid #e2e8f0', overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                  <div style={{ padding: '14px 22px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: '#0f172a' }}>Recent Leads</div>
+                    <button onClick={() => setActiveTab('leads')} style={{ fontSize: 13, color: '#d97706', fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer' }}>View all →</button>
+                  </div>
+                  {leadsLoading ? (
+                    <div style={{ padding: 32, textAlign: 'center', color: '#94a3b8', fontSize: 14 }}>Loading leads…</div>
+                  ) : recentLeads.length === 0 ? (
+                    <div style={{ padding: '40px 32px', textAlign: 'center' }}>
+                      <div style={{ width: 52, height: 52, borderRadius: 14, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
+                        <InboxIcon size={24} color="#94a3b8" />
+                      </div>
+                      <div style={{ fontWeight: 700, color: '#374151', marginBottom: 6, fontSize: 15 }}>No leads yet</div>
+                      <p style={{ color: '#94a3b8', fontSize: 13, maxWidth: 300, margin: '0 auto' }}>
+                        Embed your calculator on your website to start capturing solar leads.
+                      </p>
+                    </div>
+                  ) : (
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                      <thead>
+                        <tr style={{ background: '#f8fafc' }}>
+                          {['Name', 'Location', 'System Size', 'Annual Savings', 'Date'].map(h => (
+                            <th key={h} style={{ textAlign: 'left', padding: '9px 14px', fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', borderBottom: '1px solid #e2e8f0' }}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {recentLeads.map((l, i) => (
+                          <tr key={l.id} style={{ borderBottom: i < recentLeads.length - 1 ? '1px solid #f8fafc' : 'none', cursor: 'pointer' }} onClick={() => { setActiveTab('leads'); setTimeout(() => openLead(l), 50); }}>
+                            <td style={{ padding: '12px 14px' }}>
+                              <div style={{ fontWeight: 600, fontSize: 14, color: '#0f172a' }}>{l.name || '(No name)'}</div>
+                              <div style={{ fontSize: 12, color: '#94a3b8' }}>{l.email}</div>
+                            </td>
+                            <td style={{ padding: '12px 14px', fontSize: 13, color: '#374151' }}>{[l.zip, l.state].filter(Boolean).join(', ') || '—'}</td>
+                            <td style={{ padding: '12px 14px', fontSize: 13, fontWeight: 600, color: '#0f172a' }}>{l.system_size_kw ? `${l.system_size_kw} kW` : '—'}</td>
+                            <td style={{ padding: '12px 14px', fontSize: 13, fontWeight: 600, color: '#16a34a' }}>{l.annual_savings ? `$${l.annual_savings.toLocaleString()}/yr` : '—'}</td>
+                            <td style={{ padding: '12px 14px', fontSize: 12, color: '#94a3b8' }}>{new Date(l.created_at).toLocaleDateString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
 
           {activeTab === 'pricing' && (
             <div className="settings-grid">
@@ -440,6 +603,12 @@ export default function InstallerDashboard({ user, onLogout }) {
               <SettingCard title="Branding" desc="Customize the calculator appearance on your website.">
                 <SettingRow label="Company Name">
                   <input type="text" placeholder="Your Solar Company" value={config.companyName || ''} onChange={e => update('companyName', e.target.value)} className="dash-input dash-input-text" />
+                </SettingRow>
+                <SettingRow label="Logo URL" hint="Paste a publicly hosted image URL (PNG, SVG, JPG)">
+                  <input type="text" placeholder="https://yoursite.com/logo.png" value={config.logoUrl || ''} onChange={e => update('logoUrl', e.target.value)} className="dash-input dash-input-text" />
+                  {config.logoUrl && (
+                    <img src={config.logoUrl} alt="logo preview" style={{ marginTop: 8, maxHeight: 48, maxWidth: 200, borderRadius: 4, display: 'block' }} onError={e => { e.target.style.display = 'none'; }} />
+                  )}
                 </SettingRow>
                 <SettingRow label="Calculator Title">
                   <input type="text" value={config.systemName || ''} onChange={e => update('systemName', e.target.value)} className="dash-input dash-input-text" />
@@ -521,69 +690,117 @@ export default function InstallerDashboard({ user, onLogout }) {
             />
           )}
 
-          {activeTab === 'embed' && (
-            <div className="settings-grid">
-              <SettingCard title="Widget Frame Size" desc="Set the fixed dimensions of your embedded calculator. Leave width empty to span the full container width.">
-                <SettingRow label="Height (px)" hint="Recommended: 580 – 800px depending on your layout">
-                  <input
-                    type="number"
-                    min="480"
-                    max="1200"
-                    step="10"
-                    value={config.frameHeight || 620}
-                    onChange={e => update('frameHeight', parseInt(e.target.value) || 620)}
-                    className="dash-input"
-                  />
-                </SettingRow>
-                <SettingRow label="Width (px)" hint="Leave blank for 100% width — or set a fixed px value (e.g. 480)">
-                  <input
-                    type="number"
-                    min="320"
-                    max="1400"
-                    step="10"
-                    placeholder="Auto (100%)"
-                    value={config.frameWidth || ''}
-                    onChange={e => update('frameWidth', e.target.value ? parseInt(e.target.value) : null)}
-                    className="dash-input"
-                  />
-                </SettingRow>
-              </SettingCard>
-              <SettingCard title="Embed on Your Website" desc="Add the solar calculator to any page on your website with one line of code.">
-                <div className="embed-code-box">
-                  <code>{embedCode}</code>
-                </div>
-                <button className="btn-copy" onClick={() => { navigator.clipboard.writeText(embedCode); setEmbedCopied(true); setTimeout(() => setEmbedCopied(false), 2000); }}>
-                  <ClipboardIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />{embedCopied ? 'Copied!' : 'Copy Embed Code'}
-                </button>
-                <div className="embed-instructions">
-                  <h4>How to add it:</h4>
-                  <ol>
-                    <li>Copy the code above</li>
-                    <li>Paste it into your website's HTML — anywhere you want the calculator to appear</li>
-                    <li>The calculator will load automatically using your pricing settings</li>
-                  </ol>
-                </div>
-              </SettingCard>
-            </div>
-          )}
+          {activeTab === 'embed' && (() => {
+            const h = config.frameHeight || 620;
+            const w = config.frameWidth;
+            const iframeWidth = w ? `${w}px` : '100%';
+            const iframeCode = `<iframe\n  src="${siteUrl}/embed?installer=${installerId}"\n  width="${iframeWidth}"\n  height="${h}"\n  style="border:none;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"\n  title="Solar Savings Calculator"\n  loading="lazy">\n</iframe>`;
+            const scriptCode = `<div id="msw-widget"></div>\n<script>\n  (function(){\n    var el=document.createElement('iframe');\n    el.src='${siteUrl}/embed?installer=${installerId}';\n    el.width='${iframeWidth}'; el.height='${h}';\n    el.style.cssText='border:none;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.10);';\n    el.title='Solar Savings Calculator'; el.loading='lazy';\n    document.getElementById('msw-widget').appendChild(el);\n  })();\n<\/script>`;
+            const wpCode = `[mysolarwidget installer_id="${installerId}" height="${h}"]`;
 
-          {activeTab === 'leads' && (
+            const EmbedCard = ({ title, badge, desc, code, copied, onCopy }) => (
+              <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 14 }}>
+                <div style={{ padding: '14px 18px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontWeight: 700, fontSize: 14, color: '#0f172a' }}>{title}</span>
+                      {badge && <span style={{ fontSize: 11, fontWeight: 700, background: '#fffbeb', color: '#d97706', padding: '2px 8px', borderRadius: 20 }}>{badge}</span>}
+                    </div>
+                    <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>{desc}</div>
+                  </div>
+                  <button onClick={onCopy} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', background: copied ? '#16a34a' : '#0f172a', color: 'white', border: 'none', borderRadius: 7, cursor: 'pointer', fontWeight: 600, fontSize: 12.5, flexShrink: 0, marginLeft: 14, transition: 'background 0.15s' }}>
+                    {copied ? <><CheckCircleIcon size={13} /> Copied!</> : <><ClipboardIcon size={13} /> Copy Code</>}
+                  </button>
+                </div>
+                <div style={{ background: '#0f172a', padding: '14px 18px', overflowX: 'auto' }}>
+                  <code style={{ fontFamily: "'Menlo','Monaco',monospace", fontSize: 12, color: '#7dd3fc', whiteSpace: 'pre', display: 'block' }}>{code}</code>
+                </div>
+              </div>
+            );
+
+            return (
+              <div>
+                <div style={{ marginBottom: 22 }}>
+                  <EmbedCard title="Standard iFrame" badge="Recommended" desc="Works on any website. Paste inside your page HTML." code={iframeCode} copied={embedCopied} onCopy={() => { navigator.clipboard.writeText(iframeCode); setEmbedCopied(true); setTimeout(() => setEmbedCopied(false), 2500); }} />
+                  <EmbedCard title="JavaScript Snippet" desc="Dynamically injects the widget. Good for CMS platforms and tag managers." code={scriptCode} copied={scriptCopied} onCopy={() => { navigator.clipboard.writeText(scriptCode); setScriptCopied(true); setTimeout(() => setScriptCopied(false), 2500); }} />
+                  <EmbedCard title="WordPress Shortcode" desc="Install the MySolarWidget plugin, then paste this shortcode anywhere on your site." code={wpCode} copied={wpCopied} onCopy={() => { navigator.clipboard.writeText(wpCode); setWpCopied(true); setTimeout(() => setWpCopied(false), 2500); }} />
+                </div>
+
+                {/* Frame size settings */}
+                <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, padding: '18px 22px', marginBottom: 14, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 14 }}>Frame Dimensions</div>
+                  <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Height (px) <span style={{ color: '#94a3b8', fontWeight: 400 }}>Recommended: 580–800</span></label>
+                      <input type="number" min="480" max="1200" step="10" value={h} onChange={e => update('frameHeight', parseInt(e.target.value) || 620)} className="dash-input" style={{ width: 110 }} />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Width (px) <span style={{ color: '#94a3b8', fontWeight: 400 }}>Leave blank for 100%</span></label>
+                      <input type="number" min="320" max="1400" step="10" placeholder="Auto (100%)" value={config.frameWidth || ''} onChange={e => update('frameWidth', e.target.value ? parseInt(e.target.value) : null)} className="dash-input" style={{ width: 110 }} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Installation guides */}
+                <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, padding: '18px 22px', marginBottom: 14, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 14 }}>Installation Guide</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
+                    {[
+                      { platform: 'Wix',             steps: ['Go to Edit Site', 'Add an Embed element', 'Paste the iFrame code'] },
+                      { platform: 'Squarespace',     steps: ['Add a Code Block', 'Switch to HTML mode', 'Paste the iFrame code'] },
+                      { platform: 'WordPress',       steps: ['Open Gutenberg editor', 'Add a Custom HTML block', 'Paste the iFrame code'] },
+                      { platform: 'Weebly / Duda',   steps: ['Add Embed Code element', 'Paste iFrame in the box', 'Publish your changes'] },
+                    ].map(({ platform, steps }) => (
+                      <div key={platform} style={{ background: '#f8fafc', borderRadius: 8, padding: '14px 16px' }}>
+                        <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 10, color: '#0f172a' }}>{platform}</div>
+                        <ol style={{ paddingLeft: 16, margin: 0 }}>
+                          {steps.map(s => <li key={s} style={{ fontSize: 12.5, color: '#64748b', marginBottom: 5 }}>{s}</li>)}
+                        </ol>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Preview link */}
+                <div style={{ background: 'linear-gradient(135deg, #fffbeb, #fef9c3)', border: '1px solid #fde68a', borderRadius: 12, padding: '18px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14 }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: '#92400e', marginBottom: 4 }}>Preview your widget</div>
+                    <p style={{ fontSize: 13, color: '#78350f', margin: 0 }}>See exactly how it looks before embedding on your site.</p>
+                  </div>
+                  <a href={`/embed?installer=${installerId}`} target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: '#d97706', color: 'white', padding: '10px 18px', borderRadius: 8, textDecoration: 'none', fontWeight: 700, fontSize: 13 }}>
+                    Open Preview →
+                  </a>
+                </div>
+              </div>
+            );
+          })()}
+
+          {activeTab === 'leads' && (() => {
+            const batteryLabel = b => ({ none: 'No Battery', one: '1 Battery', two: '2 Batteries' }[b] || fmt(b) || '—');
+            const activeLeads = leads.filter(l => !l.deleted_at);
+            const filteredLeads = activeLeads.filter(l => {
+              if (leadFilter !== 'all' && l.home_type !== leadFilter) return false;
+              if (leadSearch) {
+                const q = leadSearch.toLowerCase();
+                return (l.name || '').toLowerCase().includes(q) || (l.email || '').toLowerCase().includes(q) || (l.zip || '').includes(q);
+              }
+              return true;
+            });
+            const homeTypes = [...new Set(activeLeads.map(l => l.home_type).filter(Boolean))];
+            const btnStyle = { display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 13px', border: '1px solid #e2e8f0', borderRadius: 7, background: 'white', cursor: 'pointer', fontSize: 12.5, fontWeight: 600, color: '#374151' };
+
+            return (
             <>
-            <div className="setting-card">
-              {/* Edit Lead Modal */}
-              {editingLead && (
+            {/* Edit Lead Modal */}
+            {editingLead && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <div style={{ background: '#fff', borderRadius: 12, padding: 28, width: 380, boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
                     <h3 style={{ margin: '0 0 20px', fontSize: 16, fontWeight: 700 }}>Edit Lead</h3>
                     {[['Name', 'name', 'text'], ['Email', 'email', 'email'], ['Phone', 'phone', 'tel']].map(([label, field, type]) => (
                       <div key={field} style={{ marginBottom: 14 }}>
                         <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 4 }}>{label}</label>
-                        <input
-                          type={type}
-                          value={editDraft[field] || ''}
-                          onChange={e => setEditDraft(d => ({ ...d, [field]: e.target.value }))}
-                          style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: 7, fontSize: 13, boxSizing: 'border-box' }}
-                        />
+                        <input type={type} value={editDraft[field] || ''} onChange={e => setEditDraft(d => ({ ...d, [field]: e.target.value }))} style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: 7, fontSize: 13, boxSizing: 'border-box' }} />
                       </div>
                     ))}
                     <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 20 }}>
@@ -594,155 +811,174 @@ export default function InstallerDashboard({ user, onLogout }) {
                 </div>
               )}
 
-              <div className="setting-card-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-                <div>
-                  <h3 className="setting-card-title">{trashView ? 'Trash' : `Leads (${leads.length})`}</h3>
-                  <p className="setting-card-desc">{trashView ? 'Deleted leads — restore or permanently remove them.' : 'Contacts collected through your solar calculator.'}</p>
+            <div style={{ display: 'flex', gap: 20, height: 'calc(100vh - 160px)', minHeight: 480 }}>
+              {/* Lead list */}
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                {/* Toolbar */}
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                    <h2 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', margin: 0 }}>
+                      Leads <span style={{ fontSize: 14, color: '#94a3b8', fontWeight: 400 }}>({filteredLeads.length})</span>
+                    </h2>
+                    <div style={{ display: 'flex', gap: 7 }}>
+                      <button onClick={() => setLeads([])} style={btnStyle} onClick={async () => { setLeadsLoading(true); const { data } = await supabase.from('leads').select('*').eq('installer_id', installerId).is('deleted_at', null).order('created_at', { ascending: false }); setLeads(data || []); setLeadsLoading(false); }}>
+                        <RefreshCwIcon size={13} /> Refresh
+                      </button>
+                      <button onClick={exportCSV} disabled={filteredLeads.length === 0} style={{ ...btnStyle, opacity: filteredLeads.length === 0 ? 0.5 : 1 }}>
+                        <DownloadIcon size={13} /> Export CSV
+                      </button>
+                      <button onClick={() => setTrashView(v => !v)} style={{ ...btnStyle, background: trashView ? '#0f172a' : 'white', color: trashView ? 'white' : '#64748b' }}>
+                        <TrashIcon size={13} /> Trash {trashedLeads.length > 0 && `(${trashedLeads.length})`}
+                      </button>
+                    </div>
+                  </div>
+                  {!trashView && (
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                      <div style={{ flex: 1, minWidth: 200, position: 'relative' }}>
+                        <SearchIcon size={14} color="#94a3b8" style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+                        <input value={leadSearch} onChange={e => setLeadSearch(e.target.value)} placeholder="Search by name, email, ZIP…" style={{ width: '100%', padding: '8px 12px 8px 32px', border: '1px solid #e2e8f0', borderRadius: 7, fontSize: 13, outline: 'none', color: '#0f172a', boxSizing: 'border-box' }} />
+                      </div>
+                      <select value={leadFilter} onChange={e => setLeadFilter(e.target.value)} style={{ padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 7, fontSize: 13, background: 'white', cursor: 'pointer', outline: 'none', color: '#374151' }}>
+                        <option value="all">All home types</option>
+                        {homeTypes.map(t => <option key={t} value={t}>{fmt(t)}</option>)}
+                      </select>
+                    </div>
+                  )}
                 </div>
-                <button
-                  onClick={() => setTrashView(v => !v)}
-                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', border: '1px solid #e2e8f0', borderRadius: 8, background: trashView ? '#0f172a' : '#fff', color: trashView ? '#fff' : '#64748b', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}
-                >
-                  <TrashIcon size={14} />
-                  Trash {trashedLeads.length > 0 && `(${trashedLeads.length})`}
-                </button>
-              </div>
 
-              <div className="setting-card-body">
+                {/* List / Trash */}
                 {leadsLoading ? (
-                  <p style={{ color: '#64748b', fontSize: 14 }}>Loading leads...</p>
+                  <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: 14 }}>Loading…</div>
                 ) : trashView ? (
-                  trashedLeads.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748b' }}>
-                      <div style={{ marginBottom: 12 }}><TrashIcon size={32} /></div>
-                      <p style={{ fontSize: 14 }}>Trash is empty.</p>
+                  <div style={{ flex: 1, background: 'white', borderRadius: 12, border: '1px solid #e2e8f0', overflow: 'auto' }}>
+                    {trashedLeads.length === 0 ? (
+                      <div style={{ padding: '40px 0', textAlign: 'center', color: '#94a3b8' }}>
+                        <TrashIcon size={28} style={{ marginBottom: 10 }} />
+                        <p style={{ fontSize: 14 }}>Trash is empty.</p>
+                      </div>
+                    ) : trashedLeads.map((lead, i) => (
+                      <div key={lead.id} style={{ padding: '12px 16px', borderBottom: i < trashedLeads.length - 1 ? '1px solid #f8fafc' : 'none', display: 'flex', gap: 12, alignItems: 'center' }}>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontWeight: 600, fontSize: 13.5, color: '#64748b' }}>{lead.name || '(No name)'}</div>
+                          <div style={{ fontSize: 12, color: '#94a3b8' }}>{lead.email} · Deleted {new Date(lead.deleted_at).toLocaleDateString()}</div>
+                        </div>
+                        <button onClick={() => handleRestoreLead(lead)} style={{ padding: '5px 12px', border: '1px solid #e2e8f0', borderRadius: 6, background: '#fff', fontSize: 12, fontWeight: 500, cursor: 'pointer', color: '#0f172a' }}>Restore</button>
+                        <button onClick={() => handlePermanentDelete(lead)} style={{ padding: '5px 12px', border: '1px solid #fecaca', borderRadius: 6, background: '#fff', fontSize: 12, fontWeight: 500, cursor: 'pointer', color: '#dc2626' }}>Delete forever</button>
+                      </div>
+                    ))}
+                  </div>
+                ) : filteredLeads.length === 0 ? (
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'white', borderRadius: 12, border: '1px solid #e2e8f0' }}>
+                    <div style={{ width: 52, height: 52, borderRadius: 14, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                      <InboxIcon size={24} color="#94a3b8" />
                     </div>
-                  ) : (
-                    <div style={{ overflowX: 'auto' }}>
-                      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
-                        <thead>
-                          <tr style={{ borderBottom: '1px solid #e2e8f0', color: '#64748b', textAlign: 'left' }}>
-                            <th style={{ padding: '8px 12px', fontWeight: 600 }}>Name</th>
-                            <th style={{ padding: '8px 12px', fontWeight: 600 }}>Email</th>
-                            <th style={{ padding: '8px 12px', fontWeight: 600 }}>Deleted</th>
-                            <th style={{ padding: '8px 12px', fontWeight: 600 }}>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {trashedLeads.map(lead => (
-                            <tr key={lead.id} style={{ borderBottom: '1px solid #f1f5f9', verticalAlign: 'middle' }}>
-                              <td style={{ padding: '10px 12px', fontWeight: 500 }}>{lead.name || '—'}</td>
-                              <td style={{ padding: '10px 12px', color: '#475569' }}>{lead.email || '—'}</td>
-                              <td style={{ padding: '10px 12px', color: '#94a3b8', whiteSpace: 'nowrap' }}>{new Date(lead.deleted_at).toLocaleDateString()}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
-                                <button onClick={() => handleRestoreLead(lead)} style={{ marginRight: 8, padding: '5px 12px', border: '1px solid #e2e8f0', borderRadius: 6, background: '#fff', fontSize: 12, fontWeight: 500, cursor: 'pointer', color: '#0f172a' }}>Restore</button>
-                                <button onClick={() => handlePermanentDelete(lead)} style={{ padding: '5px 12px', border: '1px solid #fecaca', borderRadius: 6, background: '#fff', fontSize: 12, fontWeight: 500, cursor: 'pointer', color: '#dc2626' }}>Delete forever</button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                    <div style={{ fontWeight: 700, fontSize: 15, color: '#374151', marginBottom: 5 }}>
+                      {leadSearch || leadFilter !== 'all' ? 'No matching leads' : 'No leads yet'}
                     </div>
-                  )
-                ) : leads.length === 0 ? (
-                  <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748b' }}>
-                    <div style={{ marginBottom: 12 }}><ClipboardIcon size={32} /></div>
-                    <p style={{ fontSize: 14 }}>No leads yet. They'll appear here once someone completes your calculator.</p>
+                    <p style={{ fontSize: 13, color: '#94a3b8', textAlign: 'center', maxWidth: 280, margin: 0 }}>
+                      {leadSearch || leadFilter !== 'all' ? 'Try changing your search or filter.' : 'Embed your calculator to start capturing leads.'}
+                    </p>
                   </div>
                 ) : (
-                  <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
-                      <thead>
-                        <tr style={{ borderBottom: '1px solid #e2e8f0', color: '#64748b', textAlign: 'left' }}>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Name</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Email</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Phone</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Bill</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Location</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Home Type</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Owns Home</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Sun Exposure</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Roof Type</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Battery</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Payment</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Timeline</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Custom</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Estimate</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Date</th>
-                          <th style={{ padding: '8px 12px', fontWeight: 600 }}>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {leads.map(lead => {
-                          const fmt = v => v ? String(v).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : null;
-                          const batteryLabel = { none: 'No Battery', one: '1 Battery', two: '2 Batteries' }[lead.battery] || fmt(lead.battery);
-                          const customRows = lead.custom_answers
-                            ? Object.entries(lead.custom_answers).map(([id, val]) => {
-                                const step = (config.customSteps || []).find(s => s.id === id);
-                                const label = step ? step.title || step.label : fmt(id.replace(/^custom_\d+_?/, '')) || id;
-                                const opt = step?.options?.find(o => o.value === val);
-                                const display = opt ? opt.label : val;
-                                return `${label}: ${display}`;
-                              })
-                            : [];
-                          const cell = val => <span style={{ fontSize: 12, color: '#475569' }}>{val || <span style={{ color: '#94a3b8' }}>—</span>}</span>;
-                          return (
-                            <tr key={lead.id} style={{ borderBottom: '1px solid #f1f5f9', verticalAlign: 'top' }}>
-                              <td style={{ padding: '10px 12px', fontWeight: 500, whiteSpace: 'nowrap' }}>{lead.name || '—'}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
-                                {lead.email ? <a href={`mailto:${lead.email}`} style={{ color: '#1e40af', fontSize: 12 }}>{lead.email}</a> : '—'}
-                              </td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap', fontSize: 12, color: '#475569' }}>{lead.phone || '—'}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(lead.monthly_bill != null ? `$${lead.monthly_bill}/mo` : null)}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell([lead.zip, lead.state].filter(Boolean).join(', ') || null)}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(fmt(lead.home_type))}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(lead.owns_home != null ? (lead.owns_home ? 'Yes' : 'No') : null)}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(fmt(lead.sun_exposure))}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(fmt(lead.roof_type))}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(batteryLabel)}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(fmt(lead.payment_method))}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{cell(fmt(lead.timeline))}</td>
-                              <td style={{ padding: '10px 12px', minWidth: 160 }}>
-                                {customRows.length > 0
-                                  ? customRows.map((r, i) => (
-                                      <div key={i} style={{ fontSize: 12, color: '#475569', lineHeight: '1.7' }}>{r}</div>
-                                    ))
-                                  : <span style={{ color: '#94a3b8', fontSize: 12 }}>—</span>}
-                              </td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
-                                {lead.system_size_kw ? <div style={{ fontSize: 12 }}>{lead.system_size_kw} kW</div> : null}
-                                {lead.annual_savings ? <div style={{ fontSize: 12, color: '#16a34a' }}>${lead.annual_savings.toLocaleString()}/yr</div> : null}
-                                {!lead.system_size_kw && !lead.annual_savings ? '—' : null}
-                              </td>
-                              <td style={{ padding: '10px 12px', color: '#64748b', whiteSpace: 'nowrap', fontSize: 12 }}>{new Date(lead.created_at).toLocaleDateString()}</td>
-                              <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
-                                <button
-                                  onClick={() => { setEditingLead(lead); setEditDraft({ name: lead.name || '', email: lead.email || '', phone: lead.phone || '' }); }}
-                                  title="Edit"
-                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#475569', padding: '4px 6px', borderRadius: 6, marginRight: 4 }}
-                                >
-                                  <PencilIcon size={15} />
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteLead(lead)}
-                                  title="Move to trash"
-                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: '4px 6px', borderRadius: 6 }}
-                                >
-                                  <TrashIcon size={15} />
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+                  <div style={{ flex: 1, overflowY: 'auto', background: 'white', borderRadius: 12, border: '1px solid #e2e8f0' }}>
+                    {filteredLeads.map((lead, i) => {
+                      const isSelected = selectedLead?.id === lead.id;
+                      return (
+                        <div key={lead.id} onClick={() => openLead(lead)} style={{ padding: '13px 18px', borderBottom: i < filteredLeads.length - 1 ? '1px solid #f8fafc' : 'none', cursor: 'pointer', background: isSelected ? '#fffbeb' : 'white', display: 'flex', gap: 13, alignItems: 'center', transition: 'background 0.1s' }}>
+                          <div style={{ width: 36, height: 36, borderRadius: 9, background: '#fffbeb', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 15, fontWeight: 700, color: '#d97706' }}>
+                            {lead.name ? lead.name[0].toUpperCase() : '?'}
+                          </div>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ fontWeight: 600, fontSize: 13.5, color: '#0f172a', marginBottom: 2 }}>{lead.name || '(No name)'}</div>
+                            <div style={{ fontSize: 12, color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {lead.email || 'No email'}{lead.phone && ` · ${lead.phone}`}
+                            </div>
+                          </div>
+                          <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                            {lead.system_size_kw && <div style={{ fontSize: 12, fontWeight: 700, color: '#d97706', marginBottom: 2 }}>{lead.system_size_kw} kW</div>}
+                            {lead.annual_savings && <div style={{ fontSize: 12, color: '#16a34a', fontWeight: 600 }}>${lead.annual_savings.toLocaleString()}/yr</div>}
+                            <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 2 }}>{new Date(lead.created_at).toLocaleDateString()}</div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
-            </div>
 
+              {/* Lead detail panel */}
+              {selectedLead && !trashView && (
+                <div style={{ width: 340, background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, padding: '20px', overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14, flexShrink: 0, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div>
+                      <h3 style={{ fontWeight: 800, fontSize: 17, color: '#0f172a', marginBottom: 2 }}>{selectedLead.name || '(No name)'}</h3>
+                      <div style={{ fontSize: 12, color: '#94a3b8' }}>{new Date(selectedLead.created_at).toLocaleDateString()}</div>
+                    </div>
+                    <button onClick={() => setSelectedLead(null)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4, borderRadius: 6, display: 'flex' }}>
+                      <XIcon size={18} />
+                    </button>
+                  </div>
+
+                  <div style={{ background: '#f8fafc', borderRadius: 9, padding: '13px 14px', display: 'flex', flexDirection: 'column', gap: 7 }}>
+                    {[
+                      ['Email',         selectedLead.email,              `mailto:${selectedLead.email}`],
+                      ['Phone',         selectedLead.phone,              `tel:${selectedLead.phone}`],
+                      ['Location',      [selectedLead.zip, selectedLead.state].filter(Boolean).join(' · ') || null, null],
+                      ['Monthly Bill',  selectedLead.monthly_bill != null ? `$${selectedLead.monthly_bill}/mo` : null, null],
+                      ['Home Type',     fmt(selectedLead.home_type),     null],
+                      ['Roof Type',     fmt(selectedLead.roof_type),     null],
+                      ['Battery',       batteryLabel(selectedLead.battery), null],
+                      ['Sun Exposure',  fmt(selectedLead.sun_exposure),  null],
+                      ['Owns Home',     selectedLead.owns_home != null ? (selectedLead.owns_home ? 'Yes' : 'No') : null, null],
+                      ['System Size',   selectedLead.system_size_kw ? `${selectedLead.system_size_kw} kW` : null, null],
+                      ['Annual Savings',selectedLead.annual_savings ? `$${selectedLead.annual_savings.toLocaleString()}/yr` : null, null],
+                      ['Payment Pref.', fmt(selectedLead.payment_method), null],
+                      ['Timeline',      fmt(selectedLead.timeline),      null],
+                    ].filter(([, val]) => val).map(([label, val, href]) => (
+                      <div key={label} style={{ display: 'flex', gap: 8 }}>
+                        <span style={{ fontSize: 11.5, fontWeight: 700, color: '#94a3b8', minWidth: 88, paddingTop: 1 }}>{label}</span>
+                        {href
+                          ? <a href={href} style={{ fontSize: 13, color: '#d97706', fontWeight: 500 }}>{val}</a>
+                          : <span style={{ fontSize: 13, color: '#0f172a', fontWeight: 500 }}>{val}</span>
+                        }
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Notes */}
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 12, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 7 }}>Internal Notes</div>
+                    <textarea value={leadNotes} onChange={e => setLeadNotes(e.target.value)} placeholder="Add notes about this lead…" style={{ width: '100%', padding: '9px 11px', border: '1px solid #e2e8f0', borderRadius: 7, fontSize: 13, resize: 'vertical', minHeight: 80, outline: 'none', color: '#0f172a', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                    <button onClick={handleSaveNote} disabled={savingNote} style={{ marginTop: 6, padding: '7px 14px', background: '#d97706', color: 'white', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600, fontSize: 13 }}>
+                      {savingNote ? 'Saving…' : 'Save Note'}
+                    </button>
+                  </div>
+
+                  {/* Actions */}
+                  <div style={{ display: 'flex', gap: 7, paddingTop: 8, borderTop: '1px solid #f1f5f9', flexWrap: 'wrap' }}>
+                    {selectedLead.email && (
+                      <a href={`mailto:${selectedLead.email}`} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '9px 0', background: '#d97706', color: 'white', textAlign: 'center', borderRadius: 7, textDecoration: 'none', fontWeight: 700, fontSize: 13, minWidth: 80 }}>
+                        <MailIcon size={13} /> Email
+                      </a>
+                    )}
+                    {selectedLead.phone && (
+                      <a href={`tel:${selectedLead.phone}`} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '9px 0', background: '#16a34a', color: 'white', textAlign: 'center', borderRadius: 7, textDecoration: 'none', fontWeight: 700, fontSize: 13, minWidth: 80 }}>
+                        <PhoneIcon size={13} /> Call
+                      </a>
+                    )}
+                    <button onClick={() => { setEditingLead(selectedLead); setEditDraft({ name: selectedLead.name || '', email: selectedLead.email || '', phone: selectedLead.phone || '' }); }} style={{ padding: '9px 13px', background: '#f8fafc', color: '#374151', border: '1px solid #e2e8f0', borderRadius: 7, cursor: 'pointer', fontWeight: 600, fontSize: 13, display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <PencilIcon size={13} /> Edit
+                    </button>
+                    <button onClick={() => { handleDeleteLead(selectedLead); setSelectedLead(null); }} style={{ padding: '9px 13px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 7, cursor: 'pointer', fontWeight: 600, fontSize: 13 }}>
+                      Archive
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
             </>
-          )}
+            );
+          })()}
 
           {activeTab === 'settings' && (
             <div className="settings-grid">
