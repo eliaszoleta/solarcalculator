@@ -669,6 +669,176 @@ export const POSTS = [
     ],
     relatedSlugs: ['solar-installation-process', 'how-much-can-solar-save-you', 'how-much-do-solar-panels-cost'],
   },
+
+  // ─── ARTICLE 7 ────────────────────────────────────────────────────────────
+  {
+    slug: 'solar-panel-maintenance-costs',
+    title: 'Solar Panel Maintenance Costs: What to Expect Over 25 Years',
+    seoTitle: 'Solar Panel Maintenance Costs 2026: Full 25-Year Breakdown | MySolarWidget',
+    metaDescription: 'Solar panels require very little maintenance — typically $150–$400/year. Learn what you actually need to spend on cleaning, inverter replacement, and repairs over 25 years.',
+    category: 'solar-costs',
+    tags: ['maintenance', 'cost', 'inverter', 'repair', 'long-term'],
+    author: 'MySolarWidget Team',
+    publishDate: '2026-02-04',
+    readingTime: 7,
+    featured: false,
+    excerpt: 'Solar panels are low-maintenance, but not zero-maintenance. Over a 25-year system life, most homeowners spend $3,000–$7,000 on upkeep — primarily one inverter replacement and occasional cleaning. Here is what to budget for.',
+    intro: `<p>One of solar's biggest selling points is that panels have <strong>no moving parts</strong> and require almost no regular maintenance. But "almost no maintenance" is not the same as "zero cost." Over a 25-year system life, you will likely spend money on cleaning, at least one inverter replacement, and possibly a panel or wiring repair.</p>
+<p>This guide breaks down every realistic maintenance cost so you can budget accurately and avoid surprises.</p>`,
+    sections: [
+      {
+        id: 'annual-maintenance-costs',
+        title: 'Annual Solar Maintenance Costs',
+        content: `<p>For most homeowners in mild climates, annual solar maintenance costs are minimal:</p>
+<table>
+  <thead><tr><th>Maintenance Item</th><th>Frequency</th><th>Typical Cost</th></tr></thead>
+  <tbody>
+    <tr><td>Professional panel cleaning</td><td>1–2x per year</td><td>$100–$300</td></tr>
+    <tr><td>Annual inspection</td><td>Every 1–2 years</td><td>$100–$200</td></tr>
+    <tr><td>Monitoring software subscription</td><td>Annual</td><td>$0–$150</td></tr>
+    <tr><td>Minor repairs (wiring, mounts)</td><td>As needed</td><td>$100–$500</td></tr>
+  </tbody>
+</table>
+<p>Most homeowners in areas with regular rain spend <strong>under $200/year</strong> since rain cleans panels naturally. In dusty climates (Arizona, Nevada, Southern California), plan for $300–$400/year including professional cleaning.</p>`
+      },
+      {
+        id: 'inverter-replacement',
+        title: 'Inverter Replacement: The Biggest Expected Cost',
+        content: `<p>The inverter is the most likely component to need replacement within a 25-year system lifetime. Unlike solar panels (warranted for 25 years), inverters typically carry <strong>10–12 year warranties</strong>.</p>
+<h3>String Inverters</h3>
+<p>Central string inverters cost <strong>$1,000–$2,500</strong> to replace, including labor. This is a near-certain cost in year 10–15 of system ownership. Some premium string inverters (SMA, Fronius) have 20-year warranty options available for purchase.</p>
+<h3>Microinverters</h3>
+<p>Enphase microinverters carry 25-year warranties matching panel warranties — so replacement is usually covered. If a single microinverter fails out of warranty, replacement runs <strong>$200–$400 per unit</strong> including labor.</p>
+<h3>Power Optimizers</h3>
+<p>SolarEdge optimizers carry 25-year warranties. The central inverter they connect to has a 12-year warranty (extendable to 20–25). Central inverter replacement: <strong>$1,500–$3,000</strong>.</p>`
+      },
+      {
+        id: '25-year-cost-total',
+        title: 'Total 25-Year Maintenance Cost Estimate',
+        content: `<p>Adding it all up, here is what a realistic 25-year maintenance budget looks like:</p>
+<table>
+  <thead><tr><th>Item</th><th>When</th><th>Estimated Cost</th></tr></thead>
+  <tbody>
+    <tr><td>Cleaning &amp; inspections</td><td>Ongoing (25 years)</td><td>$2,500–$5,000</td></tr>
+    <tr><td>String inverter replacement</td><td>Year 10–15</td><td>$1,000–$2,500</td></tr>
+    <tr><td>Minor repairs (wiring, mounts)</td><td>As needed</td><td>$300–$1,000</td></tr>
+    <tr><td>Monitoring subscription</td><td>Ongoing (25 years)</td><td>$0–$3,750</td></tr>
+  </tbody>
+</table>
+<p><strong>Total range: $3,800–$12,250</strong> over 25 years — or roughly <strong>$150–$490/year</strong>. Compare this to average savings of $1,200–$1,800/year on electricity. Maintenance represents less than 25% of savings in virtually every scenario.</p>
+<h3>What Is NOT a Maintenance Cost</h3>
+<p>Panel degradation is often misunderstood as a maintenance issue. Panels lose about <strong>0.5% efficiency per year</strong> — this is a natural, gradual decline already factored into installer savings estimates. You do not need to replace panels due to degradation; it simply means your output in year 25 is about 87% of year 1.</p>`
+      },
+      {
+        id: 'warranty-coverage',
+        title: 'What Your Warranties Cover',
+        content: `<p>Understanding your warranties helps identify what will and won't cost you money:</p>
+<h3>Panel Warranties</h3>
+<ul>
+  <li><strong>Product warranty:</strong> 10–25 years (covers defects, physical failures)</li>
+  <li><strong>Performance warranty:</strong> 25 years (guarantees minimum output — typically 80–87% at year 25)</li>
+</ul>
+<h3>Inverter Warranties</h3>
+<ul>
+  <li>String inverters: 10–12 years standard, 20–25 years extended (usually costs extra)</li>
+  <li>Microinverters (Enphase): 25 years</li>
+  <li>Optimizers (SolarEdge): 25 years on optimizers, 12 years on central inverter</li>
+</ul>
+<h3>Installer Workmanship Warranty</h3>
+<p>Most reputable installers offer a <strong>10-year workmanship warranty</strong> covering roof penetrations, mounting, and wiring. Always verify this before signing a contract.</p>`
+      },
+    ],
+    faq: [
+      {
+        question: 'Do solar panels need to be cleaned regularly?',
+        answer: 'In most US climates, rain keeps panels clean enough. In dusty regions (Southwest) or areas with heavy pollen, cleaning 1–2 times per year improves output by 5–15%. Professional cleaning costs $150–$300 per visit.',
+      },
+      {
+        question: 'How long do solar inverters last?',
+        answer: 'String inverters typically last 10–15 years. Microinverters and power optimizers are rated for 25 years, matching panel lifespans. Budget for one string inverter replacement during your system\'s life.',
+      },
+      {
+        question: 'What happens if a solar panel breaks?',
+        answer: 'Physical damage from hail or falling debris may be covered by your homeowner\'s insurance. Manufacturing defects are covered by the panel\'s product warranty. Out-of-warranty panel replacement costs $200–$400 per panel including labor.',
+      },
+    ],
+    relatedSlugs: ['how-much-do-solar-panels-cost', 'solar-battery-storage-cost', 'how-much-can-solar-save-you'],
+  },
+
+  // ─── ARTICLE 8 ────────────────────────────────────────────────────────────
+  {
+    slug: 'solar-battery-storage-cost',
+    title: 'Solar Battery Storage Cost in 2026: Is It Worth It?',
+    seoTitle: 'Solar Battery Storage Cost 2026: Powerwall & Alternatives | MySolarWidget',
+    metaDescription: 'Solar battery storage costs $8,000–$20,000 installed. Learn how Tesla Powerwall, Enphase IQ, and Franklin WH compare — and whether a battery makes financial sense for your home.',
+    category: 'solar-costs',
+    tags: ['battery', 'storage', 'powerwall', 'cost', '2026'],
+    author: 'MySolarWidget Team',
+    publishDate: '2026-02-18',
+    readingTime: 8,
+    featured: false,
+    excerpt: 'Adding a battery to your solar system costs $8,000–$20,000 depending on capacity and brand. The Tesla Powerwall 3 remains the market leader, but newer competitors offer strong value. Here is what each option costs and when a battery makes financial sense.',
+    intro: `<p>Solar batteries let you store excess daytime production and use it at night — reducing grid dependence and providing backup power during outages. But they come at a significant upfront cost. The question most homeowners ask: <strong>Is a battery worth it?</strong></p>
+<p>The answer depends on your utility's rate structure, how often your area experiences outages, and whether you value energy independence. This guide covers every major battery option and helps you decide.</p>`,
+    sections: [
+      {
+        id: 'battery-cost-comparison',
+        title: 'Solar Battery Cost Comparison (2026)',
+        content: `<p>Battery prices have dropped significantly since 2020 but remain a major investment. Here are installed costs for the leading options:</p>
+<table>
+  <thead><tr><th>Battery</th><th>Usable Capacity</th><th>Installed Cost</th><th>Warranty</th></tr></thead>
+  <tbody>
+    <tr><td>Tesla Powerwall 3</td><td>13.5 kWh</td><td>$11,500–$14,500</td><td>10 years</td></tr>
+    <tr><td>Enphase IQ Battery 5P</td><td>5 kWh (stacks)</td><td>$6,000–$8,500 per unit</td><td>15 years</td></tr>
+    <tr><td>Franklin WH 13.6</td><td>13.6 kWh</td><td>$10,000–$13,000</td><td>12 years</td></tr>
+    <tr><td>SolarEdge Home Battery</td><td>9.7 kWh</td><td>$9,000–$12,000</td><td>10 years</td></tr>
+    <tr><td>Generac PWRcell</td><td>9–18 kWh</td><td>$10,000–$20,000</td><td>10 years</td></tr>
+  </tbody>
+</table>
+<p>Most homeowners adding a single battery pay <strong>$10,000–$15,000</strong> installed. The federal 30% tax credit applies to batteries installed with solar (and since 2023, to standalone battery systems too).</p>`
+      },
+      {
+        id: 'when-battery-worth-it',
+        title: 'When Does a Battery Make Financial Sense?',
+        content: `<p>For backup power peace of mind, a battery is valuable regardless of finances. For pure financial return, it depends heavily on your utility:</p>
+<h3>Time-of-Use (TOU) Rates</h3>
+<p>If your utility charges significantly more for electricity in evenings (typically 4–9 PM), a battery lets you discharge stored solar power during peak hours instead of buying expensive grid power. States with aggressive TOU rates (California, Arizona) see the best battery ROI.</p>
+<h3>No Net Metering or Low Export Rates</h3>
+<p>If your utility pays little or nothing for excess solar power exported to the grid, storing it in a battery is far more valuable than exporting it. Many utilities have reduced net metering compensation in recent years.</p>
+<h3>Frequent Outages</h3>
+<p>If your area experiences regular grid outages — from storms, wildfires, or aging infrastructure — the value of backup power is real and quantifiable. A single avoided hotel stay or food spoilage event is worth $300–$1,000.</p>
+<h3>Simple Payback Analysis</h3>
+<p>With a $12,000 battery (after 30% tax credit: $8,400), saving $800/year on TOU arbitrage = <strong>10.5-year payback</strong>. That is borderline for a 10-year warranted device. In states with high TOU differentials or outage-prone areas, the economics improve significantly.</p>`
+      },
+      {
+        id: 'battery-incentives',
+        title: 'Battery Tax Credits and Incentives',
+        content: `<p>The Inflation Reduction Act made standalone batteries eligible for the 30% federal Investment Tax Credit (ITC) starting in 2023 — a major change from before when batteries only qualified if installed alongside solar.</p>
+<ul>
+  <li><strong>Federal ITC (30%):</strong> Applies to both solar+battery and standalone batteries with capacity ≥ 3 kWh</li>
+  <li><strong>California SGIP:</strong> California's Self-Generation Incentive Program offers $200–$1,000 per kWh for battery storage in qualifying areas</li>
+  <li><strong>Massachusetts SMART:</strong> Battery adder of $0.05–$0.10/kWh on top of solar compensation</li>
+  <li><strong>Utility rebates:</strong> Many utilities offer $200–$500 rebates for battery enrollment in demand response programs</li>
+</ul>
+<p>After incentives, a $13,500 Powerwall 3 can cost as little as <strong>$7,000–$9,000</strong> in high-incentive states.</p>`
+      },
+    ],
+    faq: [
+      {
+        question: 'How many batteries do I need to power my whole house?',
+        answer: 'A single 13.5 kWh battery (like a Powerwall) can power average loads (lights, fridge, devices) for 12–24 hours. To run everything including HVAC during an outage, most homes need 2–3 batteries.',
+      },
+      {
+        question: 'Can I add a battery to an existing solar system?',
+        answer: 'Yes — most modern batteries can be added to existing solar systems. Compatibility depends on your inverter type. AC-coupled batteries (like Powerwall) work with virtually any system. DC-coupled batteries require compatible inverters.',
+      },
+      {
+        question: 'Does the 30% tax credit apply to batteries?',
+        answer: 'Yes. Since 2023, the federal Investment Tax Credit (ITC) applies to standalone home battery systems with capacity of 3 kWh or more, not just batteries installed alongside new solar panels.',
+      },
+    ],
+    relatedSlugs: ['how-much-do-solar-panels-cost', 'solar-panel-maintenance-costs', 'federal-solar-tax-credit-guide'],
+  },
 ];
 
 export function getPostBySlug(slug) {
