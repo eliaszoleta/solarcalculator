@@ -142,9 +142,14 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
             marginTop: 4,
             background: accentColor,
             boxShadow: `0 4px 14px ${accentColor}66`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            textAlign: 'center',
           }}
         >
-          {loading ? 'Calculating...' : <><SunIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />Show My Free Estimate →</>}
+          {loading ? 'Calculating...' : <><SunIcon size={14} style={{ marginRight: 7, flexShrink: 0 }} />Show My Free Estimate →</>}
         </button>
       </form>
 

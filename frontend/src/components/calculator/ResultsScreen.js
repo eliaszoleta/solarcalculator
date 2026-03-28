@@ -54,15 +54,12 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
           SOLAR SAVINGS ESTIMATE{state ? ` · ${state.toUpperCase()}` : ''}
         </div>
         <div className="hero-number">
-          {isCash
-            ? `${fmtDollar(incentives.netCostLow)} – ${fmtDollar(incentives.netCostHigh)}`
-            : `${fmtDollar(daySavings)}/mo`
-          }
+          {fmtDollar(savings.monthly)}/mo
         </div>
         <div className="hero-sub">
           {isCash
-            ? `net cost after 30% federal credit · paid off in ${savings.paybackYears ? savings.paybackYears + ' yrs' : 'N/A'}`
-            : `saved on electricity from day one · ${savings.paybackYears ? savings.paybackYears + ' yr payback' : ''}`
+            ? `monthly electricity savings · paid off in ${savings.paybackYears ? savings.paybackYears + ' yrs' : 'N/A'} · net cost ${fmtDollar(incentives.netCostLow)}–${fmtDollar(incentives.netCostHigh)}`
+            : `saved from day one · ${savings.paybackYears ? savings.paybackYears + ' yr payback' : ''} · net cost ${fmtDollar(incentives.netCostLow)}–${fmtDollar(incentives.netCostHigh)}`
           }
         </div>
       </div>
@@ -249,9 +246,18 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
       {/* ── BOTTOM ACTION BAR ── */}
       {!popup && (
         <div className="bottom-actions">
-          <button className="action-btn" onClick={onReset}>← New Estimate</button>
-          <button className="action-btn" onClick={handleShare}>⇗ Share Results</button>
-          <button className="action-btn" onClick={handlePrint}>⎙ Print</button>
+          <button className="action-btn" onClick={onReset}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 7, flexShrink: 0 }}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            New Estimate
+          </button>
+          <button className="action-btn" onClick={handleShare}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 7, flexShrink: 0 }}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share Results
+          </button>
+          <button className="action-btn" onClick={handlePrint}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 7, flexShrink: 0 }}><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print
+          </button>
         </div>
       )}
 
@@ -477,20 +483,20 @@ function PublicEmailCapture({ results, form, savings, system }) {
   }
 
   return (
-    <div style={{ textAlign: 'center', padding: '8px 0' }}>
-      <div style={{ marginBottom: 12 }}><MailIcon size={32} color="white" /></div>
-      <h3 style={{ fontSize: 20, fontWeight: 800, color: 'white', marginBottom: 8 }}>Send report to your email</h3>
-      <p style={{ color: '#bfdbfe', fontSize: 14, marginBottom: 20, lineHeight: 1.6 }}>
+    <div style={{ textAlign: 'center', padding: '4px 0 8px' }}>
+      <div style={{ marginBottom: 10 }}><MailIcon size={26} color="white" /></div>
+      <h3 style={{ fontSize: 18, fontWeight: 700, color: 'white', marginBottom: 6 }}>Send report to your email</h3>
+      <p style={{ color: '#bfdbfe', fontSize: 13, marginBottom: 16, lineHeight: 1.5 }}>
         Get your personalized solar savings summary delivered to your inbox.
       </p>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 360, margin: '0 auto' }}>
-        <input type="text" placeholder="Your name" value={name} onChange={e => { setName(e.target.value); setError(''); }} style={inputStyle} />
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 9, maxWidth: 340, margin: '0 auto' }}>
+        <input type="text" placeholder="Full Name" value={name} onChange={e => { setName(e.target.value); setError(''); }} style={inputStyle} />
         <input type="email" placeholder="Email address" value={email} onChange={e => { setEmail(e.target.value); setError(''); }} style={inputStyle} />
         {error && <p style={{ color: '#fca5a5', fontSize: 13, margin: 0 }}>{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          style={{ padding: '13px 24px', background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: 'white', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.8 : 1 }}
+          style={{ padding: '12px 24px', background: loading ? '#15803d' : '#16a34a', color: 'white', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.85 : 1, boxShadow: '0 3px 10px rgba(22,163,74,0.4)' }}
         >
           {loading ? 'Sending...' : 'Send My Report →'}
         </button>
@@ -500,13 +506,14 @@ function PublicEmailCapture({ results, form, savings, system }) {
 }
 
 const inputStyle = {
-  padding: '12px 14px',
+  padding: '11px 13px',
   borderRadius: 10,
-  border: '1.5px solid rgba(255,255,255,0.2)',
-  background: 'rgba(255,255,255,0.12)',
+  border: '1.5px solid rgba(255,255,255,0.25)',
+  background: 'rgba(255,255,255,0.15)',
   color: 'white',
-  fontSize: 15,
+  fontSize: 14,
   outline: 'none',
   width: '100%',
   boxSizing: 'border-box',
+  caretColor: 'white',
 };
