@@ -1019,6 +1019,185 @@ export const POSTS = [
     ],
     relatedSlugs: ['solar-financing-options', 'solar-loan-guide', 'how-much-can-solar-save-you'],
   },
+
+  // ─── ARTICLE 11 ────────────────────────────────────────────────────────────
+  {
+    slug: 'solar-net-metering-explained',
+    title: 'Net Metering Explained: How to Get Credit for Excess Solar Power',
+    seoTitle: 'Net Metering Explained 2026: Credits, Rates & State Rules | MySolarWidget',
+    metaDescription: 'Net metering lets you export excess solar power to the grid and get bill credits. Learn how it works, which states have the best policies, and what NEM 3.0 means for California.',
+    category: 'solar-savings',
+    tags: ['net-metering', 'savings', 'grid', 'bill-credit', 'utility'],
+    author: 'MySolarWidget Team',
+    publishDate: '2026-02-12',
+    readingTime: 7,
+    featured: false,
+    excerpt: 'Net metering is what makes solar financially worthwhile for most homeowners — it lets you bank excess daytime solar production as bill credits to use at night. But policies vary drastically by state and utility. Here is what you need to know.',
+    intro: `<p>Solar panels produce the most power during the middle of the day — often more than your home needs at that moment. Without net metering, that excess power would be wasted. With net metering, it flows to the grid and your utility meter runs <strong>backwards</strong>, earning you credits toward your bill.</p>
+<p>Net metering is the single most important policy for solar economics. Understanding how it works in your state directly affects how much solar will save you.</p>`,
+    sections: [
+      {
+        id: 'how-net-metering-works',
+        title: 'How Net Metering Works',
+        content: `<p>Net metering works through your existing electric meter (or a new bidirectional meter installed at no cost in most states):</p>
+<ol>
+  <li>During the day, your solar panels produce power. Your home uses what it needs.</li>
+  <li>Excess power flows back to the grid, spinning your meter backward (or registering negative consumption).</li>
+  <li>At night or on cloudy days, you draw from the grid. The meter spins forward.</li>
+  <li>At the end of each billing period, you pay only the <strong>net difference</strong> — what you consumed minus what you exported.</li>
+  <li>If you exported more than you consumed, you receive a credit on your next bill (or an annual payment, depending on the utility).</li>
+</ol>
+<p>The key benefit: solar power you produce during cheap midday hours offsets power you would have bought at full retail rate during evening peak hours. This is essentially <strong>1:1 energy exchange</strong> at retail value.</p>`
+      },
+      {
+        id: 'net-metering-by-state',
+        title: 'Net Metering Policies by State (2026)',
+        content: `<p>Net metering policies vary significantly. Here is a summary of key states:</p>
+<table>
+  <thead><tr><th>State</th><th>Policy</th><th>Export Rate</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>New Jersey</td><td>Full retail NEM</td><td>Retail rate</td><td>One of the best in the country</td></tr>
+    <tr><td>Massachusetts</td><td>Full retail NEM</td><td>Retail rate</td><td>Plus SMART program adder</td></tr>
+    <tr><td>New York</td><td>Full retail NEM</td><td>Retail rate</td><td>Phase-out discussions ongoing</td></tr>
+    <tr><td>Texas</td><td>Varies by utility</td><td>Wholesale (~$0.03–0.06/kWh)</td><td>No statewide mandate; most utilities pay avoided cost</td></tr>
+    <tr><td>California</td><td>NEM 3.0 (2023+)</td><td>~$0.05/kWh avg export</td><td>Major reduction from NEM 2.0 retail rates</td></tr>
+    <tr><td>Arizona</td><td>Partial export credit</td><td>~60–80% of retail</td><td>APS and SRP have own programs</td></tr>
+    <tr><td>Florida</td><td>Full retail NEM</td><td>Retail rate</td><td>Strong policy through major utilities</td></tr>
+  </tbody>
+</table>
+<p><strong>Key insight:</strong> States with full retail net metering typically have 20–40% shorter solar payback periods than states with wholesale or avoided-cost export rates.</p>`
+      },
+      {
+        id: 'california-nem3',
+        title: 'California NEM 3.0: What Changed and What It Means',
+        content: `<p>California's NEM 3.0, which took effect in April 2023, dramatically reduced compensation for exported solar power. The changes are significant:</p>
+<h3>Before NEM 3.0 (NEM 2.0)</h3>
+<p>Export credits were at or near retail rate (~$0.25–0.35/kWh). A 7 kW system could earn $1,500+ per year in credits. Payback periods of 5–7 years were common.</p>
+<h3>After NEM 3.0</h3>
+<p>Export credits average ~$0.05/kWh ("avoided cost" rate). The same system earns ~$300/year in export credits. Payback periods stretched to 9–12 years for solar-only systems.</p>
+<h3>The Battery Workaround</h3>
+<p>NEM 3.0 was designed to incentivize battery storage. Evening time-of-use rates in California remain very high ($0.40–0.55/kWh). A battery lets you discharge stored solar power during peak evening hours instead of exporting it cheaply in the afternoon. <strong>Solar + battery in California under NEM 3.0 can actually outperform NEM 2.0 solar-only systems</strong> in some scenarios.</p>`
+      },
+      {
+        id: 'maximizing-net-metering',
+        title: 'How to Maximize Your Net Metering Value',
+        content: `<p>Tips to get the most from your net metering program:</p>
+<ul>
+  <li><strong>Size your system to your usage:</strong> In states with retail net metering, sizing to 100% offset maximizes value. In low-export-credit states, consider slightly undersizing to avoid generating excess power you will not be compensated fairly for.</li>
+  <li><strong>Shift consumption to daytime:</strong> Run dishwashers, laundry, and EV charging during peak solar production hours (10 AM–3 PM) to self-consume rather than export.</li>
+  <li><strong>Understand your billing cycle:</strong> Most net metering is calculated monthly, but annual true-up periods are common. Large credit balances accumulated in summer may be applied to high winter bills.</li>
+  <li><strong>Add a battery in low-export states:</strong> In states paying wholesale export rates, storing excess power for evening use is more valuable than exporting it.</li>
+</ul>`
+      },
+    ],
+    faq: [
+      {
+        question: 'What happens to my unused net metering credits?',
+        answer: 'Most states carry credits forward month to month. At annual true-up (common in California), unused credits are either paid out at a low rate or forfeited. Check your utility\'s specific policy for how annual excess credits are handled.',
+      },
+      {
+        question: 'Does net metering work with a battery?',
+        answer: 'Yes. With a battery, you typically self-consume daytime solar, charge the battery with excess, discharge the battery at night, and only export to the grid after the battery is full. This maximizes self-consumption and reduces reliance on net metering.',
+      },
+      {
+        question: 'Can utilities eliminate net metering?',
+        answer: 'Yes — utility commissions can modify or end net metering programs. California\'s NEM 3.0 is an example. Homeowners who go solar before policy changes are typically grandfathered into existing rates for 10–20 years.',
+      },
+    ],
+    relatedSlugs: ['how-much-can-solar-save-you', 'solar-roi-payback-period', 'solar-battery-storage-cost'],
+  },
+
+  // ─── ARTICLE 12 ────────────────────────────────────────────────────────────
+  {
+    slug: 'solar-roi-payback-period',
+    title: 'Solar ROI and Payback Period: How to Calculate Your Real Return',
+    seoTitle: 'Solar ROI & Payback Period Calculator Guide 2026 | MySolarWidget',
+    metaDescription: 'The average solar payback period is 7–10 years with a lifetime ROI of 200–400%. Learn how to calculate your specific return using your electricity rate, system cost, and local incentives.',
+    category: 'solar-savings',
+    tags: ['ROI', 'payback', 'savings', 'return', 'investment'],
+    author: 'MySolarWidget Team',
+    publishDate: '2026-03-05',
+    readingTime: 8,
+    featured: false,
+    excerpt: 'The average solar payback period in the US is 7–10 years, with a 25-year ROI of 200–400% after all costs and incentives. But your specific return depends on electricity rates, system cost, financing, and local incentives — here is how to calculate it accurately.',
+    intro: `<p>Solar is one of the best investments a homeowner can make — but "best" depends on your specific numbers. A system that pays back in 6 years in Massachusetts might take 12 years in a low-electricity-rate state. Understanding your real return requires looking at your actual utility bills, local incentives, and financing costs.</p>
+<p>This guide walks you through exactly how to calculate your solar payback period and lifetime ROI — and what factors have the biggest impact.</p>`,
+    sections: [
+      {
+        id: 'payback-period-formula',
+        title: 'How to Calculate Solar Payback Period',
+        content: `<p>The simple payback formula:</p>
+<p><strong>Payback Period = Net System Cost ÷ Annual Savings</strong></p>
+<h3>Step 1: Net System Cost</h3>
+<p>Start with the total installed cost, then subtract incentives:</p>
+<ul>
+  <li>Gross system cost: e.g., $22,000</li>
+  <li>Minus 30% federal tax credit: −$6,600</li>
+  <li>Minus state rebate (if applicable): −$1,000</li>
+  <li><strong>Net cost: $14,400</strong></li>
+</ul>
+<h3>Step 2: Annual Savings</h3>
+<p>Estimate annual savings from your solar production:</p>
+<ul>
+  <li>System production: e.g., 9,000 kWh/year (7 kW system in a sunny climate)</li>
+  <li>Average electricity rate: e.g., $0.14/kWh</li>
+  <li><strong>Annual savings: 9,000 × $0.14 = $1,260/year</strong></li>
+</ul>
+<h3>Step 3: Payback Period</h3>
+<p>$14,400 ÷ $1,260 = <strong>11.4 years</strong></p>
+<p>In a state with higher electricity rates ($0.22/kWh): $14,400 ÷ $1,980 = <strong>7.3 years</strong></p>`
+      },
+      {
+        id: 'roi-by-state',
+        title: 'Solar ROI by State (2026)',
+        content: `<p>These calculations assume a 7 kW system, 30% federal ITC applied, and average local electricity rates:</p>
+<table>
+  <thead><tr><th>State</th><th>Net Cost</th><th>Annual Savings</th><th>Payback</th><th>25-Year ROI</th></tr></thead>
+  <tbody>
+    <tr><td>Massachusetts</td><td>$14,000</td><td>$2,100</td><td>6.7 years</td><td>275%</td></tr>
+    <tr><td>New Jersey</td><td>$13,500</td><td>$1,980</td><td>6.8 years</td><td>266%</td></tr>
+    <tr><td>California</td><td>$13,000</td><td>$2,400</td><td>5.4 years</td><td>361%</td></tr>
+    <tr><td>New York</td><td>$14,500</td><td>$2,100</td><td>6.9 years</td><td>261%</td></tr>
+    <tr><td>Florida</td><td>$12,000</td><td>$1,680</td><td>7.1 years</td><td>250%</td></tr>
+    <tr><td>Texas</td><td>$12,500</td><td>$1,440</td><td>8.7 years</td><td>188%</td></tr>
+    <tr><td>Arizona</td><td>$11,500</td><td>$1,560</td><td>7.4 years</td><td>238%</td></tr>
+    <tr><td>Georgia</td><td>$12,500</td><td>$1,320</td><td>9.5 years</td><td>164%</td></tr>
+  </tbody>
+</table>
+<p>Note: California figures use NEM 3.0 with a battery, which improves self-consumption significantly.</p>`
+      },
+      {
+        id: 'factors-that-affect-roi',
+        title: 'What Factors Impact Your ROI Most',
+        content: `<p>In order of impact:</p>
+<h3>1. Electricity Rate (Biggest Impact)</h3>
+<p>Every $0.01/kWh increase in your electricity rate improves annual savings by about $90 for a 9,000 kWh/year system. Homeowners paying $0.25+/kWh have dramatically better ROI than those paying $0.10/kWh.</p>
+<h3>2. Available Incentives</h3>
+<p>The 30% federal ITC alone improves payback by 2–4 years. Additional state rebates and credits compound this significantly. New Jersey's SREC market can add $500–$1,000/year in income on top of electricity savings.</p>
+<h3>3. Electricity Rate Escalation</h3>
+<p>Historical US electricity rate inflation is ~2.5%/year. A system with a 10-year payback in year 1 at $0.14/kWh will have effectively shortened to ~8 years when accounting for rate escalation — your savings grow while your loan payment stays fixed.</p>
+<h3>4. System Production (Sunlight Hours)</h3>
+<p>Arizona gets ~6 peak sun hours/day; Seattle gets ~3.5. The same 7 kW system produces 60% more energy in Arizona than Seattle — directly improving ROI.</p>
+<h3>5. Financing Cost</h3>
+<p>A solar loan at 8.99% over 25 years adds $15,000+ in interest to the true cost of your system. The net ROI after interest may be 50–70% lower than a cash purchase scenario.</p>`
+      },
+    ],
+    faq: [
+      {
+        question: 'Is solar a good investment in 2026?',
+        answer: 'Yes for most homeowners — particularly those paying $0.14+/kWh for electricity. Average 25-year returns of 200–400% (after all costs and incentives) outperform many traditional investments, with the added benefit of guaranteed returns unaffected by market volatility.',
+      },
+      {
+        question: 'How does electricity rate inflation affect solar ROI?',
+        answer: 'It improves it. At 2.5% annual rate inflation, electricity costs roughly double over 28 years. Your solar savings grow each year while your loan payment stays fixed, compressing the payback period and boosting lifetime returns.',
+      },
+      {
+        question: 'Does solar increase home resale value?',
+        answer: 'Yes. Studies from Lawrence Berkeley National Laboratory show owned solar systems increase home sale price by an average of $15,000 (roughly $4/watt). This home value increase is in addition to electricity savings and should be counted in your ROI calculation.',
+      },
+    ],
+    relatedSlugs: ['how-much-can-solar-save-you', 'solar-net-metering-explained', 'how-much-do-solar-panels-cost'],
+  },
 ];
 
 export function getPostBySlug(slug) {
