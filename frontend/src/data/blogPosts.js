@@ -1382,6 +1382,206 @@ export const POSTS = [
     ],
     relatedSlugs: ['federal-solar-tax-credit-guide', 'state-solar-rebates-2026', 'how-much-can-solar-save-you'],
   },
+
+  // ─── ARTICLE 15 ────────────────────────────────────────────────────────────
+  {
+    slug: 'how-to-choose-solar-installer',
+    title: 'How to Choose a Solar Installer: 7 Things to Check Before You Sign',
+    seoTitle: 'How to Choose a Solar Installer 2026: Red Flags & Checklist | MySolarWidget',
+    metaDescription: 'Choosing the wrong solar installer is the #1 cause of homeowner regret. Learn the 7 things every homeowner must verify before signing a solar contract in 2026.',
+    category: 'solar-installation',
+    tags: ['installer', 'contractor', 'quotes', 'vetting', 'tips'],
+    author: 'MySolarWidget Team',
+    publishDate: '2026-02-28',
+    readingTime: 8,
+    featured: false,
+    excerpt: 'The solar industry has a high rate of homeowner complaints — many tied to choosing the wrong installer. Fly-by-night companies, hidden fees, and inflated pricing are common pitfalls. Here are the 7 things you must check before signing any solar contract.',
+    intro: `<p>Solar is a 25-year commitment. The panels will likely outlast the installer who put them up — which is why choosing the <strong>right installer matters as much as choosing the right system</strong>. A bad installation can void warranties, cause roof leaks, and leave you with no one to call when problems arise.</p>
+<p>Use this checklist before signing any solar contract.</p>`,
+    sections: [
+      {
+        id: 'verify-licensing',
+        title: '1. Verify Licensing and Insurance',
+        content: `<p>Every solar installer must be licensed in your state. Requirements vary by state, but typically include:</p>
+<ul>
+  <li><strong>Electrical contractor license:</strong> Required to connect solar to your home's electrical system</li>
+  <li><strong>General contractor license:</strong> Required in most states for roof penetrations</li>
+  <li><strong>NABCEP certification:</strong> The gold standard for solar professionals (not required but a strong sign of quality)</li>
+  <li><strong>General liability insurance:</strong> Minimum $1M — protects you if a worker damages your property</li>
+  <li><strong>Workers' compensation insurance:</strong> Covers workers injured on your property</li>
+</ul>
+<p>Ask for proof of all licenses and insurance before signing. A legitimate installer will provide these without hesitation. You can also verify contractor licenses through your state licensing board's website.</p>`
+      },
+      {
+        id: 'get-multiple-quotes',
+        title: '2. Get At Least 3 Quotes',
+        content: `<p>Solar pricing varies significantly between installers — sometimes by $5,000–$10,000 for identical systems. Getting multiple quotes is the single best way to ensure fair pricing.</p>
+<h3>What to Compare</h3>
+<ul>
+  <li>Price per watt (divide total cost by system size in watts)</li>
+  <li>Panel brand and model (not just efficiency rating)</li>
+  <li>Inverter type and brand</li>
+  <li>Warranty terms (installer workmanship, panel product, panel performance)</li>
+  <li>Timeline from signing to installation</li>
+  <li>What is and is not included (permits, utility interconnection, monitoring)</li>
+</ul>
+<p>The cheapest quote is not always the best — a significantly lower price often means inferior equipment or a company cutting corners on labor. The goal is the best value, not the lowest sticker price.</p>`
+      },
+      {
+        id: 'check-reputation',
+        title: '3. Check Reviews and Track Record',
+        content: `<p>A solar company's reputation is your best protection. Here is where to look:</p>
+<ul>
+  <li><strong>Google Reviews:</strong> Look for installers with 50+ reviews and a rating above 4.3. Read recent reviews — companies change.</li>
+  <li><strong>Better Business Bureau:</strong> Check their BBB rating and complaint history. Unresolved complaints are a red flag.</li>
+  <li><strong>State contractor licensing board:</strong> Many states list disciplinary actions against licensed contractors online.</li>
+  <li><strong>Local neighborhood groups:</strong> Ask on Nextdoor or local Facebook groups for installer recommendations from actual neighbors.</li>
+</ul>
+<h3>How Long Have They Been in Business?</h3>
+<p>The solar industry has a high failure rate. A company with less than 3 years of history may not be around in year 10 when your inverter needs replacing. Look for established local installers with a 5+ year track record.</p>`
+      },
+      {
+        id: 'read-the-contract',
+        title: '4–7. Contract, Equipment, Timeline, and Red Flags',
+        content: `<h3>4. Read the Contract Carefully</h3>
+<p>Key contract terms to verify before signing:</p>
+<ul>
+  <li>Exact equipment specified (panel model/brand, inverter model/brand)</li>
+  <li>Total installed price with no ambiguous add-on clauses</li>
+  <li>Workmanship warranty (minimum 10 years)</li>
+  <li>Cancellation policy and refund terms</li>
+  <li>Who handles permitting and utility interconnection</li>
+  <li>Payment schedule (never pay more than 50% upfront)</li>
+</ul>
+<h3>5. Verify Equipment Quality</h3>
+<p>Ask for the specific panel and inverter brands. Look up their warranty terms independently. Reputable panel brands: LG, SunPower, REC, Panasonic, QCells, Canadian Solar. Reputable inverter brands: Enphase, SolarEdge, SMA, Fronius.</p>
+<h3>6. Confirm the Timeline</h3>
+<p>From contract signing to system activation typically takes 2–4 months (permitting, inspection, utility interconnection). Longer in some states. Get a written timeline estimate and ask who handles delays.</p>
+<h3>7. Watch for These Red Flags</h3>
+<ul>
+  <li>High-pressure tactics or same-day signing pressure</li>
+  <li>Unusually low price with vague equipment specs</li>
+  <li>Unable to provide proof of license or insurance</li>
+  <li>Requesting more than 50% payment before installation begins</li>
+  <li>No physical business address (only a website)</li>
+  <li>Recently formed company with no review history</li>
+</ul>`
+      },
+    ],
+    faq: [
+      {
+        question: 'Should I use a national installer or a local company?',
+        answer: 'Both can be good options. National installers (like Sunrun or Sunnova) offer consistency and financial stability. Local installers often offer more personalized service and competitive pricing. The most important factor is reputation, licensing, and the specific quote — not company size.',
+      },
+      {
+        question: 'Is NABCEP certification important?',
+        answer: 'NABCEP (North American Board of Certified Energy Practitioners) certification is the gold standard in solar installation. While not legally required, hiring a NABCEP-certified installer significantly reduces the risk of poor workmanship.',
+      },
+      {
+        question: 'What happens if my solar installer goes out of business?',
+        answer: 'Panel and inverter warranties are held by the manufacturers, not the installer — so equipment coverage survives company failure. Workmanship warranties (covering roof penetrations and wiring) are tied to the installer and may be voided if they close. This is why installer longevity matters.',
+      },
+    ],
+    relatedSlugs: ['solar-installation-process', 'solar-panel-types-guide', 'how-much-do-solar-panels-cost'],
+  },
+
+  // ─── ARTICLE 16 ────────────────────────────────────────────────────────────
+  {
+    slug: 'solar-panel-types-guide',
+    title: 'Solar Panel Types Explained: Monocrystalline vs. Polycrystalline vs. Thin Film',
+    seoTitle: 'Solar Panel Types 2026: Mono vs Poly vs Thin Film Compared | MySolarWidget',
+    metaDescription: 'Monocrystalline, polycrystalline, and thin-film solar panels each have different efficiency, cost, and use cases. Learn which panel type is right for your home in 2026.',
+    category: 'solar-installation',
+    tags: ['panel-types', 'monocrystalline', 'efficiency', 'comparison', 'installation'],
+    author: 'MySolarWidget Team',
+    publishDate: '2026-03-12',
+    readingTime: 7,
+    featured: false,
+    excerpt: 'Most homeowners are offered monocrystalline panels without realizing there are meaningful differences between panel technologies. Understanding efficiency, cost, and use cases helps you make a smarter equipment choice — or at least ask better questions of your installer.',
+    intro: `<p>Walk through any residential solar installation today and you will almost certainly see <strong>monocrystalline panels</strong> — sleek, black, high-efficiency. But there are three main types of solar panels, each suited to different budgets, roof sizes, and use cases.</p>
+<p>This guide explains how each technology works, what the real performance differences are, and which type makes sense for most homeowners.</p>`,
+    sections: [
+      {
+        id: 'monocrystalline',
+        title: 'Monocrystalline Solar Panels',
+        content: `<p>Monocrystalline panels are made from a single crystal of pure silicon, giving them a uniform black appearance and the highest efficiency of any mainstream panel technology.</p>
+<h3>Key Characteristics</h3>
+<ul>
+  <li><strong>Efficiency:</strong> 19–23% (premium panels reach 24%+)</li>
+  <li><strong>Cost:</strong> $0.80–$1.20/watt for panels alone (mid-to-premium tier)</li>
+  <li><strong>Appearance:</strong> Solid black, sleek</li>
+  <li><strong>Performance in heat:</strong> Better than polycrystalline; all silicon panels lose efficiency in high heat</li>
+  <li><strong>Lifespan:</strong> 25–30 years; most carry 25-year performance warranties</li>
+  <li><strong>Best for:</strong> Limited roof space, high-electricity-rate markets, homeowners prioritizing maximum production</li>
+</ul>
+<h3>Top Monocrystalline Brands (2026)</h3>
+<p>SunPower (Maxeon), REC Group, Panasonic, LG (limited availability), QCells, Canadian Solar HiKu series. For premium efficiency with excellent warranties, SunPower and REC Alpha series lead the market.</p>`
+      },
+      {
+        id: 'polycrystalline',
+        title: 'Polycrystalline Solar Panels',
+        content: `<p>Polycrystalline panels are made from multiple silicon crystals melted together — a simpler manufacturing process that results in a characteristic blue, speckled appearance and slightly lower efficiency.</p>
+<h3>Key Characteristics</h3>
+<ul>
+  <li><strong>Efficiency:</strong> 15–17%</li>
+  <li><strong>Cost:</strong> $0.40–$0.70/watt for panels (budget-to-mid tier)</li>
+  <li><strong>Appearance:</strong> Blue, speckled (less aesthetically uniform)</li>
+  <li><strong>Performance in heat:</strong> Slightly worse than monocrystalline in very hot climates</li>
+  <li><strong>Lifespan:</strong> 25 years; slightly shorter warranties common</li>
+  <li><strong>Best for:</strong> Large roofs with ample space, budget-conscious buyers, utility-scale and commercial projects</li>
+</ul>
+<h3>Market Trend</h3>
+<p>Polycrystalline panels are increasingly rare in the residential market in 2026. As monocrystalline prices have dropped, the cost difference has narrowed significantly, making poly panels a less compelling value proposition. Most installers now default to monocrystalline.</p>`
+      },
+      {
+        id: 'thin-film',
+        title: 'Thin-Film Solar Panels',
+        content: `<p>Thin-film panels use a completely different manufacturing approach — depositing photovoltaic material in thin layers on glass, metal, or plastic substrates. The most common type for residential use is CIGS (copper indium gallium selenide).</p>
+<h3>Key Characteristics</h3>
+<ul>
+  <li><strong>Efficiency:</strong> 10–13% (lower than crystalline silicon)</li>
+  <li><strong>Cost:</strong> Can be lower per watt, but lower efficiency means more panels needed</li>
+  <li><strong>Appearance:</strong> Uniform black or dark grey; flexible versions available</li>
+  <li><strong>Performance in heat:</strong> Better temperature coefficient than silicon — performs better in very hot conditions</li>
+  <li><strong>Best for:</strong> Commercial flat roofs, RVs, boats, non-standard mounting applications, BIPV (building-integrated photovoltaics)</li>
+</ul>
+<h3>Residential Suitability</h3>
+<p>Thin-film is rarely used in residential installations. Lower efficiency means you need significantly more roof area to produce the same power as a monocrystalline system. The main residential niche is flexible panels on curved surfaces or aesthetic-focused applications.</p>`
+      },
+      {
+        id: 'panel-comparison-table',
+        title: 'Panel Type Comparison: Which Is Right for You?',
+        content: `<table>
+  <thead><tr><th>Factor</th><th>Monocrystalline</th><th>Polycrystalline</th><th>Thin-Film</th></tr></thead>
+  <tbody>
+    <tr><td>Efficiency</td><td>19–23%</td><td>15–17%</td><td>10–13%</td></tr>
+    <tr><td>Cost per watt</td><td>Moderate–High</td><td>Low–Moderate</td><td>Low (but more needed)</td></tr>
+    <tr><td>Appearance</td><td>Solid black</td><td>Blue speckled</td><td>Uniform black</td></tr>
+    <tr><td>Space efficiency</td><td>Best</td><td>Good</td><td>Worst</td></tr>
+    <tr><td>Hot weather perf.</td><td>Good</td><td>Moderate</td><td>Best</td></tr>
+    <tr><td>Residential use</td><td>Most common</td><td>Declining</td><td>Rare</td></tr>
+    <tr><td>25-year warranty</td><td>Standard</td><td>Common</td><td>Less common</td></tr>
+  </tbody>
+</table>
+<p><strong>For almost all homeowners: monocrystalline panels are the right choice.</strong> They offer the best efficiency, best aesthetics, and the market has become competitive enough that pricing is reasonable. Polycrystalline is only worth considering if your installer offers a significantly better-priced poly option with ample roof space available.</p>`
+      },
+    ],
+    faq: [
+      {
+        question: 'Do more efficient panels mean more savings?',
+        answer: 'Not necessarily more savings — more production from less space. A 400W monocrystalline panel and a 400W polycrystalline panel produce the same power. Higher efficiency means you need fewer, smaller panels to reach the same system size. This matters most when roof space is limited.',
+      },
+      {
+        question: 'What solar panel brand is the best?',
+        answer: 'SunPower (Maxeon cells) and REC Alpha series consistently rank highest for efficiency and warranty coverage. For excellent value, QCells and Canadian Solar HiKu series offer strong performance at more competitive prices. Avoid no-name imported brands with no established warranty support.',
+      },
+      {
+        question: 'How long do solar panels actually last?',
+        answer: 'Panels are warranted for 25 years and typically last 30–35 years before efficiency drops below practical levels. Annual degradation is approximately 0.5% per year — meaning at year 25 a panel is still producing about 87% of its original rated output.',
+      },
+    ],
+    relatedSlugs: ['solar-installation-process', 'how-to-choose-solar-installer', 'how-much-do-solar-panels-cost'],
+  },
 ];
 
 export function getPostBySlug(slug) {
