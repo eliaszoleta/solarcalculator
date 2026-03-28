@@ -54,13 +54,10 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
           SOLAR SAVINGS ESTIMATE{state ? ` · ${state.toUpperCase()}` : ''}
         </div>
         <div className="hero-number">
-          {fmtDollar(savings.monthly)}/mo
+          {fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)}
         </div>
         <div className="hero-sub">
-          {isCash
-            ? `monthly electricity savings · paid off in ${savings.paybackYears ? savings.paybackYears + ' yrs' : 'N/A'} · net cost ${fmtDollar(incentives.netCostLow)}–${fmtDollar(incentives.netCostHigh)}`
-            : `saved from day one · ${savings.paybackYears ? savings.paybackYears + ' yr payback' : ''} · net cost ${fmtDollar(incentives.netCostLow)}–${fmtDollar(incentives.netCostHigh)}`
-          }
+          net cost after 30% federal credit · {fmtDollar(savings.monthly)}/mo savings · paid off in {savings.paybackYears ? `${savings.paybackYears} yrs` : 'N/A'}
         </div>
       </div>
 
@@ -363,30 +360,14 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
 
           {/* Full report + recalc */}
           <div style={{ textAlign: 'center' }}>
-            <button onClick={handleViewFullReport} className="report-btn-pulse" style={{ fontSize: 15, color: cta.accentColor || '#3b6cf4', fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-              ⚡ Open Full Solar Report
+            <button onClick={handleViewFullReport} style={{ fontSize: 15, color: cta.accentColor || '#3b6cf4', fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+              Open Full Solar Report
             </button>
             <span style={{ color: '#cbd5e1', margin: '0 8px' }}>·</span>
             <button onClick={onReset} style={{ fontSize: 13, color: '#64748b', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
               Recalculate
             </button>
           </div>
-
-          <style>{`
-            @keyframes energy-pulse {
-              0%, 100% {
-                text-shadow: 0 0 4px rgba(59,108,244,0.25), 0 0 8px rgba(59,108,244,0.1);
-                opacity: 1;
-              }
-              50% {
-                text-shadow: 0 0 8px rgba(59,108,244,0.8), 0 0 18px rgba(59,108,244,0.5), 0 0 32px rgba(59,108,244,0.3);
-                opacity: 0.88;
-              }
-            }
-            .report-btn-pulse {
-              animation: energy-pulse 2.2s ease-in-out infinite;
-            }
-          `}</style>
         </div>
 
         {showModal && (
