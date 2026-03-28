@@ -839,6 +839,186 @@ export const POSTS = [
     ],
     relatedSlugs: ['how-much-do-solar-panels-cost', 'solar-panel-maintenance-costs', 'federal-solar-tax-credit-guide'],
   },
+
+  // ─── ARTICLE 9 ────────────────────────────────────────────────────────────
+  {
+    slug: 'solar-loan-guide',
+    title: 'Solar Loan Guide: How to Finance Solar With Zero Down',
+    seoTitle: 'Solar Loan Guide 2026: Rates, Terms & Best Lenders | MySolarWidget',
+    metaDescription: 'Solar loans let you own your system with $0 down. Compare rates (4.99%–9.99%), loan terms, and lenders — and learn which loan type gives you the best deal in 2026.',
+    category: 'solar-financing',
+    tags: ['loan', 'financing', 'zero-down', 'interest-rate', 'ownership'],
+    author: 'MySolarWidget Team',
+    publishDate: '2026-02-10',
+    readingTime: 8,
+    featured: false,
+    excerpt: 'A solar loan lets you own your system with $0 down while keeping all tax credits and long-term savings. Rates range from 4.99%–9.99% depending on your credit score and loan type. Here is everything you need to know before signing.',
+    intro: `<p>Solar loans have become the most popular way to go solar in the US — surpassing both leases and cash purchases in recent years. The reason is simple: you get all the <strong>financial benefits of ownership</strong> (tax credits, increased home value, long-term savings) with <strong>no money out of pocket at signing</strong>.</p>
+<p>But not all solar loans are created equal. Dealer fees, interest rate structures, and prepayment terms vary dramatically between lenders. This guide explains what to look for.</p>`,
+    sections: [
+      {
+        id: 'types-of-solar-loans',
+        title: 'Types of Solar Loans',
+        content: `<p>There are three main types of solar loans, each with different pros and cons:</p>
+<h3>Secured Solar Loans (Home Equity)</h3>
+<p>Home equity loans and HELOCs use your home as collateral. They typically offer the <strong>lowest rates (4.5%–7%)</strong> and longest terms (up to 20 years), and interest may be tax-deductible. The downside: you are putting your home on the line and approval requires significant equity.</p>
+<h3>Unsecured Solar Loans</h3>
+<p>These are the most common. Offered through solar installers via specialty lenders (GoodLeap, Mosaic, Sungage), they require no collateral. Rates run <strong>5.99%–9.99%</strong> for borrowers with good credit (680+). Terms range from 5–25 years. Most include a dealer fee paid by the installer to the lender.</p>
+<h3>FHA Title I / PowerSaver Loans</h3>
+<p>Government-backed loans for energy efficiency. Available to homeowners with limited equity. Rates are competitive but maximum loan amounts are lower ($25,000 for FHA Title I). Approval can take longer than private loans.</p>`
+      },
+      {
+        id: 'solar-loan-rates-2026',
+        title: 'Solar Loan Rates and Terms (2026)',
+        content: `<p>Here is what to expect from major solar lenders in 2026:</p>
+<table>
+  <thead><tr><th>Lender</th><th>APR Range</th><th>Terms</th><th>Dealer Fee</th></tr></thead>
+  <tbody>
+    <tr><td>GoodLeap</td><td>5.99%–9.99%</td><td>5–25 years</td><td>Yes (varies)</td></tr>
+    <tr><td>Mosaic</td><td>5.49%–9.49%</td><td>10–25 years</td><td>Yes (varies)</td></tr>
+    <tr><td>Sungage</td><td>4.99%–8.99%</td><td>10–25 years</td><td>Yes (varies)</td></tr>
+    <tr><td>Lightstream</td><td>6.99%–12.99%</td><td>2–12 years</td><td>No</td></tr>
+    <tr><td>Credit Union HELOC</td><td>5.5%–7.5%</td><td>10–20 years</td><td>No</td></tr>
+  </tbody>
+</table>
+<p><strong>Important note on dealer fees:</strong> Specialty solar lenders charge installers a dealer fee (typically 10–30% of the loan amount) in exchange for offering low advertised rates. This fee is usually built into your system price. Always ask your installer for the cash price vs. financed price to see the spread.</p>`
+      },
+      {
+        id: 'tax-credit-and-loans',
+        title: 'Using the Tax Credit to Pay Down Your Loan',
+        content: `<p>Most solar loans are structured assuming you will apply your <strong>30% federal tax credit</strong> as a lump-sum payment in year 1 or 2. This is sometimes called a "tax credit bridge" or "advance payment."</p>
+<h3>How It Works</h3>
+<p>Example: $20,000 system, 25-year loan at 6.99%. Monthly payment = ~$141. After receiving a $6,000 tax credit refund, you pay it toward the principal. Remaining balance = $14,000. New payment on $14,000 over remaining term = ~$99/month.</p>
+<p>Some loans have a 12–18 month promotional period with reduced payments specifically designed around the timing of your tax refund. <strong>Make sure you will actually owe enough in taxes to use the full credit</strong> — otherwise you may be paying higher monthly payments than projected.</p>
+<h3>What If You Cannot Use the Full Credit?</h3>
+<p>The ITC can be carried forward to future tax years. If you only owe $3,000 in taxes but your credit is $6,000, you use $3,000 this year and roll $3,000 to next year.</p>`
+      },
+      {
+        id: 'choosing-right-loan',
+        title: 'How to Choose the Right Solar Loan',
+        content: `<p>Key questions to ask before signing a solar loan:</p>
+<ul>
+  <li><strong>What is the total cost of the loan?</strong> Compare total interest paid, not just monthly payment.</li>
+  <li><strong>Is there a prepayment penalty?</strong> Most solar loans have none, but verify.</li>
+  <li><strong>What is the dealer fee?</strong> Ask your installer for the all-cash price vs. financed price — the difference is the effective dealer fee you are paying.</li>
+  <li><strong>What happens if I sell my home?</strong> Most solar loans can be paid off from sale proceeds. Some have transfer provisions.</li>
+  <li><strong>Is the rate fixed?</strong> Nearly all specialty solar loans are fixed rate. Confirm before signing.</li>
+</ul>`
+      },
+    ],
+    faq: [
+      {
+        question: 'What credit score do I need for a solar loan?',
+        answer: 'Most specialty solar lenders require a minimum credit score of 640–680. The best rates (under 6.99%) typically require 720+. Some lenders offer products for scores as low as 600 at higher rates.',
+      },
+      {
+        question: 'Do solar loans show up on my credit report?',
+        answer: 'Yes — unsecured solar loans appear as personal loans on your credit report and affect your debt-to-income ratio. This is important to know if you plan to apply for a mortgage or other financing soon.',
+      },
+      {
+        question: 'Should I use a solar loan or pay cash?',
+        answer: 'If your loan rate is lower than your expected investment returns (typically 7–10%), paying cash is better purely financially. But many homeowners prefer to preserve liquidity. Solar loans with rates under 7% often make sense when factoring in the opportunity cost of cash.',
+      },
+    ],
+    relatedSlugs: ['solar-financing-options', 'solar-lease-vs-ppa', 'federal-solar-tax-credit-guide'],
+  },
+
+  // ─── ARTICLE 10 ────────────────────────────────────────────────────────────
+  {
+    slug: 'solar-lease-vs-ppa',
+    title: 'Solar Lease vs. PPA: Which Is Better in 2026?',
+    seoTitle: 'Solar Lease vs PPA 2026: Full Comparison | MySolarWidget',
+    metaDescription: 'Solar leases and PPAs both let you go solar with $0 down — but they work differently. Learn which option saves more, who keeps the tax credit, and how each affects home sales.',
+    category: 'solar-financing',
+    tags: ['lease', 'PPA', 'financing', 'zero-down', 'comparison'],
+    author: 'MySolarWidget Team',
+    publishDate: '2026-02-25',
+    readingTime: 7,
+    featured: false,
+    excerpt: 'Solar leases and power purchase agreements (PPAs) are both $0-down options, but they are not the same product. A lease charges a fixed monthly fee; a PPA charges per kWh of solar power produced. The right choice depends on your electricity usage pattern and utility rates.',
+    intro: `<p>When a solar installer says you can go solar with "no money down," they usually mean a lease or a power purchase agreement (PPA). Both options let you get panels installed at no upfront cost — but they work very differently, have different benefits, and suit different homeowners.</p>
+<p>In this guide, we break down exactly how each works, compare the numbers, and help you decide which — if either — makes sense for your situation.</p>`,
+    sections: [
+      {
+        id: 'how-lease-works',
+        title: 'How a Solar Lease Works',
+        content: `<p>With a solar lease, you pay the solar company a fixed monthly fee to use the panels installed on your roof. You do not own the system — the solar company does.</p>
+<h3>Key Characteristics</h3>
+<ul>
+  <li>Fixed monthly payment regardless of how much electricity the panels produce</li>
+  <li>Typically 20–25 year lease terms</li>
+  <li>Annual payment escalator of 2–3% per year (payments increase over time)</li>
+  <li>Solar company owns the system and handles maintenance</li>
+  <li>You do <strong>not</strong> receive the federal 30% tax credit — the leasing company keeps it</li>
+  <li>At term end: purchase option, extend the lease, or system removal</li>
+</ul>
+<h3>Typical Savings</h3>
+<p>A well-structured lease saves homeowners <strong>10–30% on electricity costs</strong> compared to utility rates in year 1. However, as utility rates rise and lease escalators kick in, savings can shrink or disappear in later years if not structured carefully.</p>`
+      },
+      {
+        id: 'how-ppa-works',
+        title: 'How a Solar PPA Works',
+        content: `<p>With a power purchase agreement, you pay for the electricity the solar panels produce — measured in kWh — at a fixed rate lower than your utility rate. You still do not own the panels.</p>
+<h3>Key Characteristics</h3>
+<ul>
+  <li>Pay per kWh of solar power generated (not a flat monthly fee)</li>
+  <li>PPA rates typically 10–30% below local utility rates at signing</li>
+  <li>Annual escalator of 2–3% per year on the per-kWh rate</li>
+  <li>Solar company owns the system and handles maintenance</li>
+  <li>You do <strong>not</strong> receive the federal tax credit</li>
+  <li>Lower months (winter, cloudy periods) = lower bills since you pay per kWh produced</li>
+</ul>
+<h3>Typical Savings</h3>
+<p>PPAs can provide <strong>15–35% savings</strong> on electricity in year 1. Because you only pay for production, a poor production month means a smaller PPA bill — which is an advantage over a flat lease payment.</p>`
+      },
+      {
+        id: 'lease-vs-ppa-comparison',
+        title: 'Lease vs. PPA: Side-by-Side Comparison',
+        content: `<table>
+  <thead><tr><th>Feature</th><th>Solar Lease</th><th>Solar PPA</th></tr></thead>
+  <tbody>
+    <tr><td>Payment structure</td><td>Fixed monthly fee</td><td>Per kWh produced</td></tr>
+    <tr><td>Upfront cost</td><td>$0</td><td>$0</td></tr>
+    <tr><td>System ownership</td><td>Solar company</td><td>Solar company</td></tr>
+    <tr><td>Tax credit</td><td>Solar company keeps it</td><td>Solar company keeps it</td></tr>
+    <tr><td>Maintenance</td><td>Solar company</td><td>Solar company</td></tr>
+    <tr><td>Annual escalator</td><td>2–3% on payment</td><td>2–3% on per-kWh rate</td></tr>
+    <tr><td>Bad production month</td><td>Same payment</td><td>Lower bill</td></tr>
+    <tr><td>25-year savings vs. ownership</td><td>30–50% less</td><td>30–50% less</td></tr>
+    <tr><td>Home sale impact</td><td>Must transfer or buy out</td><td>Must transfer or buy out</td></tr>
+  </tbody>
+</table>
+<p><strong>Bottom line:</strong> Leases and PPAs save you money but far less than owning your system outright or via a solar loan. The main advantage is zero upfront cost and no maintenance responsibility.</p>`
+      },
+      {
+        id: 'home-sale-impact',
+        title: 'Leases, PPAs, and Selling Your Home',
+        content: `<p>Since you do not own the panels, you cannot simply include them in a home sale.</p>
+<h3>Your Options at Home Sale</h3>
+<ul>
+  <li><strong>Transfer the lease/PPA to the buyer:</strong> Buyer assumes your remaining payments. Requires buyer approval and credit check. Some buyers are hesitant.</li>
+  <li><strong>Buy out the system before sale:</strong> Pay the remaining present value of the contract to own the system outright. Then include it in the home sale. Buyout amounts vary widely.</li>
+  <li><strong>Prepay the lease:</strong> Some agreements allow you to prepay all remaining lease payments at a discount, effectively ending the obligation.</li>
+</ul>
+<p>Studies show homes with leased solar sell at the same rate as homes without solar — unlike owned solar systems, which command a <strong>3–4% price premium</strong> on average.</p>`
+      },
+    ],
+    faq: [
+      {
+        question: 'Which is better — a solar lease or a PPA?',
+        answer: 'A PPA is generally more flexible since you only pay for actual production. A lease is simpler with predictable fixed payments. Both are significantly less financially beneficial than owning your system through cash or a solar loan.',
+      },
+      {
+        question: 'Can I cancel a solar lease early?',
+        answer: 'Solar leases are 20–25 year contracts and are difficult to exit early. You can buy out the system at fair market value, transfer it to a new buyer, or pay an early termination fee. Read the contract carefully before signing.',
+      },
+      {
+        question: 'Does a solar lease increase my home value?',
+        answer: 'Typically not. Unlike owned solar (which adds 3–4% to home value on average), leased solar can sometimes complicate a sale. Some buyers see the assumed payments as a liability rather than a benefit.',
+      },
+    ],
+    relatedSlugs: ['solar-financing-options', 'solar-loan-guide', 'how-much-can-solar-save-you'],
+  },
 ];
 
 export function getPostBySlug(slug) {
