@@ -549,4 +549,8 @@ export function GlobeIcon(p) {
   );
 }
 
+export function getCategoryColors(slug) {
+  return CATEGORY_COLORS[slug] || { bg: '#f8fafc', border: '#e2e8f0', iconBg: '#f1f5f9', iconColor: '#1e40af' };
+}
+
 
