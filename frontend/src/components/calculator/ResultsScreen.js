@@ -298,41 +298,44 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
       <>
         <div style={{ padding: '28px 20px 32px', fontFamily: installerConfig?.fontFamily ? `'${installerConfig.fontFamily}', sans-serif` : "'Poppins', sans-serif", maxWidth: 540, margin: '0 auto' }}>
 
-          {/* Mini hero */}
-          <div style={{ background: 'linear-gradient(135deg, #3b6cf4, #2d52c8)', borderRadius: 16, padding: '20px 20px 18px', marginBottom: 20, textAlign: 'center', color: 'white' }}>
+          {/* Mini hero — range estimate, not exact */}
+          <div style={{ background: 'linear-gradient(135deg, #3b6cf4, #2d52c8)', borderRadius: 16, padding: '20px 20px 18px', marginBottom: 16, textAlign: 'center', color: 'white' }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.75, marginBottom: 8 }}>
               Solar Estimate
             </div>
-            <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1.1, marginBottom: 4 }}>
+            <div style={{ fontSize: isCash ? 24 : 30, fontWeight: 800, lineHeight: 1.15, marginBottom: 6 }}>
               {isCash
-                ? <>{fmtDollar(incentives.netCost)} net cost</>
-                : <>Save <span style={{ color: '#fde68a' }}>{fmtDollar(daySavings)}/mo</span></>
+                ? <>{fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)} net cost</>
+                : <>Save <span style={{ color: '#fde68a' }}>{fmtDollar(daySavings)}/mo</span> from day one</>
               }
             </div>
-            <div style={{ fontSize: 13, opacity: 0.8 }}>
-              {isCash ? `paid off in ${savings.paybackYears} yrs` : `from day one`}
+            <div style={{ fontSize: 12, opacity: 0.8, lineHeight: 1.5 }}>
+              {isCash
+                ? `${fmtDollar(savings.annual)}/yr savings · paid off in ${savings.paybackYears} yrs`
+                : `net cost ${fmtDollar(incentives.netCostLow)}–${fmtDollar(incentives.netCostHigh)} · ${savings.paybackYears} yr payback`
+              }
             </div>
           </div>
 
-          {/* Key metrics */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 20 }}>
+          {/* Key metrics — 2×2 grid, monthly savings replaces net cost */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, marginBottom: 14 }}>
             {[
-              { label: isCash ? 'Net Cost' : 'Day-1 Savings', value: isCash ? fmtDollar(incentives.netCost) : fmtDollar(daySavings) + '/mo' },
+              { label: 'Monthly Savings', value: fmtDollar(savings.monthly) + '/mo' },
+              { label: 'Annual Savings',  value: fmtDollar(savings.annual) },
               { label: '30-Year Savings', value: fmtDollar(savings.thirtyYear), highlight: true },
-              { label: 'Payback', value: savings.paybackYears ? `${savings.paybackYears} yrs` : 'N/A' },
+              { label: 'Payback Period',  value: savings.paybackYears ? `${savings.paybackYears} yrs` : 'N/A' },
             ].map(({ label, value, highlight }) => (
-              <div key={label} style={{ background: highlight ? '#1e3a8a' : '#f8fafc', border: `1px solid ${highlight ? '#1e3a8a' : '#e2e8f0'}`, borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
-                <div style={{ fontSize: 11, color: highlight ? '#bfdbfe' : '#64748b', fontWeight: 600, marginBottom: 4 }}>{label}</div>
-                <div style={{ fontSize: 18, fontWeight: 800, color: highlight ? 'white' : '#0f172a' }}>{value}</div>
+              <div key={label} style={{ background: highlight ? '#1e3a8a' : '#f8fafc', border: `1px solid ${highlight ? '#1e3a8a' : '#e2e8f0'}`, borderRadius: 10, padding: '11px 10px', textAlign: 'center' }}>
+                <div style={{ fontSize: 10, color: highlight ? '#bfdbfe' : '#64748b', fontWeight: 600, marginBottom: 3, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</div>
+                <div style={{ fontSize: 16, fontWeight: 800, color: highlight ? 'white' : '#0f172a' }}>{value}</div>
               </div>
             ))}
           </div>
 
-          {/* System pill */}
-          <div style={{ textAlign: 'center', marginBottom: 20 }}>
-            <span style={{ fontSize: 13, color: '#64748b' }}>
-              Recommended: <strong style={{ color: '#0f172a' }}>{system.sizeKw} kW</strong> ({system.panelCount} panels) · {system.offsetPercent}% offset
-            </span>
+          {/* System pill + installation range */}
+          <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', marginBottom: 14, fontSize: 12, color: '#475569', lineHeight: 1.7 }}>
+            <div><strong style={{ color: '#0f172a' }}>{system.sizeKw} kW system</strong> · {system.panelCount} panels · {system.offsetPercent}% energy offset</div>
+            <div style={{ color: '#64748b' }}>Installation: {fmtDollar(cost.low)} – {fmtDollar(cost.high)} · After 30% credit: <span style={{ color: '#3b6cf4', fontWeight: 600 }}>{fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)}</span></div>
           </div>
 
           {/* Installer CTA */}
@@ -360,14 +363,30 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
 
           {/* Full report + recalc */}
           <div style={{ textAlign: 'center' }}>
-            <button onClick={handleViewFullReport} style={{ fontSize: 15, color: cta.accentColor || '#3b6cf4', fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-              Open Full Solar Report
+            <button onClick={handleViewFullReport} className="report-btn-pulse" style={{ fontSize: 15, color: cta.accentColor || '#3b6cf4', fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+              ⚡ Open Full Solar Report
             </button>
             <span style={{ color: '#cbd5e1', margin: '0 8px' }}>·</span>
             <button onClick={onReset} style={{ fontSize: 13, color: '#64748b', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
               Recalculate
             </button>
           </div>
+
+          <style>{`
+            @keyframes energy-pulse {
+              0%, 100% {
+                text-shadow: 0 0 4px rgba(59,108,244,0.25), 0 0 8px rgba(59,108,244,0.1);
+                opacity: 1;
+              }
+              50% {
+                text-shadow: 0 0 8px rgba(59,108,244,0.8), 0 0 18px rgba(59,108,244,0.5), 0 0 32px rgba(59,108,244,0.3);
+                opacity: 0.88;
+              }
+            }
+            .report-btn-pulse {
+              animation: energy-pulse 2.2s ease-in-out infinite;
+            }
+          `}</style>
         </div>
 
         {showModal && (
