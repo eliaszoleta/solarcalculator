@@ -695,7 +695,7 @@ export default function InstallerDashboard({ user, onLogout }) {
             const w = config.frameWidth;
             const iframeWidth = w ? `${w}px` : '100%';
             const iframeCode = `<iframe\n  src="${siteUrl}/embed?installer=${installerId}"\n  width="${iframeWidth}"\n  height="${h}"\n  style="border:none;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"\n  title="Solar Savings Calculator"\n  loading="lazy">\n</iframe>`;
-            const scriptCode = `<div id="msw-widget"></div>\n<script>\n  (function(){\n    var el=document.createElement('iframe');\n    el.src='${siteUrl}/embed?installer=${installerId}';\n    el.width='${iframeWidth}'; el.height='${h}';\n    el.style.cssText='border:none;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.10);';\n    el.title='Solar Savings Calculator'; el.loading='lazy';\n    document.getElementById('msw-widget').appendChild(el);\n  })();\n<\/script>`;
+            const scriptCode = embedCode;
             const wpCode = `[mysolarwidget installer_id="${installerId}" height="${h}"]`;
 
             const EmbedCard = ({ title, badge, desc, code, copied, onCopy }) => (
@@ -721,8 +721,8 @@ export default function InstallerDashboard({ user, onLogout }) {
             return (
               <div>
                 <div style={{ marginBottom: 22 }}>
-                  <EmbedCard title="Standard iFrame" badge="Recommended" desc="Works on any website. Paste inside your page HTML." code={iframeCode} copied={embedCopied} onCopy={() => { navigator.clipboard.writeText(iframeCode); setEmbedCopied(true); setTimeout(() => setEmbedCopied(false), 2500); }} />
-                  <EmbedCard title="JavaScript Snippet" desc="Dynamically injects the widget. Good for CMS platforms and tag managers." code={scriptCode} copied={scriptCopied} onCopy={() => { navigator.clipboard.writeText(scriptCode); setScriptCopied(true); setTimeout(() => setScriptCopied(false), 2500); }} />
+                  <EmbedCard title="Full Embed (Recommended)" badge="Recommended" desc="iFrame + popup handler. Enables the full-screen report overlay when visitors click 'Open Full Solar Report'." code={scriptCode} copied={scriptCopied} onCopy={() => { navigator.clipboard.writeText(scriptCode); setScriptCopied(true); setTimeout(() => setScriptCopied(false), 2500); }} />
+                  <EmbedCard title="iFrame Only" desc="Basic embed without the full-report popup. Use only if you don't need the full report overlay." code={iframeCode} copied={embedCopied} onCopy={() => { navigator.clipboard.writeText(iframeCode); setEmbedCopied(true); setTimeout(() => setEmbedCopied(false), 2500); }} />
                   <EmbedCard title="WordPress Shortcode" desc="Install the MySolarWidget plugin, then paste this shortcode anywhere on your site." code={wpCode} copied={wpCopied} onCopy={() => { navigator.clipboard.writeText(wpCode); setWpCopied(true); setTimeout(() => setWpCopied(false), 2500); }} />
                 </div>
 
