@@ -1198,6 +1198,190 @@ export const POSTS = [
     ],
     relatedSlugs: ['how-much-can-solar-save-you', 'solar-net-metering-explained', 'how-much-do-solar-panels-cost'],
   },
+
+  // ─── ARTICLE 13 ────────────────────────────────────────────────────────────
+  {
+    slug: 'state-solar-rebates-2026',
+    title: 'State Solar Rebates and Incentives: The Complete 2026 Guide',
+    seoTitle: 'State Solar Rebates 2026: Every State Incentive Listed | MySolarWidget',
+    metaDescription: 'Beyond the 30% federal tax credit, 38+ states offer additional solar rebates, tax credits, and exemptions. See every major state incentive available in 2026 with dollar amounts.',
+    category: 'solar-incentives',
+    tags: ['state-rebates', 'incentives', 'tax-credit', 'rebate', '2026'],
+    author: 'MySolarWidget Team',
+    publishDate: '2026-02-20',
+    readingTime: 9,
+    featured: false,
+    excerpt: 'The 30% federal tax credit is just the starting point. Most states add their own rebates, income tax credits, property tax exemptions, and sales tax exemptions on top. In some states, stacking all available incentives cuts your net solar cost by 50–60%.',
+    intro: `<p>Every solar buyer knows about the federal 30% Investment Tax Credit (ITC). But fewer know that most states layer additional incentives on top — reducing the effective out-of-pocket cost even further.</p>
+<p>This guide catalogs the major state-level solar incentives available in 2026, organized by type. Check your state to see what you can stack on top of the federal credit.</p>`,
+    sections: [
+      {
+        id: 'types-of-state-incentives',
+        title: 'Types of State Solar Incentives',
+        content: `<p>State solar incentives fall into four main categories:</p>
+<h3>1. State Income Tax Credits</h3>
+<p>Direct credits against your state income tax bill, similar to the federal ITC. Available in about 15 states. Amounts range from 15–35% of system cost.</p>
+<h3>2. Upfront Rebates</h3>
+<p>Cash rebates paid after installation — typically by the state energy office or utility. These reduce your net cost immediately and do not require owing taxes to use them.</p>
+<h3>3. Property Tax Exemptions</h3>
+<p>Solar panels increase home value — but most states exempt this added value from property tax assessment. Without this exemption, a $20,000 solar system could increase your annual property tax bill by $200–$400.</p>
+<h3>4. Sales Tax Exemptions</h3>
+<p>Some states waive sales tax on solar equipment purchases, saving 5–10% on equipment costs. On a $20,000 system, this can be worth $1,000–$2,000.</p>`
+      },
+      {
+        id: 'best-state-incentives',
+        title: 'Best State Solar Incentive Programs (2026)',
+        content: `<p>These states offer the most generous additional incentives beyond the federal ITC:</p>
+<table>
+  <thead><tr><th>State</th><th>Income Tax Credit</th><th>Rebate</th><th>Property Tax Exempt</th><th>Sales Tax Exempt</th></tr></thead>
+  <tbody>
+    <tr><td>New York</td><td>25% (max $5,000)</td><td>NY-Sun up to $5,000</td><td>Yes (15 years)</td><td>Yes</td></tr>
+    <tr><td>Massachusetts</td><td>15% (max $1,000)</td><td>Up to $1,000 (MassCEC)</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>New Jersey</td><td>None</td><td>None statewide</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Maryland</td><td>None</td><td>$1,000 residential</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>South Carolina</td><td>25%</td><td>Varies by utility</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Montana</td><td>$500</td><td>None</td><td>Yes</td><td>No</td></tr>
+    <tr><td>Oregon</td><td>None</td><td>Up to $5,000 (IDA)</td><td>Yes</td><td>No</td></tr>
+    <tr><td>Texas</td><td>None</td><td>Varies by utility</td><td>Yes (100%)</td><td>Yes (equipment)</td></tr>
+  </tbody>
+</table>
+<p>Note: New Jersey's lack of upfront rebates is offset by one of the nation's best SREC markets. See our SREC guide for details.</p>`
+      },
+      {
+        id: 'utility-rebates',
+        title: 'Utility Rebates: Often Overlooked Savings',
+        content: `<p>Beyond state programs, many individual utilities offer their own solar rebates — sometimes substantial:</p>
+<ul>
+  <li><strong>Austin Energy (Texas):</strong> $2,500 rebate for systems up to 20 kW</li>
+  <li><strong>Los Angeles DWP (California):</strong> Solar incentive program with rebates based on production</li>
+  <li><strong>Green Mountain Power (Vermont):</strong> Up to $1,500 in rebates</li>
+  <li><strong>PSEG Long Island (New York):</strong> Additional rebates on top of NY-Sun</li>
+  <li><strong>National Grid (MA/NY):</strong> Smart Energy incentive programs</li>
+</ul>
+<p>Always ask your installer to identify all utility-level programs in your service territory — these are often not well-advertised but can add $500–$2,500 to your total savings.</p>`
+      },
+      {
+        id: 'stacking-incentives',
+        title: 'How to Stack Incentives for Maximum Savings',
+        content: `<p>Example: New York homeowner, $22,000 system:</p>
+<table>
+  <thead><tr><th>Incentive</th><th>Amount</th><th>Running Total</th></tr></thead>
+  <tbody>
+    <tr><td>Gross system cost</td><td></td><td>$22,000</td></tr>
+    <tr><td>Federal ITC (30%)</td><td>−$6,600</td><td>$15,400</td></tr>
+    <tr><td>NY state tax credit (25%, max $5,000)</td><td>−$5,000</td><td>$10,400</td></tr>
+    <tr><td>NY-Sun rebate</td><td>−$3,000</td><td>$7,400</td></tr>
+    <tr><td>Sales tax exemption (8%)</td><td>−$1,760</td><td>$5,640</td></tr>
+  </tbody>
+</table>
+<p>Net cost after all incentives: <strong>$5,640</strong> — a 74% reduction from the gross cost. This is an exceptional example (New York has some of the best stacking potential), but illustrates why incentive research matters.</p>`
+      },
+    ],
+    faq: [
+      {
+        question: 'Can I claim both the federal ITC and a state tax credit?',
+        answer: 'Yes — federal and state tax credits are independent and can be claimed in the same year. Some states calculate their credit on the gross cost before the federal credit; others calculate it on the net cost after. Check your state\'s specific rules.',
+      },
+      {
+        question: 'Do solar rebates count as taxable income?',
+        answer: 'Utility rebates typically reduce the basis for your federal ITC calculation (not a separate income). State rebates may or may not be taxable depending on the program. Consult a tax professional for your specific situation.',
+      },
+      {
+        question: 'How long will the 30% federal ITC last?',
+        answer: 'The Inflation Reduction Act locked in the 30% ITC through 2032. In 2033 it steps down to 26%, and in 2034 to 22%, before expiring in 2035 unless extended by Congress.',
+      },
+    ],
+    relatedSlugs: ['federal-solar-tax-credit-guide', 'solar-srec-income', 'how-much-do-solar-panels-cost'],
+  },
+
+  // ─── ARTICLE 14 ────────────────────────────────────────────────────────────
+  {
+    slug: 'solar-srec-income',
+    title: 'Solar SRECs: How to Earn Extra Income From Your Solar Panels',
+    seoTitle: 'Solar SREC Income 2026: How to Sell Renewable Energy Credits | MySolarWidget',
+    metaDescription: 'Solar Renewable Energy Credits (SRECs) let homeowners earn $50–$400 per MWh of solar production in eligible states. Learn which states have SREC markets and how to sell them.',
+    category: 'solar-incentives',
+    tags: ['SREC', 'incentives', 'income', 'renewable-energy', 'credits'],
+    author: 'MySolarWidget Team',
+    publishDate: '2026-03-08',
+    readingTime: 7,
+    featured: false,
+    excerpt: 'In states with active SREC markets, homeowners earn tradeable certificates for every 1,000 kWh their solar panels produce — worth $50–$400 each. A 7 kW system in New Jersey can generate $400–$1,200 per year in SREC income on top of electricity savings.',
+    intro: `<p>Most homeowners know solar saves money on electricity bills. Fewer know it can also generate <strong>additional income</strong> through a program called Solar Renewable Energy Credits (SRECs). In the right states, SRECs add hundreds of dollars per year to your solar return — making an already strong investment even better.</p>
+<p>This guide explains exactly how SRECs work, which states have active markets, and how to sell them.</p>`,
+    sections: [
+      {
+        id: 'what-are-srecs',
+        title: 'What Are SRECs and How Do They Work?',
+        content: `<p>An SREC (Solar Renewable Energy Credit) is a tradeable certificate representing <strong>1 megawatt-hour (1,000 kWh)</strong> of solar electricity produced. Utilities in certain states are required by law to source a portion of their electricity from solar — their "solar carve-out" requirement. When they cannot generate enough solar themselves, they buy SRECs from homeowners and businesses to meet their compliance obligation.</p>
+<h3>The Basic Flow</h3>
+<ol>
+  <li>Your solar panels produce electricity and automatically generate SRECs at a rate of one SREC per 1,000 kWh produced.</li>
+  <li>SRECs are tracked through a state registry (e.g., PJM-GATS, NEPOOL-GIS).</li>
+  <li>You sell your SRECs through a broker, aggregator, or SREC market platform.</li>
+  <li>The utility buys them to satisfy their renewable portfolio standard (RPS) requirement.</li>
+  <li>You receive payment — the SREC price — for each certificate sold.</li>
+</ol>
+<p>SRECs are separate from the electricity you generate. You can sell the SREC while keeping the electricity savings. They are essentially a second revenue stream from the same solar panels.</p>`
+      },
+      {
+        id: 'srec-prices-by-state',
+        title: 'SREC Prices by State (2026)',
+        content: `<p>SREC markets exist in about a dozen states. Prices vary based on state RPS requirements, market supply and demand:</p>
+<table>
+  <thead><tr><th>State</th><th>SREC Price Range</th><th>Annual Income (7 kW)</th><th>Market Notes</th></tr></thead>
+  <tbody>
+    <tr><td>New Jersey</td><td>$180–$300/SREC</td><td>$1,260–$2,100</td><td>Active market, SREC II program</td></tr>
+    <tr><td>Maryland</td><td>$60–$100/SREC</td><td>$420–$700</td><td>Moderate market</td></tr>
+    <tr><td>Massachusetts</td><td>SMART program</td><td>$300–$800/yr</td><td>Fixed adder, not open market</td></tr>
+    <tr><td>Pennsylvania</td><td>$20–$50/SREC</td><td>$140–$350</td><td>Volatile, lower prices</td></tr>
+    <tr><td>Ohio</td><td>$5–$20/SREC</td><td>$35–$140</td><td>Low demand, minimal market</td></tr>
+    <tr><td>Washington DC</td><td>$350–$450/SREC</td><td>$2,450–$3,150</td><td>Highest prices nationally</td></tr>
+  </tbody>
+</table>
+<p>Assumes 7 kW system producing ~7 MWh/year. DC and New Jersey have the strongest SREC markets for homeowners.</p>`
+      },
+      {
+        id: 'how-to-sell-srecs',
+        title: 'How to Sell Your SRECs',
+        content: `<p>There are three main ways to monetize SRECs:</p>
+<h3>1. SREC Aggregators / Brokers</h3>
+<p>Companies like SRECTrade, Sol Systems, and Joule Assets aggregate SRECs from many homeowners and sell them in bulk to utilities. They take a small commission (5–15%) but handle all registration and sales. This is the easiest option for most homeowners.</p>
+<h3>2. Long-Term SREC Contracts</h3>
+<p>Some utilities and compliance buyers offer multi-year fixed-price SREC contracts (typically 5–10 years). You trade upside potential for price certainty. Good option if current SREC prices are high and you want to lock in.</p>
+<h3>3. Spot Market Sales</h3>
+<p>You can sell SRECs directly on spot markets like SRECTrade's marketplace. Prices fluctuate with supply and demand. Higher risk but potentially higher reward when market prices spike.</p>
+<h3>Getting Registered</h3>
+<p>Your solar installer typically handles state registry enrollment as part of installation. If not, contact your state's SREC administrator directly. Registration is free or low-cost.</p>`
+      },
+      {
+        id: 'srec-vs-alternatives',
+        title: 'SRECs vs. Other State Incentive Programs',
+        content: `<p>Not every state uses open SREC markets. Some use fixed-rate alternatives:</p>
+<ul>
+  <li><strong>Massachusetts SMART:</strong> Fixed monthly payments per kWh for 10 years, set at program enrollment. More predictable than SREC spot prices but capped.</li>
+  <li><strong>Illinois SREC+ (ILSFA):</strong> Illinois buys SRECs at administratively set prices through a competitive program — not open market.</li>
+  <li><strong>Connecticut ZREC:</strong> Zero-emission RECs for larger systems (>100 kW). Not available to typical residential.</li>
+</ul>
+<p>If your state does not have an active SREC market, check for performance-based incentives, utility renewable programs, or community solar buyback options as alternatives.</p>`
+      },
+    ],
+    faq: [
+      {
+        question: 'How many SRECs does a typical home solar system generate?',
+        answer: 'A 7 kW system producing 8,400 kWh/year generates approximately 8.4 SRECs per year (one per 1,000 kWh). In New Jersey at $200/SREC, that is about $1,680/year in additional income.',
+      },
+      {
+        question: 'Do SRECs expire?',
+        answer: 'Yes — SRECs typically have a limited compliance life of 3–5 years depending on the state. Unsold SRECs that expire are worthless, so it is important to sell them promptly or use an aggregator who manages this for you.',
+      },
+      {
+        question: 'Is SREC income taxable?',
+        answer: 'Yes — SREC income is generally taxable as ordinary income at both federal and state levels. Keep records of all SREC sales and report them on your tax return. Consult a tax professional for your specific situation.',
+      },
+    ],
+    relatedSlugs: ['federal-solar-tax-credit-guide', 'state-solar-rebates-2026', 'how-much-can-solar-save-you'],
+  },
 ];
 
 export function getPostBySlug(slug) {
