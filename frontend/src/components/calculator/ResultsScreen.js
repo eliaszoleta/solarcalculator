@@ -12,6 +12,17 @@ function fmtDollar(n) {
   return '$' + fmt(Math.abs(n));
 }
 
+function darkenHex(hex, amount = 0.22) {
+  try {
+    const h = hex.replace('#', '');
+    const num = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16);
+    const r = Math.max(0, (num >> 16) - Math.round(255 * amount));
+    const g = Math.max(0, ((num >> 8) & 0xff) - Math.round(255 * amount));
+    const b = Math.max(0, (num & 0xff) - Math.round(255 * amount));
+    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+  } catch { return hex; }
+}
+
 const SITE_URL = process.env.REACT_APP_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
 
 function buildFullReportUrl(results, form, lead, forPopup = false) {
@@ -28,6 +39,8 @@ function buildFullReportUrl(results, form, lead, forPopup = false) {
 function ReportContent({ results, form, lead, installerConfig, onReset, embedded, popup }) {
   const { system, cost, incentives, savings, chart } = results;
   const cta = installerConfig || {};
+  const primary = cta.primaryColor || '#3b6cf4';
+  const primaryDark = darkenHex(primary);
   const isCash = lead?.paymentMethod === 'cash';
   const hasFinancing = !isCash && savings.monthlyPaymentFinanced > 0;
   const daySavings = hasFinancing ? savings.netMonthlyFinanced : savings.monthly;
@@ -49,7 +62,7 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
     <div className="results-container">
 
       {/* ── HERO CARD ── */}
-      <div className="results-hero-card">
+      <div className="results-hero-card" style={{ background: `linear-gradient(135deg, ${primary} 0%, ${primaryDark} 100%)` }}>
         <div className="hero-label">
           SOLAR SAVINGS ESTIMATE{state ? ` · ${state.toUpperCase()}` : ''}
         </div>
@@ -195,8 +208,8 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
             <AreaChart data={chart} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="savingsGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3b6cf4" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#3b6cf4" stopOpacity={0} />
+                  <stop offset="5%" stopColor={primary} stopOpacity={0.2} />
+                  <stop offset="95%" stopColor={primary} stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -204,7 +217,7 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
               <YAxis tickFormatter={v => `$${Math.abs(v) >= 1000 ? (v / 1000).toFixed(0) + 'k' : v}`} tick={{ fontSize: 11, fill: '#94a3b8' }} tickLine={false} axisLine={false} />
               <Tooltip formatter={(v) => [fmtDollar(v), 'Cumulative Savings']} labelFormatter={l => `Year ${l}`} contentStyle={{ borderRadius: 8, border: '1px solid #e2e8f0', fontSize: 13 }} />
               {paybackYear && <ReferenceLine x={paybackYear} stroke="#f59e0b" strokeDasharray="4 2" label={{ value: 'Break-even', position: 'top', fontSize: 10, fill: '#f59e0b' }} />}
-              <Area type="monotone" dataKey="cumulativeSavings" stroke="#3b6cf4" strokeWidth={2} fill="url(#savingsGrad)" dot={false} />
+              <Area type="monotone" dataKey="cumulativeSavings" stroke={primary} strokeWidth={2} fill="url(#savingsGrad)" dot={false} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -269,6 +282,8 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
 export default function ResultsScreen({ results, onReset, form, lead, installerConfig, embedded, popup }) {
   const { system, cost, incentives, savings, chart } = results;
   const cta = installerConfig || {};
+  const primary = cta.primaryColor || '#3b6cf4';
+  const primaryDark = darkenHex(primary);
   const isCash = lead?.paymentMethod === 'cash';
 
   const [showModal, setShowModal] = useState(false);
@@ -296,7 +311,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
         <div style={{ padding: '28px 20px 32px', fontFamily: installerConfig?.fontFamily ? `'${installerConfig.fontFamily}', sans-serif` : "'Poppins', sans-serif", maxWidth: 540, margin: '0 auto' }}>
 
           {/* Mini hero — range estimate, not exact */}
-          <div style={{ background: 'linear-gradient(135deg, #3b6cf4, #2d52c8)', borderRadius: 16, padding: '20px 20px 18px', marginBottom: 16, textAlign: 'center', color: 'white' }}>
+          <div style={{ background: `linear-gradient(135deg, ${primary}, ${primaryDark})`, borderRadius: 16, padding: '20px 20px 18px', marginBottom: 16, textAlign: 'center', color: 'white' }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.75, marginBottom: 8 }}>
               Solar Estimate
             </div>
@@ -332,7 +347,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           {/* System pill + installation range */}
           <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', marginBottom: 14, fontSize: 12, color: '#475569', lineHeight: 1.7 }}>
             <div><strong style={{ color: '#0f172a' }}>{system.sizeKw} kW system</strong> · {system.panelCount} panels · {system.offsetPercent}% energy offset</div>
-            <div style={{ color: '#64748b' }}>Installation: {fmtDollar(cost.low)} – {fmtDollar(cost.high)} · After 30% credit: <span style={{ color: '#3b6cf4', fontWeight: 600 }}>{fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)}</span></div>
+            <div style={{ color: '#64748b' }}>Installation: {fmtDollar(cost.low)} – {fmtDollar(cost.high)} · After 30% credit: <span style={{ color: primary, fontWeight: 600 }}>{fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)}</span></div>
           </div>
 
           {/* Installer CTA */}
@@ -348,7 +363,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
               </div>
               <a
                 href={cta.ctaButtonUrl || (cta.ctaPhone ? `tel:${cta.ctaPhone}` : '#')}
-                style={{ display: 'inline-block', padding: '9px 18px', background: cta.accentColor || '#3b6cf4', color: 'white', borderRadius: 8, fontWeight: 700, fontSize: 13, textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap' }}
+                style={{ display: 'inline-block', padding: '9px 18px', background: cta.accentColor || primary, color: 'white', borderRadius: 8, fontWeight: 700, fontSize: 13, textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap' }}
               >
                 {cta.ctaButtonText || 'Contact Us'}
               </a>
@@ -360,7 +375,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
 
           {/* Full report + recalc */}
           <div style={{ textAlign: 'center' }}>
-            <button onClick={handleViewFullReport} style={{ fontSize: 15, color: cta.accentColor || '#3b6cf4', fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+            <button onClick={handleViewFullReport} style={{ fontSize: 15, color: cta.accentColor || primary, fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
               Open Full Solar Report
             </button>
             <span style={{ color: '#cbd5e1', margin: '0 8px' }}>·</span>
