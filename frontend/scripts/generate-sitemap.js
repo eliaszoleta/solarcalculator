@@ -1,0 +1,82 @@
+/**
+ * generate-sitemap.js
+ * Reads blogPosts.js and auto-generates public/sitemap.xml.
+ * Run automatically before every build via the "prebuild" npm script.
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const SITE_URL = 'https://www.mysolarwidget.com';
+const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+
+// ── Parse blogPosts.js as text ─────────────────────────────────────────────
+
+const postsFile = fs.readFileSync(
+  path.join(__dirname, '../src/data/blogPosts.js'),
+  'utf8'
+);
+
+// Split file into CATEGORIES section and POSTS section
+const [catSection, postsSection] = postsFile.split('export const POSTS');
+
+// Extract category slugs from the CATEGORIES section only
+const categorySlugs = [...catSection.matchAll(/slug:\s*['"]([^'"]+)['"]/g)]
+  .map(m => m[1]);
+
+// Extract post slugs + publishDates from the POSTS section only.
+// Each post block starts with "slug:" and contains a "publishDate:".
+// We pair them by splitting on top-level object boundaries.
+// Simple approach: find all slug/publishDate occurrences in order —
+// they always appear as a pair (slug first, publishDate second) per post.
+const slugMatches  = [...postsSection.matchAll(/(?<!\w)slug:\s*['"]([^'"]+)['"]/g)];
+const dateMatches  = [...postsSection.matchAll(/publishDate:\s*['"]([^'"]+)['"]/g)];
+
+const posts = slugMatches.map((m, i) => ({
+  slug: m[1],
+  date: dateMatches[i]?.['1'] || TODAY,
+}));
+
+// ── Static pages ───────────────────────────────────────────────────────────
+const staticPages = [
+  { path: '/',                 priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
+  { path: '/for-installers',   priority: '0.9', changefreq: 'monthly', lastmod: TODAY },
+  { path: '/blog',             priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { path: '/about',            priority: '0.6', changefreq: 'monthly', lastmod: '2026-03-01' },
+  { path: '/contact',          priority: '0.5', changefreq: 'monthly', lastmod: '2026-03-01' },
+  { path: '/privacy-policy',   priority: '0.3', changefreq: 'yearly',  lastmod: '2026-01-01' },
+  { path: '/terms-of-service', priority: '0.3', changefreq: 'yearly',  lastmod: '2026-01-01' },
+];
+
+// ── Build XML ──────────────────────────────────────────────────────────────
+function urlEntry({ loc, lastmod, changefreq, priority }) {
+  return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+}
+
+const xml = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  '',
+  '  <!-- Core & company pages -->',
+  ...staticPages.map(p =>
+    urlEntry({ loc: `${SITE_URL}${p.path}`, lastmod: p.lastmod, changefreq: p.changefreq, priority: p.priority })
+  ),
+  '',
+  '  <!-- Blog posts (auto-generated from blogPosts.js) -->',
+  ...posts.map(p =>
+    urlEntry({ loc: `${SITE_URL}/blog/${p.slug}`, lastmod: p.date, changefreq: 'monthly', priority: '0.8' })
+  ),
+  '',
+  '  <!-- Blog category pages -->',
+  ...categorySlugs.map(slug =>
+    urlEntry({ loc: `${SITE_URL}/blog/category/${slug}`, lastmod: TODAY, changefreq: 'weekly', priority: '0.7' })
+  ),
+  '',
+  '</urlset>',
+].join('\n') + '\n';
+
+// ── Write output ───────────────────────────────────────────────────────────
+const outPath = path.join(__dirname, '../public/sitemap.xml');
+fs.writeFileSync(outPath, xml, 'utf8');
+
+console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugs.length} categories`);

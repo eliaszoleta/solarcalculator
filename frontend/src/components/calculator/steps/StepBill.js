@@ -1,7 +1,8 @@
 import React from 'react';
 import { LightBulbIcon } from '../../ui/Icons';
 
-export default function StepBill({ value, onChange }) {
+export default function StepBill({ value, onChange, primaryColor }) {
+  const accent = primaryColor || '#1e40af';
   return (
     <div>
       <h2 className="step-title">What's your average monthly electric bill?</h2>
@@ -54,7 +55,7 @@ export default function StepBill({ value, onChange }) {
         .bill-amount {
           font-size: 52px;
           font-weight: 800;
-          color: #1e40af;
+          color: ${accent};
           line-height: 1;
         }
         .bill-label {
@@ -68,7 +69,7 @@ export default function StepBill({ value, onChange }) {
           border-radius: 999px;
           outline: none;
           cursor: pointer;
-          accent-color: #f59e0b;
+          accent-color: ${accent};
           margin: 16px 0 8px;
         }
         .slider-labels {
@@ -97,9 +98,9 @@ export default function StepBill({ value, onChange }) {
           transition: all 0.12s;
         }
         .preset-btn:hover, .preset-btn.active {
-          border-color: #1e40af;
-          background: #eff6ff;
-          color: #1e40af;
+          border-color: ${accent};
+          background: ${accent}18;
+          color: ${accent};
         }
         .bill-hint {
           font-size: 13px;

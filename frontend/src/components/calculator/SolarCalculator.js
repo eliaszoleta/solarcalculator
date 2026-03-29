@@ -193,7 +193,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
 
           <div className={`step-content${embedded ? ' embed-content' : ''}`} style={embedded ? { paddingTop: 32 } : {}}>
             {currentStepDef?.kind === 'builtin' && currentStepDef.index === 1 && (
-              <StepBill value={form.monthlyBill} onChange={v => update('monthlyBill', v)} />
+              <StepBill value={form.monthlyBill} onChange={v => update('monthlyBill', v)} primaryColor={installerConfig?.primaryColor} />
             )}
             {currentStepDef?.kind === 'builtin' && currentStepDef.index === 2 && (
               <StepLocation zip={form.zip} state={form.state} onZipChange={v => update('zip', v)} onStateChange={v => update('state', v)} serviceStates={serviceStates} />

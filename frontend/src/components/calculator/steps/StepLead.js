@@ -28,6 +28,7 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
       if (!form.name.trim()) e.name = 'Name is required';
       if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Valid email is required';
       if (!form.phone.trim()) e.phone = 'Phone number is required';
+      else if (form.phone.replace(/\D/g, '').length < 10) e.phone = 'Enter a valid 10-digit phone number';
     }
     if (!form.timeline) e.timeline = 'Please select a timeline';
     if (!form.paymentMethod) e.paymentMethod = 'Please select a payment preference';
@@ -76,6 +77,7 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
                   placeholder="Phone number"
                   value={form.phone}
                   onChange={e => { setForm(p => ({ ...p, phone: e.target.value })); setErrors(p => ({ ...p, phone: null })); }}
+                  onBlur={e => { const digits = e.target.value.replace(/\D/g, ''); if (e.target.value.trim() && digits.length < 10) setErrors(p => ({ ...p, phone: 'Enter a valid 10-digit phone number' })); }}
                   className="sl-input"
                   style={{ width: '100%' }}
                 />
@@ -142,9 +144,14 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
             marginTop: 4,
             background: accentColor,
             boxShadow: `0 4px 14px ${accentColor}66`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            textAlign: 'center',
           }}
         >
-          {loading ? 'Calculating...' : <><SunIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />Show My Free Estimate →</>}
+          {loading ? 'Calculating...' : <><SunIcon size={14} style={{ marginRight: 7, flexShrink: 0 }} />Show My Free Estimate →</>}
         </button>
       </form>
 

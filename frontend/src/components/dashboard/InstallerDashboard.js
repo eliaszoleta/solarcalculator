@@ -105,6 +105,7 @@ export default function InstallerDashboard({ user, onLogout }) {
   const [selectedLead, setSelectedLead] = useState(null);
   const [leadNotes, setLeadNotes] = useState('');
   const [savingNote, setSavingNote] = useState(false);
+  const [selectedLeadIds, setSelectedLeadIds] = useState(new Set());
 
   useEffect(() => {
     const load = async () => {
@@ -229,6 +230,17 @@ export default function InstallerDashboard({ user, onLogout }) {
   };
 
   const openLead = (lead) => { setSelectedLead(lead); setLeadNotes(lead.notes || ''); };
+
+  const handleBulkArchive = async (ids) => {
+    const now = new Date().toISOString();
+    const idArr = [...ids];
+    await supabase.from('leads').update({ deleted_at: now }).in('id', idArr);
+    const archived = leads.filter(l => ids.has(l.id)).map(l => ({ ...l, deleted_at: now }));
+    setLeads(prev => prev.filter(l => !ids.has(l.id)));
+    setTrashedLeads(prev => [...archived, ...prev]);
+    setSelectedLeadIds(new Set());
+    if (selectedLead && ids.has(selectedLead.id)) setSelectedLead(null);
+  };
 
   const exportCSV = () => {
     const batteryLabel = b => ({ none: 'No Battery', one: '1 Battery', two: '2 Batteries' }[b] || fmt(b) || '');
@@ -818,7 +830,16 @@ export default function InstallerDashboard({ user, onLogout }) {
                 <div style={{ marginBottom: 14 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                     <h2 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', margin: 0 }}>
-                      Leads <span style={{ fontSize: 14, color: '#94a3b8', fontWeight: 400 }}>({filteredLeads.length})</span>
+                      {trashView ? (
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <button onClick={() => setTrashView(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5, color: '#64748b', fontSize: 13, fontWeight: 600, padding: 0, marginBottom: 2 }}>
+                            ← Back to Leads
+                          </button>
+                          <span style={{ color: '#94a3b8', fontSize: 14, fontWeight: 400 }}>/ Trash</span>
+                        </span>
+                      ) : (
+                        <>Leads <span style={{ fontSize: 14, color: '#94a3b8', fontWeight: 400 }}>({filteredLeads.length})</span></>
+                      )}
                     </h2>
                     <div style={{ display: 'flex', gap: 7 }}>
                       <button onClick={() => setLeads([])} style={btnStyle} onClick={async () => { setLeadsLoading(true); const { data } = await supabase.from('leads').select('*').eq('installer_id', installerId).is('deleted_at', null).order('created_at', { ascending: false }); setLeads(data || []); setLeadsLoading(false); }}>
@@ -827,9 +848,11 @@ export default function InstallerDashboard({ user, onLogout }) {
                       <button onClick={exportCSV} disabled={filteredLeads.length === 0} style={{ ...btnStyle, opacity: filteredLeads.length === 0 ? 0.5 : 1 }}>
                         <DownloadIcon size={13} /> Export CSV
                       </button>
-                      <button onClick={() => setTrashView(v => !v)} style={{ ...btnStyle, background: trashView ? '#0f172a' : 'white', color: trashView ? 'white' : '#64748b' }}>
-                        <TrashIcon size={13} /> Trash {trashedLeads.length > 0 && `(${trashedLeads.length})`}
-                      </button>
+                      {!trashView && (
+                        <button onClick={() => setTrashView(true)} style={btnStyle}>
+                          <TrashIcon size={13} /> Trash {trashedLeads.length > 0 && `(${trashedLeads.length})`}
+                        </button>
+                      )}
                     </div>
                   </div>
                   {!trashView && (
@@ -847,6 +870,16 @@ export default function InstallerDashboard({ user, onLogout }) {
                 </div>
 
                 {/* List / Trash */}
+                {/* Bulk actions bar */}
+                {!trashView && selectedLeadIds.size > 0 && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 8, marginBottom: 10 }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: '#1d4ed8', flex: 1 }}>{selectedLeadIds.size} lead{selectedLeadIds.size !== 1 ? 's' : ''} selected</span>
+                    <button onClick={() => handleBulkArchive(selectedLeadIds)} style={{ padding: '5px 12px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, cursor: 'pointer', fontSize: 12.5, fontWeight: 600 }}>Move to Trash</button>
+                    <button onClick={async () => { if (!window.confirm(`Permanently delete ${selectedLeadIds.size} lead(s)? This cannot be undone.`)) return; const ids = [...selectedLeadIds]; await supabase.from('leads').delete().in('id', ids); setLeads(prev => prev.filter(l => !selectedLeadIds.has(l.id))); if (selectedLead && selectedLeadIds.has(selectedLead.id)) setSelectedLead(null); setSelectedLeadIds(new Set()); }} style={{ padding: '5px 12px', background: '#7f1d1d', color: 'white', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12.5, fontWeight: 600 }}>Delete Forever</button>
+                    <button onClick={() => setSelectedLeadIds(new Set())} style={{ padding: '5px 12px', background: 'white', color: '#64748b', border: '1px solid #e2e8f0', borderRadius: 6, cursor: 'pointer', fontSize: 12.5 }}>Clear</button>
+                  </div>
+                )}
+
                 {leadsLoading ? (
                   <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: 14 }}>Loading…</div>
                 ) : trashView ? (
@@ -880,28 +913,80 @@ export default function InstallerDashboard({ user, onLogout }) {
                     </p>
                   </div>
                 ) : (
-                  <div style={{ flex: 1, overflowY: 'auto', background: 'white', borderRadius: 12, border: '1px solid #e2e8f0' }}>
-                    {filteredLeads.map((lead, i) => {
-                      const isSelected = selectedLead?.id === lead.id;
-                      return (
-                        <div key={lead.id} onClick={() => openLead(lead)} style={{ padding: '13px 18px', borderBottom: i < filteredLeads.length - 1 ? '1px solid #f8fafc' : 'none', cursor: 'pointer', background: isSelected ? '#fffbeb' : 'white', display: 'flex', gap: 13, alignItems: 'center', transition: 'background 0.1s' }}>
-                          <div style={{ width: 36, height: 36, borderRadius: 9, background: '#fffbeb', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 15, fontWeight: 700, color: '#d97706' }}>
-                            {lead.name ? lead.name[0].toUpperCase() : '?'}
-                          </div>
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ fontWeight: 600, fontSize: 13.5, color: '#0f172a', marginBottom: 2 }}>{lead.name || '(No name)'}</div>
-                            <div style={{ fontSize: 12, color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                              {lead.email || 'No email'}{lead.phone && ` · ${lead.phone}`}
-                            </div>
-                          </div>
-                          <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                            {lead.system_size_kw && <div style={{ fontSize: 12, fontWeight: 700, color: '#d97706', marginBottom: 2 }}>{lead.system_size_kw} kW</div>}
-                            {lead.annual_savings && <div style={{ fontSize: 12, color: '#16a34a', fontWeight: 600 }}>${lead.annual_savings.toLocaleString()}/yr</div>}
-                            <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 2 }}>{new Date(lead.created_at).toLocaleDateString()}</div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                  <div style={{ flex: 1, overflowX: 'auto', overflowY: 'auto', background: 'white', borderRadius: 12, border: '1px solid #e2e8f0' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12.5, whiteSpace: 'nowrap' }}>
+                      <thead>
+                        <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+                          <th style={{ padding: '9px 10px 9px 14px', position: 'sticky', top: 0, background: '#f8fafc', zIndex: 2 }}>
+                            <input type="checkbox"
+                              checked={filteredLeads.length > 0 && filteredLeads.every(l => selectedLeadIds.has(l.id))}
+                              ref={el => { if (el) el.indeterminate = selectedLeadIds.size > 0 && !filteredLeads.every(l => selectedLeadIds.has(l.id)); }}
+                              onChange={e => setSelectedLeadIds(e.target.checked ? new Set(filteredLeads.map(l => l.id)) : new Set())}
+                              style={{ cursor: 'pointer', width: 14, height: 14 }}
+                            />
+                          </th>
+                          {[
+                            'Name', 'Email', 'Phone', 'Location', 'Bill/mo',
+                            'Home', 'Roof', 'Battery', 'Sun', 'Owns Home',
+                            'System', 'Savings/yr', 'Payment', 'Timeline',
+                            ...(config.customSteps || []).map(s => s.label || s.id),
+                            'Date',
+                          ].map(col => (
+                            <th key={col} style={{ padding: '9px 12px', textAlign: 'left', fontWeight: 700, fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', position: 'sticky', top: 0, background: '#f8fafc', zIndex: 2 }}>
+                              {col}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredLeads.map((lead, i) => {
+                          const isChecked = selectedLeadIds.has(lead.id);
+                          const isSelected = selectedLead?.id === lead.id;
+                          const customSteps = config.customSteps || [];
+                          const rowBg = isSelected ? '#fffbeb' : isChecked ? '#f0f9ff' : 'white';
+                          return (
+                            <tr key={lead.id}
+                              onClick={() => openLead(lead)}
+                              style={{ borderBottom: i < filteredLeads.length - 1 ? '1px solid #f8fafc' : 'none', cursor: 'pointer', background: rowBg, transition: 'background 0.1s' }}
+                              onMouseEnter={e => { if (!isSelected && !isChecked) e.currentTarget.style.background = '#f8fafc'; }}
+                              onMouseLeave={e => { e.currentTarget.style.background = rowBg; }}
+                            >
+                              <td style={{ padding: '8px 10px 8px 14px' }} onClick={e => e.stopPropagation()}>
+                                <input type="checkbox"
+                                  checked={isChecked}
+                                  onChange={e => {
+                                    const next = new Set(selectedLeadIds);
+                                    if (e.target.checked) next.add(lead.id); else next.delete(lead.id);
+                                    setSelectedLeadIds(next);
+                                  }}
+                                  style={{ cursor: 'pointer', width: 14, height: 14 }}
+                                />
+                              </td>
+                              <td style={{ padding: '8px 12px', fontWeight: 600, color: '#0f172a', minWidth: 120 }}>{lead.name || '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569', minWidth: 160 }}>{lead.email || '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569' }}>{lead.phone || '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569' }}>{[lead.zip, lead.state].filter(Boolean).join(', ') || '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569' }}>{lead.monthly_bill != null ? `$${lead.monthly_bill}` : '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569' }}>{fmt(lead.home_type) || '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569' }}>{fmt(lead.roof_type) || '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569' }}>{batteryLabel(lead.battery)}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569' }}>{fmt(lead.sun_exposure) || '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569' }}>{lead.owns_home != null ? (lead.owns_home ? 'Yes' : 'No') : '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#d97706', fontWeight: 700 }}>{lead.system_size_kw ? `${lead.system_size_kw} kW` : '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#16a34a', fontWeight: 700 }}>{lead.annual_savings ? `$${lead.annual_savings.toLocaleString()}` : '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569' }}>{fmt(lead.payment_method) || '—'}</td>
+                              <td style={{ padding: '8px 12px', color: '#475569' }}>{fmt(lead.timeline) || '—'}</td>
+                              {customSteps.map(step => (
+                                <td key={step.id} style={{ padding: '8px 12px', color: '#475569' }}>
+                                  {lead.custom_answers?.[step.id] ?? '—'}
+                                </td>
+                              ))}
+                              <td style={{ padding: '8px 12px', color: '#94a3b8', fontSize: 11.5 }}>{new Date(lead.created_at).toLocaleDateString()}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </div>
