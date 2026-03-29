@@ -22,7 +22,7 @@
 .dash-brand {
   display: flex;
   align-items: center;
-  padding: 20px 18px 18px;
+  padding: 14px 16px 12px;
   border-bottom: 1px solid var(--border, #e2e8f0);
 }
 
@@ -39,23 +39,23 @@
 .dash-nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 12px 10px;
+  gap: 1px;
+  padding: 8px 8px;
   flex: 1;
 }
 
 .dash-nav-item {
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 9px 10px;
+  gap: 7px;
+  padding: 6px 9px;
   border-radius: var(--radius-sm, 8px);
   background: none;
   border: none;
   border-left: 2px solid transparent;
   cursor: pointer;
   color: var(--text-muted, #64748b);
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 500;
   width: 100%;
   text-align: left;
