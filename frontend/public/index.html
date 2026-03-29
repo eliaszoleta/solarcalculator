@@ -52,13 +52,16 @@
     <!-- ═══ Sitemap ═══ -->
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 
+    <!-- ═══ Canonical (homepage) ═══ -->
+    <link rel="canonical" href="https://www.mysolarwidget.com/" />
+
     <!-- ═══ Schema.org — WebSite ═══ -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "MySolarWidget",
-      "alternateName": ["My Solar Widget", "mysolarwidget.com"],
+      "alternateName": "My Solar Widget",
       "url": "https://www.mysolarwidget.com",
       "description": "Free solar panel savings calculator for US homeowners. Estimate installation costs, monthly savings, and 30-year ROI in under 2 minutes. Powered by NREL PVWatts data.",
       "potentialAction": {
@@ -68,27 +71,32 @@
           "urlTemplate": "https://www.mysolarwidget.com/blog?q={search_term_string}"
         },
         "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- ═══ Schema.org — Organization ═══ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "MySolarWidget",
+      "alternateName": "My Solar Widget",
+      "url": "https://www.mysolarwidget.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.mysolarwidget.com/android-chrome-512x512.png",
+        "width": 512,
+        "height": 512
       },
-      "publisher": {
-        "@type": "Organization",
-        "name": "MySolarWidget",
-        "legalName": "MySolarWidget",
-        "url": "https://www.mysolarwidget.com",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.mysolarwidget.com/android-chrome-512x512.png",
-          "width": 512,
-          "height": 512
-        },
-        "sameAs": [
-          "https://www.mysolarwidget.com"
-        ],
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "contactType": "customer support",
-          "email": "hello@mysolarwidget.com",
-          "url": "https://www.mysolarwidget.com/contact"
-        }
+      "sameAs": [
+        "https://twitter.com/MySolarWidget"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@mysolarwidget.com",
+        "url": "https://www.mysolarwidget.com/contact"
       }
     }
     </script>

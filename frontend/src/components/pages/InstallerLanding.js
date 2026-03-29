@@ -1,21 +1,39 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { ClipboardIcon, LinkIcon, ChartBarIcon, PaintBrushIcon, DollarSignIcon, MapPinIcon, BatteryIcon, RulerIcon, SunIcon, BoltIcon, HomeIcon, TrendingDownIcon, WrenchIcon, CreditCardIcon } from '../ui/Icons';
 
 export default function InstallerLanding() {
   return (
-    <div style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: '#0f172a', overflowX: 'hidden' }}>
-      <LandingNav />
-      <Hero />
-      <LogoBar />
-      <HowItWorks />
-      <Features />
-      <AccuracySection />
-      <CalculatorPreview />
-      <WhatItDoesForYou />
-      <Pricing />
-      <FinalCTA />
-      <LandingFooter />
-    </div>
+    <>
+      <Helmet>
+        <title>Solar Calculator Widget for Installers | MySolarWidget</title>
+        <meta name="description" content="Embed a branded solar savings calculator on your website in minutes. Capture leads, show instant estimates, and close more solar deals. Free trial for solar installers." />
+        <link rel="canonical" href="https://www.mysolarwidget.com/for-installers" />
+        <meta property="og:title" content="Solar Calculator Widget for Installers | MySolarWidget" />
+        <meta property="og:description" content="Embed a branded solar savings calculator on your website. Capture leads and close more deals. Free trial available." />
+        <meta property="og:url" content="https://www.mysolarwidget.com/for-installers" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="MySolarWidget" />
+        <meta property="og:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Solar Calculator Widget for Installers | MySolarWidget" />
+        <meta name="twitter:description" content="Embed a branded solar savings calculator on your website. Capture leads and close more deals." />
+        <meta name="twitter:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
+      </Helmet>
+      <div style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: '#0f172a', overflowX: 'hidden' }}>
+        <LandingNav />
+        <Hero />
+        <LogoBar />
+        <HowItWorks />
+        <Features />
+        <AccuracySection />
+        <CalculatorPreview />
+        <WhatItDoesForYou />
+        <Pricing />
+        <FinalCTA />
+        <LandingFooter />
+      </div>
+    </>
   );
 }
 
