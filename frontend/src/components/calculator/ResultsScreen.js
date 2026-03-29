@@ -25,9 +25,20 @@ function darkenHex(hex, amount = 0.22) {
 
 const SITE_URL = process.env.REACT_APP_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
 
-function buildFullReportUrl(results, form, lead, forPopup = false) {
+function buildFullReportUrl(results, form, lead, forPopup = false, installerConfig = null) {
   try {
-    const payload = JSON.stringify({ r: results, b: form.monthlyBill, s: form.state || results.inputs?.state, p: lead?.paymentMethod });
+    // Include a minimal config snapshot (c) so the popup page can apply branding
+    const c = installerConfig ? {
+      primaryColor: installerConfig.primaryColor,
+      accentColor: installerConfig.accentColor,
+      companyName: installerConfig.companyName,
+      ctaButtonText: installerConfig.ctaButtonText,
+      ctaButtonUrl: installerConfig.ctaButtonUrl,
+      ctaPhone: installerConfig.ctaPhone,
+      ctaHeadline: installerConfig.ctaHeadline,
+      fontFamily: installerConfig.fontFamily,
+    } : null;
+    const payload = JSON.stringify({ r: results, b: form.monthlyBill, s: form.state || results.inputs?.state, p: lead?.paymentMethod, c });
     const hash = btoa(unescape(encodeURIComponent(payload)));
     return `${SITE_URL}/results${forPopup ? '?popup=1' : ''}#${hash}`;
   } catch {
@@ -48,7 +59,7 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
   const state = results.inputs?.state || form?.state || '';
 
   const handleShare = () => {
-    const url = buildFullReportUrl(results, form, lead);
+    const url = buildFullReportUrl(results, form, lead, false, installerConfig);
     if (navigator.share) {
       navigator.share({ title: 'My Solar Savings Estimate', url }).catch(() => {});
     } else if (navigator.clipboard) {
@@ -293,7 +304,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
   }, [embedded]);
 
   const handleViewFullReport = () => {
-    const fullReportUrl = buildFullReportUrl(results, form, lead, true);
+    const fullReportUrl = buildFullReportUrl(results, form, lead, true, installerConfig);
     if (window !== window.parent) {
       window.parent.postMessage({ type: 'MSW_OPEN_REPORT', url: fullReportUrl }, '*');
     } else {
@@ -337,8 +348,8 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
               { label: '30-Year Savings', value: fmtDollar(savings.thirtyYear), highlight: true },
               { label: 'Payback Period',  value: savings.paybackYears ? `${savings.paybackYears} yrs` : 'N/A' },
             ].map(({ label, value, highlight }) => (
-              <div key={label} style={{ background: highlight ? '#1e3a8a' : '#f8fafc', border: `1px solid ${highlight ? '#1e3a8a' : '#e2e8f0'}`, borderRadius: 10, padding: '11px 10px', textAlign: 'center' }}>
-                <div style={{ fontSize: 10, color: highlight ? '#bfdbfe' : '#64748b', fontWeight: 600, marginBottom: 3, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</div>
+              <div key={label} style={{ background: highlight ? primary : '#f8fafc', border: `1px solid ${highlight ? primary : '#e2e8f0'}`, borderRadius: 10, padding: '11px 10px', textAlign: 'center' }}>
+                <div style={{ fontSize: 10, color: highlight ? 'rgba(255,255,255,0.75)' : '#64748b', fontWeight: 600, marginBottom: 3, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</div>
                 <div style={{ fontSize: 16, fontWeight: 800, color: highlight ? 'white' : '#0f172a' }}>{value}</div>
               </div>
             ))}
@@ -351,7 +362,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           </div>
 
           {/* Installer CTA */}
-          <div style={{ background: '#0f172a', borderRadius: 12, padding: '14px 16px', marginBottom: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ background: primaryDark, borderRadius: 12, padding: '14px 16px', marginBottom: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'white', marginBottom: 2 }}>

@@ -66,12 +66,15 @@ function ResultsPage() {
     </div>
   );
 
+  const installerConfig = data.c || null;
+  const primaryColor = installerConfig?.primaryColor || '#3b6cf4';
+
   const screen = (
     <ResultsScreen
       results={data.r}
       form={{ monthlyBill: data.b, state: data.s }}
       lead={{ paymentMethod: data.p }}
-      installerConfig={null}
+      installerConfig={installerConfig}
       embedded={false}
       popup={isPopup}
       onReset={() => { window.location.href = '/'; }}
@@ -83,17 +86,17 @@ function ResultsPage() {
     const closePopup = () => window.parent.postMessage({ type: 'MSW_CLOSE_REPORT' }, '*');
     return (
       <div style={{ background: '#f1f5f9', minHeight: '100vh', fontFamily: "'Poppins', -apple-system, sans-serif" }}>
-        {/* Premium sticky header — dark navy, rendered inside our iframe */}
+        {/* Premium sticky header — uses installer primary color */}
         <div style={{
           position: 'sticky', top: 0, zIndex: 100,
-          background: '#0f172a',
+          background: primaryColor,
           padding: '0 20px',
           height: 52,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           flexShrink: 0,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#2563eb' }} />
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'rgba(255,255,255,0.6)' }} />
             <span style={{ fontSize: 14, fontWeight: 700, color: 'white', letterSpacing: '-0.01em' }}>
               Full Solar Report
             </span>
