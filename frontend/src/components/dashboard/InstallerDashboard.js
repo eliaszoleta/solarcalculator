@@ -830,7 +830,16 @@ export default function InstallerDashboard({ user, onLogout }) {
                 <div style={{ marginBottom: 14 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                     <h2 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', margin: 0 }}>
-                      Leads <span style={{ fontSize: 14, color: '#94a3b8', fontWeight: 400 }}>({filteredLeads.length})</span>
+                      {trashView ? (
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <button onClick={() => setTrashView(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5, color: '#64748b', fontSize: 13, fontWeight: 600, padding: 0, marginBottom: 2 }}>
+                            ← Back to Leads
+                          </button>
+                          <span style={{ color: '#94a3b8', fontSize: 14, fontWeight: 400 }}>/ Trash</span>
+                        </span>
+                      ) : (
+                        <>Leads <span style={{ fontSize: 14, color: '#94a3b8', fontWeight: 400 }}>({filteredLeads.length})</span></>
+                      )}
                     </h2>
                     <div style={{ display: 'flex', gap: 7 }}>
                       <button onClick={() => setLeads([])} style={btnStyle} onClick={async () => { setLeadsLoading(true); const { data } = await supabase.from('leads').select('*').eq('installer_id', installerId).is('deleted_at', null).order('created_at', { ascending: false }); setLeads(data || []); setLeadsLoading(false); }}>
@@ -839,9 +848,11 @@ export default function InstallerDashboard({ user, onLogout }) {
                       <button onClick={exportCSV} disabled={filteredLeads.length === 0} style={{ ...btnStyle, opacity: filteredLeads.length === 0 ? 0.5 : 1 }}>
                         <DownloadIcon size={13} /> Export CSV
                       </button>
-                      <button onClick={() => setTrashView(v => !v)} style={{ ...btnStyle, background: trashView ? '#0f172a' : 'white', color: trashView ? 'white' : '#64748b' }}>
-                        <TrashIcon size={13} /> Trash {trashedLeads.length > 0 && `(${trashedLeads.length})`}
-                      </button>
+                      {!trashView && (
+                        <button onClick={() => setTrashView(true)} style={btnStyle}>
+                          <TrashIcon size={13} /> Trash {trashedLeads.length > 0 && `(${trashedLeads.length})`}
+                        </button>
+                      )}
                     </div>
                   </div>
                   {!trashView && (
@@ -863,7 +874,8 @@ export default function InstallerDashboard({ user, onLogout }) {
                 {!trashView && selectedLeadIds.size > 0 && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 8, marginBottom: 10 }}>
                     <span style={{ fontSize: 13, fontWeight: 600, color: '#1d4ed8', flex: 1 }}>{selectedLeadIds.size} lead{selectedLeadIds.size !== 1 ? 's' : ''} selected</span>
-                    <button onClick={() => handleBulkArchive(selectedLeadIds)} style={{ padding: '5px 12px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, cursor: 'pointer', fontSize: 12.5, fontWeight: 600 }}>Archive Selected</button>
+                    <button onClick={() => handleBulkArchive(selectedLeadIds)} style={{ padding: '5px 12px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, cursor: 'pointer', fontSize: 12.5, fontWeight: 600 }}>Move to Trash</button>
+                    <button onClick={async () => { if (!window.confirm(`Permanently delete ${selectedLeadIds.size} lead(s)? This cannot be undone.`)) return; const ids = [...selectedLeadIds]; await supabase.from('leads').delete().in('id', ids); setLeads(prev => prev.filter(l => !selectedLeadIds.has(l.id))); if (selectedLead && selectedLeadIds.has(selectedLead.id)) setSelectedLead(null); setSelectedLeadIds(new Set()); }} style={{ padding: '5px 12px', background: '#7f1d1d', color: 'white', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12.5, fontWeight: 600 }}>Delete Forever</button>
                     <button onClick={() => setSelectedLeadIds(new Set())} style={{ padding: '5px 12px', background: 'white', color: '#64748b', border: '1px solid #e2e8f0', borderRadius: 6, cursor: 'pointer', fontSize: 12.5 }}>Clear</button>
                   </div>
                 )}
