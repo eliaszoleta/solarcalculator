@@ -374,7 +374,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
               </div>
               <a
                 href={cta.ctaButtonUrl || (cta.ctaPhone ? `tel:${cta.ctaPhone}` : '#')}
-                style={{ display: 'inline-block', padding: '9px 18px', background: cta.accentColor || primary, color: 'white', borderRadius: 8, fontWeight: 700, fontSize: 13, textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap' }}
+                style={{ display: 'inline-block', padding: '9px 18px', background: primary, color: 'white', borderRadius: 8, fontWeight: 700, fontSize: 13, textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap' }}
               >
                 {cta.ctaButtonText || 'Contact Us'}
               </a>
@@ -386,7 +386,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
 
           {/* Full report + recalc */}
           <div style={{ textAlign: 'center' }}>
-            <button onClick={handleViewFullReport} style={{ fontSize: 15, color: cta.accentColor || primary, fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+            <button onClick={handleViewFullReport} style={{ fontSize: 15, color: primary, fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
               Open Full Solar Report
             </button>
             <span style={{ color: '#cbd5e1', margin: '0 8px' }}>·</span>
