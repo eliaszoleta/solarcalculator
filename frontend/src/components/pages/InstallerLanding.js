@@ -34,6 +34,7 @@ export default function InstallerLanding() {
         <LandingFooter />
       </div>
     </>
+  );
 }
 
 /* ─── Nav ─────────────────────────────────────────────── */
