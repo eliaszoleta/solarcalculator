@@ -97,6 +97,8 @@ export default function InstallerDashboard({ user, onLogout }) {
   const [pwConfirm, setPwConfirm] = useState('');
   const [pwLoading, setPwLoading] = useState(false);
   const [pwMsg, setPwMsg] = useState(null); // { type: 'success'|'error', text: string }
+  const [deleteConfirm, setDeleteConfirm] = useState('');
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [embedCopied, setEmbedCopied] = useState(false);
   const [scriptCopied, setScriptCopied] = useState(false);
   const [wpCopied, setWpCopied] = useState(false);
@@ -340,6 +342,20 @@ export default function InstallerDashboard({ user, onLogout }) {
       if (res.data.url) window.location.href = res.data.url;
     } catch {
       alert('Could not open billing portal. Please try again.');
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirm !== 'DELETE') return;
+    setDeleteLoading(true);
+    try {
+      const headers = await getAuthHeader();
+      await axios.delete(`${API_BASE}/api/installer/account`, { headers });
+      await supabase.auth.signOut();
+      onLogout();
+    } catch (err) {
+      alert(err.response?.data?.error || 'Failed to delete account. Please try again.');
+      setDeleteLoading(false);
     }
   };
 
@@ -1173,6 +1189,44 @@ export default function InstallerDashboard({ user, onLogout }) {
   -H "X-API-Key: ${apiKey || 'YOUR_API_KEY'}"`}</pre>
                   </div>
                   <p style={{ margin: '12px 0 0', fontSize: 12, color: '#94a3b8' }}>Keep your API key secret. Regenerating it will invalidate all existing integrations.</p>
+                </div>
+              </div>
+
+              {/* Danger Zone */}
+              <div className="setting-card" style={{ border: '1px solid #fecaca' }}>
+                <div className="setting-card-header">
+                  <h3 className="setting-card-title" style={{ color: '#dc2626' }}>Danger Zone</h3>
+                  <p className="setting-card-desc">Permanently delete your account and all associated data. This cannot be undone.</p>
+                </div>
+                <div className="setting-card-body">
+                  <p style={{ fontSize: 13, color: '#64748b', marginBottom: 16, lineHeight: 1.6 }}>
+                    Deleting your account will permanently remove your profile, all leads, settings, and branding. Your embedded calculator will stop working immediately.
+                  </p>
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 6 }}>
+                      Type <strong>DELETE</strong> to confirm
+                    </label>
+                    <input
+                      type="text"
+                      value={deleteConfirm}
+                      onChange={e => setDeleteConfirm(e.target.value)}
+                      placeholder="DELETE"
+                      style={{ width: '100%', padding: '8px 12px', border: '1px solid #fecaca', borderRadius: 8, fontSize: 13, boxSizing: 'border-box', background: '#fff' }}
+                    />
+                  </div>
+                  <button
+                    onClick={handleDeleteAccount}
+                    disabled={deleteConfirm !== 'DELETE' || deleteLoading}
+                    style={{
+                      padding: '9px 20px', background: deleteConfirm === 'DELETE' && !deleteLoading ? '#dc2626' : '#f1f5f9',
+                      color: deleteConfirm === 'DELETE' && !deleteLoading ? 'white' : '#94a3b8',
+                      border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 700,
+                      cursor: deleteConfirm === 'DELETE' && !deleteLoading ? 'pointer' : 'not-allowed',
+                      transition: 'background 0.15s, color 0.15s',
+                    }}
+                  >
+                    {deleteLoading ? 'Deleting…' : 'Delete My Account'}
+                  </button>
                 </div>
               </div>
             </div>
