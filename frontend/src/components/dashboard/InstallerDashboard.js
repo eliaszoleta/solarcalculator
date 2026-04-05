@@ -99,6 +99,7 @@ export default function InstallerDashboard({ user, onLogout }) {
   const [pwMsg, setPwMsg] = useState(null); // { type: 'success'|'error', text: string }
   const [deleteConfirm, setDeleteConfirm] = useState('');
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
   const [embedCopied, setEmbedCopied] = useState(false);
   const [scriptCopied, setScriptCopied] = useState(false);
   const [wpCopied, setWpCopied] = useState(false);
@@ -354,7 +355,7 @@ export default function InstallerDashboard({ user, onLogout }) {
       await supabase.auth.signOut();
       onLogout();
     } catch (err) {
-      alert(err.response?.data?.error || 'Failed to delete account. Please try again.');
+      setDeleteError(err.response?.data?.error || 'Failed to delete account. Please try again.');
       setDeleteLoading(false);
     }
   };
@@ -1214,6 +1215,11 @@ export default function InstallerDashboard({ user, onLogout }) {
                       style={{ width: '100%', padding: '8px 12px', border: '1px solid #fecaca', borderRadius: 8, fontSize: 13, boxSizing: 'border-box', background: '#fff' }}
                     />
                   </div>
+                  {deleteError && (
+                    <div style={{ marginBottom: 12, fontSize: 13, padding: '8px 12px', borderRadius: 7, color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca' }}>
+                      {deleteError}
+                    </div>
+                  )}
                   <button
                     onClick={handleDeleteAccount}
                     disabled={deleteConfirm !== 'DELETE' || deleteLoading}
