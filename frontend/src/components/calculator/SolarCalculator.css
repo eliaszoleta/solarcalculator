@@ -1,5 +1,5 @@
 .calculator-section {
-  padding: 72px 16px 64px;
+  padding: 32px 16px 48px;
   background: var(--bg, #f1f5f9);
   min-height: calc(100vh - 64px);
 }
@@ -11,7 +11,7 @@
 
 .calculator-header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 16px;
 }
 
 .calc-badge {
@@ -20,31 +20,31 @@
   gap: 6px;
   background: var(--primary-muted, #eff6ff);
   color: var(--primary, #2563eb);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 999px;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   border: 1px solid rgba(37,99,235,0.15);
 }
 
 .calc-title {
-  font-size: clamp(22px, 4.5vw, 32px);
+  font-size: clamp(18px, 3.5vw, 24px);
   font-weight: 800;
   color: var(--text, #0f172a);
   line-height: 1.2;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   letter-spacing: -0.02em;
 }
 
 .calc-subtitle {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-muted, #64748b);
   max-width: 480px;
   margin: 0 auto;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .calculator-card {
