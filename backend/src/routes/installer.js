@@ -82,15 +82,24 @@ router.get('/:id', async (req, res) => {
   try {
     let config = await getInstallerConfig(req.params.id);
     if (!config) {
-      // First access — initialise config as pending (trial starts when card is added)
+      // First access — initialise config with trial start
       config = {
         ...DEFAULT_INSTALLER_CONFIG,
         subscription: {
-          status: 'pending',
+          trialStartedAt: new Date().toISOString(),
+          status: 'trialing',
           stripeCustomerId: null,
           stripeSubscriptionId: null,
           currentPeriodEnd: null,
         },
+      };
+      await saveInstallerConfig(req.params.id, config);
+    } else if (!config.subscription?.trialStartedAt) {
+      // Existing account without trial date — backfill
+      config.subscription = {
+        ...(config.subscription || {}),
+        trialStartedAt: new Date().toISOString(),
+        status: config.subscription?.status || 'trialing',
       };
       await saveInstallerConfig(req.params.id, config);
     }
