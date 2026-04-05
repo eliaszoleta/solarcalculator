@@ -27,9 +27,11 @@ router.post('/checkout', async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
+      payment_method_collection: 'always',
       line_items: [{ price: priceId, quantity: 1 }],
       customer: existingCustomerId || undefined,
       customer_email: existingCustomerId ? undefined : req.user.email,
+      subscription_data: { trial_period_days: 7 },
       metadata: { installerId },
       success_url: `${FRONTEND_URL}/installer?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${FRONTEND_URL}/installer?tab=subscription`,
@@ -99,13 +101,15 @@ router.post('/verify-checkout', async (req, res) => {
     }
 
     const sub = session.subscription;
+    const subObj = sub && typeof sub !== 'string' ? sub : null;
     config.subscription = {
       ...(config.subscription || {}),
       stripeCustomerId: session.customer,
       stripeSubscriptionId: typeof sub === 'string' ? sub : sub?.id,
-      status: 'active',
-      currentPeriodEnd: sub?.current_period_end
-        ? new Date(sub.current_period_end * 1000).toISOString()
+      status: subObj?.status || 'active',
+      cancelAtPeriodEnd: subObj?.cancel_at_period_end || false,
+      currentPeriodEnd: subObj?.current_period_end
+        ? new Date(subObj.current_period_end * 1000).toISOString()
         : null,
     };
     await saveInstallerConfig(installerId, config);
@@ -140,13 +144,15 @@ async function handleStripeEvent(event) {
         console.log(`Webhook: retrieved session, subscription status: ${fullSession.subscription?.status}`);
         const config = (await getInstallerConfig(installerId)) || {};
         const sub = fullSession.subscription;
+        const subObj = sub && typeof sub !== 'string' ? sub : null;
         config.subscription = {
           ...(config.subscription || {}),
           stripeCustomerId: fullSession.customer,
           stripeSubscriptionId: typeof sub === 'string' ? sub : sub?.id,
-          status: 'active',
-          currentPeriodEnd: sub && typeof sub !== 'string' && sub.current_period_end
-            ? new Date(sub.current_period_end * 1000).toISOString()
+          status: subObj?.status || 'active',
+          cancelAtPeriodEnd: subObj?.cancel_at_period_end || false,
+          currentPeriodEnd: subObj?.current_period_end
+            ? new Date(subObj.current_period_end * 1000).toISOString()
             : (config.subscription?.currentPeriodEnd || null),
         };
         await saveInstallerConfig(installerId, config);
@@ -247,15 +253,29 @@ async function findInstallerByCustomer(customerId) {
 // Handles all Stripe statuses: active, canceled, past_due, unpaid, trialing, etc.
 function computeSubscriptionStatus(config) {
   const sub = config.subscription || {};
-  const TRIAL_DAYS = 30;
+  const TRIAL_DAYS = 30; // Legacy: for existing accounts with trialStartedAt
   const trialStart = sub.trialStartedAt ? new Date(sub.trialStartedAt) : null;
 
   // If a Stripe subscription exists, its status is authoritative
   if (sub.stripeSubscriptionId) {
+    if (sub.status === 'trialing') {
+      const daysLeft = sub.currentPeriodEnd
+        ? Math.max(0, Math.ceil((new Date(sub.currentPeriodEnd) - Date.now()) / (1000 * 60 * 60 * 24)))
+        : null;
+      return {
+        active: true,
+        status: 'trialing',
+        cancelAtPeriodEnd: sub.cancelAtPeriodEnd || false,
+        daysLeft,
+        currentPeriodEnd: sub.currentPeriodEnd || null,
+        stripeCustomerId: sub.stripeCustomerId || null,
+        stripeSubscriptionId: sub.stripeSubscriptionId,
+      };
+    }
     if (sub.status === 'active') {
       return {
         active: true,
-        status: 'active',
+        status: sub.cancelAtPeriodEnd ? 'active_canceling' : 'active',
         cancelAtPeriodEnd: sub.cancelAtPeriodEnd || false,
         daysLeft: null,
         currentPeriodEnd: sub.currentPeriodEnd || null,
@@ -283,7 +303,6 @@ function computeSubscriptionStatus(config) {
         stripeSubscriptionId: sub.stripeSubscriptionId,
       };
     }
-    // Any other Stripe status (incomplete, paused, etc.) — treat as inactive
     return {
       active: false,
       status: sub.status || 'inactive',
@@ -294,7 +313,21 @@ function computeSubscriptionStatus(config) {
     };
   }
 
-  // No Stripe subscription yet — check free trial
+  // New CC-required trial — trialType:'stripe' means the account was created after the
+  // CC-required trial was introduced. These accounts must complete Stripe checkout first.
+  // This takes priority over trialStartedAt to handle any edge-case ordering.
+  if (sub.trialType === 'stripe') {
+    return {
+      active: false,
+      status: 'requires_trial_setup',
+      daysLeft: 7,
+      currentPeriodEnd: null,
+      stripeCustomerId: sub.stripeCustomerId || null,
+      stripeSubscriptionId: null,
+    };
+  }
+
+  // Legacy: existing accounts with a free trial started without CC
   if (trialStart) {
     const daysElapsed = (Date.now() - trialStart.getTime()) / (1000 * 60 * 60 * 24);
     if (daysElapsed < TRIAL_DAYS) {
@@ -317,11 +350,11 @@ function computeSubscriptionStatus(config) {
     };
   }
 
-  // No trial record yet — fresh account, 30-day trial starts now
+  // New account: no Stripe subscription and no trial started yet
   return {
-    active: true,
-    status: 'trialing',
-    daysLeft: TRIAL_DAYS,
+    active: false,
+    status: 'requires_trial_setup',
+    daysLeft: 7,
     currentPeriodEnd: null,
     stripeCustomerId: null,
     stripeSubscriptionId: null,

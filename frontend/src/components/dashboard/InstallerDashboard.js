@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
-import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon, PencilIcon, SettingsIcon, LayoutIcon, MailIcon, PhoneIcon, XIcon, DownloadIcon, RefreshCwIcon, InboxIcon, GlobeIcon, CalendarIcon, TrendingUpIcon, SearchIcon } from '../ui/Icons';
+import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon, PencilIcon, SettingsIcon, LayoutIcon, MailIcon, PhoneIcon, XIcon, DownloadIcon, RefreshCwIcon, InboxIcon, GlobeIcon, CalendarIcon, TrendingUpIcon, SearchIcon, BoltIcon, AlertTriangleIcon, KeyIcon } from '../ui/Icons';
 import SolarCalculator from '../calculator/SolarCalculator';
 import './InstallerDashboard.css';
 
@@ -421,17 +421,32 @@ export default function InstallerDashboard({ user, onLogout }) {
 
         <div className="dash-content">
 
-          {subscription?.status === 'expired' && (
-            <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 12, padding: '16px 20px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontWeight: 700, fontSize: 14, color: '#dc2626', margin: '0 0 2px' }}>Your free trial has ended</p>
-                <p style={{ fontSize: 13, color: '#7f1d1d', margin: 0, lineHeight: 1.5 }}>Your embedded solar calculator is now paused and no longer visible to visitors. Subscribe to reactivate it.</p>
+          {subscription && !subscription.active && (
+            <div style={{
+              background: subscription.status === 'requires_trial_setup' ? '#eff6ff' : '#fef2f2',
+              border: `1px solid ${subscription.status === 'requires_trial_setup' ? '#bfdbfe' : '#fca5a5'}`,
+              borderRadius: 12, padding: '14px 20px', marginBottom: 24,
+              display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
+                <AlertTriangleIcon size={15} color={subscription.status === 'requires_trial_setup' ? '#2563eb' : '#dc2626'} />
+                <span style={{ fontWeight: 600, fontSize: 13, color: subscription.status === 'requires_trial_setup' ? '#1d4ed8' : '#dc2626' }}>
+                  {subscription.status === 'requires_trial_setup'
+                    ? 'Your calculator is paused — start your 7-day free trial to activate'
+                    : subscription.status === 'expired'
+                    ? 'Your free trial has ended — subscribe to reactivate your calculator'
+                    : 'Your calculator is paused — subscription issue'}
+                </span>
               </div>
               <button
-                onClick={handleSubscribe}
-                style={{ whiteSpace: 'nowrap', padding: '10px 22px', background: '#dc2626', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}
+                onClick={() => setActiveTab('subscription')}
+                style={{
+                  whiteSpace: 'nowrap', padding: '8px 18px',
+                  background: subscription.status === 'requires_trial_setup' ? '#2563eb' : '#dc2626',
+                  color: 'white', border: 'none', borderRadius: 7, fontWeight: 700, fontSize: 13, cursor: 'pointer',
+                }}
               >
-                Subscribe Now
+                {subscription.status === 'requires_trial_setup' ? 'Start Trial →' : 'Reactivate →'}
               </button>
             </div>
           )}
@@ -1164,15 +1179,13 @@ export default function InstallerDashboard({ user, onLogout }) {
           )}
 
           {activeTab === 'subscription' && (
-            <div className="settings-grid">
-              <SubscriptionPanel
-                subscription={subscription}
-                loading={subLoading}
-                onSubscribe={handleSubscribe}
-                onManage={handleManageBilling}
-                justSubscribed={new URLSearchParams(window.location.search).get('subscribed') === 'true'}
-              />
-            </div>
+            <SubscriptionPanel
+              subscription={subscription}
+              loading={subLoading}
+              onSubscribe={handleSubscribe}
+              onManage={handleManageBilling}
+              justSubscribed={new URLSearchParams(window.location.search).get('subscribed') === 'true'}
+            />
           )}
 
         </div>
@@ -1432,200 +1445,118 @@ function CustomStepsPanel({ steps, onChange }) {
   );
 }
 
+const SUBSCRIPTION_FEATURES = [
+  { Icon: GlobeIcon,      text: 'Embeddable solar calculator widget on your website' },
+  { Icon: PaintBrushIcon, text: 'Custom branding — colors, logo, and CTA text' },
+  { Icon: ChartBarIcon,   text: 'Lead capture & CRM dashboard' },
+  { Icon: DollarSignIcon, text: 'Pricing controls and per-watt margin settings' },
+  { Icon: KeyIcon,        text: 'API access for CRM integration' },
+  { Icon: TrendingUpIcon, text: 'Lead analytics and CSV export' },
+  { Icon: PhoneIcon,      text: 'Priority support' },
+  { Icon: SparklesIcon,   text: 'Unlimited calculator sessions per month' },
+];
+
 function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justSubscribed }) {
   if (loading) return (
-    <div className="setting-card">
-      <div className="setting-card-body" style={{ padding: 32, textAlign: 'center', color: '#64748b', fontSize: 14 }}>
-        Loading subscription details...
-      </div>
+    <div style={{ padding: 32, textAlign: 'center', color: '#64748b', fontSize: 14 }}>
+      Loading subscription details...
     </div>
   );
 
-  const status = subscription?.status || 'trialing';
-  const daysLeft = subscription?.daysLeft;
+  const status = subscription?.status || 'requires_trial_setup';
   const isActive = subscription?.active !== false;
   const hasStripe = !!subscription?.stripeCustomerId;
   const currentPeriodEnd = subscription?.currentPeriodEnd
     ? new Date(subscription.currentPeriodEnd).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : null;
-  const cancelAtPeriodEnd = subscription?.cancelAtPeriodEnd || false;
 
-  const statusBadge = {
-    active:   { bg: '#dcfce7', color: '#16a34a', label: 'Active' },
-    trialing: { bg: '#dbeafe', color: '#1d4ed8', label: `Free Trial${daysLeft != null ? ` — ${daysLeft} days left` : ''}` },
-    expired:  { bg: '#fee2e2', color: '#dc2626', label: 'Trial Expired' },
-    canceled: { bg: '#fef3c7', color: '#b45309', label: 'Canceled' },
-    past_due: { bg: '#fef3c7', color: '#b45309', label: 'Past Due — Payment Failed' },
+  const statusConfig = {
+    requires_trial_setup: { Icon: BoltIcon,          iconColor: '#2563eb', bg: '#eff6ff', border: '#bfdbfe', title: 'Start Your Free Trial' },
+    trialing:             { Icon: BoltIcon,          iconColor: '#2563eb', bg: '#eff6ff', border: '#bfdbfe', title: 'Free Trial' },
+    active:               { Icon: CheckCircleIcon,   iconColor: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0', title: 'Active Subscription' },
+    active_canceling:     { Icon: AlertTriangleIcon, iconColor: '#d97706', bg: '#fffbeb', border: '#fde68a', title: 'Active (Canceling)' },
+    past_due:             { Icon: AlertTriangleIcon, iconColor: '#dc2626', bg: '#fff1f2', border: '#fecdd3', title: 'Payment Past Due' },
+    expired:              { Icon: AlertTriangleIcon, iconColor: '#dc2626', bg: '#fef2f2', border: '#fecaca', title: 'Trial Expired' },
+    canceled:             { Icon: AlertTriangleIcon, iconColor: '#dc2626', bg: '#fef2f2', border: '#fecaca', title: 'Subscription Canceled' },
   };
-  const badge = statusBadge[status] || { bg: '#f1f5f9', color: '#64748b', label: status };
+  const sc = statusConfig[status] || { Icon: AlertTriangleIcon, iconColor: '#94a3b8', bg: '#f8fafc', border: '#e2e8f0', title: 'No Active Plan' };
+
+  const statusDetail = (() => {
+    if (status === 'requires_trial_setup') return 'Get 7 days free — credit card required, cancel anytime before your trial ends.';
+    if (status === 'trialing' && subscription?.daysLeft > 0) return `${subscription.daysLeft} days remaining in your trial.`;
+    if (status === 'trialing') return 'Your trial ends today.';
+    if (status === 'active' && currentPeriodEnd) return `Renews on ${currentPeriodEnd}.`;
+    if (status === 'active_canceling' && currentPeriodEnd) return `Active until ${currentPeriodEnd}. Will not renew.`;
+    if (status === 'past_due') return 'Your payment failed. Update your payment method to keep your calculator active.';
+    if (status === 'expired' || status === 'canceled') return 'Your calculator is currently paused. Subscribe to reactivate it.';
+    return '';
+  })();
 
   return (
-    <div className="setting-card">
-      <div className="setting-card-header">
-        <h3 className="setting-card-title">Plan & Billing</h3>
-        <p className="setting-card-desc">Manage your MySolarWidget subscription.</p>
+    <div style={{ maxWidth: 600 }}>
+      <div style={{ marginBottom: 24 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', marginBottom: 3, letterSpacing: '-0.3px' }}>Subscription</h2>
+        <p style={{ color: '#64748b', fontSize: 14 }}>Manage your MySolarWidget plan and billing.</p>
       </div>
-      <div className="setting-card-body">
 
-        {/* Success banner after returning from Stripe checkout */}
-        {justSubscribed && status === 'active' && (
-          <div style={{ background: '#dcfce7', border: '1px solid #86efac', borderRadius: 10, padding: '14px 18px', marginBottom: 20, color: '#15803d', fontSize: 14, fontWeight: 600 }}>
-            <SparklesIcon size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />
-            You're subscribed! Your embedded calculator is now active.
-          </div>
-        )}
-
-        {/* Status badge */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-          <span style={{ fontSize: 13, color: '#64748b' }}>Status:</span>
-          <span style={{ background: badge.bg, color: badge.color, borderRadius: 20, padding: '4px 14px', fontSize: 13, fontWeight: 700 }}>
-            {badge.label}
-          </span>
+      {/* Success banner after returning from Stripe checkout */}
+      {justSubscribed && (status === 'active' || status === 'trialing') && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 8, padding: '11px 14px', marginBottom: 18, color: '#15803d', fontSize: 14, fontWeight: 600 }}>
+          <SparklesIcon size={15} style={{ verticalAlign: 'middle' }} /> You're subscribed! Your embedded calculator is now active.
         </div>
+      )}
 
-        {/* ACTIVE — show billing date + manage button */}
-        {status === 'active' && (
-          <div style={{ background: cancelAtPeriodEnd ? '#fffbeb' : '#f0fdf4', border: `1px solid ${cancelAtPeriodEnd ? '#fde68a' : '#bbf7d0'}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <h4 style={{ fontSize: 15, fontWeight: 700, color: cancelAtPeriodEnd ? '#92400e' : '#15803d', marginBottom: 6 }}>
-              {cancelAtPeriodEnd ? 'Cancellation scheduled' : 'Your calculator is active'}
-            </h4>
-            {cancelAtPeriodEnd && currentPeriodEnd && (
-              <p style={{ fontSize: 13, color: '#78350f', marginBottom: 0 }}>
-                You've cancelled your subscription. Your calculator will remain active until <strong>{currentPeriodEnd}</strong>, then it will be deactivated.
-              </p>
-            )}
-            {!cancelAtPeriodEnd && currentPeriodEnd && (
-              <p style={{ fontSize: 13, color: '#64748b', marginBottom: 0 }}>
-                Next billing date: <strong style={{ color: '#0f172a' }}>{currentPeriodEnd}</strong>
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* TRIALING — show progress bar */}
-        {status === 'trialing' && (() => {
-          const TRIAL_DAYS = 30;
-          const days = daysLeft != null ? daysLeft : TRIAL_DAYS;
-          const pct = Math.max(0, Math.min(100, (days / TRIAL_DAYS) * 100));
-          const barColor = days > 10 ? '#3b82f6' : days > 3 ? '#f59e0b' : '#ef4444';
-          return (
-            <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
-                <h4 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: 0 }}>Free Trial</h4>
-                <span style={{ fontSize: 22, fontWeight: 800, color: barColor, letterSpacing: '-0.5px' }}>
-                  {days} <span style={{ fontSize: 13, fontWeight: 600, color: '#64748b' }}>day{days !== 1 ? 's' : ''} left</span>
-                </span>
-              </div>
-              <div style={{ background: '#e2e8f0', borderRadius: 99, height: 8, marginBottom: 14, overflow: 'hidden' }}>
-                <div style={{ width: `${pct}%`, height: '100%', background: barColor, borderRadius: 99, transition: 'width 0.4s' }} />
-              </div>
-              <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
-                Subscribe before your trial ends to keep your calculator live. Your settings, branding, and leads are all preserved.
-              </p>
+      {/* Status card */}
+      <div style={{ borderRadius: 12, padding: '20px 22px', marginBottom: 18, background: sc.bg, border: `1px solid ${sc.border}`, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 14 }}>
+          <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+            <div style={{ width: 42, height: 42, borderRadius: 10, background: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
+              <sc.Icon size={22} color={sc.iconColor} />
             </div>
-          );
-        })()}
-
-        {/* CANCELED — show reactivation prompt */}
-        {status === 'canceled' && (
-          <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#92400e', marginBottom: 8 }}>
-              Your subscription was canceled
-            </h4>
-            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
-              Your embedded calculator is paused. Click <strong>Reactivate Plan</strong> below to restart your subscription — your settings and leads are still saved.
-            </p>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: 18, color: '#0f172a', marginBottom: 4, letterSpacing: '-0.3px' }}>{sc.title}</div>
+              <div style={{ fontSize: 13.5, color: '#374151' }}>{statusDetail}</div>
+            </div>
           </div>
-        )}
-
-        {/* PAST DUE — payment failed */}
-        {status === 'past_due' && (
-          <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#c2410c', marginBottom: 8 }}>
-              Payment failed — action required
-            </h4>
-            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
-              We couldn't process your last payment. Update your payment method to keep your calculator active.
-            </p>
+          <div>
+            {(!isActive || status === 'trialing' || status === 'requires_trial_setup') && (
+              <button onClick={onSubscribe}
+                style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '11px 22px', background: '#2563eb', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+                {status === 'requires_trial_setup' ? 'Start 7-Day Trial →' : status === 'trialing' ? 'Subscribe Now →' : 'Reactivate →'}
+              </button>
+            )}
+            {(status === 'active' || status === 'active_canceling' || status === 'past_due') && (
+              <button onClick={onManage}
+                style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '11px 22px', background: '#0f172a', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+                Manage Billing →
+              </button>
+            )}
           </div>
-        )}
-
-        {/* EXPIRED trial */}
-        {status === 'expired' && (
-          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#dc2626', marginBottom: 8 }}>
-              Your free trial has ended
-            </h4>
-            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
-              Your embedded calculator is paused. Subscribe below to reactivate it instantly — all your settings and leads are still saved.
-            </p>
-          </div>
-        )}
-
-        {/* Action buttons */}
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-          {/* Not yet subscribed — show Subscribe button */}
-          {!hasStripe && (
-            <button
-              onClick={onSubscribe}
-              style={{ padding: '12px 28px', background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: 'white', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}
-            >
-              Subscribe — Activate Calculator
-            </button>
-          )}
-
-          {/* Active — show Manage Subscription */}
-          {hasStripe && status === 'active' && (
-            <button
-              onClick={onManage}
-              style={{ padding: '12px 28px', background: '#1e293b', color: 'white', border: 'none', borderRadius: 10, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}
-            >
-              Manage Subscription
-            </button>
-          )}
-
-          {/* Canceled — show Reactivate (→ new checkout with existing customer) */}
-          {hasStripe && status === 'canceled' && (
-            <button
-              onClick={onSubscribe}
-              style={{ padding: '12px 28px', background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: 'white', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}
-            >
-              Reactivate Plan
-            </button>
-          )}
-
-          {/* Past due — show Update Payment Method (→ billing portal) */}
-          {hasStripe && status === 'past_due' && (
-            <button
-              onClick={onManage}
-              style={{ padding: '12px 28px', background: '#dc2626', color: 'white', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}
-            >
-              Update Payment Method
-            </button>
-          )}
-
-          {/* Expired trial without Stripe — show Subscribe */}
-          {!hasStripe && status === 'expired' && (
-            <button
-              onClick={onSubscribe}
-              style={{ padding: '12px 28px', background: '#1e40af', color: 'white', border: 'none', borderRadius: 10, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}
-            >
-              Subscribe Now
-            </button>
-          )}
         </div>
+      </div>
 
-        {/* Footer note */}
-        {status === 'active' && (
-          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 16, lineHeight: 1.6 }}>
-            Cancel, update your payment method, or download invoices anytime from the billing portal.
-          </p>
-        )}
-        {(status === 'trialing' || status === 'expired') && !hasStripe && (
-          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 16, lineHeight: 1.6 }}>
-            No long-term commitment. Cancel anytime from the billing portal.
-          </p>
-        )}
+      {/* Features */}
+      <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, padding: '20px 22px', marginBottom: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 14 }}>What's included</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {SUBSCRIPTION_FEATURES.map(({ Icon, text }) => (
+            <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ width: 28, height: 28, borderRadius: 7, background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Icon size={14} color="#2563eb" />
+              </div>
+              <span style={{ fontSize: 13.5, color: '#374151' }}>{text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Pricing */}
+      <div style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%)', border: '1px solid #bfdbfe', borderRadius: 12, padding: '20px 22px' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 4 }}>
+          <span style={{ fontSize: 38, fontWeight: 900, color: '#0f172a', letterSpacing: '-1px' }}>$149</span>
+          <span style={{ fontSize: 15, color: '#64748b', fontWeight: 500 }}>/month</span>
+        </div>
+        <div style={{ fontSize: 13, color: '#64748b' }}>Cancel anytime. &nbsp;·&nbsp; 🔒 Secure billing via Stripe</div>
       </div>
     </div>
   );
