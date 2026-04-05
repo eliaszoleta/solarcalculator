@@ -121,7 +121,7 @@ function Hero() {
         </div>
 
         <p style={{ fontSize: 13, color: '#64748b', marginTop: 20 }}>
-          Credit card required. 7-day free trial.
+          $159/mo after 7-day trial · Cancel anytime
         </p>
       </div>
     </section>
@@ -176,9 +176,11 @@ function HowItWorks() {
   return (
     <section id="how-it-works" style={{ padding: '72px 24px', background: 'white' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
-        <SectionLabel>How It Works</SectionLabel>
-        <h2 style={sectionTitle}>From signup to live on your site in minutes</h2>
-        <p style={sectionSub}>No developers. No complex setup. Just copy, paste, and watch leads come in.</p>
+        <div style={{ textAlign: 'center' }}>
+          <SectionLabel>How It Works</SectionLabel>
+          <h2 style={sectionTitle}>From signup to live on your site in minutes</h2>
+          <p style={sectionSub}>No developers. No complex setup. Just copy, paste, and watch leads come in.</p>
+        </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 24, marginTop: 40 }}>
           {steps.map(s => (
@@ -241,9 +243,11 @@ function Features() {
   return (
     <section style={{ padding: '72px 24px', background: '#f8fafc' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
-        <SectionLabel>Features</SectionLabel>
-        <h2 style={sectionTitle}>Everything you need. Nothing you don't.</h2>
-        <p style={sectionSub}>Built specifically for solar installers who want leads — not a full CRM.</p>
+        <div style={{ textAlign: 'center' }}>
+          <SectionLabel>Features</SectionLabel>
+          <h2 style={sectionTitle}>Everything you need. Nothing you don't.</h2>
+          <p style={sectionSub}>Built specifically for solar installers who want leads — not a full CRM.</p>
+        </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginTop: 40 }}>
           {features.map(f => (
@@ -292,11 +296,13 @@ function AccuracySection() {
   return (
     <section style={{ padding: '72px 24px', background: 'white' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
-        <SectionLabel>Accuracy</SectionLabel>
-        <h2 style={sectionTitle}>Estimates homeowners can trust</h2>
-        <p style={sectionSub}>
-          Our estimates are <strong>85–90% accurate</strong> compared to real installer quotes for the same home. On a typical $25,000 system, that's within $2,500–$3,500 of what an installer would actually propose — close enough to set real expectations and compelling enough to get homeowners to call.
-        </p>
+        <div style={{ textAlign: 'center' }}>
+          <SectionLabel>Accuracy</SectionLabel>
+          <h2 style={sectionTitle}>Estimates homeowners can trust</h2>
+          <p style={sectionSub}>
+            Our estimates are <strong>85–90% accurate</strong> compared to real installer quotes for the same home. On a typical $25,000 system, that's within $2,500–$3,500 of what an installer would actually propose — close enough to set real expectations and compelling enough to get homeowners to call.
+          </p>
+        </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24, marginTop: 40 }}>
           {items.map(item => (
@@ -400,9 +406,11 @@ function WhatItDoesForYou() {
   return (
     <section style={{ padding: '72px 24px', background: '#f8fafc' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
-        <SectionLabel>Business Impact</SectionLabel>
-        <h2 style={sectionTitle}>What it actually does for your pipeline</h2>
-        <p style={sectionSub}>More than a widget — a 24/7 lead qualification machine for your solar business.</p>
+        <div style={{ textAlign: 'center' }}>
+          <SectionLabel>Business Impact</SectionLabel>
+          <h2 style={sectionTitle}>What it actually does for your pipeline</h2>
+          <p style={sectionSub}>More than a widget — a 24/7 lead qualification machine for your solar business.</p>
+        </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 40 }}>
           {benefits.map(b => (
@@ -456,9 +464,10 @@ function Pricing() {
                     7-Day Free Trial
                   </div>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                    <span style={{ fontSize: 36, fontWeight: 900, color: 'white', lineHeight: 1 }}>$0</span>
-                    <span style={{ fontSize: 13, color: '#64748b', fontWeight: 500 }}>/ first 7 days</span>
+                    <span style={{ fontSize: 36, fontWeight: 900, color: 'white', lineHeight: 1 }}>$159</span>
+                    <span style={{ fontSize: 13, color: '#94a3b8', fontWeight: 500 }}>/mo</span>
                   </div>
+                  <div style={{ fontSize: 12, color: '#64748b', marginTop: 4 }}>after 7-day free trial</div>
                 </div>
               </div>
 
@@ -491,6 +500,9 @@ function Pricing() {
               }}>
                 Start 7-Day Free Trial
               </a>
+              <p style={{ fontSize: 12, color: '#64748b', textAlign: 'center', marginTop: 12, marginBottom: 0 }}>
+                $159/mo after 7 days · Cancel anytime
+              </p>
             </div>
           </div>
         </div>
@@ -522,7 +534,7 @@ function FinalCTA() {
           Get Started Free
         </a>
         <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 16 }}>
-          Credit card required · 7-day free trial · Cancel anytime
+          $159/mo after trial · Cancel anytime
         </p>
       </div>
     </section>
