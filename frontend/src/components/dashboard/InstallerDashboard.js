@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
-import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon, PencilIcon, SettingsIcon, LayoutIcon, MailIcon, PhoneIcon, XIcon, DownloadIcon, RefreshCwIcon, InboxIcon, GlobeIcon, CalendarIcon, TrendingUpIcon, SearchIcon, BoltIcon, AlertTriangleIcon, KeyIcon } from '../ui/Icons';
+import { DollarSignIcon, PaintBrushIcon, ClipboardIcon, ChartBarIcon, CreditCardIcon, LogOutIcon, CheckCircleIcon, SparklesIcon, LayersIcon, PlusIcon, TrashIcon, PencilIcon, SettingsIcon, LayoutIcon, MailIcon, PhoneIcon, XIcon, DownloadIcon, RefreshCwIcon, InboxIcon, GlobeIcon, CalendarIcon, TrendingUpIcon, SearchIcon, BoltIcon, AlertTriangleIcon, KeyIcon, LockIcon } from '../ui/Icons';
 import SolarCalculator from '../calculator/SolarCalculator';
 import './InstallerDashboard.css';
 
