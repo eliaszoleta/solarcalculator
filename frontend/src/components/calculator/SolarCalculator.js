@@ -22,7 +22,7 @@ const BUILTIN_META = [
   { label: 'Home Type',     icon: <HomeIcon size={14} /> },
   { label: 'Roof',          icon: <BuildingIcon size={14} /> },
   { label: 'Battery',       icon: <BatteryIcon size={14} /> },
-  { label: 'Info',          icon: <UserIcon size={14} /> },
+  { label: 'Get Estimate',  icon: <UserIcon size={14} /> },
 ];
 
 // Build an ordered list of all steps (built-in + custom interleaved)
