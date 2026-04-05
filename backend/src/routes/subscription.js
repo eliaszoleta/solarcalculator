@@ -23,6 +23,7 @@ router.post('/checkout', async (req, res) => {
     const stripe = getStripe();
     const config = (await getInstallerConfig(installerId)) || {};
     const existingCustomerId = config.subscription?.stripeCustomerId;
+    const isReactivation = !!existingCustomerId;
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
@@ -31,6 +32,8 @@ router.post('/checkout', async (req, res) => {
       customer: existingCustomerId || undefined,
       customer_email: existingCustomerId ? undefined : req.user.email,
       metadata: { installerId },
+      // Only offer 7-day trial for new customers (not reactivations)
+      ...(isReactivation ? {} : { subscription_data: { trial_period_days: 7 } }),
       success_url: `${FRONTEND_URL}/installer?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${FRONTEND_URL}/installer?tab=subscription`,
     });
@@ -94,18 +97,22 @@ router.post('/verify-checkout', async (req, res) => {
 
     const config = (await getInstallerConfig(installerId)) || {};
 
-    if (session.payment_status !== 'paid' && session.status !== 'complete') {
+    // Accept paid sessions and trialing sessions (no_payment_required = trial with card on file)
+    const isComplete = session.status === 'complete' || session.payment_status === 'paid' || session.payment_status === 'no_payment_required';
+    if (!isComplete) {
       return res.json({ success: true, data: computeSubscriptionStatus(config) });
     }
 
     const sub = session.subscription;
+    const subObj = typeof sub === 'string' ? null : sub;
+    const stripeStatus = subObj?.status || 'trialing';
     config.subscription = {
       ...(config.subscription || {}),
       stripeCustomerId: session.customer,
       stripeSubscriptionId: typeof sub === 'string' ? sub : sub?.id,
-      status: 'active',
-      currentPeriodEnd: sub?.current_period_end
-        ? new Date(sub.current_period_end * 1000).toISOString()
+      status: stripeStatus === 'active' ? 'active' : 'trialing',
+      currentPeriodEnd: subObj?.current_period_end
+        ? new Date(subObj.current_period_end * 1000).toISOString()
         : null,
     };
     await saveInstallerConfig(installerId, config);
@@ -140,13 +147,15 @@ async function handleStripeEvent(event) {
         console.log(`Webhook: retrieved session, subscription status: ${fullSession.subscription?.status}`);
         const config = (await getInstallerConfig(installerId)) || {};
         const sub = fullSession.subscription;
+        const subObj = typeof sub === 'string' ? null : sub;
+        const stripeStatus = subObj?.status || 'trialing';
         config.subscription = {
           ...(config.subscription || {}),
           stripeCustomerId: fullSession.customer,
           stripeSubscriptionId: typeof sub === 'string' ? sub : sub?.id,
-          status: 'active',
-          currentPeriodEnd: sub && typeof sub !== 'string' && sub.current_period_end
-            ? new Date(sub.current_period_end * 1000).toISOString()
+          status: stripeStatus === 'active' ? 'active' : 'trialing',
+          currentPeriodEnd: subObj?.current_period_end
+            ? new Date(subObj.current_period_end * 1000).toISOString()
             : (config.subscription?.currentPeriodEnd || null),
         };
         await saveInstallerConfig(installerId, config);
@@ -244,11 +253,9 @@ async function findInstallerByCustomer(customerId) {
 }
 
 // Compute the effective subscription status from stored config.
-// Handles all Stripe statuses: active, canceled, past_due, unpaid, trialing, etc.
+// Handles all Stripe statuses: active, trialing, canceled, past_due, unpaid, etc.
 function computeSubscriptionStatus(config) {
   const sub = config.subscription || {};
-  const TRIAL_DAYS = 30;
-  const trialStart = sub.trialStartedAt ? new Date(sub.trialStartedAt) : null;
 
   // If a Stripe subscription exists, its status is authoritative
   if (sub.stripeSubscriptionId) {
@@ -258,6 +265,22 @@ function computeSubscriptionStatus(config) {
         status: 'active',
         cancelAtPeriodEnd: sub.cancelAtPeriodEnd || false,
         daysLeft: null,
+        currentPeriodEnd: sub.currentPeriodEnd || null,
+        stripeCustomerId: sub.stripeCustomerId || null,
+        stripeSubscriptionId: sub.stripeSubscriptionId,
+      };
+    }
+    if (sub.status === 'trialing') {
+      // Compute days left from Stripe's currentPeriodEnd (= trial end date)
+      const periodEnd = sub.currentPeriodEnd ? new Date(sub.currentPeriodEnd) : null;
+      const daysLeft = periodEnd
+        ? Math.max(0, Math.ceil((periodEnd.getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+        : null;
+      return {
+        active: true,
+        status: 'trialing',
+        cancelAtPeriodEnd: sub.cancelAtPeriodEnd || false,
+        daysLeft,
         currentPeriodEnd: sub.currentPeriodEnd || null,
         stripeCustomerId: sub.stripeCustomerId || null,
         stripeSubscriptionId: sub.stripeSubscriptionId,
@@ -294,36 +317,38 @@ function computeSubscriptionStatus(config) {
     };
   }
 
-  // No Stripe subscription yet — check free trial
-  if (trialStart) {
-    const daysElapsed = (Date.now() - trialStart.getTime()) / (1000 * 60 * 60 * 24);
-    if (daysElapsed < TRIAL_DAYS) {
-      return {
-        active: true,
-        status: 'trialing',
-        daysLeft: Math.ceil(TRIAL_DAYS - daysElapsed),
-        currentPeriodEnd: null,
-        stripeCustomerId: sub.stripeCustomerId || null,
-        stripeSubscriptionId: null,
-      };
-    }
+  // No Stripe subscription — check if explicitly pending (new accounts)
+  if (sub.status === 'pending' || !sub.trialStartedAt) {
     return {
       active: false,
-      status: 'expired',
-      daysLeft: 0,
+      status: 'pending',
+      daysLeft: null,
+      currentPeriodEnd: null,
+      stripeCustomerId: null,
+      stripeSubscriptionId: null,
+    };
+  }
+
+  // Legacy: account has trialStartedAt (old auto-started trial format)
+  const TRIAL_DAYS = 7;
+  const trialStart = new Date(sub.trialStartedAt);
+  const daysElapsed = (Date.now() - trialStart.getTime()) / (1000 * 60 * 60 * 24);
+  if (daysElapsed < TRIAL_DAYS) {
+    return {
+      active: true,
+      status: 'trialing',
+      daysLeft: Math.ceil(TRIAL_DAYS - daysElapsed),
       currentPeriodEnd: null,
       stripeCustomerId: sub.stripeCustomerId || null,
       stripeSubscriptionId: null,
     };
   }
-
-  // No trial record yet — fresh account, 30-day trial starts now
   return {
-    active: true,
-    status: 'trialing',
-    daysLeft: TRIAL_DAYS,
+    active: false,
+    status: 'expired',
+    daysLeft: 0,
     currentPeriodEnd: null,
-    stripeCustomerId: null,
+    stripeCustomerId: sub.stripeCustomerId || null,
     stripeSubscriptionId: null,
   };
 }
