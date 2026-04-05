@@ -200,6 +200,36 @@ router.post('/:id/api-key/regenerate', async (req, res) => {
   }
 });
 
+// DELETE /api/installer/account — permanently delete account and all associated data
+router.delete('/account', async (req, res) => {
+  const installerId = req.user.id;
+  try {
+    if (SERVICE_KEY()) {
+      // Delete leads (non-fatal if table doesn't exist or no rows)
+      await axios.delete(
+        `${SUPABASE_URL}/rest/v1/leads?installer_id=eq.${encodeURIComponent(installerId)}`,
+        { headers: dbHeaders() }
+      ).catch(e => console.warn('Delete leads warning:', e.message));
+
+      // Delete installer config
+      await axios.delete(
+        `${SUPABASE_URL}/rest/v1/installer_configs?installer_id=eq.${encodeURIComponent(installerId)}`,
+        { headers: dbHeaders() }
+      ).catch(e => console.warn('Delete config warning:', e.message));
+
+      // Delete Supabase auth user (must come last)
+      await axios.delete(
+        `${SUPABASE_URL}/auth/v1/admin/users/${installerId}`,
+        { headers: { apikey: SERVICE_KEY(), Authorization: `Bearer ${SERVICE_KEY()}` } }
+      );
+    }
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Delete account error:', err.message);
+    res.status(500).json({ success: false, error: 'Failed to delete account. Please try again.' });
+  }
+});
+
 module.exports = router;
 module.exports.getInstallerConfig = getInstallerConfig;
 module.exports.saveInstallerConfig = saveInstallerConfig;
