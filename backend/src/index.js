@@ -36,7 +36,7 @@ app.use(cors({
     'https://www.mysolarwidget.com',
     process.env.FRONTEND_URL,
   ].filter(Boolean),
-  methods: ['GET', 'POST', 'PUT'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
