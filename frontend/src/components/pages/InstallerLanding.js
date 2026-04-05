@@ -109,7 +109,7 @@ function Hero() {
             textDecoration: 'none', boxShadow: '0 4px 16px rgba(37,99,235,0.4)',
             transition: 'transform 0.15s',
           }}>
-            Start 30-Day Free Trial
+            Start 7-Day Free Trial
           </a>
           <a href="#how-it-works" style={{
             padding: '13px 24px', background: 'rgba(255,255,255,0.1)',
@@ -121,7 +121,7 @@ function Hero() {
         </div>
 
         <p style={{ fontSize: 13, color: '#64748b', marginTop: 20 }}>
-          No credit card required. 30-day free trial.
+          Credit card required. 7-day free trial.
         </p>
       </div>
     </section>
@@ -134,7 +134,7 @@ function LogoBar() {
     { value: '< 2 min', label: 'Setup time' },
     { value: 'NREL', label: 'Powered by real solar data' },
     { value: '85–90%', label: 'Accurate vs. real installer quotes' },
-    { value: '30 days', label: 'Free trial' },
+    { value: '7 days', label: 'Free trial' },
   ];
   return (
     <div style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '28px 24px' }}>
@@ -453,11 +453,11 @@ function Pricing() {
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
                 <div>
                   <div style={{ display: 'inline-block', background: 'rgba(245,158,11,0.18)', color: '#fbbf24', borderRadius: 20, padding: '3px 12px', fontSize: 12, fontWeight: 700, letterSpacing: '0.04em', marginBottom: 12 }}>
-                    30-Day Free Trial
+                    7-Day Free Trial
                   </div>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
                     <span style={{ fontSize: 36, fontWeight: 900, color: 'white', lineHeight: 1 }}>$0</span>
-                    <span style={{ fontSize: 13, color: '#64748b', fontWeight: 500 }}>/ first 30 days</span>
+                    <span style={{ fontSize: 13, color: '#64748b', fontWeight: 500 }}>/ first 7 days</span>
                   </div>
                 </div>
               </div>
@@ -489,7 +489,7 @@ function Pricing() {
                 textDecoration: 'none', boxShadow: '0 6px 20px rgba(245,158,11,0.28)',
                 letterSpacing: '-0.01em',
               }}>
-                Start Free Trial — No Card Required
+                Start 7-Day Free Trial
               </a>
             </div>
           </div>
@@ -510,7 +510,7 @@ function FinalCTA() {
           <span style={{ color: '#2563eb' }}>Yours will have a solar calculator.</span>
         </h2>
         <p style={{ ...sectionSub, margin: '0 auto 36px' }}>
-          Start your 30-day free trial today. Be live on your website today.
+          Start your 7-day free trial today. Be live on your website today.
         </p>
         <a href="/installer" style={{
           display: 'inline-block', padding: '13px 32px',
@@ -522,7 +522,7 @@ function FinalCTA() {
           Get Started Free
         </a>
         <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 16 }}>
-          No credit card · 30-day free trial · Cancel anytime
+          Credit card required · 7-day free trial · Cancel anytime
         </p>
       </div>
     </section>

@@ -82,20 +82,20 @@ router.get('/:id', async (req, res) => {
   try {
     let config = await getInstallerConfig(req.params.id);
     if (!config) {
-      // First access — initialise config with trial start
+      // First access — new account requires Stripe checkout to start 7-day trial (CC required)
       config = {
         ...DEFAULT_INSTALLER_CONFIG,
         subscription: {
-          trialStartedAt: new Date().toISOString(),
-          status: 'trialing',
+          trialType: 'stripe',
+          status: null,
           stripeCustomerId: null,
           stripeSubscriptionId: null,
           currentPeriodEnd: null,
         },
       };
       await saveInstallerConfig(req.params.id, config);
-    } else if (!config.subscription?.trialStartedAt) {
-      // Existing account without trial date — backfill
+    } else if (!config.subscription?.trialStartedAt && config.subscription?.trialType !== 'stripe') {
+      // Legacy backfill: existing accounts missing trialStartedAt (keep 30-day free trial)
       config.subscription = {
         ...(config.subscription || {}),
         trialStartedAt: new Date().toISOString(),

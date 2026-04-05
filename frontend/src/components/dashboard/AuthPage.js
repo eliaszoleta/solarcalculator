@@ -125,7 +125,7 @@ export default function AuthPage({ onAuth }) {
           {mode === 'signup' && (
             <>
               <h1 style={headingStyle}>Create your account</h1>
-              <p style={subStyle}>30-day free trial — no credit card required</p>
+              <p style={subStyle}>7-day free trial · Credit card required · Cancel anytime</p>
               <form onSubmit={handleSignup} style={formStyle}>
                 <Field label="Company Name" type="text" placeholder="SunShine Solar LLC" value={form.companyName} onChange={v => update('companyName', v)} />
                 <Field label="Email Address" type="email" placeholder="you@company.com" value={form.email} onChange={v => update('email', v)} />

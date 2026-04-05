@@ -1451,6 +1451,7 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
   const cancelAtPeriodEnd = subscription?.cancelAtPeriodEnd || false;
 
   const statusBadge = {
+    requires_trial_setup: { bg: '#eff6ff', color: '#2563eb', label: 'Start Your Trial' },
     active:   { bg: '#dcfce7', color: '#16a34a', label: 'Active' },
     trialing: { bg: '#dbeafe', color: '#1d4ed8', label: `Free Trial${daysLeft != null ? ` — ${daysLeft} days left` : ''}` },
     expired:  { bg: '#fee2e2', color: '#dc2626', label: 'Trial Expired' },
@@ -1502,9 +1503,21 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
           </div>
         )}
 
+        {/* REQUIRES TRIAL SETUP — new account, must start Stripe trial */}
+        {status === 'requires_trial_setup' && (
+          <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <h4 style={{ fontSize: 15, fontWeight: 700, color: '#1d4ed8', marginBottom: 8 }}>
+              Start your 7-day free trial
+            </h4>
+            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 0 }}>
+              Get 7 days free to try everything — your embedded calculator, lead capture, and full dashboard. Credit card required, cancel anytime before your trial ends and you won't be charged.
+            </p>
+          </div>
+        )}
+
         {/* TRIALING — show progress bar */}
         {status === 'trialing' && (() => {
-          const TRIAL_DAYS = 30;
+          const TRIAL_DAYS = hasStripe ? 7 : 30;
           const days = daysLeft != null ? daysLeft : TRIAL_DAYS;
           const pct = Math.max(0, Math.min(100, (days / TRIAL_DAYS) * 100));
           const barColor = days > 10 ? '#3b82f6' : days > 3 ? '#f59e0b' : '#ef4444';
@@ -1564,13 +1577,13 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
 
         {/* Action buttons */}
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-          {/* Not yet subscribed — show Subscribe button */}
+          {/* Not yet subscribed — show Subscribe / Start Trial button */}
           {!hasStripe && (
             <button
               onClick={onSubscribe}
               style={{ padding: '12px 28px', background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: 'white', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}
             >
-              Subscribe — Activate Calculator
+              {status === 'requires_trial_setup' ? 'Start 7-Day Free Trial →' : 'Subscribe — Activate Calculator'}
             </button>
           )}
 
