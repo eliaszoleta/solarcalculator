@@ -42,6 +42,7 @@ export default function AuthPage({ onAuth }) {
       password: form.password,
       options: {
         data: { company_name: form.companyName },
+        emailRedirectTo: 'https://www.mysolarwidget.com/installer',
       },
     });
     if (error) { setError(error.message); }
@@ -53,7 +54,7 @@ export default function AuthPage({ onAuth }) {
     e.preventDefault();
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(form.email, {
-      redirectTo: `${window.location.origin}/installer`,
+      redirectTo: 'https://www.mysolarwidget.com/installer',
     });
     if (error) { setError(error.message); }
     else { setMode('check_email'); }
