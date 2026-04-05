@@ -421,32 +421,32 @@ export default function InstallerDashboard({ user, onLogout }) {
 
         <div className="dash-content">
 
-          {subscription?.status === 'requires_trial_setup' && (
-            <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12, padding: '16px 20px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontWeight: 700, fontSize: 14, color: '#1d4ed8', margin: '0 0 2px' }}>Your calculator is paused</p>
-                <p style={{ fontSize: 13, color: '#1e40af', margin: 0, lineHeight: 1.5 }}>Start your 7-day free trial to activate your embedded solar calculator. Credit card required, cancel anytime.</p>
+          {subscription && !subscription.active && (
+            <div style={{
+              background: subscription.status === 'requires_trial_setup' ? '#eff6ff' : '#fef2f2',
+              border: `1px solid ${subscription.status === 'requires_trial_setup' ? '#bfdbfe' : '#fca5a5'}`,
+              borderRadius: 12, padding: '14px 20px', marginBottom: 24,
+              display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
+                <AlertTriangleIcon size={15} color={subscription.status === 'requires_trial_setup' ? '#2563eb' : '#dc2626'} />
+                <span style={{ fontWeight: 600, fontSize: 13, color: subscription.status === 'requires_trial_setup' ? '#1d4ed8' : '#dc2626' }}>
+                  {subscription.status === 'requires_trial_setup'
+                    ? 'Your calculator is paused — start your 7-day free trial to activate'
+                    : subscription.status === 'expired'
+                    ? 'Your free trial has ended — subscribe to reactivate your calculator'
+                    : 'Your calculator is paused — subscription issue'}
+                </span>
               </div>
               <button
                 onClick={() => setActiveTab('subscription')}
-                style={{ whiteSpace: 'nowrap', padding: '10px 22px', background: '#2563eb', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}
+                style={{
+                  whiteSpace: 'nowrap', padding: '8px 18px',
+                  background: subscription.status === 'requires_trial_setup' ? '#2563eb' : '#dc2626',
+                  color: 'white', border: 'none', borderRadius: 7, fontWeight: 700, fontSize: 13, cursor: 'pointer',
+                }}
               >
-                Start Trial →
-              </button>
-            </div>
-          )}
-
-          {subscription?.status === 'expired' && (
-            <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 12, padding: '16px 20px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontWeight: 700, fontSize: 14, color: '#dc2626', margin: '0 0 2px' }}>Your free trial has ended</p>
-                <p style={{ fontSize: 13, color: '#7f1d1d', margin: 0, lineHeight: 1.5 }}>Your embedded solar calculator is now paused and no longer visible to visitors. Subscribe to reactivate it.</p>
-              </div>
-              <button
-                onClick={() => setActiveTab('subscription')}
-                style={{ whiteSpace: 'nowrap', padding: '10px 22px', background: '#dc2626', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}
-              >
-                Subscribe Now
+                {subscription.status === 'requires_trial_setup' ? 'Start Trial →' : 'Reactivate →'}
               </button>
             </div>
           )}

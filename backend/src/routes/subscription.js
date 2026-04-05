@@ -313,6 +313,20 @@ function computeSubscriptionStatus(config) {
     };
   }
 
+  // New CC-required trial — trialType:'stripe' means the account was created after the
+  // CC-required trial was introduced. These accounts must complete Stripe checkout first.
+  // This takes priority over trialStartedAt to handle any edge-case ordering.
+  if (sub.trialType === 'stripe') {
+    return {
+      active: false,
+      status: 'requires_trial_setup',
+      daysLeft: 7,
+      currentPeriodEnd: null,
+      stripeCustomerId: sub.stripeCustomerId || null,
+      stripeSubscriptionId: null,
+    };
+  }
+
   // Legacy: existing accounts with a free trial started without CC
   if (trialStart) {
     const daysElapsed = (Date.now() - trialStart.getTime()) / (1000 * 60 * 60 * 24);
@@ -336,7 +350,7 @@ function computeSubscriptionStatus(config) {
     };
   }
 
-  // New account: must start 7-day Stripe trial with CC
+  // New account: no Stripe subscription and no trial started yet
   return {
     active: false,
     status: 'requires_trial_setup',
