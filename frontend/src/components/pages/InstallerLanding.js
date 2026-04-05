@@ -121,7 +121,7 @@ function Hero() {
         </div>
 
         <p style={{ fontSize: 13, color: '#64748b', marginTop: 20 }}>
-          Credit card required · $159/mo after 7 days
+          $159/mo after 7-day trial · Cancel anytime
         </p>
       </div>
     </section>
@@ -501,7 +501,7 @@ function Pricing() {
                 Start 7-Day Free Trial
               </a>
               <p style={{ fontSize: 12, color: '#64748b', textAlign: 'center', marginTop: 12, marginBottom: 0 }}>
-                Card required · $159/mo after 7 days · Cancel anytime
+                $159/mo after 7 days · Cancel anytime
               </p>
             </div>
           </div>
@@ -534,7 +534,7 @@ function FinalCTA() {
           Get Started Free
         </a>
         <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 16 }}>
-          Card required · $159/mo after trial · Cancel anytime
+          $159/mo after trial · Cancel anytime
         </p>
       </div>
     </section>
