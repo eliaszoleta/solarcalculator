@@ -121,7 +121,7 @@ function Hero() {
         </div>
 
         <p style={{ fontSize: 13, color: '#64748b', marginTop: 20 }}>
-          $159/mo after 7-day trial · Cancel anytime
+          $159/mo after 7 days · Cancel anytime
         </p>
       </div>
     </section>
@@ -460,7 +460,7 @@ function Pricing() {
             <span style={{ fontSize: 54, fontWeight: 900, color: '#0f172a', letterSpacing: '-2px' }}>$159</span>
             <span style={{ fontSize: 17, color: '#64748b' }}>/month</span>
           </div>
-          <div style={{ color: '#16a34a', fontWeight: 600, fontSize: 14, marginBottom: 28, textAlign: 'center' }}>7-day free trial · Cancel anytime</div>
+          <div style={{ color: '#16a34a', fontWeight: 600, fontSize: 14, marginBottom: 28, textAlign: 'center' }}>$159/mo after 7 days · Cancel anytime</div>
 
           {/* Features */}
           <ul style={{ listStyle: 'none', padding: 0, marginBottom: 28 }}>
@@ -515,7 +515,7 @@ function FinalCTA() {
           Get Started Free
         </a>
         <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 16 }}>
-          $159/mo after trial · Cancel anytime
+          $159/mo after 7 days · Cancel anytime
         </p>
       </div>
     </section>
