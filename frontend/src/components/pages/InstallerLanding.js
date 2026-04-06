@@ -484,7 +484,7 @@ function Pricing() {
             Start Free Trial →
           </a>
           <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 11, textAlign: 'center' }}>
-            Credit card required. Cancel before 7 days and you won't be charged.
+            $159/mo after 7 days · Cancel anytime
           </p>
         </div>
       </div>
