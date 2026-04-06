@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { MailIcon, LockIcon, WrenchIcon, CheckCircleIcon } from '../ui/Icons';
+import { MailIcon, CheckCircleIcon } from '../ui/Icons';
 
 const DOMAIN = 'https://www.mysolarwidget.com';
 
@@ -53,35 +53,30 @@ export default function Contact() {
       <div style={{ maxWidth: 680, margin: '0 auto', padding: '40px 24px 80px' }}>
 
         {/* Contact cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 12, marginBottom: 32 }}>
-          {[
-            { icon: <MailIcon size={22} />, iconBg: '#dbeafe', iconColor: '#2563eb', label: 'General Inquiries', value: 'hello@mysolarwidget.com', href: 'mailto:hello@mysolarwidget.com' },
-            { icon: <LockIcon size={22} />, iconBg: '#f3e8ff', iconColor: '#9333ea', label: 'Privacy & Data', value: 'privacy@mysolarwidget.com', href: 'mailto:privacy@mysolarwidget.com' },
-            { icon: <WrenchIcon size={22} />, iconBg: '#dcfce7', iconColor: '#16a34a', label: 'Installer Partnerships', value: 'installers@mysolarwidget.com', href: 'mailto:installers@mysolarwidget.com' },
-          ].map(item => (
-            <a
-              key={item.label}
-              href={item.href}
-              style={{
-                display: 'block',
-                padding: '18px 16px',
-                background: 'white',
-                borderRadius: 14,
-                border: '1px solid #e2e8f0',
-                textDecoration: 'none',
-                transition: 'border-color 0.15s, box-shadow 0.15s',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(37,99,235,0.1)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)'; }}
-            >
-              <div style={{ width: 40, height: 40, borderRadius: 10, background: item.iconBg, color: item.iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-                {item.icon}
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>{item.label}</div>
-              <div style={{ fontSize: 12, color: '#2563eb', fontWeight: 500 }}>{item.value}</div>
-            </a>
-          ))}
+        <div style={{ marginBottom: 32 }}>
+          <a
+            href="mailto:hello@mysolarwidget.com"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 14,
+              padding: '18px 20px',
+              background: 'white',
+              borderRadius: 14,
+              border: '1px solid #e2e8f0',
+              textDecoration: 'none',
+              transition: 'border-color 0.15s, box-shadow 0.15s',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(37,99,235,0.1)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)'; }}
+          >
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: '#dbeafe', color: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <MailIcon size={22} />
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a', marginBottom: 2 }}>General Inquiries</div>
+              <div style={{ fontSize: 12, color: '#2563eb', fontWeight: 500 }}>hello@mysolarwidget.com</div>
+            </div>
+          </a>
         </div>
 
         {/* Contact form */}
