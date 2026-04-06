@@ -437,74 +437,55 @@ function WhatItDoesForYou() {
 
 /* ─── Pricing ─────────────────────────────────────────── */
 function Pricing() {
+  const features = [
+    'Unlimited calculator sessions',
+    'White-label branding & custom colors',
+    'Lead capture dashboard',
+    'Pricing & margin controls',
+    'Embeddable calculator on your website',
+    'CSV export & API access',
+    'Priority support',
+    'Cancel anytime — no contracts',
+  ];
   return (
-    <section id="pricing" style={{ padding: '80px 24px', background: 'white' }}>
-      <div style={{ maxWidth: 960, margin: '0 auto', textAlign: 'center' }}>
+    <section id="pricing" style={{ padding: '80px 24px', background: '#f0f7ff' }}>
+      <div style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center' }}>
         <SectionLabel>Pricing</SectionLabel>
         <h2 style={sectionTitle}>Simple, transparent pricing</h2>
-        <p style={{ ...sectionSub, margin: '0 auto 48px' }}>One plan. Everything included. Cancel anytime.</p>
+        <p style={{ ...sectionSub, margin: '0 auto 36px' }}>One plan. Everything included. No surprises.</p>
 
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div style={{
-            width: '100%', maxWidth: 420,
-            background: 'linear-gradient(160deg, #0f172a 0%, #1e3a8a 100%)',
-            borderRadius: 20, padding: '28px 28px 24px',
-            position: 'relative', overflow: 'hidden',
-            boxShadow: '0 20px 60px rgba(15,23,42,0.25)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            textAlign: 'left',
-          }}>
-            <div style={{ position: 'absolute', top: -60, right: -60, width: 200, height: 200, borderRadius: '50%', background: 'rgba(245,158,11,0.1)', filter: 'blur(48px)', pointerEvents: 'none' }} />
-
-            <div style={{ position: 'relative' }}>
-              {/* Badge + price row */}
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
-                <div>
-                  <div style={{ display: 'inline-block', background: 'rgba(245,158,11,0.18)', color: '#fbbf24', borderRadius: 20, padding: '3px 12px', fontSize: 12, fontWeight: 700, letterSpacing: '0.04em', marginBottom: 12 }}>
-                    7-Day Free Trial
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                    <span style={{ fontSize: 36, fontWeight: 900, color: 'white', lineHeight: 1 }}>$159</span>
-                    <span style={{ fontSize: 13, color: '#94a3b8', fontWeight: 500 }}>/mo</span>
-                  </div>
-                  <div style={{ fontSize: 12, color: '#64748b', marginTop: 4 }}>after 7-day free trial</div>
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div style={{ height: 1, background: 'rgba(255,255,255,0.08)', marginBottom: 20 }} />
-
-              {/* Feature list */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
-                {[
-                  'Unlimited calculator usage during trial',
-                  'Full dashboard access (pricing, branding, leads)',
-                  'Embeddable calculator on your website',
-                  'All leads captured and stored',
-                  'Cancel anytime — no contracts',
-                  'Reactivate instantly after subscribing',
-                ].map(item => (
-                  <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ color: '#34d399', fontSize: 14, flexShrink: 0, fontWeight: 700 }}>✓</span>
-                    <span style={{ fontSize: 13, color: '#cbd5e1', lineHeight: 1.4 }}>{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              <a href="/installer" style={{
-                display: 'block', padding: '13px 20px', textAlign: 'center',
-                background: 'linear-gradient(135deg, #f59e0b, #f97316)',
-                color: 'white', borderRadius: 10, fontWeight: 800, fontSize: 15,
-                textDecoration: 'none', boxShadow: '0 6px 20px rgba(245,158,11,0.28)',
-                letterSpacing: '-0.01em',
-              }}>
-                Start 7-Day Free Trial
-              </a>
-              <p style={{ fontSize: 12, color: '#64748b', textAlign: 'center', marginTop: 12, marginBottom: 0 }}>
-                $159/mo after 7 days · Cancel anytime
-              </p>
-            </div>
+        <div style={{ background: 'white', border: '2px solid #2563eb', borderRadius: 20, padding: '38px 34px', boxShadow: '0 8px 40px rgba(37,99,235,0.12)', textAlign: 'left' }}>
+          {/* Price */}
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 4, marginBottom: 4 }}>
+            <span style={{ fontSize: 54, fontWeight: 900, color: '#0f172a', letterSpacing: '-2px' }}>$159</span>
+            <span style={{ fontSize: 17, color: '#64748b' }}>/month</span>
           </div>
+          <div style={{ color: '#16a34a', fontWeight: 600, fontSize: 14, marginBottom: 28, textAlign: 'center' }}>7-day free trial · Cancel anytime</div>
+
+          {/* Features */}
+          <ul style={{ listStyle: 'none', padding: 0, marginBottom: 28 }}>
+            {features.map(item => (
+              <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 11, fontSize: 14.5, color: '#374151' }}>
+                <span style={{ width: 20, height: 20, borderRadius: '50%', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <a href="/installer" style={{
+            display: 'block', background: '#2563eb', color: 'white',
+            padding: '15px 0', borderRadius: 10, textDecoration: 'none',
+            fontWeight: 700, fontSize: 16, textAlign: 'center',
+          }}>
+            Start Free Trial →
+          </a>
+          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 11, textAlign: 'center' }}>
+            Credit card required. Cancel before 7 days and you won't be charged.
+          </p>
         </div>
       </div>
     </section>
