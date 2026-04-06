@@ -6,4 +6,4 @@ Disallow: /installer/
 Disallow: /embed/
 Disallow: /api/
 
-Sitemap: https://mysolarwidget.com/sitemap.xml
+Sitemap: https://www.mysolarwidget.com/sitemap.xml
