@@ -82,13 +82,12 @@ export default function BlogCategory({ category: categorySlug }) {
       <header style={{
         background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1e40af 100%)',
         padding: '44px 24px 40px',
-        textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
       }}>
         <div style={{ position: 'absolute', top: -60, right: -60, width: 280, height: 280, borderRadius: '50%', background: 'rgba(245,158,11,0.1)', filter: 'blur(50px)' }} />
-        <div style={{ position: 'relative' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
+        <div style={{ position: 'relative', maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ display: 'flex', marginBottom: 14 }}>
             <div style={{ width: 56, height: 56, borderRadius: 14, background: colors.iconBg, border: `2px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <CategoryIcon slug={categorySlug} size={28} color={colors.iconColor} />
             </div>
@@ -97,7 +96,7 @@ export default function BlogCategory({ category: categorySlug }) {
             <span style={{ fontSize: 10, fontWeight: 700, color: '#93c5fd', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Category</span>
           </div>
           <h1 style={{ fontSize: 'clamp(20px, 3.5vw, 30px)', fontWeight: 900, letterSpacing: '-0.025em', margin: '0 0 8px', color: 'white', lineHeight: 1.2 }}>{category.label}</h1>
-          <p style={{ fontSize: 14, color: '#93c5fd', maxWidth: 440, margin: '0 auto', lineHeight: 1.6 }}>{category.description}</p>
+          <p style={{ fontSize: 14, color: '#93c5fd', lineHeight: 1.6 }}>{category.description}</p>
         </div>
       </header>
 
