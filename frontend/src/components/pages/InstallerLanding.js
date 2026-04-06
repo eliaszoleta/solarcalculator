@@ -448,26 +448,26 @@ function Pricing() {
     'Cancel anytime — no contracts',
   ];
   return (
-    <section id="pricing" style={{ padding: '80px 24px', background: '#f0f7ff' }}>
-      <div style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center' }}>
+    <section id="pricing" style={{ padding: '56px 24px', background: '#f0f7ff' }}>
+      <div style={{ maxWidth: 350, margin: '0 auto', textAlign: 'center' }}>
         <SectionLabel>Pricing</SectionLabel>
         <h2 style={sectionTitle}>Simple, transparent pricing</h2>
-        <p style={{ ...sectionSub, margin: '0 auto 36px' }}>One plan. Everything included. No surprises.</p>
+        <p style={{ ...sectionSub, margin: '0 auto 26px' }}>One plan. Everything included. No surprises.</p>
 
-        <div style={{ background: 'white', border: '2px solid #2563eb', borderRadius: 20, padding: '38px 34px', boxShadow: '0 8px 40px rgba(37,99,235,0.12)', textAlign: 'left' }}>
+        <div style={{ background: 'white', border: '2px solid #2563eb', borderRadius: 16, padding: '26px 24px', boxShadow: '0 6px 28px rgba(37,99,235,0.12)', textAlign: 'left' }}>
           {/* Price */}
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 4, marginBottom: 4 }}>
-            <span style={{ fontSize: 54, fontWeight: 900, color: '#0f172a', letterSpacing: '-2px' }}>$159</span>
-            <span style={{ fontSize: 17, color: '#64748b' }}>/month</span>
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 3, marginBottom: 3 }}>
+            <span style={{ fontSize: 38, fontWeight: 900, color: '#0f172a', letterSpacing: '-1.5px' }}>$159</span>
+            <span style={{ fontSize: 13, color: '#64748b' }}>/month</span>
           </div>
-          <div style={{ color: '#16a34a', fontWeight: 600, fontSize: 14, marginBottom: 28, textAlign: 'center' }}>$159/mo after 7 days · Cancel anytime</div>
+          <div style={{ color: '#16a34a', fontWeight: 600, fontSize: 12, marginBottom: 20, textAlign: 'center' }}>$159/mo after 7 days · Cancel anytime</div>
 
           {/* Features */}
-          <ul style={{ listStyle: 'none', padding: 0, marginBottom: 28 }}>
+          <ul style={{ listStyle: 'none', padding: 0, marginBottom: 20 }}>
             {features.map(item => (
-              <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 11, fontSize: 14.5, color: '#374151' }}>
-                <span style={{ width: 20, height: 20, borderRadius: '50%', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round">
+              <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, fontSize: 13, color: '#374151' }}>
+                <span style={{ width: 16, height: 16, borderRadius: '50%', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <svg width={9} height={9} viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </span>
@@ -478,12 +478,12 @@ function Pricing() {
 
           <a href="/installer" style={{
             display: 'block', background: '#2563eb', color: 'white',
-            padding: '15px 0', borderRadius: 10, textDecoration: 'none',
-            fontWeight: 700, fontSize: 16, textAlign: 'center',
+            padding: '11px 0', borderRadius: 8, textDecoration: 'none',
+            fontWeight: 700, fontSize: 14, textAlign: 'center',
           }}>
             Start Free Trial →
           </a>
-          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 11, textAlign: 'center' }}>
+          <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 8, textAlign: 'center' }}>
             $159/mo after 7 days · Cancel anytime
           </p>
         </div>
