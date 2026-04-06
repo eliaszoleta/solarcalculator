@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE_URL = 'https://mysolarwidget.com';
+const SITE_URL = 'https://www.mysolarwidget.com';
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
 // ── Parse blogPosts.js as text ─────────────────────────────────────────────

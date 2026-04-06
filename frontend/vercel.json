@@ -1,14 +1,6 @@
 {
   "buildCommand": "CI=false npm run build",
   "outputDirectory": "build",
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.mysolarwidget.com" }],
-      "destination": "https://mysolarwidget.com/:path*",
-      "permanent": true
-    }
-  ],
   "headers": [
     {
       "source": "/sitemap.xml",
