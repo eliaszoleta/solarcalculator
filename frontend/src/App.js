@@ -279,10 +279,10 @@ export default function App() {
     <div className="app">
       <Helmet>
         <title>Free Solar Panel Cost Calculator 2026 | MySolarWidget</title>
-        <meta name="description" content="Free solar savings calculator for US homeowners. Enter your electric bill and get an instant estimate of solar installation cost, monthly savings, and 30-year ROI. Powered by real NREL sunlight data." />
+        <meta name="description" content="Free solar panel cost calculator for US homeowners. Estimate installation cost, monthly savings & 30-year ROI. Enter your electric bill and ZIP code — takes under 2 minutes." />
         <link rel="canonical" href="https://www.mysolarwidget.com/" />
         <meta property="og:title" content="Free Solar Panel Cost Calculator 2026 | MySolarWidget" />
-        <meta property="og:description" content="Free solar savings calculator for US homeowners. Enter your electric bill and get an instant estimate of solar installation cost, monthly savings, and 30-year ROI." />
+        <meta property="og:description" content="Free solar panel cost calculator for US homeowners. Estimate installation cost, monthly savings & 30-year ROI. Enter your electric bill and ZIP code." />
         <meta property="og:url" content="https://www.mysolarwidget.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
@@ -362,12 +362,50 @@ export default function App() {
               "@type": "Question",
               "name": "How much do solar panels cost in 2026?",
               "acceptedAnswer": { "@type": "Answer", "text": "The average cost of a residential solar system in 2026 is $14,000–$25,000 before the 30% federal tax credit, depending on system size and location. After the ITC, most homeowners pay $10,000–$18,000 net. Our calculator gives you a personalized estimate based on your electricity usage and state." }
+            },
+            {
+              "@type": "Question",
+              "name": "What solar financing options are available?",
+              "acceptedAnswer": { "@type": "Answer", "text": "The four main solar financing options are: (1) Cash purchase — lowest total cost, full ownership, maximum savings. (2) Solar loan — own the system, keep tax credits, pay over time (5–20 year terms, 4–8% APR). (3) Solar lease — monthly payment, no ownership, no tax credits, but $0 down and predictable bills. (4) PPA (Power Purchase Agreement) — pay per kWh produced, often below utility rates, no upfront cost. Most homeowners choose a solar loan for the best balance of savings and flexibility." }
+            },
+            {
+              "@type": "Question",
+              "name": "What solar incentives are available in 2026?",
+              "acceptedAnswer": { "@type": "Answer", "text": "In 2026, the federal Investment Tax Credit (ITC) gives homeowners a 30% tax credit on the full cost of solar installation. Many states add additional incentives: California has SGIP battery rebates, New York has the NY-Sun program (up to 25% rebate), Massachusetts has SMART incentives, Texas offers property tax exemptions, and Florida has sales tax exemptions. Net metering policies — where your utility credits you for excess solar power you send to the grid — are also available in most states." }
+            },
+            {
+              "@type": "Question",
+              "name": "How accurate is a solar estimate vs a real installer quote?",
+              "acceptedAnswer": { "@type": "Answer", "text": "A good solar estimator like ours is typically 80–90% accurate compared to a real installer quote. The difference comes from site-specific factors an estimator can't see: exact shading from trees or chimneys, roof pitch and condition, local permit costs, and the specific equipment an installer uses. Our estimates use NREL PVWatts real irradiance data and current market installation rates, making them reliable enough to know if solar makes financial sense before committing to a consultation." }
+            },
+            {
+              "@type": "Question",
+              "name": "What is net metering for solar panels?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Net metering is a billing policy where your utility company credits you for excess electricity your solar panels generate and send back to the grid. For example, if your panels produce more power than you use during the day, that surplus flows to the grid and reduces your bill — sometimes to $0. Most US states have net metering, though the credit rate varies. Full retail net metering (where you get credited the same rate you pay) offers the best return on solar." }
             }
           ]
         })}</script>
       </Helmet>
       <Header />
       <main>
+        {/* H1 intro — critical for SEO; establishes primary keyword signal for Google */}
+        <section style={{ background: 'white', padding: '36px 24px 0', textAlign: 'center' }}>
+          <div style={{ maxWidth: 640, margin: '0 auto' }}>
+            <h1 style={{ fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.15, marginBottom: 10, letterSpacing: '-0.025em' }}>
+              Free Solar Panel Cost &amp; Savings Calculator
+            </h1>
+            <p style={{ fontSize: 15, color: '#64748b', lineHeight: 1.65, maxWidth: 520, margin: '0 auto 14px' }}>
+              Get a free residential solar estimate in under 2 minutes. See your installation cost, monthly savings, and 30-year ROI — based on real NREL sunlight data for your ZIP code.
+            </p>
+            <div style={{ display: 'flex', gap: 18, justifyContent: 'center', flexWrap: 'wrap', fontSize: 12.5, color: '#64748b', paddingBottom: 4 }}>
+              {['100% free', 'No signup required', '80–90% accurate estimate', 'Takes under 2 min'].map(t => (
+                <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span> {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
         <SolarCalculator />
         <SEOContent />
       </main>
