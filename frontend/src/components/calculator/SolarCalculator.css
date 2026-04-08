@@ -5,13 +5,15 @@
 }
 
 .calculator-container {
-  max-width: 780px;
+  max-width: 640px;
   margin: 0 auto;
 }
 
 .calculator-header {
   text-align: center;
-  margin-bottom: 16px;
+  max-width: 780px;
+  margin: 0 auto 16px;
+  padding: 0 16px;
 }
 
 .calc-badge {
@@ -31,7 +33,7 @@
 }
 
 .calc-title {
-  font-size: clamp(18px, 3.5vw, 26px);
+  font-size: clamp(18px, 3.5vw, 24px);
   font-weight: 800;
   color: var(--text, #0f172a);
   line-height: 1.2;
