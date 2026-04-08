@@ -177,8 +177,8 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
         {!embedded && (
           <div className="calculator-header">
             <span className="calc-badge">Free Estimate</span>
-            <h1 className="calc-title">Free Solar Panel Cost Calculator</h1>
-            <p className="calc-subtitle">Answer 5 quick questions and get your personalized solar savings estimate instantly.</p>
+            <h1 className="calc-title">Free Solar Panel Cost &amp; Savings Calculator</h1>
+            <p className="calc-subtitle">Instant residential solar estimate — installation cost, monthly savings &amp; 30-year ROI based on real NREL data for your ZIP code.</p>
           </div>
         )}
 
