@@ -389,16 +389,19 @@ export default function App() {
       <Header />
       <main>
         {/* H1 intro — critical for SEO; establishes primary keyword signal for Google */}
-        <section style={{ background: 'white', padding: '36px 24px 0', textAlign: 'center' }}>
-          <div style={{ maxWidth: 640, margin: '0 auto' }}>
-            <h1 style={{ fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.15, marginBottom: 10, letterSpacing: '-0.025em' }}>
+        <section style={{ background: 'white', padding: '24px 24px 0', textAlign: 'center' }}>
+          <div style={{ maxWidth: 580, margin: '0 auto' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', background: '#eff6ff', color: '#2563eb', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: 999, marginBottom: 10, border: '1px solid rgba(37,99,235,0.15)' }}>
+              Free Estimate
+            </span>
+            <h1 style={{ fontSize: 'clamp(20px, 3.5vw, 30px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.15, marginBottom: 8, letterSpacing: '-0.02em' }}>
               Free Solar Panel Cost &amp; Savings Calculator
             </h1>
-            <p style={{ fontSize: 15, color: '#64748b', lineHeight: 1.65, maxWidth: 520, margin: '0 auto 14px' }}>
-              Get a free residential solar estimate in under 2 minutes. See your installation cost, monthly savings, and 30-year ROI — based on real NREL sunlight data for your ZIP code.
+            <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6, maxWidth: 460, margin: '0 auto 12px' }}>
+              Instant residential solar estimate — installation cost, monthly savings &amp; 30-year ROI based on real NREL data for your ZIP code.
             </p>
-            <div style={{ display: 'flex', gap: 18, justifyContent: 'center', flexWrap: 'wrap', fontSize: 12.5, color: '#64748b', paddingBottom: 4 }}>
-              {['100% free', 'No signup required', '80–90% accurate estimate', 'Takes under 2 min'].map(t => (
+            <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap', fontSize: 12, color: '#64748b', paddingBottom: 2 }}>
+              {['100% free', 'No signup required', '80–90% accurate', 'Under 2 min'].map(t => (
                 <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span> {t}
                 </span>
