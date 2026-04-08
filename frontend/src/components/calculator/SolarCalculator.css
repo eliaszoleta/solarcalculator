@@ -47,6 +47,27 @@
   line-height: 1.5;
 }
 
+@media (max-width: 480px) {
+  .calculator-section {
+    padding: 20px 16px 40px;
+  }
+  .calculator-header {
+    margin-bottom: 12px;
+  }
+  .calc-badge {
+    margin-bottom: 6px;
+  }
+  .calc-title {
+    font-size: 17px;
+    line-height: 1.2;
+    margin-bottom: 5px;
+  }
+  .calc-subtitle {
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+}
+
 .calculator-card {
   background: var(--card, white);
   border-radius: 16px;
