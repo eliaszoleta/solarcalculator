@@ -174,6 +174,13 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
       style={installerConfig?.fontFamily ? { fontFamily: `'${installerConfig.fontFamily}', sans-serif` } : {}}
     >
       <div className="calculator-container">
+        {!embedded && (
+          <div className="calculator-header">
+            <span className="calc-badge">Free Estimate</span>
+            <h1 className="calc-title">Free Solar Panel Cost Calculator</h1>
+            <p className="calc-subtitle">Answer 5 quick questions and get your personalized solar savings estimate instantly.</p>
+          </div>
+        )}
 
         <div
           className={`calculator-card${embedded ? ' embed-card' : ''}`}
