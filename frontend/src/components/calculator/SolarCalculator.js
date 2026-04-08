@@ -173,14 +173,14 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
       className={`calculator-section${embedded ? ' embed-mode' : ''}`}
       style={installerConfig?.fontFamily ? { fontFamily: `'${installerConfig.fontFamily}', sans-serif` } : {}}
     >
-      {!embedded && (
-        <div className="calculator-header">
-          <span className="calc-badge">Free Estimate</span>
-          <h1 className="calc-title">Free Solar Panel Cost &amp; Savings Calculator</h1>
-          <p className="calc-subtitle">Instant residential solar estimate — installation cost, monthly savings &amp; 30-year ROI based on real NREL data for your ZIP code.</p>
-        </div>
-      )}
       <div className="calculator-container">
+        {!embedded && (
+          <div className="calculator-header">
+            <span className="calc-badge">Free Estimate</span>
+            <h1 className="calc-title">Free Solar Savings Calculator — MySolarWidget</h1>
+            <p className="calc-subtitle">Answer 5 quick questions and get your personalized solar savings estimate instantly.</p>
+          </div>
+        )}
 
         <div
           className={`calculator-card${embedded ? ' embed-card' : ''}`}

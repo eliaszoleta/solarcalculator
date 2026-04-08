@@ -11,9 +11,7 @@
 
 .calculator-header {
   text-align: center;
-  max-width: 780px;
-  margin: 0 auto 16px;
-  padding: 0 16px;
+  margin-bottom: 16px;
 }
 
 .calc-badge {
