@@ -5,7 +5,7 @@
 }
 
 .calculator-container {
-  max-width: 640px;
+  max-width: 780px;
   margin: 0 auto;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .calc-title {
-  font-size: clamp(17px, 3vw, 21px);
+  font-size: clamp(18px, 3.5vw, 26px);
   font-weight: 800;
   color: var(--text, #0f172a);
   line-height: 1.2;
