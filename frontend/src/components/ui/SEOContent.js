@@ -107,10 +107,112 @@ export default function SEOContent() {
               q: 'Does my roof need to face south for solar?',
               a: 'South-facing roofs are ideal, but east or west-facing roofs still produce 80–85% of a south-facing system\'s output. North-facing roofs are not ideal. Our calculator accounts for shading loss in the "roof sun exposure" step.',
             },
+            {
+              q: 'What are my solar financing options?',
+              a: 'The four main solar financing options are: (1) Cash purchase — lowest total cost, full ownership. (2) Solar loan — own the system, keep the 30% tax credit, pay over time (4–8% APR, 5–20 year terms). (3) Solar lease — $0 down, no ownership, no tax credits. (4) PPA (Power Purchase Agreement) — pay per kWh produced, often below your utility rate. Most homeowners choose a solar loan to maximize savings while keeping upfront cost low.',
+            },
+            {
+              q: 'What solar incentives are available in 2026?',
+              a: 'The 30% federal Investment Tax Credit (ITC) is the biggest incentive — it reduces your tax bill by 30% of the total installation cost for systems installed through 2032. On top of that, most states offer additional programs: net metering credits, state rebates (NY-Sun, SMART in Massachusetts, SGIP in California), property tax exemptions, and sales tax exemptions. Our calculator includes the ITC in all estimates automatically.',
+            },
+            {
+              q: 'How does net metering work with solar panels?',
+              a: 'Net metering lets you earn bill credits for excess solar electricity you send to the grid. When your panels produce more than you use (typically midday), the surplus flows to the grid and your meter runs backward. At night or on cloudy days you draw from the grid and use those credits. With full retail net metering, your annual electricity bill can drop to near $0. Over 40 states have net metering laws, though credit rates vary by utility.',
+            },
           ].map((item, i) => (
             <FAQItem key={i} q={item.q} a={item.a} />
           ))}
         </div>
+        </div>
+      </section>
+
+      {/* Solar Financing Options */}
+      <section style={{ padding: '80px 24px', background: '#fafafa', borderTop: '1px solid #f3f4f6' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
+            Solar Financing Options: How to Pay for Solar Panels
+          </h2>
+          <p style={{ color: '#6b7280', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
+            Most US homeowners choose to finance their residential solar installation rather than pay cash. Here are the four main options and how they compare.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: 14 }}>
+            {[
+              {
+                title: 'Cash Purchase',
+                tag: 'Best overall savings',
+                tagColor: '#16a34a', tagBg: '#dcfce7',
+                desc: 'Pay upfront, own the system outright. You keep the full 30% federal tax credit and all electricity savings. Typical payback: 7–10 years, then free electricity for 15+ years.',
+              },
+              {
+                title: 'Solar Loan',
+                tag: 'Most popular',
+                tagColor: '#2563eb', tagBg: '#dbeafe',
+                desc: 'Borrow to buy. You own the system and keep the ITC. Terms run 5–20 years at 4–8% APR. Monthly loan payment is typically less than your current electric bill.',
+              },
+              {
+                title: 'Solar Lease',
+                tag: '$0 down',
+                tagColor: '#d97706', tagBg: '#fef3c7',
+                desc: 'Rent the solar panels from a company. No upfront cost, predictable monthly payments. You do not own the system and do not receive the federal tax credit.',
+              },
+              {
+                title: 'Solar PPA',
+                tag: 'Pay per kWh',
+                tagColor: '#9333ea', tagBg: '#f3e8ff',
+                desc: 'Power Purchase Agreement — you pay only for the electricity the panels produce, often at a rate below your utility. No ownership, no maintenance costs.',
+              },
+            ].map(item => (
+              <div key={item.title} style={{ background: '#ffffff', padding: '20px 18px', borderRadius: 14, border: '1px solid #e5e7eb' }}>
+                <div style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, color: item.tagColor, background: item.tagBg, borderRadius: 20, padding: '3px 10px', marginBottom: 12 }}>{item.tag}</div>
+                <div style={{ fontWeight: 800, fontSize: 15, color: '#0a0a0a', marginBottom: 8 }}>{item.title}</div>
+                <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Solar Incentives */}
+      <section style={{ padding: '80px 24px', background: '#ffffff', borderTop: '1px solid #f3f4f6' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
+            Solar Incentives &amp; Tax Credits in 2026
+          </h2>
+          <p style={{ color: '#6b7280', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
+            Federal and state solar incentives can cut your installation cost by 30–50%. Here are the key programs available to US homeowners in 2026.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 }}>
+            {[
+              {
+                title: '30% Federal Solar Tax Credit (ITC)',
+                desc: 'The Investment Tax Credit lets you deduct 30% of your total solar installation cost from your federal income taxes. For a $20,000 system, that\'s a $6,000 credit. Applies to systems installed through 2032.',
+                color: '#2563eb', bg: '#eff6ff',
+              },
+              {
+                title: 'Net Metering',
+                desc: 'Most states require utilities to credit you for excess solar power you send to the grid. Full retail net metering (credit = what you pay per kWh) maximizes your return. Check your state\'s policy.',
+                color: '#16a34a', bg: '#f0fdf4',
+              },
+              {
+                title: 'State & Utility Rebates',
+                desc: 'Many states add their own incentives: NY-Sun (New York), SMART (Massachusetts), SGIP battery rebates (California), Xcel Solar Rewards (Colorado), and more. Stack with the federal ITC for maximum savings.',
+                color: '#d97706', bg: '#fffbeb',
+              },
+              {
+                title: 'Property & Sales Tax Exemptions',
+                desc: 'Over 30 states exempt the added home value from solar from property taxes. Florida, Texas, Arizona, and New York also offer full sales tax exemptions on solar equipment purchases.',
+                color: '#9333ea', bg: '#faf5ff',
+              },
+            ].map(item => (
+              <div key={item.title} style={{ background: item.bg, padding: '20px 18px', borderRadius: 14, border: `1px solid ${item.color}22` }}>
+                <div style={{ fontWeight: 800, fontSize: 14.5, color: item.color, marginBottom: 8 }}>{item.title}</div>
+                <p style={{ fontSize: 13, color: '#4b5563', lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 20 }}>
+            *Our solar savings calculator automatically includes the 30% ITC in all cost estimates. State incentives vary — consult a local installer for exact amounts.
+          </p>
         </div>
       </section>
 
