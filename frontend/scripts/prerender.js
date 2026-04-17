@@ -24,6 +24,7 @@ function loadBlogData() {
   // Strip ES module keywords so new Function() can evaluate the file
   const src = raw
     .replace(/^export const /gm, 'const ')
+    .replace(/^export function /gm, 'function ')
     .replace(/^export default /gm, 'const _default = ')
     .replace(/^export \{[^}]*\};\s*$/gm, '');
   // Evaluate and return the two exported constants
