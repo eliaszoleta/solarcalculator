@@ -17,54 +17,9 @@
     "start": "react-scripts start",
     "prebuild": "node scripts/generate-sitemap.js",
     "build": "react-scripts build",
-    "postbuild": "react-snap",
+    "postbuild": "node scripts/prerender.js",
     "test": "react-scripts test",
     "sitemap": "node scripts/generate-sitemap.js"
-  },
-  "reactSnap": {
-    "source": "build",
-    "minifyHtml": { "collapseWhitespace": false, "removeComments": false },
-    "skipThirdPartyRequests": true,
-    "headless": true,
-    "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
-    "include": [
-      "/",
-      "/about",
-      "/blog",
-      "/blog/category/solar-costs",
-      "/blog/category/solar-financing",
-      "/blog/category/solar-savings",
-      "/blog/category/solar-incentives",
-      "/blog/category/solar-installation",
-      "/blog/category/solar-basics",
-      "/blog/how-much-do-solar-panels-cost",
-      "/blog/solar-financing-options",
-      "/blog/how-much-can-solar-save-you",
-      "/blog/federal-solar-tax-credit-guide",
-      "/blog/solar-installation-process",
-      "/blog/how-do-solar-panels-work",
-      "/blog/solar-panel-maintenance-costs",
-      "/blog/solar-battery-storage-cost",
-      "/blog/solar-loan-guide",
-      "/blog/solar-lease-vs-ppa",
-      "/blog/solar-net-metering-explained",
-      "/blog/solar-roi-payback-period",
-      "/blog/state-solar-rebates-2026",
-      "/blog/solar-srec-income",
-      "/blog/how-to-choose-solar-installer",
-      "/blog/solar-panel-types-guide",
-      "/blog/solar-panel-efficiency-explained",
-      "/blog/grid-tied-vs-off-grid-solar",
-      "/for-installers",
-      "/contact",
-      "/privacy-policy",
-      "/terms-of-service"
-    ],
-    "exclude": [
-      "/installer",
-      "/embed",
-      "/results"
-    ]
   },
   "proxy": "http://localhost:3001",
   "browserslist": {
@@ -78,8 +33,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "react-snap": "^1.23.0"
   }
 }
