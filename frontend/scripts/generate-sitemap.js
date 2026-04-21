@@ -8,7 +8,6 @@ const fs = require('fs');
 const path = require('path');
 
 const SITE_URL = 'https://www.mysolarwidget.com';
-const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
 // ── Parse blogPosts.js as text ─────────────────────────────────────────────
 
@@ -34,14 +33,14 @@ const dateMatches  = [...postsSection.matchAll(/publishDate:\s*['"]([^'"]+)['"]/
 
 const posts = slugMatches.map((m, i) => ({
   slug: m[1],
-  date: dateMatches[i]?.['1'] || TODAY,
+  date: dateMatches[i]?.['1'] || '2026-04-06',
 }));
 
-// ── Static pages ───────────────────────────────────────────────────────────
+// ── Static pages — update lastmod manually when page content actually changes
 const staticPages = [
-  { path: '/',                 priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
-  { path: '/for-installers',   priority: '0.9', changefreq: 'monthly', lastmod: TODAY },
-  { path: '/blog',             priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { path: '/',                 priority: '1.0', changefreq: 'weekly',  lastmod: '2026-04-21' },
+  { path: '/for-installers',   priority: '0.9', changefreq: 'monthly', lastmod: '2026-04-21' },
+  { path: '/blog',             priority: '0.9', changefreq: 'weekly',  lastmod: '2026-04-21' },
   { path: '/about',            priority: '0.6', changefreq: 'monthly', lastmod: '2026-03-01' },
   { path: '/contact',          priority: '0.5', changefreq: 'monthly', lastmod: '2026-03-01' },
   { path: '/privacy-policy',   priority: '0.3', changefreq: 'yearly',  lastmod: '2026-01-01' },
@@ -69,7 +68,7 @@ const xml = [
   '',
   '  <!-- Blog category pages -->',
   ...categorySlugs.map(slug =>
-    urlEntry({ loc: `${SITE_URL}/blog/category/${slug}`, lastmod: TODAY, changefreq: 'weekly', priority: '0.7' })
+    urlEntry({ loc: `${SITE_URL}/blog/category/${slug}`, lastmod: '2026-04-21', changefreq: 'weekly', priority: '0.7' })
   ),
   '',
   '</urlset>',
