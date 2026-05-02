@@ -257,53 +257,63 @@ export function FullSunIllustration() {
   return (
     <svg viewBox="0 0 80 60" width="80" height="60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="fs-sky" cx="50%" cy="38%" r="65%">
-          <stop offset="0%" stopColor="#fef3c7"/>
-          <stop offset="60%" stopColor="#fde68a"/>
-          <stop offset="100%" stopColor="#fbbf24"/>
+        <linearGradient id="fs-bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0369a1"/>
+          <stop offset="100%" stopColor="#7dd3fc"/>
+        </linearGradient>
+        <radialGradient id="fs-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stopColor="#fef9c3" stopOpacity="0.95"/>
+          <stop offset="100%" stopColor="#fef9c3" stopOpacity="0"/>
         </radialGradient>
-        <radialGradient id="fs-sun" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#fffbeb"/>
-          <stop offset="40%" stopColor="#fde68a"/>
+        <radialGradient id="fs-disc" cx="38%" cy="35%" r="62%">
+          <stop offset="0%"   stopColor="#ffffff"/>
+          <stop offset="35%"  stopColor="#fde68a"/>
           <stop offset="100%" stopColor="#f59e0b"/>
         </radialGradient>
       </defs>
-      <rect width="80" height="60" rx="10" fill="url(#fs-sky)"/>
 
-      {/* Sun outer glow */}
-      <circle cx="40" cy="22" r="20" fill="#fde68a" opacity="0.35"/>
-      <circle cx="40" cy="22" r="14" fill="#fbbf24" opacity="0.55"/>
-      {/* Sun core */}
-      <circle cx="40" cy="22" r="9.5" fill="url(#fs-sun)"/>
+      {/* Sky */}
+      <rect width="80" height="60" rx="8" fill="url(#fs-bg)"/>
+      {/* Warm horizon shimmer */}
+      <ellipse cx="40" cy="60" rx="40" ry="14" fill="#fef3c7" opacity="0.2"/>
 
-      {/* Rays — 8 directions, two lengths alternating */}
+      {/* Sun halo */}
+      <circle cx="40" cy="20" r="17" fill="url(#fs-halo)"/>
+
+      {/* 8 rays: cardinal = long, diagonal = short */}
       {[0,45,90,135,180,225,270,315].map((deg, i) => {
-        const r = Math.PI * deg / 180;
-        const inner = 12, outer = i % 2 === 0 ? 18 : 15;
+        const rad = (deg * Math.PI) / 180;
+        const r1 = 13, r2 = i % 2 === 0 ? 22 : 17;
         return (
           <line key={deg}
-            x1={40 + Math.cos(r) * inner} y1={22 + Math.sin(r) * inner}
-            x2={40 + Math.cos(r) * outer} y2={22 + Math.sin(r) * outer}
-            stroke="#f59e0b" strokeWidth={i % 2 === 0 ? 2.5 : 1.8} strokeLinecap="round"
+            x1={40 + Math.cos(rad) * r1} y1={20 + Math.sin(rad) * r1}
+            x2={40 + Math.cos(rad) * r2} y2={20 + Math.sin(rad) * r2}
+            stroke="#fbbf24" strokeWidth={i % 2 === 0 ? 2.5 : 1.8} strokeLinecap="round"
           />
         );
       })}
 
-      {/* Roof silhouette */}
-      <polygon points="0,60 40,42 80,60" fill="#1e293b"/>
-      {/* Roof peak highlight */}
-      <line x1="0" y1="60" x2="40" y2="42" stroke="#334155" strokeWidth="0.8"/>
-      <line x1="80" y1="60" x2="40" y2="42" stroke="#334155" strokeWidth="0.8"/>
+      {/* Sun disc */}
+      <circle cx="40" cy="20" r="9.5" fill="url(#fs-disc)"/>
+      {/* Lens glare highlight */}
+      <ellipse cx="37.5" cy="17.5" rx="2.5" ry="2" fill="white" opacity="0.72"/>
 
-      {/* Solar panels gleaming */}
-      <polygon points="42,48 52,43 55,48 45,53" fill="#1e3a8a"/>
-      <polygon points="52,43 62,38 65,43 55,48" fill="#1e3a8a"/>
-      {/* Bright sunlight glare on panels */}
-      <polygon points="43,48 46,47 47,49 44,50" fill="white" opacity="0.45"/>
-      <polygon points="53,43 56,42 57,44 54,45" fill="white" opacity="0.45"/>
-      {/* Panel grid */}
-      <line x1="48" y1="45" x2="49" y2="51" stroke="#60a5fa" strokeWidth="0.5" opacity="0.4"/>
-      <line x1="58" y1="40" x2="59" y2="46" stroke="#60a5fa" strokeWidth="0.5" opacity="0.4"/>
+      {/* Roof */}
+      <polygon points="0,60 40,40 80,60" fill="#1e293b"/>
+      <line x1="0" y1="60" x2="40" y2="40" stroke="#334155" strokeWidth="1"/>
+      <line x1="80" y1="60" x2="40" y2="40" stroke="#334155" strokeWidth="1"/>
+
+      {/* Two solar panels on right slope — parallelogram perspective */}
+      <polygon points="43,48 53,43 56,48 46,53" fill="#1d4ed8"/>
+      <polygon points="53,43 63,38 66,43 56,48" fill="#1d4ed8"/>
+      {/* Cell grid lines */}
+      <line x1="43" y1="50.5" x2="56" y2="45.5" stroke="#93c5fd" strokeWidth="0.5" opacity="0.6"/>
+      <line x1="53" y1="45.5" x2="66" y2="40.5" stroke="#93c5fd" strokeWidth="0.5" opacity="0.6"/>
+      <line x1="49" y1="45.5" x2="50" y2="51"   stroke="#93c5fd" strokeWidth="0.5" opacity="0.5"/>
+      <line x1="59" y1="40.5" x2="60" y2="46"   stroke="#93c5fd" strokeWidth="0.5" opacity="0.5"/>
+      {/* Bright glare on panels */}
+      <polygon points="44,48.5 47,47 48,49 45,50.5" fill="white" opacity="0.62"/>
+      <polygon points="54,43.5 57,42 58,44 55,45.5" fill="white" opacity="0.62"/>
     </svg>
   );
 }
@@ -312,42 +322,55 @@ export function PartialShadeIllustration() {
   return (
     <svg viewBox="0 0 80 60" width="80" height="60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="ps-sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#cbd5e1"/>
-          <stop offset="100%" stopColor="#f1f5f9"/>
+        <linearGradient id="ps-bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#38bdf8"/>
+          <stop offset="100%" stopColor="#bae6fd"/>
         </linearGradient>
       </defs>
-      <rect width="80" height="60" rx="10" fill="url(#ps-sky)"/>
 
-      {/* Partial sun glow behind cloud */}
-      <circle cx="25" cy="18" r="11" fill="#fde68a" opacity="0.55"/>
-      <circle cx="25" cy="18" r="7.5" fill="#fbbf24" opacity="0.75"/>
-      {/* Sun rays (only partial, some hidden by cloud) */}
-      <line x1="25" y1="5"  x2="25" y2="8"  stroke="#f59e0b" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="14" y1="18" x2="11" y2="18" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="17" y1="10" x2="15" y2="8"  stroke="#f59e0b" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="17" y1="26" x2="15" y2="28" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round"/>
+      {/* Sky */}
+      <rect width="80" height="60" rx="8" fill="url(#ps-bg)"/>
 
-      {/* Main cloud blocking sun — layered for depth */}
-      <ellipse cx="53" cy="17" rx="21" ry="11" fill="#e2e8f0"/>
-      <ellipse cx="40" cy="20" rx="15" ry="9"  fill="#f1f5f9"/>
-      <ellipse cx="64" cy="21" rx="14" ry="8"  fill="#e8edf2"/>
-      <ellipse cx="49" cy="23" rx="19" ry="8"  fill="#f8fafc"/>
+      {/* Sun — upper-left, peeking from cloud edge */}
+      <circle cx="17" cy="16" r="10" fill="#fde68a" opacity="0.45"/>
+      <circle cx="17" cy="16" r="7"  fill="#fbbf24"/>
+      <circle cx="17" cy="16" r="5"  fill="#fef3c7"/>
+      <ellipse cx="15.5" cy="14.5" rx="1.8" ry="1.4" fill="white" opacity="0.72"/>
+      {/* Rays visible on exposed (left / top / bottom-left) sides */}
+      <line x1="17" y1="4"  x2="17" y2="7"  stroke="#f59e0b" strokeWidth="2"   strokeLinecap="round"/>
+      <line x1="6"  y1="16" x2="3"  y2="16" stroke="#f59e0b" strokeWidth="2"   strokeLinecap="round"/>
+      <line x1="10" y1="8"  x2="8"  y2="6"  stroke="#f59e0b" strokeWidth="1.8" strokeLinecap="round"/>
+      <line x1="10" y1="24" x2="8"  y2="26" stroke="#f59e0b" strokeWidth="1.8" strokeLinecap="round"/>
+      <line x1="27" y1="9"  x2="29" y2="7"  stroke="#f59e0b" strokeWidth="1.4" strokeLinecap="round" opacity="0.5"/>
+
+      {/* Fluffy cloud — realistic puff shapes, overlapping sun's right edge */}
+      <ellipse cx="55" cy="26" rx="26" ry="10" fill="#dde6ef"/>
+      <circle cx="32" cy="20" r="10" fill="#f1f5f9"/>
+      <circle cx="46" cy="14" r="12" fill="white"/>
+      <circle cx="61" cy="16" r="11" fill="#f8fafc"/>
+      <circle cx="73" cy="22" r="9"  fill="#f1f5f9"/>
+      <ellipse cx="54" cy="30" rx="24" ry="7"  fill="#f1f5f9"/>
       {/* Cloud shadow underside */}
-      <ellipse cx="49" cy="26" rx="18" ry="4"  fill="#d1d5db" opacity="0.4"/>
+      <ellipse cx="54" cy="34" rx="22" ry="4"  fill="#94a3b8" opacity="0.38"/>
 
-      {/* Tree silhouette left */}
-      <rect x="3" y="35" width="5" height="22" rx="1" fill="#374151"/>
-      <ellipse cx="5.5" cy="31" rx="9"  ry="13" fill="#1e293b"/>
-      <ellipse cx="2"   cy="36" rx="6"  ry="9"  fill="#111827"/>
+      {/* Tree — right edge, canopy clips the frame naturally */}
+      <rect x="72" y="40" width="4" height="20" rx="1" fill="#374151"/>
+      <circle cx="74" cy="36" r="9"  fill="#1e3a5f"/>
+      <circle cx="70" cy="41" r="7"  fill="#1a3450"/>
+      <circle cx="79" cy="42" r="6"  fill="#1e3a5f"/>
 
       {/* Roof */}
-      <polygon points="0,60 40,43 80,60" fill="#1e293b"/>
-      {/* Panels in partial shade */}
-      <polygon points="41,50 51,45 54,50 44,55" fill="#1d4ed8" opacity="0.7"/>
-      <polygon points="51,45 61,40 64,45 54,50" fill="#1d4ed8" opacity="0.5"/>
-      {/* Scattered light patch */}
-      <ellipse cx="30" cy="53" rx="6" ry="3" fill="#fde68a" opacity="0.12"/>
+      <polygon points="0,60 40,42 80,60" fill="#1e293b"/>
+      <line x1="0" y1="60" x2="40" y2="42" stroke="#334155" strokeWidth="1"/>
+      <line x1="80" y1="60" x2="40" y2="42" stroke="#334155" strokeWidth="1"/>
+
+      {/* Panel 1 — in sunlight (left / closer to sun) */}
+      <polygon points="43,49 53,44 56,49 46,54" fill="#1d4ed8"/>
+      <polygon points="44,49.5 47,48 48,50 45,51.5" fill="white" opacity="0.58"/>
+
+      {/* Panel 2 — in cloud shadow (right) */}
+      <polygon points="53,44 63,39 66,44 56,49" fill="#1d4ed8" opacity="0.45"/>
+      <polygon points="53,44 63,39 66,44 56,49" fill="#1e293b" opacity="0.28"/>
     </svg>
   );
 }
@@ -356,43 +379,55 @@ export function MostlyShadeIllustration() {
   return (
     <svg viewBox="0 0 80 60" width="80" height="60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="ms-sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#64748b"/>
-          <stop offset="100%" stopColor="#94a3b8"/>
+        <linearGradient id="ms-bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#1f2937"/>
+          <stop offset="100%" stopColor="#4b5563"/>
         </linearGradient>
       </defs>
-      <rect width="80" height="60" rx="10" fill="url(#ms-sky)"/>
 
-      {/* Heavy layered clouds */}
-      <ellipse cx="16" cy="12" rx="18" ry="10" fill="#475569"/>
-      <ellipse cx="42" cy="9"  rx="25" ry="12" fill="#64748b"/>
-      <ellipse cx="66" cy="14" rx="20" ry="10" fill="#475569"/>
-      <ellipse cx="6"  cy="20" rx="13" ry="8"  fill="#64748b"/>
-      <ellipse cx="55" cy="20" rx="24" ry="11" fill="#64748b"/>
-      <ellipse cx="76" cy="22" rx="12" ry="7"  fill="#475569"/>
-      {/* Cloud undersides — darkest layer */}
-      <ellipse cx="30" cy="24" rx="20" ry="6"  fill="#334155" opacity="0.6"/>
-      <ellipse cx="62" cy="26" rx="18" ry="5"  fill="#334155" opacity="0.5"/>
-      {/* Very faint sun disc behind clouds */}
-      <circle cx="40" cy="13" r="6" fill="#fde68a" opacity="0.12"/>
+      {/* Sky */}
+      <rect width="80" height="60" rx="8" fill="url(#ms-bg)"/>
 
-      {/* Large tree left */}
-      <rect x="1"  y="28" width="6" height="28" rx="1" fill="#1e293b"/>
-      <ellipse cx="4"   cy="26" rx="12" ry="16" fill="#0f172a"/>
-      <ellipse cx="0"   cy="33" rx="7"  ry="11" fill="#111827"/>
-      {/* Tree right */}
-      <rect x="68" y="34" width="5" height="22" rx="1" fill="#1e293b"/>
-      <ellipse cx="70"  cy="31" rx="11" ry="14" fill="#0f172a"/>
-      <ellipse cx="75"  cy="38" rx="7"  ry="10" fill="#111827"/>
+      {/* Heavy overcast clouds — layered back to front */}
+      <ellipse cx="40" cy="7"  rx="42" ry="11" fill="#374151"/>
+      <ellipse cx="18" cy="17" rx="22" ry="13" fill="#3f4f5e"/>
+      <ellipse cx="60" cy="15" rx="26" ry="13" fill="#374151"/>
+      {/* Front cloud bumps */}
+      <circle cx="12" cy="24" r="13" fill="#4b5563"/>
+      <circle cx="30" cy="20" r="14" fill="#4f5f6e"/>
+      <circle cx="50" cy="21" r="14" fill="#4a5768"/>
+      <circle cx="68" cy="25" r="12" fill="#4b5563"/>
+      {/* Cloud underbelly fill */}
+      <ellipse cx="40" cy="31" rx="40" ry="9"  fill="#3d4c58"/>
+      {/* Darkest underside creases */}
+      <ellipse cx="25" cy="35" rx="20" ry="5"  fill="#2d3748" opacity="0.75"/>
+      <ellipse cx="60" cy="36" rx="18" ry="4"  fill="#2d3748" opacity="0.65"/>
+      {/* Barely-there sun disc behind mass of cloud */}
+      <circle cx="40" cy="14" r="5" fill="#fde68a" opacity="0.07"/>
+
+      {/* Left tree — trunk + layered canopy circles */}
+      <rect x="2"  y="33" width="6" height="27" rx="1" fill="#1e293b"/>
+      <circle cx="5"   cy="29" r="14" fill="#111827"/>
+      <circle cx="0"   cy="37" r="10" fill="#0f172a"/>
+      <circle cx="11"  cy="36" r="8"  fill="#111827"/>
+
+      {/* Right tree */}
+      <rect x="69" y="38" width="5" height="22" rx="1" fill="#1e293b"/>
+      <circle cx="71"  cy="33" r="12" fill="#111827"/>
+      <circle cx="76"  cy="40" r="9"  fill="#0f172a"/>
+      <circle cx="65"  cy="41" r="8"  fill="#111827"/>
 
       {/* Roof */}
-      <polygon points="0,60 40,45 80,60" fill="#1e293b"/>
-      {/* Panels — dark, barely visible */}
-      <polygon points="41,51 51,46 54,51 44,56" fill="#334155"/>
-      <polygon points="51,46 61,41 64,46 54,51" fill="#334155"/>
-      {/* Deep shadow overlay */}
-      <polygon points="41,51 51,46 54,51 44,56" fill="#0f172a" opacity="0.35"/>
-      <polygon points="51,46 61,41 64,46 54,51" fill="#0f172a" opacity="0.35"/>
+      <polygon points="0,60 40,44 80,60" fill="#1e293b"/>
+      <polygon points="0,60 40,44 80,60" fill="#0f172a" opacity="0.45"/>
+      <line x1="0" y1="60" x2="40" y2="44" stroke="#2d3748" strokeWidth="0.8"/>
+      <line x1="80" y1="60" x2="40" y2="44" stroke="#2d3748" strokeWidth="0.8"/>
+
+      {/* Panels — deep shadow, barely distinguishable */}
+      <polygon points="43,51 53,46 56,51 46,56" fill="#2d3748"/>
+      <polygon points="53,46 63,41 66,46 56,51" fill="#2d3748"/>
+      <polygon points="43,51 53,46 56,51 46,56" fill="#0f172a" opacity="0.42"/>
+      <polygon points="53,46 63,41 66,46 56,51" fill="#0f172a" opacity="0.42"/>
     </svg>
   );
 }
