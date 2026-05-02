@@ -83,12 +83,12 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
           border-radius: 8px;
           overflow: hidden;
         }
-        .illus-icon svg { display: block; border-radius: 8px; }
+        .illus-icon svg { display: block; border-radius: 8px; width: 80px; height: 60px; }
         .illus-icon-compact { margin-bottom: 6px; }
-        .illus-icon-compact svg { width: 100%; height: auto; }
+        .illus-icon-compact svg { display: block; border-radius: 8px; height: 58px; width: auto; }
         .embed-content .illus-card { padding: 8px 6px 10px; }
         .embed-content .illus-icon svg { width: 70px; height: 52px; }
-        .embed-content .illus-icon-compact svg { width: 58px; height: 45px; }
+        .embed-content .illus-icon-compact svg { height: 48px; width: auto; }
       `}</style>
     </div>
   );

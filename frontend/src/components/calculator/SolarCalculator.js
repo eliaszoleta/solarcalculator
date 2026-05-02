@@ -59,6 +59,19 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const cardRef = useRef(null);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!cardRef.current) return;
+      if (embedded) {
+        cardRef.current.scrollTop = 0;
+      } else {
+        cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 30);
+    return () => clearTimeout(timer);
+  }, [step, embedded]);
+
   const fontLinkRef = useRef(null);
   useEffect(() => {
     const font = installerConfig?.fontFamily;
@@ -183,6 +196,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
         )}
 
         <div
+          ref={cardRef}
           className={`calculator-card${embedded ? ' embed-card' : ''}`}
           style={{
             ...(installerConfig?.formBgColor ? { background: installerConfig.formBgColor } : {}),

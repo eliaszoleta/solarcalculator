@@ -97,7 +97,7 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
           border-radius: 8px;
           overflow: hidden;
         }
-        .illus-icon svg { display: block; border-radius: 8px; }
+        .illus-icon svg { display: block; border-radius: 8px; width: 80px; height: 60px; }
         .embed-content .illus-card { padding: 8px 6px 10px; }
         .embed-content .illus-icon svg { width: 70px; height: 52px; }
       `}</style>
