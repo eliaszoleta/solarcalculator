@@ -59,14 +59,17 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const cardRef = useRef(null);
+  const sectionRef = useRef(null);
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!cardRef.current) return;
+      if (!sectionRef.current) return;
       if (embedded) {
-        cardRef.current.scrollTop = 0;
+        // In embedded mode the scrollable container is .embed-content
+        const content = sectionRef.current.querySelector('.embed-content');
+        if (content) content.scrollTop = 0;
       } else {
-        cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Scroll so the full section (incl. headline above the card) is visible
+        sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 30);
     return () => clearTimeout(timer);
@@ -183,6 +186,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
 
   return (
     <section
+      ref={sectionRef}
       className={`calculator-section${embedded ? ' embed-mode' : ''}`}
       style={installerConfig?.fontFamily ? { fontFamily: `'${installerConfig.fontFamily}', sans-serif` } : {}}
     >
@@ -196,7 +200,6 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
         )}
 
         <div
-          ref={cardRef}
           className={`calculator-card${embedded ? ' embed-card' : ''}`}
           style={{
             ...(installerConfig?.formBgColor ? { background: installerConfig.formBgColor } : {}),
