@@ -1,28 +1,23 @@
 import React from 'react';
-import { HomeIcon, BuildingIcon, KeyIcon, FileTextIcon, AlertTriangleIcon } from '../../ui/Icons';
+import { AlertTriangleIcon } from '../../ui/Icons';
+import {
+  HouseIllustration,
+  CondoIllustration,
+  ApartmentIllustration,
+  OwnsHomeIllustration,
+  RentsHomeIllustration,
+} from './Illustrations';
 
 const HOME_TYPES = [
-  { value: 'house',     Icon: HomeIcon,     color: '#2563eb', bg: '#eff6ff', label: 'House',     desc: 'Single-family home' },
-  { value: 'condo',     Icon: BuildingIcon, color: '#4f46e5', bg: '#eef2ff', label: 'Condo',     desc: 'Condominium unit' },
-  { value: 'apartment', Icon: BuildingIcon, color: '#7c3aed', bg: '#f5f3ff', label: 'Apartment', desc: 'Apartment unit' },
+  { value: 'house',     Illustration: HouseIllustration,     color: '#2563eb', bg: '#eff6ff', label: 'House',     desc: 'Single-family home' },
+  { value: 'condo',     Illustration: CondoIllustration,     color: '#4f46e5', bg: '#eef2ff', label: 'Condo',     desc: 'Condominium unit' },
+  { value: 'apartment', Illustration: ApartmentIllustration, color: '#7c3aed', bg: '#f5f3ff', label: 'Apartment', desc: 'Apartment unit' },
 ];
 
 const OWN_OPTIONS = [
-  { value: true,  Icon: KeyIcon,      color: '#059669', bg: '#ecfdf5', label: 'I own it' },
-  { value: false, Icon: FileTextIcon, color: '#64748b', bg: '#f1f5f9', label: 'I rent it' },
+  { value: true,  Illustration: OwnsHomeIllustration,  color: '#059669', bg: '#ecfdf5', label: 'I own it' },
+  { value: false, Illustration: RentsHomeIllustration, color: '#64748b', bg: '#f1f5f9', label: 'I rent it' },
 ];
-
-function IconTile({ color, bg, children }) {
-  return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      width: 48, height: 48, borderRadius: 12,
-      background: bg, transition: 'all 0.15s',
-    }}>
-      {React.cloneElement(children, { color })}
-    </span>
-  );
-}
 
 export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsHomeChange }) {
   const isDisqualified = homeType === 'apartment' || homeType === 'condo' || ownsHome === false;
@@ -36,14 +31,12 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
         {HOME_TYPES.map(opt => (
           <button
             key={opt.value}
-            className={`option-card ${homeType === opt.value ? 'selected' : ''}`}
+            className={`option-card illus-card ${homeType === opt.value ? 'selected' : ''}`}
             onClick={() => { onHomeTypeChange(opt.value); onOwnsHomeChange(null); }}
             style={homeType === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
           >
-            <span className="option-icon">
-              <IconTile color={opt.color} bg={opt.bg}>
-                <opt.Icon size={22} />
-              </IconTile>
+            <span className="option-icon illus-icon">
+              <opt.Illustration />
             </span>
             <div className="option-label">{opt.label}</div>
             <div className="option-desc">{opt.desc}</div>
@@ -58,14 +51,12 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
             {OWN_OPTIONS.map(opt => (
               <button
                 key={String(opt.value)}
-                className={`option-card ${ownsHome === opt.value ? 'selected' : ''}`}
+                className={`option-card illus-card ${ownsHome === opt.value ? 'selected' : ''}`}
                 onClick={() => onOwnsHomeChange(opt.value)}
                 style={ownsHome === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
               >
-                <span className="option-icon">
-                  <IconTile color={opt.color} bg={opt.bg}>
-                    <opt.Icon size={22} />
-                  </IconTile>
+                <span className="option-icon illus-icon">
+                  <opt.Illustration />
                 </span>
                 <div className="option-label">{opt.label}</div>
               </button>
@@ -96,6 +87,20 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
           </span>
         </div>
       )}
+
+      <style>{`
+        .illus-card { padding: 10px 8px 12px; }
+        .illus-icon {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 8px;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+        .illus-icon svg { display: block; border-radius: 8px; }
+        .embed-content .illus-card { padding: 8px 6px 10px; }
+        .embed-content .illus-icon svg { width: 70px; height: 52px; }
+      `}</style>
     </div>
   );
 }

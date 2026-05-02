@@ -1,10 +1,14 @@
 import React from 'react';
-import { PlugIcon, BatteryIcon, BoltIcon } from '../../ui/Icons';
+import {
+  NoBatteryIllustration,
+  OneBatteryIllustration,
+  TwoBatteriesIllustration,
+} from './Illustrations';
 
 const BATTERY_OPTIONS = [
   {
     value: 'none',
-    Icon: PlugIcon,
+    Illustration: NoBatteryIllustration,
     color: '#64748b', bg: '#f1f5f9',
     label: 'No Battery',
     desc: 'Grid-tied system. Power from grid at night.',
@@ -13,7 +17,7 @@ const BATTERY_OPTIONS = [
   },
   {
     value: 'one',
-    Icon: BatteryIcon,
+    Illustration: OneBatteryIllustration,
     color: '#059669', bg: '#ecfdf5',
     label: '1 Battery',
     desc: 'Tesla Powerwall or similar. Backup power + night use.',
@@ -22,7 +26,7 @@ const BATTERY_OPTIONS = [
   },
   {
     value: 'two',
-    Icon: BoltIcon,
+    Illustration: TwoBatteriesIllustration,
     color: '#d97706', bg: '#fffbeb',
     label: '2 Batteries',
     desc: 'Maximum storage. Nearly full energy independence.',
@@ -47,12 +51,8 @@ export default function StepBattery({ value, onChange }) {
           >
             {opt.popular && <span className="popular-badge">Most Popular</span>}
             <div className="battery-row">
-              <span style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                width: 44, height: 44, borderRadius: 11, flexShrink: 0,
-                background: opt.bg, transition: 'all 0.15s',
-              }}>
-                <opt.Icon size={21} color={opt.color} />
+              <span className="battery-illus-wrap">
+                <opt.Illustration />
               </span>
               <div className="battery-info">
                 <div className="option-label">{opt.label}</div>
@@ -75,6 +75,13 @@ export default function StepBattery({ value, onChange }) {
           align-items: center;
           gap: 12px;
         }
+        .battery-illus-wrap {
+          flex-shrink: 0;
+          border-radius: 10px;
+          overflow: hidden;
+          display: flex;
+        }
+        .battery-illus-wrap svg { display: block; border-radius: 10px; }
         .battery-info {
           flex: 1;
         }
@@ -96,6 +103,8 @@ export default function StepBattery({ value, onChange }) {
           letter-spacing: 0.05em;
           text-transform: uppercase;
         }
+        .embed-content .battery-card { padding: 10px 12px; }
+        .embed-content .battery-illus-wrap svg { width: 40px; height: 40px; }
       `}</style>
     </div>
   );

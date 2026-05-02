@@ -1,30 +1,26 @@
 import React from 'react';
-import { SunIcon, SunCloudIcon, CloudIcon, HomeIcon, LayersIcon, LayoutIcon, MinusSquareIcon } from '../../ui/Icons';
+import {
+  FullSunIllustration,
+  PartialShadeIllustration,
+  MostlyShadeIllustration,
+  AsphaltShinglesIllustration,
+  MetalRoofIllustration,
+  TileRoofIllustration,
+  FlatRoofIllustration,
+} from './Illustrations';
 
 const SUN_OPTIONS = [
-  { value: 'full',         Icon: SunIcon,       color: '#d97706', bg: '#fffbeb', label: 'Full Sun',      desc: 'Most of roof in direct sun' },
-  { value: 'partial',      Icon: SunCloudIcon,  color: '#ea580c', bg: '#fff7ed', label: 'Partial Shade', desc: 'Some shading from trees/buildings' },
-  { value: 'mostly_shade', Icon: CloudIcon,     color: '#64748b', bg: '#f1f5f9', label: 'Mostly Shade',  desc: 'Heavy shade most of day' },
+  { value: 'full',         Illustration: FullSunIllustration,     color: '#d97706', bg: '#fffbeb', label: 'Full Sun',      desc: 'Most of roof in direct sun' },
+  { value: 'partial',      Illustration: PartialShadeIllustration, color: '#ea580c', bg: '#fff7ed', label: 'Partial Shade', desc: 'Some shading from trees/buildings' },
+  { value: 'mostly_shade', Illustration: MostlyShadeIllustration,  color: '#64748b', bg: '#f1f5f9', label: 'Mostly Shade',  desc: 'Heavy shade most of day' },
 ];
 
 const ROOF_TYPES = [
-  { value: 'asphalt', Icon: HomeIcon,        color: '#2563eb', bg: '#eff6ff', label: 'Asphalt Shingles', desc: 'Most common, easiest install', extra: '' },
-  { value: 'metal',   Icon: LayersIcon,      color: '#475569', bg: '#f1f5f9', label: 'Metal Roof',       desc: 'Standing seam metal',          extra: '+$500' },
-  { value: 'tile',    Icon: LayoutIcon,      color: '#0d9488', bg: '#f0fdfa', label: 'Tile Roof',        desc: 'Clay or concrete tile',         extra: '+$1,500' },
-  { value: 'flat',    Icon: MinusSquareIcon, color: '#4f46e5', bg: '#eef2ff', label: 'Flat Roof',        desc: 'Requires tilt mounting',        extra: '+$800' },
+  { value: 'asphalt', Illustration: AsphaltShinglesIllustration, color: '#2563eb', bg: '#eff6ff', label: 'Asphalt Shingles', desc: 'Most common, easiest install', extra: '' },
+  { value: 'metal',   Illustration: MetalRoofIllustration,       color: '#475569', bg: '#f1f5f9', label: 'Metal Roof',       desc: 'Standing seam metal',          extra: '+$500' },
+  { value: 'tile',    Illustration: TileRoofIllustration,        color: '#0d9488', bg: '#f0fdfa', label: 'Tile Roof',        desc: 'Clay or concrete tile',         extra: '+$1,500' },
+  { value: 'flat',    Illustration: FlatRoofIllustration,        color: '#4f46e5', bg: '#eef2ff', label: 'Flat Roof',        desc: 'Requires tilt mounting',        extra: '+$800' },
 ];
-
-function IconTile({ color, bg, children, compact }) {
-  return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      width: compact ? 36 : 48, height: compact ? 36 : 48, borderRadius: compact ? 8 : 12,
-      background: bg, transition: 'all 0.15s',
-    }}>
-      {React.cloneElement(children, { color })}
-    </span>
-  );
-}
 
 export default function StepRoof({ sunExposure, roofType, onExposureChange, onRoofChange }) {
   return (
@@ -37,14 +33,12 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
         {SUN_OPTIONS.map(opt => (
           <button
             key={opt.value}
-            className={`option-card ${sunExposure === opt.value ? 'selected' : ''}`}
+            className={`option-card illus-card ${sunExposure === opt.value ? 'selected' : ''}`}
             onClick={() => onExposureChange(opt.value)}
             style={sunExposure === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
           >
-            <span className="option-icon">
-              <IconTile color={opt.color} bg={opt.bg}>
-                <opt.Icon size={22} />
-              </IconTile>
+            <span className="option-icon illus-icon">
+              <opt.Illustration />
             </span>
             <div className="option-label">{opt.label}</div>
             <div className="option-desc">{opt.desc}</div>
@@ -57,17 +51,12 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
         {ROOF_TYPES.map(opt => (
           <button
             key={opt.value}
-            className={`option-card ${roofType === opt.value ? 'selected' : ''}`}
+            className={`option-card illus-card-compact ${roofType === opt.value ? 'selected' : ''}`}
             onClick={() => onRoofChange(opt.value)}
-            style={{
-              padding: '8px 10px',
-              ...(roofType === opt.value ? { borderColor: opt.color, background: opt.bg } : {}),
-            }}
+            style={roofType === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
           >
-            <span style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
-              <IconTile color={opt.color} bg={opt.bg} compact>
-                <opt.Icon size={16} />
-              </IconTile>
+            <span className="option-icon illus-icon illus-icon-compact">
+              <opt.Illustration />
             </span>
             <div className="option-label" style={{ fontSize: 12 }}>{opt.label}</div>
             <div className="option-desc" style={{ fontSize: 11 }}>{opt.desc}</div>
@@ -85,6 +74,21 @@ export default function StepRoof({ sunExposure, roofType, onExposureChange, onRo
           text-transform: uppercase;
           letter-spacing: 0.06em;
         }
+        .illus-card { padding: 10px 8px 12px; }
+        .illus-card-compact { padding: 8px 8px 10px; text-align: center; }
+        .illus-icon {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 8px;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+        .illus-icon svg { display: block; border-radius: 8px; }
+        .illus-icon-compact { margin-bottom: 6px; }
+        .illus-icon-compact svg { width: 100%; height: auto; }
+        .embed-content .illus-card { padding: 8px 6px 10px; }
+        .embed-content .illus-icon svg { width: 70px; height: 52px; }
+        .embed-content .illus-icon-compact svg { width: 58px; height: 45px; }
       `}</style>
     </div>
   );
