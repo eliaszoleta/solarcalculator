@@ -400,25 +400,39 @@ export function OneBatteryIllustration() {
   return (
     <svg viewBox="0 0 48 48" width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="48" height="48" rx="10" fill={C.bg}/>
-      {/* House */}
-      <polygon points="3,30 20,18 37,30" fill={C.rd}/>
-      <rect x="5" y="30" width="30" height="16" fill={C.w}/>
-      {/* Roof panel */}
-      <polygon points="20,21 28,18 29,21 21,24" fill={C.pan} opacity="0.9"/>
-      <rect x="13" y="34" width="7"  height="12" rx="1" fill={C.ws}/>
-      <rect x="22" y="31" width="8"  height="7"  rx="1" fill={C.win}/>
-      {/* Battery housing */}
-      <rect x="36" y="17" width="10" height="22" rx="2.5" fill={C.rs}/>
-      <rect x="37" y="18" width="8"  height="20" rx="2"   fill={C.pan}/>
-      <rect x="37" y="18" width="8"  height="2.5" rx="2"  fill={C.rs}/>
-      {/* Charge bars */}
-      <rect x="38" y="23" width="6" height="2"   rx="0.5" fill={C.win} opacity="0.8"/>
-      <rect x="38" y="27" width="6" height="2"   rx="0.5" fill={C.win} opacity="0.8"/>
-      <rect x="38" y="31" width="6" height="2"   rx="0.5" fill={C.win} opacity="0.45"/>
-      {/* Terminal nub */}
-      <rect x="39" y="15" width="4" height="2" rx="0.8" fill={C.rs}/>
-      {/* Connection line */}
-      <line x1="36" y1="28" x2="35" y2="28" stroke={C.line} strokeWidth="1.5"/>
+
+      {/* House — left side */}
+      <polygon points="3,31 15,21 27,31" fill={C.rd}/>
+      <rect x="5" y="31" width="20" height="15" fill={C.w}/>
+      <polygon points="15,25 21,22 22,25 16,28" fill={C.pan} opacity="0.85"/>
+      <rect x="7"  y="33" width="6" height="5" rx="1" fill={C.win}/>
+      <rect x="16" y="36" width="5" height="10" rx="0.5" fill={C.ws}/>
+
+      {/* Wall mount bracket */}
+      <rect x="29" y="40" width="16" height="2.5" rx="1" fill={C.rs}/>
+
+      {/* Battery outer housing */}
+      <rect x="30" y="10" width="14" height="30" rx="2.5" fill={C.rs}/>
+      {/* Battery face panel */}
+      <rect x="31" y="11" width="12" height="28" rx="2" fill={C.pan}/>
+      {/* Top brand stripe */}
+      <rect x="31" y="11" width="12" height="4" rx="2" fill={C.rs}/>
+      {/* Status LED */}
+      <circle cx="37" cy="13" r="1.2" fill={C.win} opacity="0.9"/>
+
+      {/* Charge level display recess */}
+      <rect x="33" y="17" width="8" height="16" rx="1" fill={C.rs} opacity="0.45"/>
+      {/* Charge bars — 3 lit, 1 dim */}
+      <rect x="33.5" y="18.5" width="7" height="2.5" rx="0.5" fill={C.win}/>
+      <rect x="33.5" y="22.5" width="7" height="2.5" rx="0.5" fill={C.win}/>
+      <rect x="33.5" y="26.5" width="7" height="2.5" rx="0.5" fill={C.win}/>
+      <rect x="33.5" y="30.5" width="7" height="2"   rx="0.5" fill={C.win} opacity="0.28"/>
+
+      {/* Terminal nub at top */}
+      <rect x="34" y="7.5" width="6" height="3" rx="1" fill={C.rs}/>
+
+      {/* Connection cable */}
+      <line x1="25" y1="37" x2="30" y2="37" stroke={C.line} strokeWidth="1.5" strokeLinecap="round"/>
     </svg>
   );
 }
@@ -427,31 +441,44 @@ export function TwoBatteriesIllustration() {
   return (
     <svg viewBox="0 0 48 48" width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="48" height="48" rx="10" fill={C.bg}/>
-      {/* House */}
-      <polygon points="2,29 17,19 32,29" fill={C.rd}/>
-      <rect x="4" y="29" width="26" height="17" fill={C.w}/>
-      {/* Roof panel */}
-      <polygon points="17,23 24,20 25,23 18,26" fill={C.pan} opacity="0.9"/>
-      <rect x="10" y="33" width="6"  height="13" rx="1" fill={C.ws}/>
-      <rect x="18" y="31" width="8"  height="7"  rx="1" fill={C.win}/>
-      {/* Battery 1 (upper) */}
-      <rect x="34" y="14" width="11" height="15" rx="2.5" fill={C.rs}/>
-      <rect x="35" y="15" width="9"  height="13" rx="2"   fill={C.pan}/>
-      <rect x="35" y="15" width="9"  height="2.5" rx="2"  fill={C.rs}/>
-      <rect x="36" y="19" width="7"  height="1.8" rx="0.5" fill={C.win} opacity="0.8"/>
-      <rect x="36" y="23" width="7"  height="1.8" rx="0.5" fill={C.win} opacity="0.55"/>
-      <rect x="36.5" y="12" width="4" height="2" rx="0.8" fill={C.rs}/>
-      {/* Battery 2 (lower) */}
-      <rect x="34" y="31" width="11" height="13" rx="2.5" fill={C.rs}/>
-      <rect x="35" y="32" width="9"  height="11" rx="2"   fill={C.pan}/>
-      <rect x="35" y="32" width="9"  height="2.5" rx="2"  fill={C.rs}/>
-      <rect x="36" y="36" width="7"  height="1.8" rx="0.5" fill={C.win} opacity="0.8"/>
-      <rect x="36" y="40" width="7"  height="1.5" rx="0.5" fill={C.win} opacity="0.5"/>
-      {/* Bus bar connecting batteries */}
-      <line x1="33" y1="22" x2="34" y2="22" stroke={C.line} strokeWidth="1.4"/>
-      <line x1="33" y1="37" x2="34" y2="37" stroke={C.line} strokeWidth="1.4"/>
-      <line x1="33" y1="22" x2="33" y2="37" stroke={C.line} strokeWidth="1.2"/>
-      <line x1="30" y1="30" x2="33" y2="30" stroke={C.line} strokeWidth="1.2"/>
+
+      {/* House — smaller left side */}
+      <polygon points="2,32 12,23 22,32" fill={C.rd}/>
+      <rect x="3" y="32" width="17" height="14" fill={C.w}/>
+      <polygon points="12,27 17,24 18,27 13,30" fill={C.pan} opacity="0.85"/>
+      <rect x="5"  y="34" width="5" height="4" rx="1" fill={C.win}/>
+      <rect x="13" y="37" width="4" height="9" rx="0.5" fill={C.ws}/>
+
+      {/* Wall mount bracket */}
+      <rect x="25" y="43" width="20" height="2.5" rx="1" fill={C.rs}/>
+
+      {/* Battery 1 — upper unit */}
+      <rect x="26" y="5"  width="18" height="18" rx="2.5" fill={C.rs}/>
+      <rect x="27" y="6"  width="16" height="16" rx="2"   fill={C.pan}/>
+      <rect x="27" y="6"  width="16" height="4"  rx="2"   fill={C.rs}/>
+      <circle cx="35" cy="8" r="1.2" fill={C.win} opacity="0.9"/>
+      <rect x="29" y="12.5" width="12" height="2.5" rx="0.5" fill={C.win}/>
+      <rect x="29" y="16"   width="12" height="2.5" rx="0.5" fill={C.win}/>
+      {/* Terminal 1 */}
+      <rect x="32" y="3" width="6" height="2.5" rx="1" fill={C.rs}/>
+
+      {/* Battery 2 — lower unit */}
+      <rect x="26" y="25" width="18" height="18" rx="2.5" fill={C.rs}/>
+      <rect x="27" y="26" width="16" height="16" rx="2"   fill={C.pan}/>
+      <rect x="27" y="26" width="16" height="4"  rx="2"   fill={C.rs}/>
+      <circle cx="35" cy="28" r="1.2" fill={C.win} opacity="0.9"/>
+      <rect x="29" y="32.5" width="12" height="2.5" rx="0.5" fill={C.win}/>
+      <rect x="29" y="36"   width="12" height="2.5" rx="0.5" fill={C.win}/>
+      {/* Terminal 2 */}
+      <rect x="32" y="23" width="6" height="2.5" rx="1" fill={C.rs}/>
+
+      {/* Bus bar linking both batteries */}
+      <line x1="25" y1="15" x2="26" y2="15" stroke={C.line} strokeWidth="1.5"/>
+      <line x1="25" y1="35" x2="26" y2="35" stroke={C.line} strokeWidth="1.5"/>
+      <line x1="25" y1="15" x2="25" y2="35" stroke={C.line} strokeWidth="1.2"/>
+
+      {/* Connection cable to house */}
+      <line x1="20" y1="38" x2="25" y2="38" stroke={C.line} strokeWidth="1.5" strokeLinecap="round"/>
     </svg>
   );
 }
