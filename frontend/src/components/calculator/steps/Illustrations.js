@@ -171,11 +171,6 @@ export function FullSunIllustration() {
       <polygon points="0,60 40,41 80,60" fill={C.rd}/>
       <line x1="0" y1="60" x2="40" y2="41" stroke={C.rs} strokeWidth="0.8"/>
       <line x1="80" y1="60" x2="40" y2="41" stroke={C.rs} strokeWidth="0.8"/>
-      {/* Panels */}
-      <polygon points="44,49 54,44 57,49 47,54" fill={C.pan}/>
-      <polygon points="54,44 64,39 67,44 57,49" fill={C.pan}/>
-      <line x1="44" y1="51.5" x2="57" y2="46.5" stroke={C.line} strokeWidth="0.5" opacity="0.6"/>
-      <line x1="54" y1="46.5" x2="67" y2="41.5" stroke={C.line} strokeWidth="0.5" opacity="0.6"/>
     </svg>
   );
 }
@@ -204,10 +199,6 @@ export function PartialShadeIllustration() {
       <polygon points="0,60 40,42 80,60" fill={C.rd}/>
       <line x1="0" y1="60" x2="40" y2="42" stroke={C.rs} strokeWidth="0.8"/>
       <line x1="80" y1="60" x2="40" y2="42" stroke={C.rs} strokeWidth="0.8"/>
-      {/* Panel in sun */}
-      <polygon points="44,50 54,45 57,50 47,55" fill={C.pan}/>
-      {/* Panel in shade */}
-      <polygon points="54,45 64,40 67,45 57,50" fill={C.pan} opacity="0.4"/>
     </svg>
   );
 }
@@ -228,21 +219,9 @@ export function MostlyShadeIllustration() {
       <ellipse cx="40" cy="31" rx="40" ry="9"  fill="#9aaab8"/>
       <ellipse cx="25" cy="35" rx="20" ry="5"  fill="#8898a8" opacity="0.7"/>
       <ellipse cx="60" cy="36" rx="18" ry="4"  fill="#8898a8" opacity="0.6"/>
-      {/* Trees — muted gray-blue */}
-      <rect x="2"  y="34" width="6" height="26" rx="1" fill="#6a7e8e"/>
-      <circle cx="5"   cy="30" r="13" fill="#768898"/>
-      <circle cx="0"   cy="38" r="9"  fill="#6a7e8e"/>
-      <circle cx="11"  cy="37" r="8"  fill="#768898"/>
-      <rect x="69" y="39" width="5" height="21" rx="1" fill="#6a7e8e"/>
-      <circle cx="71"  cy="34" r="11" fill="#768898"/>
-      <circle cx="76"  cy="41" r="8"  fill="#6a7e8e"/>
-      <circle cx="65"  cy="42" r="7"  fill="#768898"/>
       {/* Roof */}
       <polygon points="0,60 40,44 80,60" fill={C.rd}/>
       <polygon points="0,60 40,44 80,60" fill="#1a2535" opacity="0.4"/>
-      {/* Panels — barely visible */}
-      <polygon points="44,51 54,46 57,51 47,56" fill="#3d5068" opacity="0.7"/>
-      <polygon points="54,46 64,41 67,46 57,51" fill="#3d5068" opacity="0.7"/>
     </svg>
   );
 }
