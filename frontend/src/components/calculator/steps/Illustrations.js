@@ -98,21 +98,27 @@ export function OwnsHomeIllustration() {
   return (
     <svg viewBox="0 0 80 60" width="80" height="60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="80" height="60" rx="8" fill={C.bg}/>
-      {/* Simple house silhouette */}
-      <polygon points="10,38 40,22 70,38" fill={C.rs}/>
-      <rect x="16" y="38" width="48" height="18" fill={C.ws}/>
-      <rect x="20" y="41" width="10" height="8" rx="1" fill={C.win} opacity="0.7"/>
-      <rect x="50" y="41" width="10" height="8" rx="1" fill={C.win} opacity="0.7"/>
-      <rect x="33" y="44" width="10" height="12" rx="1" fill={C.bg}/>
-      {/* Key */}
-      <circle cx="32" cy="30" r="8"   fill="none" stroke={C.pan} strokeWidth="2.5"/>
-      <circle cx="32" cy="30" r="3.5" fill="none" stroke={C.pan} strokeWidth="1.8"/>
-      <rect x="38.5" y="28.5" width="13"  height="3"   rx="1.5" fill={C.pan}/>
-      <rect x="47"   y="31.5" width="3.5" height="4"   rx="1"   fill={C.pan}/>
-      <rect x="42"   y="31.5" width="3.5" height="3.5" rx="1"   fill={C.pan}/>
-      {/* Check badge */}
-      <circle cx="62" cy="14" r="8" fill={C.pan} opacity="0.9"/>
-      <polyline points="57.5,14 61,17.5 67,10.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+
+      {/* House silhouette — subtle background context */}
+      <polygon points="12,42 40,26 68,42" fill={C.ws}/>
+      <rect x="18" y="42" width="44" height="16" fill={C.ws}/>
+      <rect x="22" y="45" width="9"  height="8"  rx="1" fill={C.bg} opacity="0.6"/>
+      <rect x="49" y="45" width="9"  height="8"  rx="1" fill={C.bg} opacity="0.6"/>
+      <rect x="34" y="48" width="11" height="10" rx="1" fill={C.bg} opacity="0.6"/>
+
+      {/* Key — solid filled, clean geometry */}
+      {/* Head ring */}
+      <circle cx="24" cy="26" r="13" fill={C.pan}/>
+      {/* Head hole */}
+      <circle cx="24" cy="26" r="6.5" fill={C.bg}/>
+      {/* Shaft */}
+      <rect x="33" y="22" width="34" height="8" rx="2" fill={C.pan}/>
+      {/* Tooth 1 */}
+      <rect x="48" y="30" width="5" height="7" rx="1" fill={C.pan}/>
+      {/* Tooth 2 */}
+      <rect x="58" y="30" width="5" height="5" rx="1" fill={C.pan}/>
+      {/* Ring inner highlight */}
+      <circle cx="21" cy="22" r="3" fill="white" opacity="0.18"/>
     </svg>
   );
 }
