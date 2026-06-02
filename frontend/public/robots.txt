@@ -1,7 +1,6 @@
 User-agent: *
 Allow: /
-Allow: /blog
-Allow: /blog/
+
 Disallow: /installer/
 Disallow: /embed/
 Disallow: /api/
