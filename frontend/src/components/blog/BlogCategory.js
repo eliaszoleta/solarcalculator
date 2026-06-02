@@ -1,177 +1,120 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { CATEGORIES, getPostsByCategory, getCategoryBySlug } from '../../data/blogPosts';
-import { CategoryIcon, StarIcon, ClockIcon, SearchIcon, BoltIcon, getCategoryColors } from '../ui/Icons';
-import './Blog.css';
+import { CategoryIcon } from '../ui/Icons';
 
 const SITE_URL = 'https://www.mysolarwidget.com';
-
-function formatDate(iso) {
-  return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-}
+const PRIMARY = '#1e40af';
 
 export default function BlogCategory({ category: categorySlug }) {
   const category = getCategoryBySlug(categorySlug);
   const posts = getPostsByCategory(categorySlug);
-  const otherCategories = CATEGORIES.filter(c => c.slug !== categorySlug);
 
   if (!category) {
     return (
-      <div className="blog-page" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16, padding: 40 }}>
-        <div><SearchIcon size={48} /></div>
-        <h1 style={{ fontSize: 24, color: '#0f172a', margin: 0 }}>Category not found</h1>
-        <a href="/blog" style={{ color: '#2563eb', fontWeight: 700 }}>← Back to Blog</a>
+      <div style={{ background: '#f8fafc', minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16, padding: 40 }}>
+        <h1 style={{ fontSize: 24, color: '#0f172a' }}>Category not found</h1>
+        <a href="/blog" style={{ color: PRIMARY, fontWeight: 700 }}>← Back to Blog</a>
       </div>
     );
   }
 
-  const canonicalUrl = `${SITE_URL}/blog/category/${categorySlug}`;
-  const seoTitle = `${category.label} Articles — Solar Blog | MySolarWidget`;
-  const seoDescription = `${category.description} Browse all ${posts.length} ${category.label.toLowerCase()} articles and use our free solar calculator to estimate your savings.`;
-
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    'itemListElement': [
-      { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': SITE_URL },
-      { '@type': 'ListItem', 'position': 2, 'name': 'Blog', 'item': `${SITE_URL}/blog` },
-      { '@type': 'ListItem', 'position': 3, 'name': category.label, 'item': canonicalUrl },
-    ],
-  };
-
-  const collectionSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    'name': `${category.label} — MySolarWidget Blog`,
-    'description': seoDescription,
-    'url': canonicalUrl,
-    'publisher': { '@type': 'Organization', 'name': 'MySolarWidget', 'url': SITE_URL },
-  };
-
-  const colors = getCategoryColors(categorySlug);
+  const seoTitle = `${category.label} Guide 2026 | MySolarWidget`;
+  const seoDesc = category.description || `Expert guides on ${category.label.toLowerCase()} for homeowners.`;
 
   return (
-    <div className="blog-page">
+    <>
       <Helmet>
         <title>{seoTitle}</title>
-        <meta name="description" content={seoDescription} />
-        <link rel="canonical" href={canonicalUrl} />
-        <meta property="og:type" content="website" />
+        <meta name="description" content={seoDesc} />
+        <link rel="canonical" href={`${SITE_URL}/blog/category/${categorySlug}`} />
         <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDescription} />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={seoTitle} />
-        <meta name="twitter:description" content={seoDescription} />
-        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(collectionSchema)}</script>
+        <meta property="og:description" content={seoDesc} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${SITE_URL}/blog/category/${categorySlug}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': SITE_URL },
+            { '@type': 'ListItem', 'position': 2, 'name': 'Blog', 'item': `${SITE_URL}/blog` },
+            { '@type': 'ListItem', 'position': 3, 'name': category.label, 'item': `${SITE_URL}/blog/category/${categorySlug}` },
+          ],
+        })}</script>
       </Helmet>
 
-      {/* Breadcrumb */}
-      <div className="blog-container" style={{ paddingTop: 0 }}>
-        <nav className="blog-breadcrumb" aria-label="Breadcrumb">
-          <a href="/">Home</a>
-          <span className="blog-breadcrumb__sep" aria-hidden>›</span>
-          <a href="/blog">Blog</a>
-          <span className="blog-breadcrumb__sep" aria-hidden>›</span>
-          <span aria-current="page">{category.label}</span>
-        </nav>
-      </div>
+      <div style={{ background: '#f8fafc', minHeight: '100vh', padding: '48px 24px 64px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto' }}>
 
-      {/* Category hero */}
-      <header style={{
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1e40af 100%)',
-        padding: '44px 24px 40px',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        <div style={{ position: 'absolute', top: -60, right: -60, width: 280, height: 280, borderRadius: '50%', background: 'rgba(245,158,11,0.1)', filter: 'blur(50px)' }} />
-        <div style={{ position: 'relative', maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ display: 'flex', marginBottom: 14 }}>
-            <div style={{ width: 56, height: 56, borderRadius: 14, background: colors.iconBg, border: `2px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <CategoryIcon slug={categorySlug} size={28} color={colors.iconColor} />
+          {/* Back link */}
+          <a href="/blog" style={{ fontSize: 13, color: '#64748b', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 5, marginBottom: 28 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            All Articles
+          </a>
+
+          {/* Category header */}
+          <div style={{ marginBottom: 40 }}>
+            <div style={{ width: 52, height: 52, borderRadius: 14, background: '#eff6ff', border: '1.5px solid #bfdbfe', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+              <CategoryIcon slug={categorySlug} size={26} color={PRIMARY} />
+            </div>
+            <h1 style={{ fontSize: 'clamp(24px,4vw,34px)', fontWeight: 800, color: '#0f172a', marginBottom: 8 }}>{category.label}</h1>
+            <p style={{ fontSize: 16, color: '#64748b' }}>{seoDesc}</p>
+          </div>
+
+          {/* Other categories */}
+          <div style={{ marginBottom: 32 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 12 }}>Other Categories</div>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {CATEGORIES.filter(c => c.slug !== categorySlug).map(cat => (
+                <a
+                  key={cat.slug}
+                  href={`/blog/category/${cat.slug}`}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 20, background: 'white', border: '1.5px solid #e2e8f0', textDecoration: 'none', fontSize: 13, fontWeight: 600, color: '#374151', transition: 'all 0.15s' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = PRIMARY; e.currentTarget.style.color = PRIMARY; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#374151'; }}
+                >
+                  <CategoryIcon slug={cat.slug} size={13} /> {cat.label}
+                </a>
+              ))}
             </div>
           </div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(147,197,253,0.12)', border: '1px solid rgba(147,197,253,0.25)', borderRadius: 999, padding: '3px 10px', marginBottom: 10 }}>
-            <span style={{ fontSize: 10, fontWeight: 700, color: '#93c5fd', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Category</span>
-          </div>
-          <h1 style={{ fontSize: 'clamp(20px, 3.5vw, 30px)', fontWeight: 900, letterSpacing: '-0.025em', margin: '0 0 8px', color: 'white', lineHeight: 1.2 }}>{category.label}</h1>
-          <p style={{ fontSize: 14, color: '#93c5fd', lineHeight: 1.6 }}>{category.description}</p>
-        </div>
-      </header>
 
-      {/* Posts */}
-      <div className="category-content">
-        <h2>{posts.length} Article{posts.length !== 1 ? 's' : ''} in {category.label}</h2>
-
-        {posts.length > 0 ? (
-          <div className="blog-grid" role="list">
-            {posts.map(post => (
-              <article key={post.slug} className="blog-card" role="listitem">
-                <a href={`/blog/${post.slug}`} style={{ textDecoration: 'none', display: 'contents' }}>
-                  <div className="blog-card__img" aria-hidden style={{ background: colors.iconBg }}>
-                    <div style={{ width: 60, height: 60, borderRadius: 14, background: colors.bg, border: `1.5px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CategoryIcon slug={categorySlug} size={30} color={colors.iconColor} />
+          {/* Articles list */}
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 16 }}>All Articles</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {posts.map(post => {
+              const readTime = post.readingTime ? `${post.readingTime} min read` : (post.readTime || '');
+              const excerpt = post.excerpt || post.metaDescription || '';
+              return (
+                <a key={post.slug} href={`/blog/${post.slug}`} style={{ textDecoration: 'none' }}>
+                  <div
+                    style={{ background: 'white', borderRadius: 12, border: '1px solid #e2e8f0', padding: '22px 26px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, transition: 'box-shadow 0.15s' }}
+                    onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
+                  >
+                    <div style={{ flex: 1 }}>
+                      <h2 style={{ fontSize: 17, fontWeight: 700, color: '#0f172a', marginBottom: 6 }}>{post.title}</h2>
+                      <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.6, margin: 0 }}>{excerpt}</p>
                     </div>
-                  </div>
-                  <div className="blog-card__body">
-                    <div className="blog-card__meta">
-                      <time dateTime={post.publishDate}>{formatDate(post.publishDate)}</time>
-                      {post.featured && (
-                        <span style={{ fontSize: 11, color: '#f59e0b', fontWeight: 700 }}><StarIcon size={11} style={{ verticalAlign: 'middle', marginRight: 2 }} />Featured</span>
-                      )}
+                    <div style={{ flexShrink: 0, textAlign: 'right' }}>
+                      <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 4 }}>{readTime}</div>
+                      <span style={{ fontSize: 13, color: PRIMARY, fontWeight: 600 }}>Read →</span>
                     </div>
-                    <h3 className="blog-card__title">{post.title}</h3>
-                    <p className="blog-card__excerpt">{post.excerpt.slice(0, 130)}…</p>
-                  </div>
-                  <div className="blog-card__footer">
-                    <span style={{ fontSize: 12, color: '#94a3b8' }}><ClockIcon size={11} style={{ verticalAlign: 'middle', marginRight: 3 }} />{post.readingTime} min read</span>
-                    <span className="blog-card__read-more">Read more</span>
                   </div>
                 </a>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <div className="blog-no-results">
-            <div><CategoryIcon slug={categorySlug} size={48} /></div>
-            <h3>No articles yet</h3>
-            <p>Check back soon — we're adding new guides regularly.</p>
-          </div>
-        )}
-
-        {/* CTA */}
-        <div className="post-cta-block" style={{ marginTop: 32 }}>
-          <img src="/logo-icon-navy.svg" alt="" aria-hidden className="post-cta-block__icon" style={{ width: 48, height: 48, borderRadius: 12, marginBottom: 10 }} />
-          <h3>Estimate Your Solar Savings</h3>
-          <p>
-            Use our free Solar Calculator to see your personalized cost, monthly savings,
-            and 25-year return based on your real electricity bill and location.
-          </p>
-          <a href="/" className="post-cta-block__btn"><BoltIcon size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />Get My Free Estimate</a>
-        </div>
-
-        {/* Other categories */}
-        <section className="category-other-cats" aria-label="Other categories">
-          <h2>Explore Other Topics</h2>
-          <div className="blog-categories-grid">
-            {otherCategories.map(c => {
-              const oc = getCategoryColors(c.slug);
-              return (
-              <a key={c.slug} href={`/blog/category/${c.slug}`} className="blog-category-card" style={{ background: oc.bg, borderColor: oc.border }}>
-                <div className="blog-category-card__icon-box" aria-hidden style={{ background: oc.iconBg }}>
-                  <CategoryIcon slug={c.slug} size={24} color={oc.iconColor} />
-                </div>
-                <div>
-                  <div className="blog-category-card__name">{c.label}</div>
-                  <p className="blog-category-card__desc">{c.description}</p>
-                </div>
-              </a>
               );
             })}
           </div>
-        </section>
+
+          {/* Bottom CTA */}
+          <div style={{ background: 'linear-gradient(135deg, #1e3a8a, #1e40af)', borderRadius: 14, padding: '32px 36px', marginTop: 48, color: 'white', textAlign: 'center' }}>
+            <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 10 }}>Estimate Your Solar Savings</h3>
+            <p style={{ color: '#bfdbfe', marginBottom: 20, fontSize: 15 }}>Free calculator — enter your electric bill and ZIP code for a personalized estimate powered by real NREL data.</p>
+            <a href="/" style={{ background: 'white', color: PRIMARY, padding: '13px 28px', borderRadius: 9, textDecoration: 'none', fontWeight: 700, fontSize: 15 }}>Get My Free Estimate →</a>
+          </div>
+
+        </div>
       </div>
-    </div>
+    </>
   );
 }
