@@ -48,7 +48,6 @@ function staticHeader() {
   </div>
   <style>
     @media(max-width:639px){.pr-desktop-nav{display:none!important}.pr-mobile-cta{display:inline-block!important}}
-    #root .app header { } /* React header takes over after mount */
   </style>
 </header>`;
 }
@@ -202,7 +201,7 @@ ${staticHeader()}
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:16px;top:50%;transform:translateY(-50%)">
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
       </svg>
-      <input type="search" placeholder="Search solar guides..." disabled
+      <input type="search" placeholder="Search solar guides..."
         style="width:100%;padding:13px 18px 13px 46px;font-size:15px;border-radius:12px;border:2px solid #e2e8f0;outline:none;background:white;box-sizing:border-box;color:#0f172a" />
     </div>
 
