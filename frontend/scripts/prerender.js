@@ -8,8 +8,6 @@ const SRC    = path.join(__dirname, '../src');
 const DOMAIN = 'https://www.mysolarwidget.com';
 const PRIMARY = '#1e40af';
 
-// ─── 1. Load blog data ───────────────────────────────────────────────────────
-
 function loadBlogData() {
   const raw = fs.readFileSync(path.join(SRC, 'data/blogPosts.js'), 'utf8');
   const src = raw
@@ -21,16 +19,12 @@ function loadBlogData() {
   return fn();
 }
 
-// ─── 2. Extract CSS/JS asset tags from the built index.html ─────────────────
-
 function getAssetTags() {
   const indexHtml = fs.readFileSync(path.join(BUILD, 'index.html'), 'utf8');
   const cssLinks  = (indexHtml.match(/<link[^>]+\.css[^>]*>/g)  || []).join('\n  ');
   const jsScripts = (indexHtml.match(/<script[^>]+\.js[^>]*>/g) || []).join('\n  ');
   return { cssLinks, jsScripts };
 }
-
-// ─── 3. Static site header (matches React Header.js) ────────────────────────
 
 function staticHeader() {
   return `<header id="static-header" style="position:sticky;top:0;z-index:100;height:60px;display:flex;align-items:center;padding:0 12px;background:#ffffff;border-bottom:1px solid #f3f4f6;box-sizing:border-box">
@@ -48,12 +42,9 @@ function staticHeader() {
   </div>
   <style>
     @media(max-width:639px){.pr-desktop-nav{display:none!important}.pr-mobile-cta{display:inline-block!important}}
-    #root .app header { } /* React header takes over after mount */
   </style>
 </header>`;
 }
-
-// ─── 4. Helpers ──────────────────────────────────────────────────────────────
 
 function esc(str) {
   return String(str || '')
@@ -84,8 +75,6 @@ function articleSchema(post) {
     mainEntityOfPage: `${DOMAIN}/blog/${post.slug}`,
   });
 }
-
-// ─── 5. Blog post renderer ───────────────────────────────────────────────────
 
 function renderBlogPost(post, assets) {
   const sectionsHtml = (post.sections || []).map(s =>
@@ -136,8 +125,6 @@ function renderBlogPost(post, assets) {
 </body>
 </html>`;
 }
-
-// ─── 6. Blog index renderer ──────────────────────────────────────────────────
 
 function renderBlogIndex(posts, categories, assets) {
   const featured = posts.find(p => p.featured);
@@ -202,7 +189,7 @@ ${staticHeader()}
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:16px;top:50%;transform:translateY(-50%)">
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
       </svg>
-      <input type="search" placeholder="Search solar guides..." disabled
+      <input type="search" placeholder="Search solar guides..."
         style="width:100%;padding:13px 18px 13px 46px;font-size:15px;border-radius:12px;border:2px solid #e2e8f0;outline:none;background:white;box-sizing:border-box;color:#0f172a" />
     </div>
 
@@ -229,8 +216,6 @@ ${staticHeader()}
 </body>
 </html>`;
 }
-
-// ─── 7. Category page renderer ───────────────────────────────────────────────
 
 function renderCategoryPage(cat, posts, assets) {
   const catPosts = posts.filter(p => p.category === cat.slug);
@@ -305,15 +290,11 @@ ${staticHeader()}
 </html>`;
 }
 
-// ─── 8. Write helper ─────────────────────────────────────────────────────────
-
 function writeFile(relPath, html) {
   const full = path.join(BUILD, relPath, 'index.html');
   fs.mkdirSync(path.dirname(full), { recursive: true });
   fs.writeFileSync(full, html, 'utf8');
 }
-
-// ─── 9. Main ─────────────────────────────────────────────────────────────────
 
 function main() {
   if (!fs.existsSync(BUILD)) {
