@@ -8,8 +8,6 @@ const SRC    = path.join(__dirname, '../src');
 const DOMAIN = 'https://www.mysolarwidget.com';
 const PRIMARY = '#1e40af';
 
-// ─── 1. Load blog data ───────────────────────────────────────────────────────
-
 function loadBlogData() {
   const raw = fs.readFileSync(path.join(SRC, 'data/blogPosts.js'), 'utf8');
   const src = raw
@@ -21,16 +19,12 @@ function loadBlogData() {
   return fn();
 }
 
-// ─── 2. Extract CSS/JS asset tags from the built index.html ─────────────────
-
 function getAssetTags() {
   const indexHtml = fs.readFileSync(path.join(BUILD, 'index.html'), 'utf8');
   const cssLinks  = (indexHtml.match(/<link[^>]+\.css[^>]*>/g)  || []).join('\n  ');
   const jsScripts = (indexHtml.match(/<script[^>]+\.js[^>]*>/g) || []).join('\n  ');
   return { cssLinks, jsScripts };
 }
-
-// ─── 3. Static site header (matches React Header.js) ────────────────────────
 
 function staticHeader() {
   return `<header id="static-header" style="position:sticky;top:0;z-index:100;height:60px;display:flex;align-items:center;padding:0 12px;background:#ffffff;border-bottom:1px solid #f3f4f6;box-sizing:border-box">
@@ -52,7 +46,30 @@ function staticHeader() {
 </header>`;
 }
 
-// ─── 4. Helpers ──────────────────────────────────────────────────────────────
+// Vanilla JS search injected into the prerendered page (works before React loads)
+const vanillaSearch = `
+<script>
+(function(){
+  function init(){
+    var inp = document.getElementById('pr-search-input');
+    var noRes = document.getElementById('pr-no-results');
+    if(!inp) return;
+    inp.addEventListener('input', function(){
+      var term = this.value.trim().toLowerCase();
+      var cards = document.querySelectorAll('.pr-post-card');
+      var shown = 0;
+      cards.forEach(function(c){
+        var matches = !term || c.dataset.search.indexOf(term) !== -1;
+        c.style.display = matches ? '' : 'none';
+        if(matches) shown++;
+      });
+      if(noRes) noRes.style.display = (term && shown === 0) ? '' : 'none';
+    });
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+<\/script>`;
 
 function esc(str) {
   return String(str || '')
@@ -60,6 +77,11 @@ function esc(str) {
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function searchData(post, categories) {
+  const cat = (categories.find(c => c.slug === post.category) || {}).label || '';
+  return [post.title, post.excerpt || '', post.metaDescription || '', cat].join(' ').toLowerCase();
 }
 
 function formatDate(iso) {
@@ -83,8 +105,6 @@ function articleSchema(post) {
     mainEntityOfPage: `${DOMAIN}/blog/${post.slug}`,
   });
 }
-
-// ─── 5. Blog post renderer ───────────────────────────────────────────────────
 
 function renderBlogPost(post, assets) {
   const sectionsHtml = (post.sections || []).map(s =>
@@ -136,39 +156,42 @@ function renderBlogPost(post, assets) {
 </html>`;
 }
 
-// ─── 6. Blog index renderer ──────────────────────────────────────────────────
-
 function renderBlogIndex(posts, categories, assets) {
   const featured = posts.find(p => p.featured);
   const rest = posts.filter(p => !p.featured);
+  const allPosts = posts; // include featured in search results
 
   const catBadge = (post) => {
     const cat = categories.find(c => c.slug === post.category) || { label: post.category };
-    return `<div style="display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;color:${PRIMARY};text-transform:uppercase;letter-spacing:0.05em">${esc(cat.label)}</div>`;
+    return `<span style="display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;color:${PRIMARY};text-transform:uppercase;letter-spacing:0.05em">${esc(cat.label)}</span>`;
   };
 
   const readTime = (post) => post.readingTime ? `${post.readingTime} min read` : (post.readTime || '');
 
-  const postCard = (post, isFeatured = false) => `
-    <a href="/blog/${post.slug}" style="text-decoration:none;display:block;height:100%">
-      <div style="background:white;border-radius:14px;border:1px solid #e2e8f0;padding:${isFeatured ? '28px 32px' : '22px 26px'};height:100%;box-sizing:border-box">
-        <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px">
-          ${catBadge(post)}
-          <span style="margin-left:auto;font-size:12px;color:#94a3b8">${readTime(post)}</span>
+  const postCard = (post, isFeatured = false) => {
+    const sd = searchData(post, categories).replace(/"/g, '&quot;');
+    return `
+    <div class="pr-post-card" data-search="${sd}" style="min-width:0">
+      <a href="/blog/${post.slug}" style="text-decoration:none;display:block;height:100%">
+        <div style="background:white;border-radius:14px;border:1px solid #e2e8f0;padding:${isFeatured ? '28px 32px' : '22px 26px'};height:100%;box-sizing:border-box">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px">
+            ${catBadge(post)}
+            <span style="margin-left:auto;font-size:12px;color:#94a3b8">${readTime(post)}</span>
+          </div>
+          <h2 style="font-size:${isFeatured ? 22 : 17}px;font-weight:800;color:#0f172a;line-height:1.35;margin-bottom:10px">${esc(post.title)}</h2>
+          <p style="font-size:14px;color:#64748b;line-height:1.65;margin:0 0 14px">${esc(post.excerpt || post.metaDescription || '')}</p>
+          <span style="font-size:13px;color:${PRIMARY};font-weight:600">Read article &rarr;</span>
         </div>
-        <h2 style="font-size:${isFeatured ? 22 : 17}px;font-weight:800;color:#0f172a;line-height:1.35;margin-bottom:10px">${esc(post.title)}</h2>
-        <p style="font-size:14px;color:#64748b;line-height:1.65;margin:0 0 14px">${esc(post.excerpt || post.metaDescription || '')}</p>
-        <span style="font-size:13px;color:${PRIMARY};font-weight:600">Read article &rarr;</span>
-      </div>
-    </a>`;
+      </a>
+    </div>`;
+  };
 
   const catPills = categories.map(cat => `
     <a href="/blog/category/${cat.slug}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:24px;background:white;border:1.5px solid #e2e8f0;text-decoration:none;font-size:13.5px;font-weight:600;color:#374151">${esc(cat.label)}</a>`
   ).join('');
 
-  const gridCards = rest.map(post => `
-    <div style="min-width:0">${postCard(post)}</div>`
-  ).join('');
+  // All posts as cards (hidden initially if not matching search)
+  const allCards = allPosts.map(p => postCard(p)).join('');
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -198,18 +221,19 @@ ${staticHeader()}
     </div>
 
     <div style="max-width:560px;margin:0 auto 40px;position:relative">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:16px;top:50%;transform:translateY(-50%)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none">
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
       </svg>
-      <input type="search" placeholder="Search solar guides..."
+      <input id="pr-search-input" type="search" placeholder="Search solar guides..."
         style="width:100%;padding:13px 18px 13px 46px;font-size:15px;border-radius:12px;border:2px solid #e2e8f0;outline:none;background:white;box-sizing:border-box;color:#0f172a" />
     </div>
 
-    ${featured ? `
-    <div style="margin-bottom:40px">
+    <p id="pr-no-results" style="display:none;color:#64748b;font-size:14px;text-align:center;padding:24px 0">No articles found. Try a different search term.</p>
+
+    <div id="pr-featured" style="margin-bottom:40px">
       <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:12px">Featured</div>
-      ${postCard(featured, true)}
-    </div>` : ''}
+      ${featured ? postCard(featured, true) : ''}
+    </div>
 
     <div style="margin-bottom:40px">
       <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px">Browse by Category</div>
@@ -217,19 +241,18 @@ ${staticHeader()}
     </div>
 
     <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px">All Articles</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px">
-      ${gridCards}
+    <div id="pr-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px">
+      ${allCards}
     </div>
 
   </div>
 </div>
 </div>
+${vanillaSearch}
   ${assets.jsScripts}
 </body>
 </html>`;
 }
-
-// ─── 7. Category page renderer ───────────────────────────────────────────────
 
 function renderCategoryPage(cat, posts, assets) {
   const catPosts = posts.filter(p => p.category === cat.slug);
@@ -304,15 +327,11 @@ ${staticHeader()}
 </html>`;
 }
 
-// ─── 8. Write helper ─────────────────────────────────────────────────────────
-
 function writeFile(relPath, html) {
   const full = path.join(BUILD, relPath, 'index.html');
   fs.mkdirSync(path.dirname(full), { recursive: true });
   fs.writeFileSync(full, html, 'utf8');
 }
-
-// ─── 9. Main ─────────────────────────────────────────────────────────────────
 
 function main() {
   if (!fs.existsSync(BUILD)) {
