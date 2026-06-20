@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { POSTS, CATEGORIES, getFeaturedPost } from '../../data/blogPosts';
 import { CategoryIcon } from '../ui/Icons';
@@ -48,6 +48,17 @@ function PostCard({ post, featured = false }) {
 export default function BlogIndex() {
   const featured = getFeaturedPost();
   const rest = POSTS.filter(p => !p.featured);
+  const [search, setSearch] = useState('');
+
+  const searchTerm = search.trim().toLowerCase();
+  const searchResults = searchTerm
+    ? POSTS.filter(p =>
+        p.title.toLowerCase().includes(searchTerm) ||
+        (p.excerpt || '').toLowerCase().includes(searchTerm) ||
+        (p.metaDescription || '').toLowerCase().includes(searchTerm) ||
+        (CATEGORIES.find(c => c.slug === p.category) || {}).label?.toLowerCase().includes(searchTerm)
+      )
+    : null;
 
   return (
     <>
@@ -73,42 +84,99 @@ export default function BlogIndex() {
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
           {/* Page header */}
-          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+          <div style={{ textAlign: 'center', marginBottom: 32 }}>
             <h1 style={{ fontSize: 'clamp(26px,4vw,38px)', fontWeight: 800, color: '#0f172a', marginBottom: 10 }}>Solar Resource Center</h1>
             <p style={{ fontSize: 16, color: '#64748b', maxWidth: 520, margin: '0 auto' }}>Cost guides, savings calculations, financing options, and installation advice for homeowners.</p>
           </div>
 
-          {/* Featured post */}
-          {featured && (
-            <div style={{ marginBottom: 40 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 12 }}>Featured</div>
-              <PostCard post={featured} featured />
-            </div>
+          {/* Search bar */}
+          <div style={{ maxWidth: 560, margin: '0 auto 40px', position: 'relative' }}>
+            <svg
+              width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+            >
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input
+              type="search"
+              placeholder="Search solar guides..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '13px 18px 13px 46px',
+                fontSize: 15,
+                borderRadius: 12,
+                border: '2px solid #e2e8f0',
+                outline: 'none',
+                background: 'white',
+                boxSizing: 'border-box',
+                color: '#0f172a',
+                transition: 'border-color 0.15s',
+              }}
+              onFocus={e => { e.target.style.borderColor = PRIMARY; }}
+              onBlur={e => { e.target.style.borderColor = '#e2e8f0'; }}
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: 18, lineHeight: 1, padding: 2 }}
+                aria-label="Clear search"
+              >✕</button>
+            )}
+          </div>
+
+          {/* Search results */}
+          {searchResults !== null ? (
+            <>
+              <div style={{ fontSize: 13, color: '#64748b', marginBottom: 16 }}>
+                {searchResults.length === 0
+                  ? `No results for "${search}"`
+                  : `${searchResults.length} result${searchResults.length !== 1 ? 's' : ''} for "${search}"`
+                }
+              </div>
+              {searchResults.length > 0 && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
+                  {searchResults.map(post => <PostCard key={post.slug} post={post} />)}
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {/* Featured post */}
+              {featured && (
+                <div style={{ marginBottom: 40 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 12 }}>Featured</div>
+                  <PostCard post={featured} featured />
+                </div>
+              )}
+
+              {/* Browse by Category */}
+              <div style={{ marginBottom: 40 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 16 }}>Browse by Category</div>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                  {CATEGORIES.map(cat => (
+                    <a
+                      key={cat.slug}
+                      href={`/blog/category/${cat.slug}`}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 16px', borderRadius: 24, background: 'white', border: '1.5px solid #e2e8f0', textDecoration: 'none', fontSize: 13.5, fontWeight: 600, color: '#374151', transition: 'all 0.15s' }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor = PRIMARY; e.currentTarget.style.color = PRIMARY; }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#374151'; }}
+                    >
+                      <CategoryIcon slug={cat.slug} size={14} /> {cat.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* All Articles grid */}
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 16 }}>All Articles</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
+                {rest.map(post => <PostCard key={post.slug} post={post} />)}
+              </div>
+            </>
           )}
-
-          {/* Browse by Category */}
-          <div style={{ marginBottom: 40 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 16 }}>Browse by Category</div>
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-              {CATEGORIES.map(cat => (
-                <a
-                  key={cat.slug}
-                  href={`/blog/category/${cat.slug}`}
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 16px', borderRadius: 24, background: 'white', border: '1.5px solid #e2e8f0', textDecoration: 'none', fontSize: 13.5, fontWeight: 600, color: '#374151', transition: 'all 0.15s' }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = PRIMARY; e.currentTarget.style.color = PRIMARY; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#374151'; }}
-                >
-                  <CategoryIcon slug={cat.slug} size={14} /> {cat.label}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* All Articles grid */}
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 16 }}>All Articles</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
-            {rest.map(post => <PostCard key={post.slug} post={post} />)}
-          </div>
 
         </div>
       </div>
