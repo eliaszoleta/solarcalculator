@@ -30,7 +30,30 @@ function getAssetTags() {
   return { cssLinks, jsScripts };
 }
 
-// ─── 3. Helpers ──────────────────────────────────────────────────────────────
+// ─── 3. Static site header (matches React Header.js) ────────────────────────
+
+function staticHeader() {
+  return `<header id="static-header" style="position:sticky;top:0;z-index:100;height:60px;display:flex;align-items:center;padding:0 12px;background:#ffffff;border-bottom:1px solid #f3f4f6;box-sizing:border-box">
+  <div style="max-width:1120px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between">
+    <a href="/" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0">
+      <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style="height:44px;width:auto" />
+    </a>
+    <nav class="pr-desktop-nav" style="display:flex;align-items:center;gap:4px">
+      <a href="/#how-it-works" style="font-size:14px;font-weight:500;color:#4b5563;padding:6px 12px;border-radius:8px;text-decoration:none">How It Works</a>
+      <a href="/blog" style="font-size:14px;font-weight:500;color:#4b5563;padding:6px 12px;border-radius:8px;text-decoration:none">Blog</a>
+      <a href="/#faq" style="font-size:14px;font-weight:500;color:#4b5563;padding:6px 12px;border-radius:8px;text-decoration:none">FAQ</a>
+      <a href="/for-installers" style="margin-left:8px;font-size:13px;font-weight:600;color:${PRIMARY};padding:7px 16px;border-radius:9px;border:1.5px solid ${PRIMARY};text-decoration:none">Get Solar Widget</a>
+    </nav>
+    <a href="/for-installers" class="pr-mobile-cta" style="display:none;font-size:11px;font-weight:600;color:${PRIMARY};padding:5px 10px;border-radius:8px;border:1.5px solid ${PRIMARY};text-decoration:none">Get Solar Widget</a>
+  </div>
+  <style>
+    @media(max-width:639px){.pr-desktop-nav{display:none!important}.pr-mobile-cta{display:inline-block!important}}
+    #root .app header { } /* React header takes over after mount */
+  </style>
+</header>`;
+}
+
+// ─── 4. Helpers ──────────────────────────────────────────────────────────────
 
 function esc(str) {
   return String(str || '')
@@ -62,7 +85,7 @@ function articleSchema(post) {
   });
 }
 
-// ─── 4. Blog post renderer (unchanged) ──────────────────────────────────────
+// ─── 5. Blog post renderer ───────────────────────────────────────────────────
 
 function renderBlogPost(post, assets) {
   const sectionsHtml = (post.sections || []).map(s =>
@@ -95,7 +118,7 @@ function renderBlogPost(post, assets) {
   ${assets.cssLinks}
 </head>
 <body>
-<div id="root"><article style="max-width:800px;margin:40px auto;padding:0 24px;font-family:system-ui,-apple-system,sans-serif;line-height:1.7;color:#0f172a">
+<div id="root">${staticHeader()}<article style="max-width:800px;margin:40px auto;padding:0 24px;font-family:system-ui,-apple-system,sans-serif;line-height:1.7;color:#0f172a">
   <nav style="font-size:13px;color:#64748b;margin-bottom:24px">
     <a href="/" style="color:${PRIMARY};text-decoration:none">Home</a> &rsaquo;
     <a href="/blog" style="color:${PRIMARY};text-decoration:none">Blog</a> &rsaquo;
@@ -114,7 +137,7 @@ function renderBlogPost(post, assets) {
 </html>`;
 }
 
-// ─── 5. Blog index renderer — card grid layout ───────────────────────────────
+// ─── 6. Blog index renderer ──────────────────────────────────────────────────
 
 function renderBlogIndex(posts, categories, assets) {
   const featured = posts.find(p => p.featured);
@@ -166,12 +189,21 @@ function renderBlogIndex(posts, categories, assets) {
 </head>
 <body>
 <div id="root">
+${staticHeader()}
 <div style="background:#f8fafc;min-height:100vh;padding:48px 24px 64px;font-family:system-ui,-apple-system,sans-serif">
   <div style="max-width:1100px;margin:0 auto">
 
-    <div style="text-align:center;margin-bottom:48px">
+    <div style="text-align:center;margin-bottom:32px">
       <h1 style="font-size:clamp(26px,4vw,38px);font-weight:800;color:#0f172a;margin-bottom:10px">Solar Resource Center</h1>
       <p style="font-size:16px;color:#64748b;max-width:520px;margin:0 auto">Cost guides, savings calculations, financing options, and installation advice for homeowners.</p>
+    </div>
+
+    <div style="max-width:560px;margin:0 auto 40px;position:relative">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:16px;top:50%;transform:translateY(-50%)">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="search" placeholder="Search solar guides..." disabled
+        style="width:100%;padding:13px 18px 13px 46px;font-size:15px;border-radius:12px;border:2px solid #e2e8f0;outline:none;background:white;box-sizing:border-box;color:#0f172a" />
     </div>
 
     ${featured ? `
@@ -198,7 +230,7 @@ function renderBlogIndex(posts, categories, assets) {
 </html>`;
 }
 
-// ─── 6. Category page renderer — roofing-style layout ───────────────────────
+// ─── 7. Category page renderer ───────────────────────────────────────────────
 
 function renderCategoryPage(cat, posts, assets) {
   const catPosts = posts.filter(p => p.category === cat.slug);
@@ -242,6 +274,7 @@ function renderCategoryPage(cat, posts, assets) {
 </head>
 <body>
 <div id="root">
+${staticHeader()}
 <div style="background:#f8fafc;min-height:100vh;padding:48px 24px 64px;font-family:system-ui,-apple-system,sans-serif">
   <div style="max-width:900px;margin:0 auto">
 
@@ -272,7 +305,7 @@ function renderCategoryPage(cat, posts, assets) {
 </html>`;
 }
 
-// ─── 7. Write helper ─────────────────────────────────────────────────────────
+// ─── 8. Write helper ─────────────────────────────────────────────────────────
 
 function writeFile(relPath, html) {
   const full = path.join(BUILD, relPath, 'index.html');
@@ -280,7 +313,7 @@ function writeFile(relPath, html) {
   fs.writeFileSync(full, html, 'utf8');
 }
 
-// ─── 8. Main ─────────────────────────────────────────────────────────────────
+// ─── 9. Main ─────────────────────────────────────────────────────────────────
 
 function main() {
   if (!fs.existsSync(BUILD)) {
