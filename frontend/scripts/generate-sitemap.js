@@ -21,11 +21,11 @@ const postsFile = fs.readFileSync(
 const [catSection, postsSection] = postsFile.split('export const POSTS');
 
 // Extract category slugs from the CATEGORIES section (global flag required for matchAll)
-const categorySlugs = [...catSection.matchAll(/slug:\s*['"]([^'"]+)['"]/g)].map(m => m[1]);
+const categorySlugs = [...catSection.matchAll(/slug:\s*['"]([ ^'"]+)['"]/ g)].map(m => m[1]);
 
 // Extract post slugs + publishDates from the POSTS section only.
-const slugMatches = [...postsSection.matchAll(/(?<!\w)slug:\s*['"]([^'"]+)['"]/g)];
-const dateMatches = [...postsSection.matchAll(/publishDate:\s*['"]([^'"]+)['"]/g)];
+const slugMatches = [...postsSection.matchAll(/(?<!\w)slug:\s*['"]([ ^'"]+)['"]/ g)];
+const dateMatches = [...postsSection.matchAll(/publishDate:\s*['"]([ ^'"]+)['"]/ g)];
 
 const posts = slugMatches.map((m, i) => ({
   slug: m[1],
