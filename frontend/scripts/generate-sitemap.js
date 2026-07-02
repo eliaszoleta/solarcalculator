@@ -10,7 +10,7 @@ const path = require('path');
 const SITE_URL = 'https://www.mysolarwidget.com';
 const TODAY = new Date().toISOString().split('T')[0];
 
-// ── Parse blogPosts.js as text ─────────────────────────────────────────────
+// ── Parse blogPosts.js as text ──────────────────────────────────────────────────────
 
 const postsFile = fs.readFileSync(
   path.join(__dirname, '../src/data/blogPosts.js'),
@@ -20,21 +20,12 @@ const postsFile = fs.readFileSync(
 // Split file into CATEGORIES section and POSTS section
 const [catSection, postsSection] = postsFile.split('export const POSTS');
 
-// Extract category slugs from the CATEGORIES section only
-const categorySlugs = [...catSection.matchAll(/slug:\s*['"]([\'"]+)['"]/) ]
-  .map(m => m[1]);
-
-// Re-parse correctly
-const catSlugs = [];
-for (const m of catSection.matchAll(/slug:\s*['"]([\'"]+)['"]/) || []) {
-  catSlugs.push(m[1]);
-}
-// Actually use simple regex
-const categorySlugsFixed = [...catSection.matchAll(/slug:\s*['"]([^'"]+)['"]/g)].map(m => m[1]);
+// Extract category slugs from the CATEGORIES section (global flag required for matchAll)
+const categorySlugs = [...catSection.matchAll(/slug:\s*['"]([^'"]+)['"]/g)].map(m => m[1]);
 
 // Extract post slugs + publishDates from the POSTS section only.
-const slugMatches  = [...postsSection.matchAll(/(?<!\w)slug:\s*['"]([^'"]+)['"]/g)];
-const dateMatches  = [...postsSection.matchAll(/publishDate:\s*['"]([^'"]+)['"]/g)];
+const slugMatches = [...postsSection.matchAll(/(?<!\w)slug:\s*['"]([^'"]+)['"]/g)];
+const dateMatches = [...postsSection.matchAll(/publishDate:\s*['"]([^'"]+)['"]/g)];
 
 const posts = slugMatches.map((m, i) => ({
   slug: m[1],
@@ -72,15 +63,15 @@ const xml = [
   ),
   '',
   '  <!-- Blog category pages -->',
-  ...categorySlugsFixed.map(slug =>
+  ...categorySlugs.map(slug =>
     urlEntry({ loc: `${SITE_URL}/blog/category/${slug}`, lastmod: TODAY, changefreq: 'weekly', priority: '0.7' })
   ),
   '',
   '</urlset>',
 ].join('\n') + '\n';
 
-// ── Write output ───────────────────────────────────────────────────────────
+// ── Write output ─────────────────────────────────────────────────────────────
 const outPath = path.join(__dirname, '../public/sitemap.xml');
 fs.writeFileSync(outPath, xml, 'utf8');
 
-console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugsFixed.length} categories`);
+console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugs.length} categories`);
