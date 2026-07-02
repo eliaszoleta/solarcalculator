@@ -126,6 +126,7 @@ function renderBlogPost(post, assets) {
   <meta name="description" content="${esc(post.metaDescription || post.excerpt)}">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <link rel="canonical" href="${DOMAIN}/blog/${post.slug}">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <meta property="og:title" content="${esc(post.seoTitle || post.title)}">
   <meta property="og:description" content="${esc(post.metaDescription || post.excerpt)}">
   <meta property="og:url" content="${DOMAIN}/blog/${post.slug}">
@@ -159,7 +160,7 @@ function renderBlogPost(post, assets) {
 function renderBlogIndex(posts, categories, assets) {
   const featured = posts.find(p => p.featured);
   const rest = posts.filter(p => !p.featured);
-  const allPosts = posts; // include featured in search results
+  const allPosts = posts;
 
   const catBadge = (post) => {
     const cat = categories.find(c => c.slug === post.category) || { label: post.category };
@@ -190,7 +191,6 @@ function renderBlogIndex(posts, categories, assets) {
     <a href="/blog/category/${cat.slug}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:24px;background:white;border:1.5px solid #e2e8f0;text-decoration:none;font-size:13.5px;font-weight:600;color:#374151">${esc(cat.label)}</a>`
   ).join('');
 
-  // All posts as cards (hidden initially if not matching search)
   const allCards = allPosts.map(p => postCard(p)).join('');
 
   return `<!DOCTYPE html>
@@ -202,6 +202,7 @@ function renderBlogIndex(posts, categories, assets) {
   <meta name="description" content="Expert solar guides: cost estimates, savings calculations, financing options, tax credits, and installation advice. Free resources for homeowners.">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <link rel="canonical" href="${DOMAIN}/blog">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <meta property="og:title" content="Solar Blog 2026 | MySolarWidget">
   <meta property="og:description" content="Expert solar guides: cost estimates, savings calculations, financing options, tax credits, and installation advice.">
   <meta property="og:url" content="${DOMAIN}/blog">
@@ -287,6 +288,7 @@ function renderCategoryPage(cat, posts, assets) {
   <meta name="description" content="${esc(seoDesc)}">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <link rel="canonical" href="${DOMAIN}/blog/category/${cat.slug}">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <meta property="og:title" content="${esc(seoTitle)}">
   <meta property="og:description" content="${esc(seoDesc)}">
   <meta property="og:url" content="${DOMAIN}/blog/category/${cat.slug}">
@@ -327,6 +329,56 @@ ${staticHeader()}
 </html>`;
 }
 
+function injectHomepage(posts, categories) {
+  const indexPath = path.join(BUILD, 'index.html');
+  if (!fs.existsSync(indexPath)) return;
+
+  let html = fs.readFileSync(indexPath, 'utf8');
+  if (!html.includes('<div id="root"></div>')) return;
+
+  const topPosts = posts.slice(0, 6);
+  const postLinks = topPosts.map(p =>
+    `<li style="margin-bottom:10px"><a href="/blog/${p.slug}" style="color:${PRIMARY};text-decoration:none;font-size:14px;font-weight:500;line-height:1.5">${esc(p.title)}</a></li>`
+  ).join('\n      ');
+
+  const staticContent = `${staticHeader()}<div style="font-family:system-ui,-apple-system,sans-serif;background:#f8fafc;min-height:80vh"><div style="max-width:1100px;margin:0 auto;padding:40px 24px 64px">
+  <div style="text-align:center;padding:32px 0 40px">
+    <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;color:#0f172a;line-height:1.2;margin-bottom:14px">Free Solar Panel Cost Calculator 2026</h1>
+    <p style="font-size:17px;color:#64748b;max-width:560px;margin:0 auto 28px;line-height:1.6">Enter your ZIP code and monthly electric bill to get an instant estimate for solar installation cost, monthly savings, and 30-year ROI. Free &mdash; no signup required.</p>
+    <div style="display:inline-block;background:${PRIMARY};color:white;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600">Loading calculator&hellip;</div>
+  </div>
+  <div style="background:white;border-radius:16px;padding:36px;margin-bottom:32px;border:1px solid #e2e8f0">
+    <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:24px;text-align:center">How It Works &mdash; 3 Simple Steps</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
+      <div style="background:#f8fafc;border-radius:10px;padding:22px"><div style="background:${PRIMARY};color:white;width:32px;height:32px;border-radius:8px;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:10px">1</div><h3 style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px">Enter Your Electric Bill</h3><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0">Your average monthly bill determines your solar system size and savings potential.</p></div>
+      <div style="background:#f8fafc;border-radius:10px;padding:22px"><div style="background:${PRIMARY};color:white;width:32px;height:32px;border-radius:8px;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:10px">2</div><h3 style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px">Enter Your ZIP Code</h3><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0">We use real NREL PVWatts sunlight data for your exact location and EIA electricity rates by state.</p></div>
+      <div style="background:#f8fafc;border-radius:10px;padding:22px"><div style="background:${PRIMARY};color:white;width:32px;height:32px;border-radius:8px;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:10px">3</div><h3 style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px">Get Your Free Estimate</h3><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0">See personalized installation cost, 30% federal tax credit, monthly savings, and 25-year ROI.</p></div>
+    </div>
+  </div>
+  <div style="background:white;border-radius:16px;padding:36px;margin-bottom:32px;border:1px solid #e2e8f0">
+    <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:8px">Solar Cost Guides &amp; Resources</h2>
+    <p style="font-size:14px;color:#64748b;margin-bottom:20px">Expert articles to help you understand solar pricing, incentives, and financing options.</p>
+    <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px">
+      ${postLinks}
+    </ul>
+    <p style="margin-top:16px;margin-bottom:0"><a href="/blog" style="color:${PRIMARY};font-weight:600;font-size:14px;text-decoration:none">View all solar guides &rarr;</a></p>
+  </div>
+  <div style="background:white;border-radius:16px;padding:36px;border:1px solid #e2e8f0">
+    <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:24px">Frequently Asked Questions</h2>
+    <div style="display:grid;gap:18px">
+      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How much do solar panels cost in 2026?</h3><p style="font-size:14px;color:#374151;line-height:1.7;margin:0">The average residential solar system costs $18,000&ndash;$25,000 before incentives. After the 30% federal Investment Tax Credit, most homeowners pay $12,600&ndash;$17,500 net.</p></div>
+      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How much can solar save me per month?</h3><p style="font-size:14px;color:#374151;line-height:1.7;margin:0">Most homeowners save $100&ndash;$150 per month with solar, or $1,200&ndash;$1,800 per year. Over 25 years, that&rsquo;s $30,000&ndash;$45,000 in total electricity savings.</p></div>
+      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">What is the 30% federal solar tax credit?</h3><p style="font-size:14px;color:#374151;line-height:1.7;margin:0">The Investment Tax Credit (ITC) lets you deduct 30% of your solar installation cost from federal income taxes. On a $20,000 system, you get a $6,000 credit. Available through 2032.</p></div>
+      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How long does solar take to pay off?</h3><p style="font-size:14px;color:#374151;line-height:1.7;margin:0">The average payback period is 7&ndash;12 years. After payback, solar electricity is essentially free for the remaining panel warranty period of 13&ndash;18 years.</p></div>
+      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How accurate is this solar calculator?</h3><p style="font-size:14px;color:#374151;line-height:1.7;margin:0">Our estimates are 80&ndash;90% accurate vs. real installer quotes, using NREL PVWatts real irradiance data for your ZIP code and current 2026 market installation rates ($2.50&ndash;$3.50/watt).</p></div>
+    </div>
+  </div>
+</div></div>`;
+
+  html = html.replace('<div id="root"></div>', `<div id="root">${staticContent}</div>`);
+  fs.writeFileSync(indexPath, html, 'utf8');
+}
+
 function writeFile(relPath, html) {
   const full = path.join(BUILD, relPath, 'index.html');
   fs.mkdirSync(path.dirname(full), { recursive: true });
@@ -344,6 +396,8 @@ function main() {
 
   let count = 0;
 
+  injectHomepage(POSTS, CATEGORIES);
+
   writeFile('blog', renderBlogIndex(POSTS, CATEGORIES, assets));
   count++;
 
@@ -357,7 +411,7 @@ function main() {
     count++;
   }
 
-  console.log(`✓ prerender — ${count} pages generated (${POSTS.length} posts, ${CATEGORIES.length} categories)`);
+  console.log(`✓ prerender — ${count} pages + homepage generated (${POSTS.length} posts, ${CATEGORIES.length} categories)`);
 }
 
 main();

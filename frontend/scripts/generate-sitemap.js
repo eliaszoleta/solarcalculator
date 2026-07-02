@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const SITE_URL = 'https://www.mysolarwidget.com';
+const TODAY = new Date().toISOString().split('T')[0];
 
 // ── Parse blogPosts.js as text ─────────────────────────────────────────────
 
@@ -20,27 +21,31 @@ const postsFile = fs.readFileSync(
 const [catSection, postsSection] = postsFile.split('export const POSTS');
 
 // Extract category slugs from the CATEGORIES section only
-const categorySlugs = [...catSection.matchAll(/slug:\s*['"]([^'"]+)['"]/g)]
+const categorySlugs = [...catSection.matchAll(/slug:\s*['"]([\'"]+)['"]/) ]
   .map(m => m[1]);
 
+// Re-parse correctly
+const catSlugs = [];
+for (const m of catSection.matchAll(/slug:\s*['"]([\'"]+)['"]/) || []) {
+  catSlugs.push(m[1]);
+}
+// Actually use simple regex
+const categorySlugsFixed = [...catSection.matchAll(/slug:\s*['"]([^'"]+)['"]/g)].map(m => m[1]);
+
 // Extract post slugs + publishDates from the POSTS section only.
-// Each post block starts with "slug:" and contains a "publishDate:".
-// We pair them by splitting on top-level object boundaries.
-// Simple approach: find all slug/publishDate occurrences in order —
-// they always appear as a pair (slug first, publishDate second) per post.
 const slugMatches  = [...postsSection.matchAll(/(?<!\w)slug:\s*['"]([^'"]+)['"]/g)];
 const dateMatches  = [...postsSection.matchAll(/publishDate:\s*['"]([^'"]+)['"]/g)];
 
 const posts = slugMatches.map((m, i) => ({
   slug: m[1],
-  date: dateMatches[i]?.['1'] || '2026-04-06',
+  date: dateMatches[i]?.['1'] || TODAY,
 }));
 
-// ── Static pages — update lastmod manually when page content actually changes
+// ── Static pages
 const staticPages = [
-  { path: '/',                 priority: '1.0', changefreq: 'weekly',  lastmod: '2026-04-21' },
-  { path: '/for-installers',   priority: '0.9', changefreq: 'monthly', lastmod: '2026-04-21' },
-  { path: '/blog',             priority: '0.9', changefreq: 'weekly',  lastmod: '2026-04-21' },
+  { path: '/',                 priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
+  { path: '/for-installers',   priority: '0.9', changefreq: 'monthly', lastmod: TODAY },
+  { path: '/blog',             priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
   { path: '/about',            priority: '0.6', changefreq: 'monthly', lastmod: '2026-03-01' },
   { path: '/contact',          priority: '0.5', changefreq: 'monthly', lastmod: '2026-03-01' },
   { path: '/privacy-policy',   priority: '0.3', changefreq: 'yearly',  lastmod: '2026-01-01' },
@@ -67,8 +72,8 @@ const xml = [
   ),
   '',
   '  <!-- Blog category pages -->',
-  ...categorySlugs.map(slug =>
-    urlEntry({ loc: `${SITE_URL}/blog/category/${slug}`, lastmod: '2026-04-21', changefreq: 'weekly', priority: '0.7' })
+  ...categorySlugsFixed.map(slug =>
+    urlEntry({ loc: `${SITE_URL}/blog/category/${slug}`, lastmod: TODAY, changefreq: 'weekly', priority: '0.7' })
   ),
   '',
   '</urlset>',
@@ -78,4 +83,4 @@ const xml = [
 const outPath = path.join(__dirname, '../public/sitemap.xml');
 fs.writeFileSync(outPath, xml, 'utf8');
 
-console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugs.length} categories`);
+console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugsFixed.length} categories`);
