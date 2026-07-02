@@ -1,38 +1,26 @@
-/**
- * generate-sitemap.js
- * Reads blogPosts.js and auto-generates public/sitemap.xml.
- * Run automatically before every build via the "prebuild" npm script.
- */
-
 const fs = require('fs');
 const path = require('path');
 
 const SITE_URL = 'https://www.mysolarwidget.com';
 const TODAY = new Date().toISOString().split('T')[0];
 
-// ── Parse blogPosts.js as text ──────────────────────────────────────────────────────
-
 const postsFile = fs.readFileSync(
   path.join(__dirname, '../src/data/blogPosts.js'),
   'utf8'
 );
 
-// Split file into CATEGORIES section and POSTS section
 const [catSection, postsSection] = postsFile.split('export const POSTS');
 
-// Extract category slugs from the CATEGORIES section (global flag required for matchAll)
-const categorySlugs = [...catSection.matchAll(/slug:\s*['"]([ ^'"]+)['"]/ g)].map(m => m[1]);
+const categorySlugs = [...catSection.matchAll(/slug:\s*['"]([^'"]+)['"]\s*/g)].map(m => m[1]);
 
-// Extract post slugs + publishDates from the POSTS section only.
-const slugMatches = [...postsSection.matchAll(/(?<!\w)slug:\s*['"]([ ^'"]+)['"]/ g)];
-const dateMatches = [...postsSection.matchAll(/publishDate:\s*['"]([ ^'"]+)['"]/ g)];
+const slugMatches = [...postsSection.matchAll(/(?<!\w)slug:\s*['"]([^'"]+)['"]\s*/g)];
+const dateMatches = [...postsSection.matchAll(/publishDate:\s*['"]([^'"]+)['"]\s*/g)];
 
 const posts = slugMatches.map((m, i) => ({
   slug: m[1],
-  date: dateMatches[i]?.['1'] || TODAY,
+  date: dateMatches[i]?.[1] || TODAY,
 }));
 
-// ── Static pages
 const staticPages = [
   { path: '/',                 priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
   { path: '/for-installers',   priority: '0.9', changefreq: 'monthly', lastmod: TODAY },
@@ -43,7 +31,6 @@ const staticPages = [
   { path: '/terms-of-service', priority: '0.3', changefreq: 'yearly',  lastmod: '2026-01-01' },
 ];
 
-// ── Build XML ──────────────────────────────────────────────────────────────
 function urlEntry({ loc, lastmod, changefreq, priority }) {
   return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }
@@ -70,7 +57,6 @@ const xml = [
   '</urlset>',
 ].join('\n') + '\n';
 
-// ── Write output ─────────────────────────────────────────────────────────────
 const outPath = path.join(__dirname, '../public/sitemap.xml');
 fs.writeFileSync(outPath, xml, 'utf8');
 
