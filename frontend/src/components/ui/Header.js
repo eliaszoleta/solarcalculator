@@ -10,7 +10,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close menu on route change / outside click
   useEffect(() => {
     if (!menuOpen) return;
     const close = () => setMenuOpen(false);
@@ -42,54 +41,33 @@ export default function Header() {
       }}>
         <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
-          {/* Logo */}
           <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
-            <img
-              src="/logo-horizontal-light.svg"
-              alt="MySolarWidget"
-              style={{ height: 44, width: 'auto' }}
-            />
+            <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 44, width: 'auto' }} />
           </a>
 
-          {/* Desktop nav — hidden on mobile */}
           <nav style={{ display: 'flex', alignItems: 'center', gap: 4 }} className="header-desktop-nav">
             {navLinks.map(item => (
               <a
                 key={item.href}
                 href={item.href}
-                style={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: '#4b5563',
-                  padding: '6px 12px',
-                  borderRadius: 8,
-                  transition: 'color 0.12s, background 0.12s',
-                  textDecoration: 'none',
-                  whiteSpace: 'nowrap',
-                }}
+                style={{ fontSize: 14, fontWeight: 500, color: '#4b5563', padding: '6px 12px', borderRadius: 8, transition: 'color 0.12s, background 0.12s', textDecoration: 'none', whiteSpace: 'nowrap' }}
                 onMouseEnter={e => { e.currentTarget.style.color = '#0a0a0a'; e.currentTarget.style.background = '#f9fafb'; }}
                 onMouseLeave={e => { e.currentTarget.style.color = '#4b5563'; e.currentTarget.style.background = 'transparent'; }}
               >
                 {item.label}
               </a>
             ))}
-
+            <a
+              href="/partner-with-us"
+              style={{ fontSize: 14, fontWeight: 700, color: '#1e40af', padding: '6px 12px', borderRadius: 8, transition: 'color 0.12s, background 0.12s', textDecoration: 'none', whiteSpace: 'nowrap' }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#eff6ff'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+            >
+              Partner With Us
+            </a>
             <a
               href="/for-installers"
-              style={{
-                marginLeft: 8,
-                fontSize: 13,
-                fontWeight: 600,
-                color: '#1e40af',
-                padding: '7px 16px',
-                borderRadius: 9,
-                border: '1.5px solid #1e40af',
-                background: 'transparent',
-                textDecoration: 'none',
-                transition: 'background 0.12s, color 0.12s',
-                letterSpacing: '-0.01em',
-                whiteSpace: 'nowrap',
-              }}
+              style={{ marginLeft: 8, fontSize: 13, fontWeight: 600, color: '#1e40af', padding: '7px 16px', borderRadius: 9, border: '1.5px solid #1e40af', background: 'transparent', textDecoration: 'none', transition: 'background 0.12s, color 0.12s', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}
               onMouseEnter={e => { e.currentTarget.style.background = '#1e40af'; e.currentTarget.style.color = '#ffffff'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1e40af'; }}
             >
@@ -97,45 +75,17 @@ export default function Header() {
             </a>
           </nav>
 
-          {/* Mobile right side — "Get Solar Widget" + hamburger */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }} className="header-mobile-nav">
             <a
               href="/for-installers"
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                color: '#1e40af',
-                padding: '5px 10px',
-                borderRadius: 8,
-                border: '1.5px solid #1e40af',
-                background: 'transparent',
-                textDecoration: 'none',
-                whiteSpace: 'nowrap',
-                letterSpacing: '-0.01em',
-              }}
+              style={{ fontSize: 11, fontWeight: 600, color: '#1e40af', padding: '5px 10px', borderRadius: 8, border: '1.5px solid #1e40af', background: 'transparent', textDecoration: 'none', whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}
             >
               Get Solar Widget
             </a>
-
-            {/* Hamburger button */}
             <button
               onClick={e => { e.stopPropagation(); setMenuOpen(o => !o); }}
               aria-label="Toggle menu"
-              style={{
-                width: 38,
-                height: 38,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 5,
-                background: 'none',
-                border: '1.5px solid #e5e7eb',
-                borderRadius: 9,
-                cursor: 'pointer',
-                padding: 0,
-                flexShrink: 0,
-              }}
+              style={{ width: 38, height: 38, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 5, background: 'none', border: '1.5px solid #e5e7eb', borderRadius: 9, cursor: 'pointer', padding: 0, flexShrink: 0 }}
             >
               <span style={{ display: 'block', width: 16, height: 1.5, background: '#374151', borderRadius: 2, transition: 'transform 0.2s', transform: menuOpen ? 'translateY(6.5px) rotate(45deg)' : 'none' }} />
               <span style={{ display: 'block', width: 16, height: 1.5, background: '#374151', borderRadius: 2, opacity: menuOpen ? 0 : 1, transition: 'opacity 0.15s' }} />
@@ -145,21 +95,10 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile dropdown menu */}
       {menuOpen && (
         <div
           onClick={e => e.stopPropagation()}
-          style={{
-            position: 'fixed',
-            top: 60,
-            left: 0,
-            right: 0,
-            zIndex: 99,
-            background: '#ffffff',
-            borderBottom: '1px solid #f3f4f6',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
-            padding: '8px 24px 16px',
-          }}
+          style={{ position: 'fixed', top: 60, left: 0, right: 0, zIndex: 99, background: '#ffffff', borderBottom: '1px solid #f3f4f6', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', padding: '8px 24px 16px' }}
           className="header-mobile-menu"
         >
           {navLinks.map(item => (
@@ -167,23 +106,21 @@ export default function Header() {
               key={item.href}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              style={{
-                display: 'block',
-                fontSize: 15,
-                fontWeight: 500,
-                color: '#111827',
-                padding: '12px 0',
-                borderBottom: '1px solid #f9fafb',
-                textDecoration: 'none',
-              }}
+              style={{ display: 'block', fontSize: 15, fontWeight: 500, color: '#111827', padding: '12px 0', borderBottom: '1px solid #f9fafb', textDecoration: 'none' }}
             >
               {item.label}
             </a>
           ))}
+          <a
+            href="/partner-with-us"
+            onClick={() => setMenuOpen(false)}
+            style={{ display: 'block', fontSize: 15, fontWeight: 700, color: '#1e40af', padding: '12px 0', borderBottom: '1px solid #f9fafb', textDecoration: 'none' }}
+          >
+            Partner With Us
+          </a>
         </div>
       )}
 
-      {/* CSS to toggle desktop/mobile nav visibility */}
       <style>{`
         @media (min-width: 640px) {
           .header-desktop-nav { display: flex !important; }

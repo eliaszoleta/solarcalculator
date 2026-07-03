@@ -14,6 +14,7 @@ import BlogIndex from './components/blog/BlogIndex';
 import BlogPost from './components/blog/BlogPost';
 import BlogCategory from './components/blog/BlogCategory';
 import InstallerLanding from './components/pages/InstallerLanding';
+import PartnerWithUs from './components/pages/PartnerWithUs';
 import PrivacyPolicy from './components/pages/PrivacyPolicy';
 import TermsOfService from './components/pages/TermsOfService';
 import About from './components/pages/About';
@@ -31,9 +32,9 @@ const isTermsOfService = pathname === '/terms-of-service';
 const isAbout = pathname === '/about';
 const isContact = pathname === '/contact';
 const isResults = pathname === '/results';
+const isPartnerWithUs = pathname === '/partner-with-us';
 const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
 
-// Resolve blog route
 function BlogRouter() {
   if (pathname === '/blog') return <BlogIndex />;
   if (pathname.startsWith('/blog/category/')) {
@@ -47,10 +48,8 @@ function BlogRouter() {
   return <BlogIndex />;
 }
 
-// Standalone full-results page — reads encoded data from URL hash
 function ResultsPage() {
   const [data, setData] = useState(null);
-  // ?popup=1 = loaded inside the embed popup iframe — hide site chrome
   const isPopup = new URLSearchParams(window.location.search).get('popup') === '1';
 
   useEffect(() => {
@@ -82,11 +81,9 @@ function ResultsPage() {
   );
 
   if (isPopup) {
-    // Popup mode: render our own premium header (close via postMessage) + content only
     const closePopup = () => window.parent.postMessage({ type: 'MSW_CLOSE_REPORT' }, '*');
     return (
       <div style={{ background: '#f1f5f9', minHeight: '100vh', fontFamily: "'Poppins', -apple-system, sans-serif" }}>
-        {/* Premium sticky header — uses installer primary color */}
         <div style={{
           position: 'sticky', top: 0, zIndex: 100,
           background: primaryColor,
@@ -97,9 +94,7 @@ function ResultsPage() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'rgba(255,255,255,0.6)' }} />
-            <span style={{ fontSize: 14, fontWeight: 700, color: 'white', letterSpacing: '-0.01em' }}>
-              Full Solar Report
-            </span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: 'white', letterSpacing: '-0.01em' }}>Full Solar Report</span>
           </div>
           <button
             onClick={closePopup}
@@ -132,25 +127,21 @@ function ResultsPage() {
   );
 }
 
-// Fetches installer config then renders the calculator with it.
 function EmbedWrapper({ installerId }) {
   const [installerConfig, setInstallerConfig] = useState(null);
 
   useEffect(() => {
     if (!installerId) { setInstallerConfig({}); return; }
-
     const load = async () => {
       try {
         const backendRes = await axios.get(`${API_BASE}/api/installer/${installerId}/public`).catch(() => ({ data: { data: {} } }));
         const backendData = backendRes.data?.data || {};
-
         const { data: supaRows } = await supabase
           .from('installer_configs')
           .select('config')
           .eq('installer_id', installerId)
           .limit(1);
         const supaConfig = supaRows?.[0]?.config || {};
-
         setInstallerConfig({
           ...supaConfig,
           paused: backendData.paused ?? false,
@@ -160,7 +151,6 @@ function EmbedWrapper({ installerId }) {
         setInstallerConfig({});
       }
     };
-
     load();
   }, [installerId]);
 
@@ -172,9 +162,7 @@ function EmbedWrapper({ installerId }) {
         <div style={{ textAlign: 'center', maxWidth: 380 }}>
           <div style={{ marginBottom: 12 }}><BoltIcon size={36} /></div>
           <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Calculator Temporarily Unavailable</h3>
-          <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>
-            This solar calculator is currently paused. Please check back soon.
-          </p>
+          <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>This solar calculator is currently paused. Please check back soon.</p>
         </div>
       </div>
     );
@@ -215,60 +203,16 @@ export default function App() {
   };
 
   if (isEmbed) return <EmbedWrapper installerId={embedInstallerId} />;
-
   if (isResults) return <HelmetProvider><ResultsPage /></HelmetProvider>;
-
   if (isForInstallers) return <HelmetProvider><InstallerLanding /></HelmetProvider>;
+  if (isPartnerWithUs) return <HelmetProvider><div className="app"><Header /><main><PartnerWithUs /></main><Footer /></div></HelmetProvider>;
 
-  if (isPrivacyPolicy) return (
-    <HelmetProvider>
-      <div className="app">
-        <Header />
-        <main><PrivacyPolicy /></main>
-        <Footer />
-      </div>
-    </HelmetProvider>
-  );
+  if (isPrivacyPolicy) return <HelmetProvider><div className="app"><Header /><main><PrivacyPolicy /></main><Footer /></div></HelmetProvider>;
+  if (isTermsOfService) return <HelmetProvider><div className="app"><Header /><main><TermsOfService /></main><Footer /></div></HelmetProvider>;
+  if (isAbout) return <HelmetProvider><div className="app"><Header /><main><About /></main><Footer /></div></HelmetProvider>;
+  if (isContact) return <HelmetProvider><div className="app"><Header /><main><Contact /></main><Footer /></div></HelmetProvider>;
 
-  if (isTermsOfService) return (
-    <HelmetProvider>
-      <div className="app">
-        <Header />
-        <main><TermsOfService /></main>
-        <Footer />
-      </div>
-    </HelmetProvider>
-  );
-
-  if (isAbout) return (
-    <HelmetProvider>
-      <div className="app">
-        <Header />
-        <main><About /></main>
-        <Footer />
-      </div>
-    </HelmetProvider>
-  );
-
-  if (isContact) return (
-    <HelmetProvider>
-      <div className="app">
-        <Header />
-        <main><Contact /></main>
-        <Footer />
-      </div>
-    </HelmetProvider>
-  );
-
-  if (isBlog) return (
-    <HelmetProvider>
-      <div className="app">
-        <Header />
-        <main><BlogRouter /></main>
-        <Footer />
-      </div>
-    </HelmetProvider>
-  );
+  if (isBlog) return <HelmetProvider><div className="app"><Header /><main><BlogRouter /></main><Footer /></div></HelmetProvider>;
 
   if (isInstaller) {
     if (authLoading) return (
@@ -285,10 +229,10 @@ export default function App() {
       <div className="app">
         <Helmet>
           <title>Free Solar Panel Cost Calculator 2026 | MySolarWidget</title>
-          <meta name="description" content="Free solar panel cost calculator for US homeowners. Estimate installation cost, monthly savings & 30-year ROI. Enter your electric bill and ZIP code — takes under 2 minutes." />
+          <meta name="description" content="Free solar panel cost calculator for US homeowners. Estimate installation cost, monthly savings &amp; 30-year ROI. Enter your electric bill and ZIP code — takes under 2 minutes." />
           <link rel="canonical" href="https://www.mysolarwidget.com/" />
           <meta property="og:title" content="Free Solar Panel Cost Calculator 2026 | MySolarWidget" />
-          <meta property="og:description" content="Free solar panel cost calculator for US homeowners. Estimate installation cost, monthly savings & 30-year ROI. Enter your electric bill and ZIP code." />
+          <meta property="og:description" content="Free solar panel cost calculator for US homeowners. Estimate installation cost, monthly savings &amp; 30-year ROI. Enter your electric bill and ZIP code." />
           <meta property="og:url" content="https://www.mysolarwidget.com/" />
           <meta property="og:type" content="website" />
           <meta property="og:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
@@ -296,95 +240,6 @@ export default function App() {
           <meta name="twitter:title" content="Free Solar Panel Cost Calculator 2026 | MySolarWidget" />
           <meta name="twitter:description" content="Instantly estimate your solar installation cost and 30-year savings. Free, powered by real NREL data. Takes under 2 minutes." />
           <meta name="twitter:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
-          <script type="application/ld+json">{JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "MySolarWidget — Solar Savings Calculator",
-            "description": "Free solar panel cost and savings estimator for US homeowners. Powered by NREL PVWatts real irradiance data and EIA electricity rates.",
-            "applicationCategory": "FinanceApplication",
-            "operatingSystem": "Web",
-            "url": "https://www.mysolarwidget.com/",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "MySolarWidget",
-              "url": "https://www.mysolarwidget.com",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.mysolarwidget.com/android-chrome-512x512.png"
-              }
-            }
-          })}</script>
-          <script type="application/ld+json">{JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "How accurate is this solar calculator?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Our estimates are 80–90% accurate compared to real installer quotes. On a typical $25,000 system, that means your estimate is within $2,500–$5,000 of what an installer would actually propose. We use real irradiance data from the NREL PVWatts API for your exact ZIP code, EIA electricity rates by state, and current market installation costs ($2.50–$3.50/watt). For a final price, you'll still need a site visit from a certified installer." }
-              },
-              {
-                "@type": "Question",
-                "name": "How much does solar save on average?",
-                "acceptedAnswer": { "@type": "Answer", "text": "The average US homeowner saves $1,000–$1,500 per year with solar. Over 25 years, that's $25,000–$40,000 in savings. The exact amount depends on your electricity rate, sunlight hours, and system size." }
-              },
-              {
-                "@type": "Question",
-                "name": "What is the 30% federal solar tax credit?",
-                "acceptedAnswer": { "@type": "Answer", "text": "The Investment Tax Credit (ITC) lets you deduct 30% of your total solar installation cost from your federal income taxes. For a $20,000 system, you'd get a $6,000 tax credit, reducing your net cost to $14,000. This applies to systems installed through 2032." }
-              },
-              {
-                "@type": "Question",
-                "name": "How long does it take for solar to pay itself off?",
-                "acceptedAnswer": { "@type": "Answer", "text": "The average payback period in the US is 7–12 years depending on your state, electricity rate, and system cost. After payback, all solar production is essentially free electricity." }
-              },
-              {
-                "@type": "Question",
-                "name": "Do I need a battery for solar panels?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Most grid-tied solar systems don't require a battery. Without one, your home uses solar during the day and draws from the grid at night. A battery like the Tesla Powerwall ($10,000–$14,000 installed) adds backup power during outages and maximizes self-consumption." }
-              },
-              {
-                "@type": "Question",
-                "name": "How many solar panels does an average home need?",
-                "acceptedAnswer": { "@type": "Answer", "text": "A typical US home using 10,000 kWh per year needs a 6–9 kW solar system, which is roughly 15–22 panels (400W each). Our calculator automatically sizes the system for your specific usage and location." }
-              },
-              {
-                "@type": "Question",
-                "name": "Does my roof need to face south for solar?",
-                "acceptedAnswer": { "@type": "Answer", "text": "South-facing roofs are ideal, but east or west-facing roofs still produce 80–85% of a south-facing system's output. North-facing roofs are not ideal. Our calculator accounts for shading loss in the roof sun exposure step." }
-              },
-              {
-                "@type": "Question",
-                "name": "How much do solar panels cost in 2026?",
-                "acceptedAnswer": { "@type": "Answer", "text": "The average cost of a residential solar system in 2026 is $14,000–$25,000 before the 30% federal tax credit, depending on system size and location. After the ITC, most homeowners pay $10,000–$18,000 net. Our calculator gives you a personalized estimate based on your electricity usage and state." }
-              },
-              {
-                "@type": "Question",
-                "name": "What solar financing options are available?",
-                "acceptedAnswer": { "@type": "Answer", "text": "The four main solar financing options are: (1) Cash purchase — lowest total cost, full ownership, maximum savings. (2) Solar loan — own the system, keep tax credits, pay over time (5–20 year terms, 4–8% APR). (3) Solar lease — monthly payment, no ownership, no tax credits, but $0 down and predictable bills. (4) PPA (Power Purchase Agreement) — pay per kWh produced, often below utility rates, no upfront cost. Most homeowners choose a solar loan for the best balance of savings and flexibility." }
-              },
-              {
-                "@type": "Question",
-                "name": "What solar incentives are available in 2026?",
-                "acceptedAnswer": { "@type": "Answer", "text": "In 2026, the federal Investment Tax Credit (ITC) gives homeowners a 30% tax credit on the full cost of solar installation. Many states add additional incentives: California has SGIP battery rebates, New York has the NY-Sun program (up to 25% rebate), Massachusetts has SMART incentives, Texas offers property tax exemptions, and Florida has sales tax exemptions. Net metering policies — where your utility credits you for excess solar power you send to the grid — are also available in most states." }
-              },
-              {
-                "@type": "Question",
-                "name": "How accurate is a solar estimate vs a real installer quote?",
-                "acceptedAnswer": { "@type": "Answer", "text": "A good solar estimator like ours is typically 80–90% accurate compared to a real installer quote. The difference comes from site-specific factors an estimator can't see: exact shading from trees or chimneys, roof pitch and condition, local permit costs, and the specific equipment an installer uses. Our estimates use NREL PVWatts real irradiance data and current market installation rates, making them reliable enough to know if solar makes financial sense before committing to a consultation." }
-              },
-              {
-                "@type": "Question",
-                "name": "What is net metering for solar panels?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Net metering is a billing policy where your utility company credits you for excess electricity your solar panels generate and send back to the grid. For example, if your panels produce more power than you use during the day, that surplus flows to the grid and reduces your bill — sometimes to $0. Most US states have net metering, though the credit rate varies. Full retail net metering (where you get credited the same rate you pay) offers the best return on solar." }
-              }
-            ]
-          })}</script>
         </Helmet>
         <Header />
         <main>
