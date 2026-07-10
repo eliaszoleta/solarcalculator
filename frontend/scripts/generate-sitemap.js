@@ -25,6 +25,7 @@ const staticPages = [
   { path: '/',                 priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
   { path: '/for-installers',   priority: '0.9', changefreq: 'monthly', lastmod: TODAY },
   { path: '/blog',             priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { path: '/partner-with-us',  priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
   { path: '/about',            priority: '0.6', changefreq: 'monthly', lastmod: '2026-03-01' },
   { path: '/contact',          priority: '0.5', changefreq: 'monthly', lastmod: '2026-03-01' },
   { path: '/privacy-policy',   priority: '0.3', changefreq: 'yearly',  lastmod: '2026-01-01' },

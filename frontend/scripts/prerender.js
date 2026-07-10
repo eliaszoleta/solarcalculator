@@ -329,6 +329,87 @@ ${staticHeader()}
 </html>`;
 }
 
+// Secondary static routes. Vercel's catch-all rewrite (`/(.*) -> /index.html`) means
+// any route without its own build/<path>/index.html silently serves the *homepage's*
+// prerendered HTML — including its <title> and canonical tag — to Googlebot's first-pass
+// crawl. That self-canonicalizes every one of these URLs back to "/", which reads as
+// duplicate content and is why Google stops trusting site-provided titles and falls back
+// to showing the bare domain in search results. Each entry here gets its own real <head>.
+const STATIC_ROUTES = [
+  {
+    path: 'for-installers',
+    title: 'Solar Calculator Widget for Installers | MySolarWidget',
+    description: 'Embed a branded solar savings calculator on your website in minutes. Capture leads, show instant estimates, and close more solar deals. Free trial for solar installers.',
+    heading: 'Solar Calculator Widget for Installers',
+  },
+  {
+    path: 'partner-with-us',
+    title: 'Partner With Us | MySolarWidget',
+    description: "Get your solar installation business recommended to thousands of homeowners actively getting solar estimates in your area. Join MySolarWidget's partner network for $350/month per city.",
+    heading: 'Partner With Us',
+  },
+  {
+    path: 'about',
+    title: 'About MySolarWidget | Free Solar Savings Calculator',
+    description: 'MySolarWidget is a free solar savings calculator for US homeowners. We use NREL PVWatts data and real electricity rates to estimate your solar costs and savings in under 2 minutes.',
+    heading: 'About MySolarWidget',
+  },
+  {
+    path: 'contact',
+    title: 'Contact Us | MySolarWidget',
+    description: 'Contact MySolarWidget with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message.',
+    heading: 'Contact Us',
+  },
+  {
+    path: 'privacy-policy',
+    title: 'Privacy Policy | MySolarWidget',
+    description: 'MySolarWidget privacy policy. Learn how we collect, use, and protect your personal information when you use our free solar savings calculator.',
+    heading: 'Privacy Policy',
+  },
+  {
+    path: 'terms-of-service',
+    title: 'Terms of Service | MySolarWidget',
+    description: 'MySolarWidget terms of service. Read our terms and conditions for using the MySolarWidget free solar savings calculator.',
+    heading: 'Terms of Service',
+  },
+];
+
+function renderStaticRoute(route, assets) {
+  const url = `${DOMAIN}/${route.path}`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${esc(route.title)}</title>
+  <meta name="description" content="${esc(route.description)}">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="${url}">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <meta property="og:title" content="${esc(route.title)}">
+  <meta property="og:description" content="${esc(route.description)}">
+  <meta property="og:url" content="${url}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MySolarWidget">
+  <meta property="og:image" content="${DOMAIN}/android-chrome-512x512.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${esc(route.title)}">
+  <meta name="twitter:description" content="${esc(route.description)}">
+  <meta name="twitter:image" content="${DOMAIN}/android-chrome-512x512.png">
+  ${assets.cssLinks}
+</head>
+<body>
+<div id="root">${staticHeader()}<div style="font-family:system-ui,-apple-system,sans-serif;background:#f8fafc;min-height:60vh;padding:56px 24px">
+  <div style="max-width:720px;margin:0 auto;text-align:center">
+    <h1 style="font-size:clamp(26px,4vw,38px);font-weight:800;color:#0f172a;margin-bottom:14px">${esc(route.heading)}</h1>
+    <p style="font-size:16px;color:#64748b;line-height:1.7">${esc(route.description)}</p>
+  </div>
+</div></div>
+  ${assets.jsScripts}
+</body>
+</html>`;
+}
+
 function injectHomepage(posts, categories) {
   const indexPath = path.join(BUILD, 'index.html');
   if (!fs.existsSync(indexPath)) return;
@@ -397,6 +478,11 @@ function main() {
   let count = 0;
 
   injectHomepage(POSTS, CATEGORIES);
+
+  for (const route of STATIC_ROUTES) {
+    writeFile(route.path, renderStaticRoute(route, assets));
+    count++;
+  }
 
   writeFile('blog', renderBlogIndex(POSTS, CATEGORIES, assets));
   count++;
