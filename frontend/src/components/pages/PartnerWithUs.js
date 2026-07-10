@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 
 const PRIMARY = '#1e40af';
 const WEB3FORMS_KEY = 'b0da3f48-9982-4a5a-9195-4200a80ba8c6';
+const DOMAIN = 'https://www.mysolarwidget.com';
 
 const IconSun = () => (
   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={PRIMARY} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -131,6 +132,8 @@ export default function PartnerWithUs() {
       <Helmet>
         <title>Partner With Us | MySolarWidget</title>
         <meta name="description" content="Get your solar installation business recommended to thousands of homeowners actively getting solar estimates in your area. Join MySolarWidget's partner network for $350/month per city." />
+        <link rel="canonical" href={`${DOMAIN}/partner-with-us`} />
+        <meta name="robots" content="index, follow" />
       </Helmet>
 
       {/* Hero */}
