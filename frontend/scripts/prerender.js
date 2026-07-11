@@ -355,12 +355,6 @@ const STATIC_ROUTES = [
     heading: 'About MySolarWidget',
   },
   {
-    path: 'contact',
-    title: 'Contact Us | MySolarWidget',
-    description: 'Contact MySolarWidget with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message.',
-    heading: 'Contact Us',
-  },
-  {
     path: 'privacy-policy',
     title: 'Privacy Policy | MySolarWidget',
     description: 'MySolarWidget privacy policy. Learn how we collect, use, and protect your personal information when you use our free solar savings calculator.',
@@ -404,6 +398,56 @@ function renderStaticRoute(route, assets) {
     <h1 style="font-size:clamp(26px,4vw,38px);font-weight:800;color:#0f172a;margin-bottom:14px">${esc(route.heading)}</h1>
     <p style="font-size:16px;color:#64748b;line-height:1.7">${esc(route.description)}</p>
   </div>
+</div></div>
+  ${assets.jsScripts}
+</body>
+</html>`;
+}
+
+// Contact gets its own static shell (instead of the generic renderStaticRoute template)
+// because it matches the real Contact.js hero pixel-for-pixel -- background, badge,
+// heading, subtitle, and font. The generic template used a plain white background and
+// system-ui font, so for the brief window before React hydrates, visitors saw a visibly
+// different page flash into the real one. Matching the hero here removes that flash.
+function renderContactStatic(assets) {
+  const url = `${DOMAIN}/contact`;
+  const title = 'Contact Us | MySolarWidget';
+  const description = 'Contact MySolarWidget with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message.';
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${esc(title)}</title>
+  <meta name="description" content="${esc(description)}">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="${url}">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <meta property="og:title" content="${esc(title)}">
+  <meta property="og:description" content="${esc(description)}">
+  <meta property="og:url" content="${url}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MySolarWidget">
+  <meta property="og:image" content="${DOMAIN}/android-chrome-512x512.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${esc(title)}">
+  <meta name="twitter:description" content="${esc(description)}">
+  <meta name="twitter:image" content="${DOMAIN}/android-chrome-512x512.png">
+  ${assets.cssLinks}
+</head>
+<body>
+<div id="root"><div style="background:#f1f5f9;min-height:100vh;font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+${staticHeader()}
+<div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#1e40af 100%);padding:64px 24px 96px;text-align:center;position:relative;overflow:hidden">
+  <div style="position:relative;max-width:560px;margin:0 auto">
+    <div style="display:inline-flex;align-items:center;background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.25);border-radius:999px;padding:4px 14px;margin-bottom:20px">
+      <span style="font-size:11.5px;font-weight:700;color:#93c5fd;letter-spacing:0.08em;text-transform:uppercase">Get in Touch</span>
+    </div>
+    <h1 style="font-size:clamp(28px,5vw,42px);font-weight:900;color:white;line-height:1.15;margin-bottom:14px;letter-spacing:-0.02em">Contact Us</h1>
+    <p style="font-size:16px;color:#93c5fd;line-height:1.65;max-width:420px;margin:0 auto">We're a small team and we read every message. Send us a note and expect a reply within 1&ndash;2 business days.</p>
+  </div>
+</div>
+<div style="max-width:900px;margin:-56px auto 0;padding:0 24px 80px;position:relative;min-height:400px"></div>
 </div></div>
   ${assets.jsScripts}
 </body>
@@ -483,6 +527,9 @@ function main() {
     writeFile(route.path, renderStaticRoute(route, assets));
     count++;
   }
+
+  writeFile('contact', renderContactStatic(assets));
+  count++;
 
   writeFile('blog', renderBlogIndex(POSTS, CATEGORIES, assets));
   count++;
