@@ -21,9 +21,10 @@ function loadBlogData() {
 
 function getAssetTags() {
   const indexHtml = fs.readFileSync(path.join(BUILD, 'index.html'), 'utf8');
-  const cssLinks  = (indexHtml.match(/<link[^>]+\.css[^>]*>/g)  || []).join('\n  ');
-  const jsScripts = (indexHtml.match(/<script\b[^>]*\ssrc="[^"]*\.js[^"]*"[^>]*>\s*<\/script>/g) || []).join('\n  ');
-  return { cssLinks, jsScripts };
+  const cssLinks   = (indexHtml.match(/<link[^>]+\.css[^>]*>/g) || []).join('\n  ');
+  const fontLinks  = (indexHtml.match(/<link[^>]+fonts\.g(?:oogleapis|static)\.com[^>]*>/g) || []).join('\n  ');
+  const jsScripts  = (indexHtml.match(/<script\b[^>]*\ssrc="[^"]*\.js[^"]*"[^>]*>\s*<\/script>/g) || []).join('\n  ');
+  return { cssLinks: [fontLinks, cssLinks].filter(Boolean).join('\n  '), jsScripts };
 }
 
 function staticHeader() {
@@ -138,7 +139,7 @@ function renderBlogPost(post, assets) {
   ${assets.cssLinks}
 </head>
 <body>
-<div id="root">${staticHeader()}<article style="max-width:800px;margin:40px auto;padding:0 24px;font-family:system-ui,-apple-system,sans-serif;line-height:1.7;color:#0f172a">
+<div id="root">${staticHeader()}<article style="max-width:800px;margin:40px auto;padding:0 24px;font-family:'Poppins','Poppins Fallback',Arial,sans-serif;line-height:1.7;color:#0f172a">
   <nav style="font-size:13px;color:#64748b;margin-bottom:24px">
     <a href="/" style="color:${PRIMARY};text-decoration:none">Home</a> &rsaquo;
     <a href="/blog" style="color:${PRIMARY};text-decoration:none">Blog</a> &rsaquo;
@@ -213,7 +214,7 @@ function renderBlogIndex(posts, categories, assets) {
 <body>
 <div id="root">
 ${staticHeader()}
-<div style="background:#f8fafc;min-height:100vh;padding:48px 24px 64px;font-family:system-ui,-apple-system,sans-serif">
+<div style="background:#f8fafc;min-height:100vh;padding:48px 24px 64px;font-family:'Poppins','Poppins Fallback',Arial,sans-serif">
   <div style="max-width:1100px;margin:0 auto">
 
     <div style="text-align:center;margin-bottom:32px">
@@ -299,7 +300,7 @@ function renderCategoryPage(cat, posts, assets) {
 <body>
 <div id="root">
 ${staticHeader()}
-<div style="background:#f8fafc;min-height:100vh;padding:48px 24px 64px;font-family:system-ui,-apple-system,sans-serif">
+<div style="background:#f8fafc;min-height:100vh;padding:48px 24px 64px;font-family:'Poppins','Poppins Fallback',Arial,sans-serif">
   <div style="max-width:900px;margin:0 auto">
 
     <a href="/blog" style="font-size:13px;color:#64748b;text-decoration:none;display:inline-flex;align-items:center;gap:5px;margin-bottom:28px">
@@ -393,7 +394,7 @@ function renderStaticRoute(route, assets) {
   ${assets.cssLinks}
 </head>
 <body>
-<div id="root">${staticHeader()}<div style="font-family:system-ui,-apple-system,sans-serif;background:#f8fafc;min-height:60vh;padding:56px 24px">
+<div id="root">${staticHeader()}<div style="font-family:'Poppins','Poppins Fallback',Arial,sans-serif;background:#f8fafc;min-height:60vh;padding:56px 24px">
   <div style="max-width:720px;margin:0 auto;text-align:center">
     <h1 style="font-size:clamp(26px,4vw,38px);font-weight:800;color:#0f172a;margin-bottom:14px">${esc(route.heading)}</h1>
     <p style="font-size:16px;color:#64748b;line-height:1.7">${esc(route.description)}</p>
@@ -436,7 +437,7 @@ function renderContactStatic(assets) {
   ${assets.cssLinks}
 </head>
 <body>
-<div id="root"><div style="background:#f1f5f9;min-height:100vh;font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+<div id="root"><div style="background:#f1f5f9;min-height:100vh;font-family:'Poppins','Poppins Fallback',Arial,sans-serif">
 ${staticHeader()}
 <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#1e40af 100%);padding:64px 24px 96px;text-align:center;position:relative;overflow:hidden">
   <div style="position:relative;max-width:560px;margin:0 auto">
@@ -466,7 +467,7 @@ function injectHomepage(posts, categories) {
     `<li style="margin-bottom:10px"><a href="/blog/${p.slug}" style="color:${PRIMARY};text-decoration:none;font-size:14px;font-weight:500;line-height:1.5">${esc(p.title)}</a></li>`
   ).join('\n      ');
 
-  const staticContent = `${staticHeader()}<div style="font-family:system-ui,-apple-system,sans-serif;background:#f8fafc;min-height:80vh"><div style="max-width:1100px;margin:0 auto;padding:40px 24px 64px">
+  const staticContent = `${staticHeader()}<div style="font-family:'Poppins','Poppins Fallback',Arial,sans-serif;background:#f8fafc;min-height:80vh"><div style="max-width:1100px;margin:0 auto;padding:40px 24px 64px">
   <div style="text-align:center;padding:32px 0 40px">
     <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;color:#0f172a;line-height:1.2;margin-bottom:14px">Free Solar Panel Cost Calculator 2026</h1>
     <p style="font-size:17px;color:#64748b;max-width:560px;margin:0 auto 28px;line-height:1.6">Enter your ZIP code and monthly electric bill to get an instant estimate for solar installation cost, monthly savings, and 30-year ROI. Free &mdash; no signup required.</p>
