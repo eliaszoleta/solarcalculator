@@ -20,7 +20,7 @@ export default function InstallerLanding() {
         <meta name="twitter:description" content="Embed a branded solar savings calculator on your website. Capture leads and close more deals." />
         <meta name="twitter:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
       </Helmet>
-      <div style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: '#0f172a', overflowX: 'hidden' }}>
+      <div style={{ fontFamily: "'Poppins', 'Poppins Fallback', Arial, sans-serif", color: '#0f172a', overflowX: 'hidden' }}>
         <LandingNav />
         <Hero />
         <LogoBar />
