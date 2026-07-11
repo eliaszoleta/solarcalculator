@@ -1,26 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { MailIcon, CheckCircleIcon } from '../ui/Icons';
+import { ClockIcon, ShieldIcon, InboxIcon, CheckCircleIcon, AlertTriangleIcon } from '../ui/Icons';
 
 const DOMAIN = 'https://www.mysolarwidget.com';
+const WEB3FORMS_ACCESS_KEY = 'b0da3f48-9982-4a5a-9195-4200a80ba8c6';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: 'General Question', message: '' });
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState('idle'); // idle | sending | success | error
+  const honeypotRef = useRef(null);
 
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
   const handleSubmit = async e => {
     e.preventDefault();
+
+    if (honeypotRef.current && honeypotRef.current.value) {
+      setStatus('success');
+      return;
+    }
+
     setStatus('sending');
-    const subject = encodeURIComponent(`[MySolarWidget] ${form.subject}`);
-    const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
-    window.location.href = `mailto:hello@mysolarwidget.com?subject=${subject}&body=${body}`;
-    setStatus('sent');
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `New MySolarWidget message: ${form.subject}`,
+          from_name: 'MySolarWidget Contact Form',
+          name: form.name,
+          email: form.email,
+          topic: form.subject,
+          message: form.message,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatus('success');
+        setForm({ name: '', email: '', subject: 'General Question', message: '' });
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      setStatus('error');
+    }
   };
 
   return (
-    <div style={{ background: 'var(--bg, #f1f5f9)', minHeight: '100vh' }}>
+    <div style={{ background: '#f1f5f9', minHeight: '100vh' }}>
       <Helmet>
         <title>Contact Us | MySolarWidget</title>
         <meta name="description" content="Contact MySolarWidget with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message." />
@@ -28,15 +56,25 @@ export default function Contact() {
         <meta name="robots" content="index, follow" />
       </Helmet>
 
+      <style>{`
+        .contact-grid { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start; }
+        .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media (max-width: 780px) {
+          .contact-grid { grid-template-columns: 1fr; }
+          .contact-row { grid-template-columns: 1fr; }
+        }
+      `}</style>
+
       {/* Page Hero */}
       <div style={{
         background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1e40af 100%)',
-        padding: '64px 24px 56px',
+        padding: '64px 24px 96px',
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
       }}>
         <div style={{ position: 'absolute', bottom: -60, left: -40, width: 240, height: 240, borderRadius: '50%', background: 'rgba(96,165,250,0.1)', filter: 'blur(50px)' }} />
+        <div style={{ position: 'absolute', top: -50, right: -30, width: 200, height: 200, borderRadius: '50%', background: 'rgba(147,197,253,0.12)', filter: 'blur(50px)' }} />
         <div style={{ position: 'relative', maxWidth: 560, margin: '0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(147,197,253,0.12)', border: '1px solid rgba(147,197,253,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
             <span style={{ fontSize: 11.5, fontWeight: 700, color: '#93c5fd', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Get in Touch</span>
@@ -44,119 +82,127 @@ export default function Contact() {
           <h1 style={{ fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 14, letterSpacing: '-0.02em' }}>
             Contact Us
           </h1>
-          <p style={{ fontSize: 16, color: '#93c5fd', lineHeight: 1.65, maxWidth: 400, margin: '0 auto' }}>
-            We're a small team and we read every message. Expect a reply within 1–2 business days.
+          <p style={{ fontSize: 16, color: '#93c5fd', lineHeight: 1.65, maxWidth: 420, margin: '0 auto' }}>
+            We're a small team and we read every message. Send us a note and expect a reply within 1–2 business days.
           </p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 680, margin: '0 auto', padding: '40px 24px 80px' }}>
+      <div style={{ maxWidth: 900, margin: '-56px auto 0', padding: '0 24px 80px', position: 'relative' }}>
+        <div className="contact-grid">
 
-        {/* Contact cards */}
-        <div style={{ marginBottom: 32 }}>
-          <a
-            href="mailto:hello@mysolarwidget.com"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 14,
-              padding: '18px 20px',
-              background: 'white',
-              borderRadius: 14,
-              border: '1px solid #e2e8f0',
-              textDecoration: 'none',
-              transition: 'border-color 0.15s, box-shadow 0.15s',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(37,99,235,0.1)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)'; }}
-          >
-            <div style={{ width: 40, height: 40, borderRadius: 10, background: '#dbeafe', color: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <MailIcon size={22} />
-            </div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a', marginBottom: 2 }}>General Inquiries</div>
-              <div style={{ fontSize: 12, color: '#2563eb', fontWeight: 500 }}>hello@mysolarwidget.com</div>
-            </div>
-          </a>
-        </div>
+          {/* Sidebar */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <SideCard icon={<ClockIcon size={20} />} title="Fast response" body="Most messages get a reply within 1–2 business days." color="#2563eb" bg="#dbeafe" />
+            <SideCard icon={<ShieldIcon size={20} />} title="Real humans, no bots" body="A real person on our small team reads every single message." color="#16a34a" bg="#dcfce7" />
+            <SideCard icon={<InboxIcon size={20} />} title="Anything's fair game" body="Feedback, bug reports, installer partnerships, or privacy requests — just ask." color="#7c3aed" bg="#ede9fe" />
 
-        {/* Contact form */}
-        <div style={{ background: 'white', borderRadius: 16, border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', overflow: 'hidden' }}>
-          <div style={{ padding: '22px 28px 18px', borderBottom: '1px solid #f1f5f9' }}>
-            <h2 style={{ fontSize: 17, fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.01em' }}>Send Us a Message</h2>
+            <div style={{ padding: '18px 20px', background: '#eff6ff', borderRadius: 14, border: '1px solid #bfdbfe' }}>
+              <p style={{ fontSize: 13, color: '#1d4ed8', fontWeight: 700, marginBottom: 6 }}>Looking for quick answers?</p>
+              <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.65, margin: 0 }}>
+                Check our <a href="/#faq" style={{ color: '#2563eb', fontWeight: 600 }}>FAQ</a> or browse the <a href="/blog" style={{ color: '#2563eb', fontWeight: 600 }}>Solar Blog</a> for guides on costs, savings, and tax credits.
+              </p>
+            </div>
           </div>
 
-          <div style={{ padding: '24px 28px 28px' }}>
-            {status === 'sent' ? (
-              <div style={{ textAlign: 'center', padding: '32px 0' }}>
-                <div style={{ marginBottom: 12, color: '#16a34a', display: 'flex', justifyContent: 'center' }}><CheckCircleIcon size={40} /></div>
-                <p style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Your email client should open</p>
-                <p style={{ fontSize: 14, color: '#64748b', marginBottom: 20 }}>If it didn't, email us directly at <a href="mailto:hello@mysolarwidget.com" style={{ color: '#2563eb', fontWeight: 600 }}>hello@mysolarwidget.com</a></p>
-                <button onClick={() => setStatus(null)} style={{ padding: '9px 20px', background: '#2563eb', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600, fontSize: 14 }}>
-                  Send Another
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-                  <div>
-                    <label style={labelStyle} htmlFor="contact-name">Name *</label>
-                    <input id="contact-name" name="name" type="text" required value={form.name} onChange={handleChange} placeholder="Your name" style={inputStyle} onFocus={e => e.target.style.borderColor = '#2563eb'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+          {/* Contact form */}
+          <div style={{ background: 'white', borderRadius: 18, border: '1px solid #e2e8f0', boxShadow: '0 12px 32px rgba(15,23,42,0.08)', overflow: 'hidden' }}>
+            <div style={{ padding: '24px 30px 18px', borderBottom: '1px solid #f1f5f9' }}>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.01em' }}>Send Us a Message</h2>
+              <p style={{ fontSize: 13, color: '#64748b', margin: '4px 0 0' }}>Fields marked * are required.</p>
+            </div>
+
+            <div style={{ padding: '26px 30px 30px' }}>
+              {status === 'success' ? (
+                <div style={{ textAlign: 'center', padding: '36px 0' }}>
+                  <div style={{ marginBottom: 14, color: '#16a34a', display: 'flex', justifyContent: 'center' }}><CheckCircleIcon size={44} /></div>
+                  <p style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', marginBottom: 8 }}>Message sent!</p>
+                  <p style={{ fontSize: 14, color: '#64748b', marginBottom: 22 }}>Thanks for reaching out — we typically reply within 1–2 business days.</p>
+                  <button onClick={() => setStatus('idle')} style={{ padding: '10px 22px', background: '#2563eb', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600, fontSize: 14, fontFamily: 'inherit' }}>
+                    Send Another Message
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+                  <input ref={honeypotRef} type="text" name="botcheck" tabIndex="-1" autoComplete="off" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} aria-hidden="true" />
+
+                  <div className="contact-row">
+                    <div>
+                      <label style={labelStyle} htmlFor="contact-name">Name *</label>
+                      <input id="contact-name" name="name" type="text" required value={form.name} onChange={handleChange} placeholder="Your name" style={inputStyle} onFocus={e => e.target.style.borderColor = '#2563eb'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                    </div>
+                    <div>
+                      <label style={labelStyle} htmlFor="contact-email">Email *</label>
+                      <input id="contact-email" name="email" type="email" required value={form.email} onChange={handleChange} placeholder="you@example.com" style={inputStyle} onFocus={e => e.target.style.borderColor = '#2563eb'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                    </div>
                   </div>
+
                   <div>
-                    <label style={labelStyle} htmlFor="contact-email">Email *</label>
-                    <input id="contact-email" name="email" type="email" required value={form.email} onChange={handleChange} placeholder="you@example.com" style={inputStyle} onFocus={e => e.target.style.borderColor = '#2563eb'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                    <label style={labelStyle} htmlFor="contact-subject">Subject</label>
+                    <select id="contact-subject" name="subject" value={form.subject} onChange={handleChange} style={{ ...inputStyle, cursor: 'pointer' }}>
+                      <option>General Question</option>
+                      <option>Calculator Feedback</option>
+                      <option>Installer Partnership</option>
+                      <option>Privacy / Data Request</option>
+                      <option>Bug Report</option>
+                      <option>Other</option>
+                    </select>
                   </div>
-                </div>
 
-                <div>
-                  <label style={labelStyle} htmlFor="contact-subject">Subject</label>
-                  <select id="contact-subject" name="subject" value={form.subject} onChange={handleChange} style={inputStyle}>
-                    <option>General Question</option>
-                    <option>Calculator Feedback</option>
-                    <option>Installer Partnership</option>
-                    <option>Privacy / Data Request</option>
-                    <option>Bug Report</option>
-                    <option>Other</option>
-                  </select>
-                </div>
+                  <div>
+                    <label style={labelStyle} htmlFor="contact-message">Message *</label>
+                    <textarea id="contact-message" name="message" required rows={5} value={form.message} onChange={handleChange} placeholder="How can we help?" style={{ ...inputStyle, resize: 'vertical' }} onFocus={e => e.target.style.borderColor = '#2563eb'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                  </div>
 
-                <div>
-                  <label style={labelStyle} htmlFor="contact-message">Message *</label>
-                  <textarea id="contact-message" name="message" required rows={5} value={form.message} onChange={handleChange} placeholder="How can we help?" style={{ ...inputStyle, resize: 'vertical' }} onFocus={e => e.target.style.borderColor = '#2563eb'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
-                </div>
+                  {status === 'error' && (
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '12px 14px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, color: '#b91c1c' }}>
+                      <AlertTriangleIcon size={18} style={{ flexShrink: 0, marginTop: 1 }} />
+                      <p style={{ fontSize: 13.5, margin: 0, lineHeight: 1.5 }}>Something went wrong sending your message. Please try again in a moment.</p>
+                    </div>
+                  )}
 
-                <button
-                  type="submit"
-                  disabled={status === 'sending'}
-                  style={{
-                    padding: '12px 28px',
-                    background: '#2563eb',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: 8,
-                    fontWeight: 700,
-                    fontSize: 15,
-                    cursor: status === 'sending' ? 'not-allowed' : 'pointer',
-                    opacity: status === 'sending' ? 0.7 : 1,
-                    alignSelf: 'flex-start',
-                    transition: 'background 0.15s',
-                    fontFamily: 'inherit',
-                  }}
-                >
-                  {status === 'sending' ? 'Opening email...' : 'Send Message'}
-                </button>
-              </form>
-            )}
+                  <button
+                    type="submit"
+                    disabled={status === 'sending'}
+                    style={{
+                      padding: '13px 28px',
+                      background: '#2563eb',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: 9,
+                      fontWeight: 700,
+                      fontSize: 15,
+                      cursor: status === 'sending' ? 'not-allowed' : 'pointer',
+                      opacity: status === 'sending' ? 0.7 : 1,
+                      alignSelf: 'flex-start',
+                      transition: 'background 0.15s',
+                      fontFamily: 'inherit',
+                      boxShadow: '0 4px 14px rgba(37,99,235,0.28)',
+                    }}
+                    onMouseEnter={e => { if (status !== 'sending') e.currentTarget.style.background = '#1d4ed8'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = '#2563eb'; }}
+                  >
+                    {status === 'sending' ? 'Sending…' : 'Send Message'}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
 
-        {/* FAQ links */}
-        <div style={{ marginTop: 24, padding: '20px 24px', background: '#eff6ff', borderRadius: 12, border: '1px solid #bfdbfe' }}>
-          <p style={{ fontSize: 13.5, color: '#1d4ed8', fontWeight: 700, marginBottom: 6 }}>Looking for quick answers?</p>
-          <p style={{ fontSize: 13.5, color: '#374151', lineHeight: 1.7, margin: 0 }}>
-            Check our <a href="/#faq" style={{ color: '#2563eb', fontWeight: 600 }}>FAQ section</a> on the homepage, or browse our <a href="/blog" style={{ color: '#2563eb', fontWeight: 600 }}>Solar Blog</a> for in-depth guides on costs, savings, tax credits, and more.
-          </p>
-        </div>
+function SideCard({ icon, title, body, color, bg }) {
+  return (
+    <div style={{ display: 'flex', gap: 14, padding: '16px 18px', background: 'white', borderRadius: 14, border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+      <div style={{ width: 38, height: 38, borderRadius: 10, background: bg, color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        {icon}
+      </div>
+      <div>
+        <div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a', marginBottom: 3 }}>{title}</div>
+        <div style={{ fontSize: 12.5, color: '#64748b', lineHeight: 1.5 }}>{body}</div>
       </div>
     </div>
   );
