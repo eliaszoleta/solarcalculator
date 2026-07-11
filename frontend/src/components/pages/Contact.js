@@ -48,7 +48,7 @@ export default function Contact() {
   };
 
   return (
-    <div style={{ background: '#f1f5f9', minHeight: '100vh' }}>
+    <div style={{ background: '#f1f5f9', minHeight: '100vh', fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <Helmet>
         <title>Contact Us | MySolarWidget</title>
         <meta name="description" content="Contact MySolarWidget with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message." />
