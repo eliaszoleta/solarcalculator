@@ -9,7 +9,7 @@ import {
 } from './Illustrations';
 
 const HOME_TYPES = [
-  { value: 'house',     Illustration: HouseIllustration,     color: '#1c3a5e', bg: '#eef1f5', label: 'House',     desc: 'Single-family home' },
+  { value: 'house',     Illustration: HouseIllustration,     color: '#1c3a5e', bg: '#e3eaf3', label: 'House',     desc: 'Single-family home' },
   { value: 'condo',     Illustration: CondoIllustration,     color: '#4f46e5', bg: '#eef2ff', label: 'Condo',     desc: 'Condominium unit' },
   { value: 'apartment', Illustration: ApartmentIllustration, color: '#7c3aed', bg: '#f5f3ff', label: 'Apartment', desc: 'Apartment unit' },
 ];

@@ -13,7 +13,6 @@ export default function StepLead({
   requireContact, embedded, primaryColor, formBgColor,
 }) {
   const accentColor = primaryColor || '#1c3a5e';
-  const accentBg = accentColor + '18';
   const gap = embedded ? 6 : 10;
 
   const phoneInvalid = phone.trim() && phone.replace(/\D/g, '').length < 10;
@@ -106,7 +105,8 @@ export default function StepLead({
         .field-error { color: #dc2626; font-size: 12px; margin-top: 4px; }
         .option-card-sm { padding: ${embedded ? '6px 8px' : '9px 12px'}; }
         .option-grid-2 { grid-template-columns: 1fr 1fr; gap: ${embedded ? '6px' : '8px'}; }
-        .sl-selected { border-color: ${accentColor} !important; background: ${accentBg} !important; }
+        .sl-selected { border-color: ${accentColor} !important; background: ${accentColor} !important; }
+        .sl-selected .option-label, .sl-selected .option-desc { color: white; }
       `}</style>
     </div>
   );

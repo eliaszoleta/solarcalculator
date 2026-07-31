@@ -16,7 +16,7 @@ const SUN_OPTIONS = [
 ];
 
 const ROOF_TYPES = [
-  { value: 'asphalt', Illustration: AsphaltShinglesIllustration, color: '#1c3a5e', bg: '#eef1f5', label: 'Asphalt Shingles', desc: 'Most common, easiest install', extra: '' },
+  { value: 'asphalt', Illustration: AsphaltShinglesIllustration, color: '#1c3a5e', bg: '#e3eaf3', label: 'Asphalt Shingles', desc: 'Most common, easiest install', extra: '' },
   { value: 'metal',   Illustration: MetalRoofIllustration,       color: '#475569', bg: '#f1f5f9', label: 'Metal Roof',       desc: 'Standing seam metal',          extra: '+$500' },
   { value: 'tile',    Illustration: TileRoofIllustration,        color: '#0d9488', bg: '#f0fdfa', label: 'Tile Roof',        desc: 'Clay or concrete tile',         extra: '+$1,500' },
   { value: 'flat',    Illustration: FlatRoofIllustration,        color: '#4f46e5', bg: '#eef2ff', label: 'Flat Roof',        desc: 'Requires tilt mounting',        extra: '+$800' },

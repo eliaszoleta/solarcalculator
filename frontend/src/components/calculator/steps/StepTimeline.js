@@ -11,7 +11,6 @@ const TIMELINES = [
 export default function StepTimeline({ timeline, onTimelineChange, onSubmit, loading, requireContact, embedded, primaryColor, formBgColor }) {
   const [error, setError] = useState(null);
   const accentColor = primaryColor || '#1c3a5e';
-  const accentBg = accentColor + '18';
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -71,7 +70,8 @@ export default function StepTimeline({ timeline, onTimelineChange, onSubmit, loa
         .field-error { color: #dc2626; font-size: 12px; margin-top: 4px; }
         .option-card-sm { padding: ${embedded ? '6px 8px' : '9px 12px'}; }
         .option-grid-2 { grid-template-columns: 1fr 1fr; gap: ${embedded ? '6px' : '8px'}; }
-        .st-selected { border-color: ${accentColor} !important; background: ${accentBg} !important; }
+        .st-selected { border-color: ${accentColor} !important; background: ${accentColor} !important; }
+        .st-selected .option-label, .st-selected .option-desc { color: white; }
         .btn-cta:hover:not(:disabled) { opacity: 0.9; transform: translateY(-2px); }
       `}</style>
     </div>

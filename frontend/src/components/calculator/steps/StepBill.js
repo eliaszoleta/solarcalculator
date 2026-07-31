@@ -97,10 +97,15 @@ export default function StepBill({ value, onChange, primaryColor }) {
           cursor: pointer;
           transition: all 0.12s;
         }
-        .preset-btn:hover, .preset-btn.active {
+        .preset-btn:hover {
           border-color: ${accent};
-          background: ${accent}18;
+          background: ${accent}12;
           color: ${accent};
+        }
+        .preset-btn.active {
+          border-color: ${accent};
+          background: ${accent};
+          color: white;
         }
         .bill-hint {
           font-size: 13px;
