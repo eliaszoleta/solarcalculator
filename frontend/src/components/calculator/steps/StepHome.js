@@ -9,7 +9,7 @@ import {
 } from './Illustrations';
 
 const HOME_TYPES = [
-  { value: 'house',     Illustration: HouseIllustration,     color: '#2563eb', bg: '#eff6ff', label: 'House',     desc: 'Single-family home' },
+  { value: 'house',     Illustration: HouseIllustration,     color: '#1c3a5e', bg: '#eef1f5', label: 'House',     desc: 'Single-family home' },
   { value: 'condo',     Illustration: CondoIllustration,     color: '#4f46e5', bg: '#eef2ff', label: 'Condo',     desc: 'Condominium unit' },
   { value: 'apartment', Illustration: ApartmentIllustration, color: '#7c3aed', bg: '#f5f3ff', label: 'Apartment', desc: 'Apartment unit' },
 ];
@@ -46,7 +46,7 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
 
       {homeType === 'house' && ownsHome === null && (
         <div style={{ marginTop: 20 }}>
-          <p style={{ fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 10 }}>Do you own or rent this home?</p>
+          <p style={{ fontSize: 14, fontWeight: 600, color: '#334155', marginBottom: 10 }}>Do you own or rent this home?</p>
           <div className="option-grid option-grid-2">
             {OWN_OPTIONS.map(opt => (
               <button

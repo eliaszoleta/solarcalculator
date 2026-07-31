@@ -25,7 +25,7 @@
 
 /* ── Hero card ───────────────────────────────────────── */
 .results-hero-card {
-  background: linear-gradient(135deg, #3b6cf4 0%, #2d52c8 100%);
+  background: linear-gradient(135deg, #1c3a5e 0%, #12283f 100%);
   border-radius: 20px;
   padding: 32px 28px 28px;
   color: white;
@@ -61,7 +61,7 @@
   border-radius: 16px;
   padding: 22px 22px 20px;
   border: 1px solid #e8edf3;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 4px rgba(15,23,42,0.04);
 }
 
 .card-section-label {
@@ -79,7 +79,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  color: #374151;
+  color: #334155;
   padding: 9px 0;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .cost-net-val {
-  color: #3b6cf4;
+  color: #1c3a5e;
   font-weight: 800;
 }
 
@@ -134,7 +134,7 @@
 
 .breakdown-details summary {
   font-size: 13px;
-  color: #3b6cf4;
+  color: #1c3a5e;
   cursor: pointer;
   font-weight: 600;
   outline: none;
@@ -180,8 +180,8 @@
 }
 
 .metric-card.metric-blue {
-  background: #eff6ff;
-  border-color: #bfdbfe;
+  background: #eef1f5;
+  border-color: #c3ceda;
 }
 
 .metric-label {
@@ -201,7 +201,7 @@
 }
 
 .metric-green .metric-value { color: #059669; }
-.metric-blue  .metric-value { color: #1d4ed8; }
+.metric-blue  .metric-value { color: #12283f; }
 
 .metric-sub {
   font-size: 11px;
@@ -237,12 +237,12 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  background: #eef1f5;
+  border: 1px solid #c3ceda;
   border-radius: 12px;
   padding: 13px 15px;
   font-size: 13px;
-  color: #1e40af;
+  color: #1c3a5e;
   line-height: 1.55;
 }
 
@@ -253,7 +253,7 @@
 }
 
 .state-info-box strong {
-  color: #1d4ed8;
+  color: #12283f;
 }
 
 /* ── System grid ─────────────────────────────────────── */
@@ -304,7 +304,7 @@
 /* ── CTA cards ───────────────────────────────────────── */
 .cta-card-embed,
 .cta-card-public {
-  background: linear-gradient(135deg, #1e3a8a, #1e40af) !important;
+  background: linear-gradient(135deg, #12283f, #1c3a5e) !important;
   border: none !important;
 }
 
@@ -334,7 +334,7 @@
 }
 
 .lead-success p {
-  color: #bfdbfe;
+  color: #c3ceda;
   font-size: 15px;
 }
 
@@ -357,7 +357,7 @@
   border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
-  color: #374151;
+  color: #334155;
   cursor: pointer;
   font-family: inherit;
   transition: all 0.15s;

@@ -7,7 +7,7 @@ export default function SEOContent() {
     <div style={{ background: '#ffffff' }}>
 
       {/* How It Works */}
-      <section id="how-it-works" style={{ padding: '96px 24px', background: '#fafafa', borderTop: '1px solid #f3f4f6' }}>
+      <section id="how-it-works" style={{ padding: '96px 24px', background: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 64 }}>
             <div style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#92400e', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
@@ -16,7 +16,7 @@ export default function SEOContent() {
             <h2 style={{ fontSize: 'clamp(26px, 4vw, 40px)', fontWeight: 900, color: '#0a0a0a', letterSpacing: '-0.03em', marginBottom: 14 }}>
               Built on real data. Not guesses.
             </h2>
-            <p style={{ fontSize: 17, color: '#6b7280', maxWidth: 520, margin: '0 auto', lineHeight: 1.65 }}>
+            <p style={{ fontSize: 17, color: '#64748b', maxWidth: 520, margin: '0 auto', lineHeight: 1.65 }}>
               We use the same formulas solar installers use — powered by real sunlight data and current electricity rates.
             </p>
           </div>
@@ -24,16 +24,16 @@ export default function SEOContent() {
             {[
               { icon: <BoltIcon size={22} />, iconBg: '#fef3c7', iconColor: '#d97706', title: 'Your Electric Bill', desc: 'We calculate exactly how much electricity your home uses based on your monthly bill and your state\'s electricity rate.' },
               { icon: <SunIcon size={22} />, iconBg: '#fef9c3', iconColor: '#ca8a04', title: 'Sunlight Data', desc: 'Enter your ZIP code and we pull real irradiance data from the NREL PVWatts API for your exact location.' },
-              { icon: <RulerIcon size={22} />, iconBg: '#dbeafe', iconColor: '#2563eb', title: 'System Sizing', desc: 'We recommend the ideal system size to offset your usage, then calculate the real installation cost based on current market rates.' },
+              { icon: <RulerIcon size={22} />, iconBg: '#e2e7ed', iconColor: '#1c3a5e', title: 'System Sizing', desc: 'We recommend the ideal system size to offset your usage, then calculate the real installation cost based on current market rates.' },
               { icon: <DollarSignIcon size={22} />, iconBg: '#dcfce7', iconColor: '#16a34a', title: 'Savings Projection', desc: 'We project 30 years of savings accounting for 4% annual utility rate increases, tax credits, and your financing options.' },
             ].map((item, i) => (
-              <div key={item.title} style={{ padding: '28px 24px', background: '#ffffff', borderRadius: 18, border: '1px solid #e5e7eb', transition: 'box-shadow 0.15s', position: 'relative' }}>
+              <div key={item.title} style={{ padding: '28px 24px', background: '#ffffff', borderRadius: 18, border: '1px solid #e2e8f0', transition: 'box-shadow 0.15s', position: 'relative' }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: '#d1d5db', letterSpacing: '0.08em', marginBottom: 20 }}>0{i + 1}</div>
                 <div style={{ width: 48, height: 48, borderRadius: 12, background: item.iconBg, color: item.iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
                   {item.icon}
                 </div>
                 <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0a0a0a', marginBottom: 8, letterSpacing: '-0.02em' }}>{item.title}</h3>
-                <p style={{ fontSize: 13.5, color: '#6b7280', lineHeight: 1.6 }}>{item.desc}</p>
+                <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.6 }}>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -41,12 +41,12 @@ export default function SEOContent() {
       </section>
 
       {/* Average Costs by State */}
-      <section style={{ padding: '80px 24px', background: '#fafafa', borderTop: '1px solid #f3f4f6' }}>
+      <section style={{ padding: '80px 24px', background: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
             Solar Installation Cost by State (2026)
           </h2>
-          <p style={{ color: '#6b7280', marginBottom: 32, fontSize: 15 }}>
+          <p style={{ color: '#64748b', marginBottom: 32, fontSize: 15 }}>
             Solar installation costs vary significantly by state due to labor costs, electricity rates, and local incentives. Here are average costs for popular solar states.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
@@ -58,9 +58,9 @@ export default function SEOContent() {
               { state: 'Nevada', cost: '$14,000–$20,000', rate: '$0.12/kWh', saving: 'State rebates' },
               { state: 'New York', cost: '$17,000–$24,000', rate: '$0.22/kWh', saving: 'NY-Sun program' },
             ].map(item => (
-              <div key={item.state} style={{ background: '#ffffff', padding: '16px 18px', borderRadius: 14, border: '1px solid #e5e7eb' }}>
+              <div key={item.state} style={{ background: '#ffffff', padding: '16px 18px', borderRadius: 14, border: '1px solid #e2e8f0' }}>
                 <div style={{ fontWeight: 700, color: '#0a0a0a', marginBottom: 4, fontSize: 14 }}>{item.state}</div>
-                <div style={{ fontSize: 13, color: '#2563eb', fontWeight: 600 }}>{item.cost}</div>
+                <div style={{ fontSize: 13, color: '#1c3a5e', fontWeight: 600 }}>{item.cost}</div>
                 <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 4 }}>{item.rate} · {item.saving}</div>
               </div>
             ))}
@@ -72,7 +72,7 @@ export default function SEOContent() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" style={{ padding: '96px 24px', background: '#ffffff', borderTop: '1px solid #f3f4f6' }}>
+      <section id="faq" style={{ padding: '96px 24px', background: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 680, margin: '0 auto' }}>
         <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 48, letterSpacing: '-0.03em' }}>
           Frequently asked questions
@@ -127,12 +127,12 @@ export default function SEOContent() {
       </section>
 
       {/* Solar Financing Options */}
-      <section style={{ padding: '80px 24px', background: '#fafafa', borderTop: '1px solid #f3f4f6' }}>
+      <section style={{ padding: '80px 24px', background: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
             Solar Financing Options: How to Pay for Solar Panels
           </h2>
-          <p style={{ color: '#6b7280', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
+          <p style={{ color: '#64748b', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
             Most US homeowners choose to finance their residential solar installation rather than pay cash. Here are the four main options and how they compare.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: 14 }}>
@@ -146,7 +146,7 @@ export default function SEOContent() {
               {
                 title: 'Solar Loan',
                 tag: 'Most popular',
-                tagColor: '#2563eb', tagBg: '#dbeafe',
+                tagColor: '#1c3a5e', tagBg: '#e2e7ed',
                 desc: 'Borrow to buy. You own the system and keep the ITC. Terms run 5–20 years at 4–8% APR. Monthly loan payment is typically less than your current electric bill.',
               },
               {
@@ -162,10 +162,10 @@ export default function SEOContent() {
                 desc: 'Power Purchase Agreement — you pay only for the electricity the panels produce, often at a rate below your utility. No ownership, no maintenance costs.',
               },
             ].map(item => (
-              <div key={item.title} style={{ background: '#ffffff', padding: '20px 18px', borderRadius: 14, border: '1px solid #e5e7eb' }}>
+              <div key={item.title} style={{ background: '#ffffff', padding: '20px 18px', borderRadius: 14, border: '1px solid #e2e8f0' }}>
                 <div style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, color: item.tagColor, background: item.tagBg, borderRadius: 20, padding: '3px 10px', marginBottom: 12 }}>{item.tag}</div>
                 <div style={{ fontWeight: 800, fontSize: 15, color: '#0a0a0a', marginBottom: 8 }}>{item.title}</div>
-                <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
+                <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -173,12 +173,12 @@ export default function SEOContent() {
       </section>
 
       {/* Solar Incentives */}
-      <section style={{ padding: '80px 24px', background: '#ffffff', borderTop: '1px solid #f3f4f6' }}>
+      <section style={{ padding: '80px 24px', background: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
             Solar Incentives &amp; Tax Credits in 2026
           </h2>
-          <p style={{ color: '#6b7280', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
+          <p style={{ color: '#64748b', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
             Federal and state solar incentives can cut your installation cost by 30–50%. Here are the key programs available to US homeowners in 2026.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 }}>
@@ -186,7 +186,7 @@ export default function SEOContent() {
               {
                 title: '30% Federal Solar Tax Credit (ITC)',
                 desc: 'The Investment Tax Credit lets you deduct 30% of your total solar installation cost from your federal income taxes. For a $20,000 system, that\'s a $6,000 credit. Applies to systems installed through 2032.',
-                color: '#2563eb', bg: '#eff6ff',
+                color: '#1c3a5e', bg: '#eef1f5',
               },
               {
                 title: 'Net Metering',
@@ -206,7 +206,7 @@ export default function SEOContent() {
             ].map(item => (
               <div key={item.title} style={{ background: item.bg, padding: '20px 18px', borderRadius: 14, border: `1px solid ${item.color}22` }}>
                 <div style={{ fontWeight: 800, fontSize: 14.5, color: item.color, marginBottom: 8 }}>{item.title}</div>
-                <p style={{ fontSize: 13, color: '#4b5563', lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
+                <p style={{ fontSize: 13, color: '#475569', lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -217,13 +217,13 @@ export default function SEOContent() {
       </section>
 
       {/* Browse by Category */}
-      <section style={{ padding: '96px 24px', background: '#fafafa', borderTop: '1px solid #f3f4f6' }}>
+      <section style={{ padding: '96px 24px', background: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 48 }}>
             <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 900, color: '#0a0a0a', letterSpacing: '-0.03em', marginBottom: 12 }}>
               Browse by Category
             </h2>
-            <p style={{ fontSize: 16, color: '#6b7280', maxWidth: 480, margin: '0 auto', lineHeight: 1.65 }}>
+            <p style={{ fontSize: 16, color: '#64748b', maxWidth: 480, margin: '0 auto', lineHeight: 1.65 }}>
               Explore our solar guides by topic — from costs and financing to installation and savings.
             </p>
           </div>
@@ -269,7 +269,7 @@ export default function SEOContent() {
 function FAQItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
-    <div style={{ borderBottom: '1px solid #f3f4f6' }}>
+    <div style={{ borderBottom: '1px solid #f1f5f9' }}>
       <button
         onClick={() => setOpen(o => !o)}
         style={{
@@ -286,7 +286,7 @@ function FAQItem({ q, a }) {
         }}
       >
         <span style={{ fontSize: 15, fontWeight: 600, color: '#0a0a0a', letterSpacing: '-0.01em' }}>{q}</span>
-        <span style={{ width: 22, height: 22, borderRadius: '50%', background: open ? '#0a0a0a' : '#f3f4f6', color: open ? '#fff' : '#6b7280', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 16, lineHeight: 1, transition: 'all 0.2s' }}>{open ? '−' : '+'}</span>
+        <span style={{ width: 22, height: 22, borderRadius: '50%', background: open ? '#0a0a0a' : '#f1f5f9', color: open ? '#fff' : '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 16, lineHeight: 1, transition: 'all 0.2s' }}>{open ? '−' : '+'}</span>
       </button>
       {open && (
         <p style={{ fontSize: 15, color: '#475569', lineHeight: 1.7, paddingBottom: 18 }}>{a}</p>

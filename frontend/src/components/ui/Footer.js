@@ -37,7 +37,7 @@ export default function Footer() {
             <a href="/" style={{ display: 'inline-flex', alignItems: 'center', marginBottom: 16, textDecoration: 'none' }}>
               <img src="/logo-horizontal-dark.svg" alt="MySolarWidget" style={{ height: 48, width: 'auto' }} />
             </a>
-            <p style={{ fontSize: 13.5, color: '#6b7280', lineHeight: 1.65 }}>
+            <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.65 }}>
               Free solar savings calculator for US homeowners — powered by real NREL data and EIA electricity rates.
             </p>
           </div>
@@ -54,9 +54,9 @@ export default function Footer() {
                     <a
                       key={item.href}
                       href={item.href}
-                      style={{ fontSize: 13.5, color: '#6b7280', transition: 'color 0.12s', textDecoration: 'none' }}
+                      style={{ fontSize: 13.5, color: '#64748b', transition: 'color 0.12s', textDecoration: 'none' }}
                       onMouseEnter={e => e.currentTarget.style.color = '#d1d5db'}
-                      onMouseLeave={e => e.currentTarget.style.color = '#6b7280'}
+                      onMouseLeave={e => e.currentTarget.style.color = '#64748b'}
                     >
                       {item.label}
                     </a>
@@ -69,19 +69,19 @@ export default function Footer() {
 
         {/* Bottom row */}
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 28, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-          <p style={{ fontSize: 12.5, color: '#4b5563' }}>
+          <p style={{ fontSize: 12.5, color: '#475569' }}>
             © {new Date().getFullYear()} MySolarWidget · Estimates are for informational purposes only ·{' '}
-            <a href="/privacy-policy" style={{ color: '#6b7280' }}>Privacy</a>
+            <a href="/privacy-policy" style={{ color: '#64748b' }}>Privacy</a>
             {' · '}
-            <a href="/terms-of-service" style={{ color: '#6b7280' }}>Terms</a>
+            <a href="/terms-of-service" style={{ color: '#64748b' }}>Terms</a>
           </p>
-          <p style={{ fontSize: 12.5, color: '#4b5563' }}>
+          <p style={{ fontSize: 12.5, color: '#475569' }}>
             Solar data powered by{' '}
             <a
               href="https://developer.nrel.gov/docs/solar/pvwatts/"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: '#6b7280' }}
+              style={{ color: '#64748b' }}
             >
               NREL PVWatts
             </a>

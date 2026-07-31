@@ -2,7 +2,7 @@ import React from 'react';
 import { LightBulbIcon } from '../../ui/Icons';
 
 export default function StepBill({ value, onChange, primaryColor }) {
-  const accent = primaryColor || '#1e40af';
+  const accent = primaryColor || '#1c3a5e';
   return (
     <div>
       <h2 className="step-title">What's your average monthly electric bill?</h2>

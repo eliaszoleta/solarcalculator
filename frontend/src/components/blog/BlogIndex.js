@@ -4,7 +4,7 @@ import { POSTS, CATEGORIES, getFeaturedPost } from '../../data/blogPosts';
 import { CategoryIcon } from '../ui/Icons';
 
 const SITE_URL = 'https://www.mysolarwidget.com';
-const PRIMARY = '#1e40af';
+const PRIMARY = '#1c3a5e';
 
 function PostCard({ post, featured = false }) {
   const catLabel = (CATEGORIES.find(c => c.slug === post.category) || {}).label || post.category;
@@ -28,7 +28,7 @@ function PostCard({ post, featured = false }) {
         onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 6, padding: '3px 9px 3px 7px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: '#eef1f5', border: '1px solid #c3ceda', borderRadius: 6, padding: '3px 9px 3px 7px' }}>
             <CategoryIcon slug={post.category} size={11} color={PRIMARY} />
             <span style={{ fontSize: 11, fontWeight: 700, color: PRIMARY, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{catLabel}</span>
           </div>
@@ -160,9 +160,9 @@ export default function BlogIndex() {
                     <a
                       key={cat.slug}
                       href={`/blog/category/${cat.slug}`}
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 16px', borderRadius: 24, background: 'white', border: '1.5px solid #e2e8f0', textDecoration: 'none', fontSize: 13.5, fontWeight: 600, color: '#374151', transition: 'all 0.15s' }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 16px', borderRadius: 24, background: 'white', border: '1.5px solid #e2e8f0', textDecoration: 'none', fontSize: 13.5, fontWeight: 600, color: '#334155', transition: 'all 0.15s' }}
                       onMouseEnter={e => { e.currentTarget.style.borderColor = PRIMARY; e.currentTarget.style.color = PRIMARY; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#374151'; }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#334155'; }}
                     >
                       <CategoryIcon slug={cat.slug} size={14} /> {cat.label}
                     </a>

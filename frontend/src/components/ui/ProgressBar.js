@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function ProgressBar({ current, total, steps, embedded, primaryColor }) {
-  const accent = primaryColor || '#2563eb';
+  const accent = primaryColor || '#1c3a5e';
   const progressStep = current - 1; // 0-based index
   const pct = total > 1 ? (progressStep / (total - 1)) * 100 : 0;
   const currentLabel = steps[progressStep]?.label || '';
