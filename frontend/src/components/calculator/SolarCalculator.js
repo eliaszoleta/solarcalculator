@@ -7,10 +7,11 @@ import StepHome from './steps/StepHome';
 import StepRoof from './steps/StepRoof';
 import StepBattery from './steps/StepBattery';
 import StepLead from './steps/StepLead';
+import StepTimeline from './steps/StepTimeline';
 import StepCustom from './steps/StepCustom';
 import ResultsScreen from './ResultsScreen';
 import ProgressBar from '../ui/ProgressBar';
-import { BoltIcon, MapPinIcon, HomeIcon, BuildingIcon, BatteryIcon, UserIcon, LockIcon, CheckCircleIcon, SparklesIcon } from '../ui/Icons';
+import { BoltIcon, MapPinIcon, HomeIcon, BuildingIcon, BatteryIcon, UserIcon, ClockIcon, LockIcon, CheckCircleIcon, SparklesIcon } from '../ui/Icons';
 import './SolarCalculator.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
@@ -23,6 +24,7 @@ const BUILTIN_META = [
   { label: 'Roof',          icon: <BuildingIcon size={14} /> },
   { label: 'Battery',       icon: <BatteryIcon size={14} /> },
   { label: 'Get Estimate',  icon: <UserIcon size={14} /> },
+  { label: 'Timeline',      icon: <ClockIcon size={14} /> },
 ];
 
 // Build an ordered list of all steps (built-in + custom interleaved)
@@ -34,7 +36,8 @@ function buildStepSequence(customSteps = []) {
       .filter(s => s.insertAfterStep === i)
       .forEach(cs => result.push({ kind: 'custom', step: cs }));
   }
-  result.push({ kind: 'builtin', index: 6 }); // lead form always last
+  result.push({ kind: 'builtin', index: 6 }); // contact + payment method
+  result.push({ kind: 'builtin', index: 7 }); // timeline + submit, always last
   return result;
 }
 
@@ -51,9 +54,12 @@ const initialForm = {
   customAnswers: {},
 };
 
+const initialLeadForm = { name: '', email: '', phone: '', paymentMethod: '', timeline: '' };
+
 export default function SolarCalculator({ embedded, installerConfig, installerId }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(initialForm);
+  const [leadForm, setLeadForm] = useState(initialLeadForm);
   const [results, setResults] = useState(null);
   const [lead, setLead] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -91,14 +97,16 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   const allSteps = buildStepSequence(customSteps);
   const TOTAL_STEPS = allSteps.length;
   const currentStepDef = allSteps[step - 1] || allSteps[0];
-  const leadStepPos = allSteps.findIndex(s => s.kind === 'builtin' && s.index === 6) + 1;
-  const isOnLeadForm = currentStepDef?.kind === 'builtin' && currentStepDef?.index === 6;
+  const finalStepPos = allSteps.findIndex(s => s.kind === 'builtin' && s.index === 7) + 1;
+  const isOnPaymentStep = currentStepDef?.kind === 'builtin' && currentStepDef?.index === 6;
+  const isOnFinalStep = currentStepDef?.kind === 'builtin' && currentStepDef?.index === 7;
   const isOnLocationStep = currentStepDef?.kind === 'builtin' && currentStepDef?.index === 2;
   const isOnHomeStep = currentStepDef?.kind === 'builtin' && currentStepDef?.index === 3;
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
   const updateCustomAnswer = (id, value) =>
     setForm(prev => ({ ...prev, customAnswers: { ...prev.customAnswers, [id]: value } }));
+  const updateLead = (field, value) => setLeadForm(prev => ({ ...prev, [field]: value }));
 
   const next = () => setStep(s => Math.min(s + 1, TOTAL_STEPS));
   const back = () => setStep(s => Math.max(s - 1, 1));
@@ -153,6 +161,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   const reset = () => {
     setStep(1);
     setForm(initialForm);
+    setLeadForm(initialLeadForm);
     setResults(null);
     setLead(null);
     setError(null);
@@ -175,11 +184,21 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   );
   const step3Incomplete = isOnHomeStep && form.homeType === 'house' && form.ownsHome === null;
 
+  const requireContact = !!installerId;
+  const paymentStepIncomplete = isOnPaymentStep && (
+    !leadForm.paymentMethod ||
+    (requireContact && (
+      !leadForm.name.trim() ||
+      !/\S+@\S+\.\S+/.test(leadForm.email) ||
+      leadForm.phone.replace(/\D/g, '').length < 10
+    ))
+  );
+
   const customStepAnswered = currentStepDef?.kind !== 'custom' ||
     !currentStepDef.step.required ||
     form.customAnswers[currentStepDef.step.id] !== undefined;
 
-  const canProceed = !isOutOfArea && !isDisqualified && !step3Incomplete && customStepAnswered;
+  const canProceed = !isOutOfArea && !isDisqualified && !step3Incomplete && !paymentStepIncomplete && customStepAnswered;
 
   // Border radius: installer-configured or default 12px
   const borderRadius = installerConfig?.borderRadius !== undefined ? installerConfig.borderRadius : 12;
@@ -230,7 +249,32 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
               <StepBattery value={form.battery} onChange={v => update('battery', v)} />
             )}
             {currentStepDef?.kind === 'builtin' && currentStepDef.index === 6 && (
-              <StepLead onSubmit={handleLeadSubmit} loading={loading} requireContact={!!installerId} embedded={embedded} primaryColor={installerConfig?.primaryColor} formBgColor={installerConfig?.formBgColor} />
+              <StepLead
+                name={leadForm.name}
+                email={leadForm.email}
+                phone={leadForm.phone}
+                paymentMethod={leadForm.paymentMethod}
+                onNameChange={v => updateLead('name', v)}
+                onEmailChange={v => updateLead('email', v)}
+                onPhoneChange={v => updateLead('phone', v)}
+                onPaymentMethodChange={v => updateLead('paymentMethod', v)}
+                requireContact={requireContact}
+                embedded={embedded}
+                primaryColor={installerConfig?.primaryColor}
+                formBgColor={installerConfig?.formBgColor}
+              />
+            )}
+            {currentStepDef?.kind === 'builtin' && currentStepDef.index === 7 && (
+              <StepTimeline
+                timeline={leadForm.timeline}
+                onTimelineChange={v => updateLead('timeline', v)}
+                onSubmit={() => handleLeadSubmit(leadForm)}
+                loading={loading}
+                requireContact={requireContact}
+                embedded={embedded}
+                primaryColor={installerConfig?.primaryColor}
+                formBgColor={installerConfig?.formBgColor}
+              />
             )}
             {currentStepDef?.kind === 'custom' && (
               <StepCustom
@@ -244,19 +288,20 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
 
           {error && <div className="error-banner">{error}</div>}
 
-          {!isOnLeadForm && (
+          {!isOnFinalStep && (
             <div className={`step-nav${embedded ? ' embed-nav' : ''}`}>
               {step > 1 && (
                 <button className="btn btn-secondary" onClick={back}>← Back</button>
               )}
-              <div className="step-counter">{step} of {leadStepPos - 1}</div>
+              <div className="step-counter">{step} of {finalStepPos - 1}</div>
               <button
                 className="btn btn-primary"
                 onClick={next}
                 disabled={!canProceed}
                 title={
                   isDisqualified ? 'Solar is not available for this home type' :
-                  step3Incomplete ? 'Please answer the ownership question' : ''
+                  step3Incomplete ? 'Please answer the ownership question' :
+                  paymentStepIncomplete ? 'Please fill in the required fields' : ''
                 }
                 style={installerConfig?.primaryColor ? { background: installerConfig.primaryColor } : {}}
               >
@@ -265,7 +310,7 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
             </div>
           )}
 
-          {isOnLeadForm && (
+          {isOnFinalStep && (
             <div className={`step-nav${embedded ? ' embed-nav' : ''}`}>
               <button className="btn btn-secondary" onClick={back} disabled={loading}>← Back</button>
               <div className="step-counter">Almost done</div>

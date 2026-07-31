@@ -1,12 +1,4 @@
-import React, { useState } from 'react';
-import { SunIcon } from '../../ui/Icons';
-
-const TIMELINES = [
-  { value: 'asap', label: 'ASAP', desc: 'Ready to move forward now' },
-  { value: '3months', label: 'Within 3 months', desc: 'Actively researching' },
-  { value: '6months', label: 'Within 6 months', desc: 'Planning ahead' },
-  { value: 'exploring', label: 'Just exploring', desc: 'Curious about solar' },
-];
+import React from 'react';
 
 const PAYMENT_METHODS = [
   { value: 'cash', label: 'Cash', desc: 'Pay upfront, own it outright' },
@@ -15,34 +7,16 @@ const PAYMENT_METHODS = [
   { value: 'unsure', label: 'Not sure yet', desc: 'Help me decide' },
 ];
 
-export default function StepLead({ onSubmit, loading, requireContact, embedded, primaryColor, formBgColor }) {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', timeline: '', paymentMethod: '' });
-  const [errors, setErrors] = useState({});
-
+export default function StepLead({
+  name, email, phone, paymentMethod,
+  onNameChange, onEmailChange, onPhoneChange, onPaymentMethodChange,
+  requireContact, embedded, primaryColor, formBgColor,
+}) {
   const accentColor = primaryColor || '#1c3a5e';
   const accentBg = accentColor + '18';
-
-  const validate = () => {
-    const e = {};
-    if (requireContact) {
-      if (!form.name.trim()) e.name = 'Name is required';
-      if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Valid email is required';
-      if (!form.phone.trim()) e.phone = 'Phone number is required';
-      else if (form.phone.replace(/\D/g, '').length < 10) e.phone = 'Enter a valid 10-digit phone number';
-    }
-    if (!form.timeline) e.timeline = 'Please select a timeline';
-    if (!form.paymentMethod) e.paymentMethod = 'Please select a payment preference';
-    return e;
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    const e2 = validate();
-    if (Object.keys(e2).length > 0) { setErrors(e2); return; }
-    onSubmit(form);
-  };
-
   const gap = embedded ? 6 : 10;
+
+  const phoneInvalid = phone.trim() && phone.replace(/\D/g, '').length < 10;
 
   return (
     <div style={formBgColor ? { background: formBgColor, borderRadius: 12, padding: embedded ? '8px 4px' : '12px 4px' } : {}}>
@@ -55,7 +29,7 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
           : 'Tell us a bit about your solar plans to get your free estimate.'}
       </p>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap }}>
         {requireContact && (
           <>
             {/* Name + Phone side by side */}
@@ -64,24 +38,22 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
                 <input
                   type="text"
                   placeholder="Full Name"
-                  value={form.name}
-                  onChange={e => { setForm(p => ({ ...p, name: e.target.value })); setErrors(p => ({ ...p, name: null })); }}
+                  value={name}
+                  onChange={e => onNameChange(e.target.value)}
                   className="sl-input"
                   style={{ width: '100%' }}
                 />
-                {errors.name && <div className="field-error">{errors.name}</div>}
               </div>
               <div>
                 <input
                   type="tel"
                   placeholder="Phone number"
-                  value={form.phone}
-                  onChange={e => { setForm(p => ({ ...p, phone: e.target.value })); setErrors(p => ({ ...p, phone: null })); }}
-                  onBlur={e => { const digits = e.target.value.replace(/\D/g, ''); if (e.target.value.trim() && digits.length < 10) setErrors(p => ({ ...p, phone: 'Enter a valid 10-digit phone number' })); }}
+                  value={phone}
+                  onChange={e => onPhoneChange(e.target.value)}
                   className="sl-input"
                   style={{ width: '100%' }}
                 />
-                {errors.phone && <div className="field-error">{errors.phone}</div>}
+                {phoneInvalid && <div className="field-error">Enter a valid 10-digit phone number</div>}
               </div>
             </div>
 
@@ -90,12 +62,11 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
               <input
                 type="email"
                 placeholder="Email address"
-                value={form.email}
-                onChange={e => { setForm(p => ({ ...p, email: e.target.value })); setErrors(p => ({ ...p, email: null })); }}
+                value={email}
+                onChange={e => onEmailChange(e.target.value)}
                 className="sl-input"
                 style={{ width: '100%' }}
               />
-              {errors.email && <div className="field-error">{errors.email}</div>}
             </div>
           </>
         )}
@@ -107,65 +78,22 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
               <button
                 key={t.value}
                 type="button"
-                className={`option-card option-card-sm${form.paymentMethod === t.value ? ' sl-selected' : ''}`}
-                onClick={() => { setForm(p => ({ ...p, paymentMethod: t.value })); setErrors(p => ({ ...p, paymentMethod: null })); }}
+                className={`option-card option-card-sm${paymentMethod === t.value ? ' sl-selected' : ''}`}
+                onClick={() => onPaymentMethodChange(t.value)}
               >
                 <div className="option-label">{t.label}</div>
                 <div className="option-desc">{t.desc}</div>
               </button>
             ))}
           </div>
-          {errors.paymentMethod && <div className="field-error">{errors.paymentMethod}</div>}
         </div>
-
-        <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: embedded ? 4 : 8 }}>When are you looking to go solar?</p>
-          <div className="option-grid option-grid-2">
-            {TIMELINES.map(t => (
-              <button
-                key={t.value}
-                type="button"
-                className={`option-card option-card-sm${form.timeline === t.value ? ' sl-selected' : ''}`}
-                onClick={() => { setForm(p => ({ ...p, timeline: t.value })); setErrors(p => ({ ...p, timeline: null })); }}
-              >
-                <div className="option-label">{t.label}</div>
-                <div className="option-desc">{t.desc}</div>
-              </button>
-            ))}
-          </div>
-          {errors.timeline && <div className="field-error">{errors.timeline}</div>}
-        </div>
-
-        <button
-          type="submit"
-          className="btn btn-cta"
-          disabled={loading}
-          style={{
-            marginTop: 4,
-            background: accentColor,
-            boxShadow: `0 4px 14px ${accentColor}66`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            textAlign: 'center',
-          }}
-        >
-          {loading ? 'Calculating...' : <><SunIcon size={14} style={{ marginRight: 7, flexShrink: 0 }} />Show My Free Estimate →</>}
-        </button>
-      </form>
-
-      {requireContact && (
-        <p style={{ fontSize: 12, color: '#94a3b8', textAlign: 'center', marginTop: 10 }}>
-          No spam. No commitment. One call with a certified installer.
-        </p>
-      )}
+      </div>
 
       <style>{`
         .sl-input {
           padding: ${embedded ? '8px 10px' : '11px 14px'};
           border: 1.5px solid #e2e8f0;
-          border-radius: 10px;
+          border-radius: 8px;
           font-size: 15px;
           color: #1e293b;
           background: white;
@@ -179,7 +107,6 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
         .option-card-sm { padding: ${embedded ? '6px 8px' : '9px 12px'}; }
         .option-grid-2 { grid-template-columns: 1fr 1fr; gap: ${embedded ? '6px' : '8px'}; }
         .sl-selected { border-color: ${accentColor} !important; background: ${accentBg} !important; }
-        .btn-cta:hover:not(:disabled) { opacity: 0.9; transform: translateY(-2px); }
       `}</style>
     </div>
   );
