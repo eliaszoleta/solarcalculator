@@ -15,8 +15,8 @@ export default function TermsOfService() {
 
       {/* Page Hero */}
       <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', padding: '56px 24px 48px', textAlign: 'center' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(147,197,253,0.12)', border: '1px solid rgba(147,197,253,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 18 }}>
-          <span style={{ fontSize: 11.5, fontWeight: 700, color: '#93c5fd', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Legal</span>
+        <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(159,179,200,0.12)', border: '1px solid rgba(159,179,200,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 18 }}>
+          <span style={{ fontSize: 11.5, fontWeight: 700, color: '#9fb3c8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Legal</span>
         </div>
         <h1 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 10, letterSpacing: '-0.02em' }}>Terms of Service</h1>
         <p style={{ fontSize: 14, color: '#64748b', margin: 0 }}>Last updated: March 20, 2026</p>
@@ -120,7 +120,7 @@ function Section({ title, children }) {
         <div style={{ padding: '16px 22px 12px', borderBottom: '1px solid #f1f5f9' }}>
           <h2 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: 0 }}>{title}</h2>
         </div>
-        <div style={{ padding: '14px 22px 18px', fontSize: 14, color: '#374151', lineHeight: 1.8, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ padding: '14px 22px 18px', fontSize: 14, color: '#334155', lineHeight: 1.8, display: 'flex', flexDirection: 'column', gap: 10 }}>
           {children}
         </div>
       </div>
@@ -129,4 +129,4 @@ function Section({ title, children }) {
 }
 
 const ulStyle = { paddingLeft: 20, margin: '4px 0', lineHeight: 1.8 };
-const linkStyle = { color: '#2563eb', textDecoration: 'underline' };
+const linkStyle = { color: '#1c3a5e', textDecoration: 'underline' };

@@ -73,13 +73,13 @@ export default function AuthPage({ onAuth }) {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)',
+      background: 'linear-gradient(135deg, #0f172a 0%, #12283f 100%)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
     }}>
       <div style={{ width: '100%', maxWidth: 420 }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <img src="/logo-horizontal-dark.svg" alt="MySolarWidget" style={{ height: 52, width: 'auto' }} />
-          <div style={{ fontSize: 14, color: '#93c5fd', marginTop: 4 }}>Installer Dashboard</div>
+          <div style={{ fontSize: 14, color: '#9fb3c8', marginTop: 4 }}>Installer Dashboard</div>
         </div>
 
         <div style={{ background: 'white', borderRadius: 20, padding: 36, boxShadow: '0 25px 50px rgba(0,0,0,0.3)' }}>
@@ -185,7 +185,7 @@ export default function AuthPage({ onAuth }) {
 function Field({ label, type, placeholder, value, onChange }) {
   return (
     <div>
-      <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>{label}</label>
+      <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>{label}</label>
       <input
         type={type}
         placeholder={placeholder}
@@ -214,8 +214,8 @@ const headingStyle = { fontSize: 22, fontWeight: 700, color: '#0f172a', marginBo
 const subStyle = { fontSize: 14, color: '#64748b', marginBottom: 24 };
 const formStyle = { display: 'flex', flexDirection: 'column', gap: 14 };
 const submitStyle = loading => ({
-  padding: 13, background: loading ? '#94a3b8' : 'linear-gradient(135deg, #1e40af, #1d4ed8)',
+  padding: 13, background: loading ? '#94a3b8' : 'linear-gradient(135deg, #1c3a5e, #12283f)',
   color: 'white', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 700,
   cursor: loading ? 'not-allowed' : 'pointer', marginTop: 4, fontFamily: 'inherit',
 });
-const linkStyle = { background: 'none', border: 'none', color: '#1e40af', fontWeight: 600, cursor: 'pointer', fontSize: 14, fontFamily: 'inherit' };
+const linkStyle = { background: 'none', border: 'none', color: '#1c3a5e', fontWeight: 600, cursor: 'pointer', fontSize: 14, fontFamily: 'inherit' };

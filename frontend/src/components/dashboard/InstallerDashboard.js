@@ -440,14 +440,14 @@ export default function InstallerDashboard({ user, onLogout }) {
 
           {subscription && !subscription.active && (
             <div style={{
-              background: subscription.status === 'requires_trial_setup' ? '#eff6ff' : '#fef2f2',
-              border: `1px solid ${subscription.status === 'requires_trial_setup' ? '#bfdbfe' : '#fca5a5'}`,
+              background: subscription.status === 'requires_trial_setup' ? '#eef1f5' : '#fef2f2',
+              border: `1px solid ${subscription.status === 'requires_trial_setup' ? '#c3ceda' : '#fca5a5'}`,
               borderRadius: 12, padding: '14px 20px', marginBottom: 24,
               display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-                <AlertTriangleIcon size={15} color={subscription.status === 'requires_trial_setup' ? '#2563eb' : '#dc2626'} />
-                <span style={{ fontWeight: 600, fontSize: 13, color: subscription.status === 'requires_trial_setup' ? '#1d4ed8' : '#dc2626' }}>
+                <AlertTriangleIcon size={15} color={subscription.status === 'requires_trial_setup' ? '#1c3a5e' : '#dc2626'} />
+                <span style={{ fontWeight: 600, fontSize: 13, color: subscription.status === 'requires_trial_setup' ? '#12283f' : '#dc2626' }}>
                   {subscription.status === 'requires_trial_setup'
                     ? 'Your calculator is paused — start your 7-day free trial to activate'
                     : subscription.status === 'expired'
@@ -459,7 +459,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                 onClick={() => setActiveTab('subscription')}
                 style={{
                   whiteSpace: 'nowrap', padding: '8px 18px',
-                  background: subscription.status === 'requires_trial_setup' ? '#2563eb' : '#dc2626',
+                  background: subscription.status === 'requires_trial_setup' ? '#1c3a5e' : '#dc2626',
                   color: 'white', border: 'none', borderRadius: 7, fontWeight: 700, fontSize: 13, cursor: 'pointer',
                 }}
               >
@@ -480,7 +480,7 @@ export default function InstallerDashboard({ user, onLogout }) {
             const stats = [
               { label: 'Total Leads',    value: activeLeads.length,                                   Icon: ChartBarIcon, color: '#d97706', bg: '#fffbeb' },
               { label: 'This Month',     value: thisMonth.length,                                      Icon: CalendarIcon, color: '#16a34a', bg: '#f0fdf4' },
-              { label: 'Avg Savings/yr', value: avgSavings > 0 ? `$${Math.round(avgSavings).toLocaleString()}` : '—', Icon: TrendingUpIcon, color: '#2563eb', bg: '#eff6ff' },
+              { label: 'Avg Savings/yr', value: avgSavings > 0 ? `$${Math.round(avgSavings).toLocaleString()}` : '—', Icon: TrendingUpIcon, color: '#1c3a5e', bg: '#eef1f5' },
               { label: 'Widget Status',  value: isActive ? 'Active' : 'Inactive',                     Icon: GlobeIcon,    color: isActive ? '#16a34a' : '#dc2626', bg: isActive ? '#f0fdf4' : '#fef2f2' },
             ];
 
@@ -512,9 +512,9 @@ export default function InstallerDashboard({ user, onLogout }) {
                       { label: 'Manage Billing',         tab: 'subscription',Icon: CreditCardIcon },
                     ].map(({ label, tab, Icon }) => (
                       <button key={label} onClick={() => setActiveTab(tab)}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 16px', border: '1px solid #e2e8f0', borderRadius: 8, background: 'white', cursor: 'pointer', color: '#374151', fontWeight: 600, fontSize: 13, transition: 'all 0.15s' }}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 16px', border: '1px solid #e2e8f0', borderRadius: 8, background: 'white', cursor: 'pointer', color: '#334155', fontWeight: 600, fontSize: 13, transition: 'all 0.15s' }}
                         onMouseEnter={e => { e.currentTarget.style.borderColor = '#f59e0b'; e.currentTarget.style.color = '#d97706'; e.currentTarget.style.background = '#fffbeb'; }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#374151'; e.currentTarget.style.background = 'white'; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#334155'; e.currentTarget.style.background = 'white'; }}
                       >
                         <Icon size={14} /> {label}
                       </button>
@@ -535,7 +535,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                       <div style={{ width: 52, height: 52, borderRadius: 14, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
                         <InboxIcon size={24} color="#94a3b8" />
                       </div>
-                      <div style={{ fontWeight: 700, color: '#374151', marginBottom: 6, fontSize: 15 }}>No leads yet</div>
+                      <div style={{ fontWeight: 700, color: '#334155', marginBottom: 6, fontSize: 15 }}>No leads yet</div>
                       <p style={{ color: '#94a3b8', fontSize: 13, maxWidth: 300, margin: '0 auto' }}>
                         Embed your calculator on your website to start capturing solar leads.
                       </p>
@@ -556,7 +556,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                               <div style={{ fontWeight: 600, fontSize: 14, color: '#0f172a' }}>{l.name || '(No name)'}</div>
                               <div style={{ fontSize: 12, color: '#94a3b8' }}>{l.email}</div>
                             </td>
-                            <td style={{ padding: '12px 14px', fontSize: 13, color: '#374151' }}>{[l.zip, l.state].filter(Boolean).join(', ') || '—'}</td>
+                            <td style={{ padding: '12px 14px', fontSize: 13, color: '#334155' }}>{[l.zip, l.state].filter(Boolean).join(', ') || '—'}</td>
                             <td style={{ padding: '12px 14px', fontSize: 13, fontWeight: 600, color: '#0f172a' }}>{l.system_size_kw ? `${l.system_size_kw} kW` : '—'}</td>
                             <td style={{ padding: '12px 14px', fontSize: 13, fontWeight: 600, color: '#16a34a' }}>{l.annual_savings ? `$${l.annual_savings.toLocaleString()}/yr` : '—'}</td>
                             <td style={{ padding: '12px 14px', fontSize: 12, color: '#94a3b8' }}>{new Date(l.created_at).toLocaleDateString()}</td>
@@ -617,8 +617,8 @@ export default function InstallerDashboard({ user, onLogout }) {
                         }}
                         style={{
                           padding: '4px 10px', fontSize: 12, borderRadius: 6, border: '1px solid',
-                          borderColor: active ? '#1e40af' : '#cbd5e1',
-                          background: active ? '#1e40af' : 'white',
+                          borderColor: active ? '#1c3a5e' : '#cbd5e1',
+                          background: active ? '#1c3a5e' : 'white',
                           color: active ? 'white' : '#64748b',
                           cursor: 'pointer', fontWeight: active ? 600 : 400,
                         }}
@@ -832,7 +832,7 @@ export default function InstallerDashboard({ user, onLogout }) {
               return true;
             });
             const homeTypes = [...new Set(activeLeads.map(l => l.home_type).filter(Boolean))];
-            const btnStyle = { display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 13px', border: '1px solid #e2e8f0', borderRadius: 7, background: 'white', cursor: 'pointer', fontSize: 12.5, fontWeight: 600, color: '#374151' };
+            const btnStyle = { display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 13px', border: '1px solid #e2e8f0', borderRadius: 7, background: 'white', cursor: 'pointer', fontSize: 12.5, fontWeight: 600, color: '#334155' };
 
             return (
             <>
@@ -893,7 +893,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                         <SearchIcon size={14} color="#94a3b8" style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
                         <input value={leadSearch} onChange={e => setLeadSearch(e.target.value)} placeholder="Search by name, email, ZIP…" style={{ width: '100%', padding: '8px 12px 8px 32px', border: '1px solid #e2e8f0', borderRadius: 7, fontSize: 13, outline: 'none', color: '#0f172a', boxSizing: 'border-box' }} />
                       </div>
-                      <select value={leadFilter} onChange={e => setLeadFilter(e.target.value)} style={{ padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 7, fontSize: 13, background: 'white', cursor: 'pointer', outline: 'none', color: '#374151' }}>
+                      <select value={leadFilter} onChange={e => setLeadFilter(e.target.value)} style={{ padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 7, fontSize: 13, background: 'white', cursor: 'pointer', outline: 'none', color: '#334155' }}>
                         <option value="all">All home types</option>
                         {homeTypes.map(t => <option key={t} value={t}>{fmt(t)}</option>)}
                       </select>
@@ -904,8 +904,8 @@ export default function InstallerDashboard({ user, onLogout }) {
                 {/* List / Trash */}
                 {/* Bulk actions bar */}
                 {!trashView && selectedLeadIds.size > 0 && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 8, marginBottom: 10 }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: '#1d4ed8', flex: 1 }}>{selectedLeadIds.size} lead{selectedLeadIds.size !== 1 ? 's' : ''} selected</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', background: '#eef1f5', border: '1px solid #c3ceda', borderRadius: 8, marginBottom: 10 }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: '#12283f', flex: 1 }}>{selectedLeadIds.size} lead{selectedLeadIds.size !== 1 ? 's' : ''} selected</span>
                     <button onClick={() => handleBulkArchive(selectedLeadIds)} style={{ padding: '5px 12px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, cursor: 'pointer', fontSize: 12.5, fontWeight: 600 }}>Move to Trash</button>
                     <button onClick={async () => { if (!window.confirm(`Permanently delete ${selectedLeadIds.size} lead(s)? This cannot be undone.`)) return; const ids = [...selectedLeadIds]; await supabase.from('leads').delete().in('id', ids); setLeads(prev => prev.filter(l => !selectedLeadIds.has(l.id))); if (selectedLead && selectedLeadIds.has(selectedLead.id)) setSelectedLead(null); setSelectedLeadIds(new Set()); }} style={{ padding: '5px 12px', background: '#7f1d1d', color: 'white', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12.5, fontWeight: 600 }}>Delete Forever</button>
                     <button onClick={() => setSelectedLeadIds(new Set())} style={{ padding: '5px 12px', background: 'white', color: '#64748b', border: '1px solid #e2e8f0', borderRadius: 6, cursor: 'pointer', fontSize: 12.5 }}>Clear</button>
@@ -937,7 +937,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                     <div style={{ width: 52, height: 52, borderRadius: 14, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
                       <InboxIcon size={24} color="#94a3b8" />
                     </div>
-                    <div style={{ fontWeight: 700, fontSize: 15, color: '#374151', marginBottom: 5 }}>
+                    <div style={{ fontWeight: 700, fontSize: 15, color: '#334155', marginBottom: 5 }}>
                       {leadSearch || leadFilter !== 'all' ? 'No matching leads' : 'No leads yet'}
                     </div>
                     <p style={{ fontSize: 13, color: '#94a3b8', textAlign: 'center', maxWidth: 280, margin: 0 }}>
@@ -1083,7 +1083,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                         <PhoneIcon size={13} /> Call
                       </a>
                     )}
-                    <button onClick={() => { setEditingLead(selectedLead); setEditDraft({ name: selectedLead.name || '', email: selectedLead.email || '', phone: selectedLead.phone || '' }); }} style={{ padding: '9px 13px', background: '#f8fafc', color: '#374151', border: '1px solid #e2e8f0', borderRadius: 7, cursor: 'pointer', fontWeight: 600, fontSize: 13, display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <button onClick={() => { setEditingLead(selectedLead); setEditDraft({ name: selectedLead.name || '', email: selectedLead.email || '', phone: selectedLead.phone || '' }); }} style={{ padding: '9px 13px', background: '#f8fafc', color: '#334155', border: '1px solid #e2e8f0', borderRadius: 7, cursor: 'pointer', fontWeight: 600, fontSize: 13, display: 'flex', alignItems: 'center', gap: 5 }}>
                       <PencilIcon size={13} /> Edit
                     </button>
                     <button onClick={() => { handleDeleteLead(selectedLead); setSelectedLead(null); }} style={{ padding: '9px 13px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 7, cursor: 'pointer', fontWeight: 600, fontSize: 13 }}>
@@ -1489,7 +1489,7 @@ function CustomStepsPanel({ steps, onChange }) {
                     {idx < steps.length - 1 && (
                       <button onClick={() => moveStep(idx, 1)} style={{ background: 'none', border: '1px solid #e2e8f0', borderRadius: 6, padding: '3px 8px', cursor: 'pointer', fontSize: 12, color: '#64748b' }}>↓</button>
                     )}
-                    <button onClick={() => startEdit(idx)} style={{ background: 'none', border: '1px solid #e2e8f0', borderRadius: 6, padding: '4px 10px', cursor: 'pointer', fontSize: 12, color: '#1e40af' }}>Edit</button>
+                    <button onClick={() => startEdit(idx)} style={{ background: 'none', border: '1px solid #e2e8f0', borderRadius: 6, padding: '4px 10px', cursor: 'pointer', fontSize: 12, color: '#1c3a5e' }}>Edit</button>
                     <button onClick={() => deleteStep(idx)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 4 }}><TrashIcon size={15} /></button>
                   </div>
                 </div>
@@ -1531,8 +1531,8 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
     : null;
 
   const statusConfig = {
-    requires_trial_setup: { Icon: BoltIcon,          iconColor: '#2563eb', bg: '#eff6ff', border: '#bfdbfe', title: 'Start Your Free Trial' },
-    trialing:             { Icon: BoltIcon,          iconColor: '#2563eb', bg: '#eff6ff', border: '#bfdbfe', title: 'Free Trial' },
+    requires_trial_setup: { Icon: BoltIcon,          iconColor: '#1c3a5e', bg: '#eef1f5', border: '#c3ceda', title: 'Start Your Free Trial' },
+    trialing:             { Icon: BoltIcon,          iconColor: '#1c3a5e', bg: '#eef1f5', border: '#c3ceda', title: 'Free Trial' },
     active:               { Icon: CheckCircleIcon,   iconColor: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0', title: 'Active Subscription' },
     active_canceling:     { Icon: AlertTriangleIcon, iconColor: '#d97706', bg: '#fffbeb', border: '#fde68a', title: 'Active (Canceling)' },
     past_due:             { Icon: AlertTriangleIcon, iconColor: '#dc2626', bg: '#fff1f2', border: '#fecdd3', title: 'Payment Past Due' },
@@ -1575,13 +1575,13 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
             </div>
             <div>
               <div style={{ fontWeight: 800, fontSize: 18, color: '#0f172a', marginBottom: 4, letterSpacing: '-0.3px' }}>{sc.title}</div>
-              <div style={{ fontSize: 13.5, color: '#374151' }}>{statusDetail}</div>
+              <div style={{ fontSize: 13.5, color: '#334155' }}>{statusDetail}</div>
             </div>
           </div>
           <div>
             {(!isActive || status === 'trialing' || status === 'requires_trial_setup') && (
               <button onClick={onSubscribe}
-                style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '11px 22px', background: '#2563eb', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+                style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '11px 22px', background: '#1c3a5e', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
                 {status === 'requires_trial_setup' ? 'Start 7-Day Trial →' : status === 'trialing' ? 'Subscribe Now →' : 'Reactivate →'}
               </button>
             )}
@@ -1601,17 +1601,17 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {SUBSCRIPTION_FEATURES.map(({ Icon, text }) => (
             <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 28, height: 28, borderRadius: 7, background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Icon size={14} color="#2563eb" />
+              <div style={{ width: 28, height: 28, borderRadius: 7, background: '#eef1f5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Icon size={14} color="#1c3a5e" />
               </div>
-              <span style={{ fontSize: 13.5, color: '#374151' }}>{text}</span>
+              <span style={{ fontSize: 13.5, color: '#334155' }}>{text}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Pricing */}
-      <div style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%)', border: '1px solid #bfdbfe', borderRadius: 12, padding: '20px 22px' }}>
+      <div style={{ background: 'linear-gradient(135deg, #eef1f5 0%, #f8fafc 100%)', border: '1px solid #c3ceda', borderRadius: 12, padding: '20px 22px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginBottom: 4 }}>
           <span style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>$159</span>
           <span style={{ fontSize: 14, color: '#64748b', fontWeight: 500 }}>/month</span>

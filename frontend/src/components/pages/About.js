@@ -36,7 +36,7 @@ export default function About() {
 
       {/* Page Hero */}
       <div style={{
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1e40af 100%)',
+        background: 'linear-gradient(135deg, #0f172a 0%, #12283f 60%, #1c3a5e 100%)',
         padding: '64px 24px 56px',
         textAlign: 'center',
         position: 'relative',
@@ -44,13 +44,13 @@ export default function About() {
       }}>
         <div style={{ position: 'absolute', top: -60, right: -60, width: 280, height: 280, borderRadius: '50%', background: 'rgba(245,158,11,0.1)', filter: 'blur(50px)' }} />
         <div style={{ position: 'relative', maxWidth: 640, margin: '0 auto' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(147,197,253,0.12)', border: '1px solid rgba(147,197,253,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
-            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#93c5fd', letterSpacing: '0.08em', textTransform: 'uppercase' }}>About Us</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(159,179,200,0.12)', border: '1px solid rgba(159,179,200,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
+            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#9fb3c8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>About Us</span>
           </div>
           <h1 style={{ fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 16, letterSpacing: '-0.02em' }}>
             About MySolarWidget
           </h1>
-          <p style={{ fontSize: 17, color: '#93c5fd', lineHeight: 1.7, maxWidth: 520, margin: '0 auto' }}>
+          <p style={{ fontSize: 17, color: '#9fb3c8', lineHeight: 1.7, maxWidth: 520, margin: '0 auto' }}>
             We built the solar calculator we wished existed — honest, fast, and backed by real government data.
           </p>
         </div>
@@ -136,7 +136,7 @@ export default function About() {
                 alignItems: 'center',
                 gap: 6,
                 padding: '10px 20px',
-                background: '#2563eb',
+                background: '#1c3a5e',
                 color: 'white',
                 borderRadius: 8,
                 fontWeight: 600,
@@ -152,13 +152,13 @@ export default function About() {
 
         {/* Contact CTA */}
         <section style={{
-          background: 'linear-gradient(135deg, #0f172a, #1e3a8a)',
+          background: 'linear-gradient(135deg, #0f172a, #12283f)',
           borderRadius: 20,
           padding: '40px 32px',
           textAlign: 'center',
         }}>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: 'white', marginBottom: 10, letterSpacing: '-0.01em' }}>Questions or Feedback?</h2>
-          <p style={{ color: '#93c5fd', marginBottom: 24, fontSize: 15, lineHeight: 1.6 }}>We're a small team and we read every message.</p>
+          <p style={{ color: '#9fb3c8', marginBottom: 24, fontSize: 15, lineHeight: 1.6 }}>We're a small team and we read every message.</p>
           <a
             href="/contact"
             style={{
@@ -183,4 +183,4 @@ export default function About() {
 }
 
 const h2Style = { fontSize: 20, fontWeight: 800, color: '#0f172a', marginBottom: 14, letterSpacing: '-0.01em' };
-const pStyle = { fontSize: 14.5, color: '#374151', lineHeight: 1.8, marginBottom: 14 };
+const pStyle = { fontSize: 14.5, color: '#334155', lineHeight: 1.8, marginBottom: 14 };

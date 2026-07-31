@@ -2,6 +2,7 @@
   padding: 32px 16px 48px;
   background: var(--bg, #f1f5f9);
   min-height: calc(100vh - 64px);
+  scroll-margin-top: 60px;
 }
 
 .calculator-container {
@@ -18,8 +19,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--primary-muted, #eff6ff);
-  color: var(--primary, #2563eb);
+  background: var(--primary-muted, #eef1f5);
+  color: var(--primary, #1c3a5e);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -27,7 +28,7 @@
   padding: 3px 10px;
   border-radius: 999px;
   margin-bottom: 8px;
-  border: 1px solid rgba(37,99,235,0.15);
+  border: 1px solid rgba(28,58,94,0.15);
 }
 
 .calc-title {
@@ -71,7 +72,7 @@
 .calculator-card {
   background: var(--card, white);
   border-radius: 16px;
-  box-shadow: var(--shadow-md, 0 4px 24px rgba(0,0,0,0.10));
+  box-shadow: var(--shadow-md, 0 8px 28px rgba(15,23,42,0.10));
   border: 1px solid var(--border, #e2e8f0);
   overflow: hidden;
 }
@@ -116,15 +117,15 @@
 }
 
 .btn-primary {
-  background: var(--primary, #2563eb);
+  background: var(--primary, #1c3a5e);
   color: white;
   min-width: 110px;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--primary-dark, #1d4ed8);
+  background: var(--primary-dark, #12283f);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  box-shadow: 0 4px 12px rgba(28,58,94,0.3);
 }
 
 .btn-secondary {
@@ -140,18 +141,18 @@
 }
 
 .btn-cta {
-  background: var(--primary, #2563eb);
+  background: var(--primary, #1c3a5e);
   color: white;
   min-width: 200px;
   font-size: 15px;
   padding: 13px 28px;
-  box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+  box-shadow: 0 4px 14px rgba(28,58,94,0.3);
 }
 
 .btn-cta:hover:not(:disabled) {
-  background: var(--primary-dark, #1d4ed8);
+  background: var(--primary-dark, #12283f);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+  box-shadow: 0 6px 20px rgba(28,58,94,0.4);
 }
 
 .loading-spinner {
@@ -242,12 +243,12 @@
 
 .option-card:hover {
   border-color: #cbd5e1;
-  box-shadow: var(--shadow, 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06));
+  box-shadow: var(--shadow, 0 1px 2px rgba(15,23,42,0.05), 0 4px 16px rgba(15,23,42,0.06));
   transform: translateY(-1px);
 }
 
 .option-card.selected {
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 10px rgba(15,23,42,0.07);
 }
 
 .option-icon {

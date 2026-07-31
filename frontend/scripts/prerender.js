@@ -6,7 +6,7 @@ const path = require('path');
 const BUILD  = path.join(__dirname, '../build');
 const SRC    = path.join(__dirname, '../src');
 const DOMAIN = 'https://www.mysolarwidget.com';
-const PRIMARY = '#1e40af';
+const PRIMARY = '#1c3a5e';
 
 function loadBlogData() {
   const raw = fs.readFileSync(path.join(SRC, 'data/blogPosts.js'), 'utf8');
@@ -27,15 +27,15 @@ function getAssetTags() {
 }
 
 function staticHeader() {
-  return `<header id="static-header" style="position:sticky;top:0;z-index:100;height:60px;display:flex;align-items:center;padding:0 12px;background:#ffffff;border-bottom:1px solid #f3f4f6;box-sizing:border-box">
+  return `<header id="static-header" style="position:sticky;top:0;z-index:100;height:60px;display:flex;align-items:center;padding:0 12px;background:#ffffff;border-bottom:1px solid #f1f5f9;box-sizing:border-box">
   <div style="max-width:1120px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between">
     <a href="/" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0">
       <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style="height:44px;width:auto" />
     </a>
     <nav class="pr-desktop-nav" style="display:flex;align-items:center;gap:4px">
-      <a href="/#how-it-works" style="font-size:14px;font-weight:500;color:#4b5563;padding:6px 12px;border-radius:8px;text-decoration:none">How It Works</a>
-      <a href="/blog" style="font-size:14px;font-weight:500;color:#4b5563;padding:6px 12px;border-radius:8px;text-decoration:none">Blog</a>
-      <a href="/#faq" style="font-size:14px;font-weight:500;color:#4b5563;padding:6px 12px;border-radius:8px;text-decoration:none">FAQ</a>
+      <a href="/#how-it-works" style="font-size:14px;font-weight:500;color:#475569;padding:6px 12px;border-radius:8px;text-decoration:none">How It Works</a>
+      <a href="/blog" style="font-size:14px;font-weight:500;color:#475569;padding:6px 12px;border-radius:8px;text-decoration:none">Blog</a>
+      <a href="/#faq" style="font-size:14px;font-weight:500;color:#475569;padding:6px 12px;border-radius:8px;text-decoration:none">FAQ</a>
       <a href="/for-installers" style="margin-left:8px;font-size:13px;font-weight:600;color:${PRIMARY};padding:7px 16px;border-radius:9px;border:1.5px solid ${PRIMARY};text-decoration:none">Get Solar Widget</a>
     </nav>
     <a href="/for-installers" class="pr-mobile-cta" style="display:none;font-size:11px;font-weight:600;color:${PRIMARY};padding:5px 10px;border-radius:8px;border:1.5px solid ${PRIMARY};text-decoration:none">Get Solar Widget</a>
@@ -138,7 +138,7 @@ function renderBlogPost(post, assets) {
   ${assets.cssLinks}
 </head>
 <body>
-<div id="root">${staticHeader()}<article style="max-width:800px;margin:40px auto;padding:0 24px;font-family:system-ui,-apple-system,sans-serif;line-height:1.7;color:#0f172a">
+<div id="root">${staticHeader()}<article style="max-width:800px;margin:40px auto;padding:0 24px;font-family:'Poppins','Poppins Fallback',Arial,sans-serif;line-height:1.7;color:#0f172a">
   <nav style="font-size:13px;color:#64748b;margin-bottom:24px">
     <a href="/" style="color:${PRIMARY};text-decoration:none">Home</a> &rsaquo;
     <a href="/blog" style="color:${PRIMARY};text-decoration:none">Blog</a> &rsaquo;
@@ -164,7 +164,7 @@ function renderBlogIndex(posts, categories, assets) {
 
   const catBadge = (post) => {
     const cat = categories.find(c => c.slug === post.category) || { label: post.category };
-    return `<span style="display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;color:${PRIMARY};text-transform:uppercase;letter-spacing:0.05em">${esc(cat.label)}</span>`;
+    return `<span style="display:inline-flex;align-items:center;gap:5px;background:#eef1f5;border:1px solid #c3ceda;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;color:${PRIMARY};text-transform:uppercase;letter-spacing:0.05em">${esc(cat.label)}</span>`;
   };
 
   const readTime = (post) => post.readingTime ? `${post.readingTime} min read` : (post.readTime || '');
@@ -188,7 +188,7 @@ function renderBlogIndex(posts, categories, assets) {
   };
 
   const catPills = categories.map(cat => `
-    <a href="/blog/category/${cat.slug}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:24px;background:white;border:1.5px solid #e2e8f0;text-decoration:none;font-size:13.5px;font-weight:600;color:#374151">${esc(cat.label)}</a>`
+    <a href="/blog/category/${cat.slug}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:24px;background:white;border:1.5px solid #e2e8f0;text-decoration:none;font-size:13.5px;font-weight:600;color:#334155">${esc(cat.label)}</a>`
   ).join('');
 
   const allCards = allPosts.map(p => postCard(p)).join('');
@@ -213,7 +213,7 @@ function renderBlogIndex(posts, categories, assets) {
 <body>
 <div id="root">
 ${staticHeader()}
-<div style="background:#f8fafc;min-height:100vh;padding:48px 24px 64px;font-family:system-ui,-apple-system,sans-serif">
+<div style="background:#f8fafc;min-height:100vh;padding:48px 24px 64px;font-family:'Poppins','Poppins Fallback',Arial,sans-serif">
   <div style="max-width:1100px;margin:0 auto">
 
     <div style="text-align:center;margin-bottom:32px">
@@ -299,7 +299,7 @@ function renderCategoryPage(cat, posts, assets) {
 <body>
 <div id="root">
 ${staticHeader()}
-<div style="background:#f8fafc;min-height:100vh;padding:48px 24px 64px;font-family:system-ui,-apple-system,sans-serif">
+<div style="background:#f8fafc;min-height:100vh;padding:48px 24px 64px;font-family:'Poppins','Poppins Fallback',Arial,sans-serif">
   <div style="max-width:900px;margin:0 auto">
 
     <a href="/blog" style="font-size:13px;color:#64748b;text-decoration:none;display:inline-flex;align-items:center;gap:5px;margin-bottom:28px">
@@ -307,7 +307,7 @@ ${staticHeader()}
     </a>
 
     <div style="margin-bottom:40px">
-      <div style="width:52px;height:52px;border-radius:14px;background:#eff6ff;border:1.5px solid #bfdbfe;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:24px">&#9728;</div>
+      <div style="width:52px;height:52px;border-radius:14px;background:#eef1f5;border:1.5px solid #c3ceda;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:24px">&#9728;</div>
       <h1 style="font-size:clamp(24px,4vw,34px);font-weight:800;color:#0f172a;margin-bottom:8px">${esc(cat.label)}</h1>
       <p style="font-size:16px;color:#64748b">${esc(seoDesc)}</p>
     </div>
@@ -315,9 +315,9 @@ ${staticHeader()}
     <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px">All Articles</div>
     ${articleRows || '<p style="color:#64748b">No articles yet.</p>'}
 
-    <div style="background:linear-gradient(135deg,#1e3a8a,#1e40af);border-radius:14px;padding:32px 36px;margin-top:48px;color:white;text-align:center">
+    <div style="background:linear-gradient(135deg,#12283f,#1c3a5e);border-radius:14px;padding:32px 36px;margin-top:48px;color:white;text-align:center">
       <h3 style="font-size:20px;font-weight:800;margin-bottom:10px">Estimate Your Solar Savings</h3>
-      <p style="color:#bfdbfe;margin-bottom:20px;font-size:15px">Free calculator &mdash; enter your electric bill and ZIP code for a personalized estimate.</p>
+      <p style="color:#c3ceda;margin-bottom:20px;font-size:15px">Free calculator &mdash; enter your electric bill and ZIP code for a personalized estimate.</p>
       <a href="/" style="background:white;color:${PRIMARY};padding:13px 28px;border-radius:9px;text-decoration:none;font-weight:700;font-size:15px">Get My Free Estimate &rarr;</a>
     </div>
 
@@ -393,7 +393,7 @@ function renderStaticRoute(route, assets) {
   ${assets.cssLinks}
 </head>
 <body>
-<div id="root">${staticHeader()}<div style="font-family:system-ui,-apple-system,sans-serif;background:#f8fafc;min-height:60vh;padding:56px 24px">
+<div id="root">${staticHeader()}<div style="font-family:'Poppins','Poppins Fallback',Arial,sans-serif;background:#f8fafc;min-height:60vh;padding:56px 24px">
   <div style="max-width:720px;margin:0 auto;text-align:center">
     <h1 style="font-size:clamp(26px,4vw,38px);font-weight:800;color:#0f172a;margin-bottom:14px">${esc(route.heading)}</h1>
     <p style="font-size:16px;color:#64748b;line-height:1.7">${esc(route.description)}</p>
@@ -438,13 +438,13 @@ function renderContactStatic(assets) {
 <body>
 <div id="root"><div style="background:#f1f5f9;min-height:100vh;font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
 ${staticHeader()}
-<div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#1e40af 100%);padding:64px 24px 96px;text-align:center;position:relative;overflow:hidden">
+<div style="background:linear-gradient(135deg,#0f172a 0%,#12283f 60%,#1c3a5e 100%);padding:64px 24px 96px;text-align:center;position:relative;overflow:hidden">
   <div style="position:relative;max-width:560px;margin:0 auto">
-    <div style="display:inline-flex;align-items:center;background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.25);border-radius:999px;padding:4px 14px;margin-bottom:20px">
-      <span style="font-size:11.5px;font-weight:700;color:#93c5fd;letter-spacing:0.08em;text-transform:uppercase">Get in Touch</span>
+    <div style="display:inline-flex;align-items:center;background:rgba(159,179,200,0.12);border:1px solid rgba(159,179,200,0.25);border-radius:999px;padding:4px 14px;margin-bottom:20px">
+      <span style="font-size:11.5px;font-weight:700;color:#9fb3c8;letter-spacing:0.08em;text-transform:uppercase">Get in Touch</span>
     </div>
     <h1 style="font-size:clamp(28px,5vw,42px);font-weight:900;color:white;line-height:1.15;margin-bottom:14px;letter-spacing:-0.02em">Contact Us</h1>
-    <p style="font-size:16px;color:#93c5fd;line-height:1.65;max-width:420px;margin:0 auto">We're a small team and we read every message. Send us a note and expect a reply within 1&ndash;2 business days.</p>
+    <p style="font-size:16px;color:#9fb3c8;line-height:1.65;max-width:420px;margin:0 auto">We're a small team and we read every message. Send us a note and expect a reply within 1&ndash;2 business days.</p>
   </div>
 </div>
 <div style="max-width:900px;margin:-56px auto 0;padding:0 24px 80px;position:relative;min-height:400px"></div>
@@ -466,7 +466,7 @@ function injectHomepage(posts, categories) {
     `<li style="margin-bottom:10px"><a href="/blog/${p.slug}" style="color:${PRIMARY};text-decoration:none;font-size:14px;font-weight:500;line-height:1.5">${esc(p.title)}</a></li>`
   ).join('\n      ');
 
-  const staticContent = `${staticHeader()}<div style="font-family:system-ui,-apple-system,sans-serif;background:#f8fafc;min-height:80vh"><div style="max-width:1100px;margin:0 auto;padding:40px 24px 64px">
+  const staticContent = `${staticHeader()}<div style="font-family:'Poppins','Poppins Fallback',Arial,sans-serif;background:#f8fafc;min-height:80vh"><div style="max-width:1100px;margin:0 auto;padding:40px 24px 64px">
   <div style="text-align:center;padding:32px 0 40px">
     <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;color:#0f172a;line-height:1.2;margin-bottom:14px">Free Solar Panel Cost Calculator 2026</h1>
     <p style="font-size:17px;color:#64748b;max-width:560px;margin:0 auto 28px;line-height:1.6">Enter your ZIP code and monthly electric bill to get an instant estimate for solar installation cost, monthly savings, and 30-year ROI. Free &mdash; no signup required.</p>
@@ -491,11 +491,11 @@ function injectHomepage(posts, categories) {
   <div style="background:white;border-radius:16px;padding:36px;border:1px solid #e2e8f0">
     <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:24px">Frequently Asked Questions</h2>
     <div style="display:grid;gap:18px">
-      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How much do solar panels cost in 2026?</h3><p style="font-size:14px;color:#374151;line-height:1.7;margin:0">The average residential solar system costs $18,000&ndash;$25,000 before incentives. After the 30% federal Investment Tax Credit, most homeowners pay $12,600&ndash;$17,500 net.</p></div>
-      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How much can solar save me per month?</h3><p style="font-size:14px;color:#374151;line-height:1.7;margin:0">Most homeowners save $100&ndash;$150 per month with solar, or $1,200&ndash;$1,800 per year. Over 25 years, that&rsquo;s $30,000&ndash;$45,000 in total electricity savings.</p></div>
-      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">What is the 30% federal solar tax credit?</h3><p style="font-size:14px;color:#374151;line-height:1.7;margin:0">The Investment Tax Credit (ITC) lets you deduct 30% of your solar installation cost from federal income taxes. On a $20,000 system, you get a $6,000 credit. Available through 2032.</p></div>
-      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How long does solar take to pay off?</h3><p style="font-size:14px;color:#374151;line-height:1.7;margin:0">The average payback period is 7&ndash;12 years. After payback, solar electricity is essentially free for the remaining panel warranty period of 13&ndash;18 years.</p></div>
-      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How accurate is this solar calculator?</h3><p style="font-size:14px;color:#374151;line-height:1.7;margin:0">Our estimates are 80&ndash;90% accurate vs. real installer quotes, using NREL PVWatts real irradiance data for your ZIP code and current 2026 market installation rates ($2.50&ndash;$3.50/watt).</p></div>
+      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How much do solar panels cost in 2026?</h3><p style="font-size:14px;color:#334155;line-height:1.7;margin:0">The average residential solar system costs $18,000&ndash;$25,000 before incentives. After the 30% federal Investment Tax Credit, most homeowners pay $12,600&ndash;$17,500 net.</p></div>
+      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How much can solar save me per month?</h3><p style="font-size:14px;color:#334155;line-height:1.7;margin:0">Most homeowners save $100&ndash;$150 per month with solar, or $1,200&ndash;$1,800 per year. Over 25 years, that&rsquo;s $30,000&ndash;$45,000 in total electricity savings.</p></div>
+      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">What is the 30% federal solar tax credit?</h3><p style="font-size:14px;color:#334155;line-height:1.7;margin:0">The Investment Tax Credit (ITC) lets you deduct 30% of your solar installation cost from federal income taxes. On a $20,000 system, you get a $6,000 credit. Available through 2032.</p></div>
+      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How long does solar take to pay off?</h3><p style="font-size:14px;color:#334155;line-height:1.7;margin:0">The average payback period is 7&ndash;12 years. After payback, solar electricity is essentially free for the remaining panel warranty period of 13&ndash;18 years.</p></div>
+      <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How accurate is this solar calculator?</h3><p style="font-size:14px;color:#334155;line-height:1.7;margin:0">Our estimates are 80&ndash;90% accurate vs. real installer quotes, using NREL PVWatts real irradiance data for your ZIP code and current 2026 market installation rates ($2.50&ndash;$3.50/watt).</p></div>
     </div>
   </div>
 </div></div>`;

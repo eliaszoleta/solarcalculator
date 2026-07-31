@@ -94,7 +94,7 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
         .field-label {
           font-size: 13px;
           font-weight: 600;
-          color: #374151;
+          color: #334155;
         }
         .optional {
           font-weight: 400;
@@ -113,7 +113,7 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
           width: 100%;
         }
         .field-input:focus {
-          border-color: #1e40af;
+          border-color: #1c3a5e;
         }
         .field-divider {
           text-align: center;

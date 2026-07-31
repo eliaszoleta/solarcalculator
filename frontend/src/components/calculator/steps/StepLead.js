@@ -19,7 +19,7 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
   const [form, setForm] = useState({ name: '', email: '', phone: '', timeline: '', paymentMethod: '' });
   const [errors, setErrors] = useState({});
 
-  const accentColor = primaryColor || '#1e40af';
+  const accentColor = primaryColor || '#1c3a5e';
   const accentBg = accentColor + '18';
 
   const validate = () => {
@@ -101,7 +101,7 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
         )}
 
         <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: embedded ? 4 : 8 }}>How are you planning to pay?</p>
+          <p style={{ fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: embedded ? 4 : 8 }}>How are you planning to pay?</p>
           <div className="option-grid option-grid-2">
             {PAYMENT_METHODS.map(t => (
               <button
@@ -119,7 +119,7 @@ export default function StepLead({ onSubmit, loading, requireContact, embedded, 
         </div>
 
         <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: embedded ? 4 : 8 }}>When are you looking to go solar?</p>
+          <p style={{ fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: embedded ? 4 : 8 }}>When are you looking to go solar?</p>
           <div className="option-grid option-grid-2">
             {TIMELINES.map(t => (
               <button

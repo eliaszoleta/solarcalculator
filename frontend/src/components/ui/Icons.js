@@ -495,7 +495,7 @@ export function CategoryIcon({ slug, size = 18, style, color }) {
 /* Per-category color themes — matches reference card style */
 export const CATEGORY_COLORS = {
   'solar-costs':        { bg: '#fffbeb', border: '#fde68a', iconBg: '#fef3c7', iconColor: '#d97706' },
-  'solar-financing':    { bg: '#eff6ff', border: '#bfdbfe', iconBg: '#dbeafe', iconColor: '#2563eb' },
+  'solar-financing':    { bg: '#eef1f5', border: '#c3ceda', iconBg: '#e2e7ed', iconColor: '#1c3a5e' },
   'solar-savings':      { bg: '#f0fdf4', border: '#bbf7d0', iconBg: '#dcfce7', iconColor: '#16a34a' },
   'solar-incentives':   { bg: '#faf5ff', border: '#e9d5ff', iconBg: '#f3e8ff', iconColor: '#9333ea' },
   'solar-installation': { bg: '#fff7ed', border: '#fed7aa', iconBg: '#ffedd5', iconColor: '#ea580c' },
@@ -550,7 +550,7 @@ export function GlobeIcon(p) {
 }
 
 export function getCategoryColors(slug) {
-  return CATEGORY_COLORS[slug] || { bg: '#f8fafc', border: '#e2e8f0', iconBg: '#f1f5f9', iconColor: '#1e40af' };
+  return CATEGORY_COLORS[slug] || { bg: '#f8fafc', border: '#e2e8f0', iconBg: '#f1f5f9', iconColor: '#1c3a5e' };
 }
 
 

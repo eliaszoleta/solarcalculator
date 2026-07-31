@@ -4,7 +4,7 @@ import { CATEGORIES, getPostsByCategory, getCategoryBySlug } from '../../data/bl
 import { CategoryIcon } from '../ui/Icons';
 
 const SITE_URL = 'https://www.mysolarwidget.com';
-const PRIMARY = '#1e40af';
+const PRIMARY = '#1c3a5e';
 
 export default function BlogCategory({ category: categorySlug }) {
   const category = getCategoryBySlug(categorySlug);
@@ -54,7 +54,7 @@ export default function BlogCategory({ category: categorySlug }) {
 
           {/* Category header */}
           <div style={{ marginBottom: 40 }}>
-            <div style={{ width: 52, height: 52, borderRadius: 14, background: '#eff6ff', border: '1.5px solid #bfdbfe', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+            <div style={{ width: 52, height: 52, borderRadius: 14, background: '#eef1f5', border: '1.5px solid #c3ceda', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
               <CategoryIcon slug={categorySlug} size={26} color={PRIMARY} />
             </div>
             <h1 style={{ fontSize: 'clamp(24px,4vw,34px)', fontWeight: 800, color: '#0f172a', marginBottom: 8 }}>{category.label}</h1>
@@ -69,9 +69,9 @@ export default function BlogCategory({ category: categorySlug }) {
                 <a
                   key={cat.slug}
                   href={`/blog/category/${cat.slug}`}
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 20, background: 'white', border: '1.5px solid #e2e8f0', textDecoration: 'none', fontSize: 13, fontWeight: 600, color: '#374151', transition: 'all 0.15s' }}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 20, background: 'white', border: '1.5px solid #e2e8f0', textDecoration: 'none', fontSize: 13, fontWeight: 600, color: '#334155', transition: 'all 0.15s' }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = PRIMARY; e.currentTarget.style.color = PRIMARY; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#374151'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#334155'; }}
                 >
                   <CategoryIcon slug={cat.slug} size={13} /> {cat.label}
                 </a>
@@ -107,9 +107,9 @@ export default function BlogCategory({ category: categorySlug }) {
           </div>
 
           {/* Bottom CTA */}
-          <div style={{ background: 'linear-gradient(135deg, #1e3a8a, #1e40af)', borderRadius: 14, padding: '32px 36px', marginTop: 48, color: 'white', textAlign: 'center' }}>
+          <div style={{ background: 'linear-gradient(135deg, #12283f, #1c3a5e)', borderRadius: 14, padding: '32px 36px', marginTop: 48, color: 'white', textAlign: 'center' }}>
             <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 10 }}>Estimate Your Solar Savings</h3>
-            <p style={{ color: '#bfdbfe', marginBottom: 20, fontSize: 15 }}>Free calculator — enter your electric bill and ZIP code for a personalized estimate powered by real NREL data.</p>
+            <p style={{ color: '#c3ceda', marginBottom: 20, fontSize: 15 }}>Free calculator — enter your electric bill and ZIP code for a personalized estimate powered by real NREL data.</p>
             <a href="/" style={{ background: 'white', color: PRIMARY, padding: '13px 28px', borderRadius: 9, textDecoration: 'none', fontWeight: 700, fontSize: 15 }}>Get My Free Estimate →</a>
           </div>
 

@@ -35,7 +35,7 @@ export default function Header() {
         padding: '0 12px',
         background: scrolled ? 'rgba(255,255,255,0.92)' : '#ffffff',
         backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        borderBottom: `1px solid ${scrolled ? 'rgba(0,0,0,0.06)' : '#f3f4f6'}`,
+        borderBottom: `1px solid ${scrolled ? 'rgba(0,0,0,0.06)' : '#f1f5f9'}`,
         transition: 'background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
         boxShadow: scrolled ? '0 1px 12px rgba(0,0,0,0.05)' : 'none',
       }}>
@@ -50,26 +50,26 @@ export default function Header() {
               <a
                 key={item.href}
                 href={item.href}
-                style={{ fontSize: 14, fontWeight: 500, color: '#4b5563', padding: '6px 12px', borderRadius: 8, transition: 'color 0.12s, background 0.12s', textDecoration: 'none', whiteSpace: 'nowrap' }}
-                onMouseEnter={e => { e.currentTarget.style.color = '#0a0a0a'; e.currentTarget.style.background = '#f9fafb'; }}
-                onMouseLeave={e => { e.currentTarget.style.color = '#4b5563'; e.currentTarget.style.background = 'transparent'; }}
+                style={{ fontSize: 14, fontWeight: 500, color: '#475569', padding: '6px 12px', borderRadius: 8, transition: 'color 0.12s, background 0.12s', textDecoration: 'none', whiteSpace: 'nowrap' }}
+                onMouseEnter={e => { e.currentTarget.style.color = '#0a0a0a'; e.currentTarget.style.background = '#f8fafc'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = '#475569'; e.currentTarget.style.background = 'transparent'; }}
               >
                 {item.label}
               </a>
             ))}
             <a
               href="/partner-with-us"
-              style={{ fontSize: 14, fontWeight: 700, color: '#1e40af', padding: '6px 12px', borderRadius: 8, transition: 'color 0.12s, background 0.12s', textDecoration: 'none', whiteSpace: 'nowrap' }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#eff6ff'; }}
+              style={{ fontSize: 14, fontWeight: 700, color: '#1c3a5e', padding: '6px 12px', borderRadius: 8, transition: 'color 0.12s, background 0.12s', textDecoration: 'none', whiteSpace: 'nowrap' }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#eef1f5'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
             >
               Partner With Us
             </a>
             <a
               href="/for-installers"
-              style={{ marginLeft: 8, fontSize: 13, fontWeight: 600, color: '#1e40af', padding: '7px 16px', borderRadius: 9, border: '1.5px solid #1e40af', background: 'transparent', textDecoration: 'none', transition: 'background 0.12s, color 0.12s', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#1e40af'; e.currentTarget.style.color = '#ffffff'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1e40af'; }}
+              style={{ marginLeft: 8, fontSize: 13, fontWeight: 600, color: '#1c3a5e', padding: '7px 16px', borderRadius: 9, border: '1.5px solid #1c3a5e', background: 'transparent', textDecoration: 'none', transition: 'background 0.12s, color 0.12s', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#1c3a5e'; e.currentTarget.style.color = '#ffffff'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1c3a5e'; }}
             >
               Get Solar Widget
             </a>
@@ -78,18 +78,18 @@ export default function Header() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }} className="header-mobile-nav">
             <a
               href="/for-installers"
-              style={{ fontSize: 11, fontWeight: 600, color: '#1e40af', padding: '5px 10px', borderRadius: 8, border: '1.5px solid #1e40af', background: 'transparent', textDecoration: 'none', whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}
+              style={{ fontSize: 11, fontWeight: 600, color: '#1c3a5e', padding: '5px 10px', borderRadius: 8, border: '1.5px solid #1c3a5e', background: 'transparent', textDecoration: 'none', whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}
             >
               Get Solar Widget
             </a>
             <button
               onClick={e => { e.stopPropagation(); setMenuOpen(o => !o); }}
               aria-label="Toggle menu"
-              style={{ width: 38, height: 38, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 5, background: 'none', border: '1.5px solid #e5e7eb', borderRadius: 9, cursor: 'pointer', padding: 0, flexShrink: 0 }}
+              style={{ width: 38, height: 38, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 5, background: 'none', border: '1.5px solid #e2e8f0', borderRadius: 9, cursor: 'pointer', padding: 0, flexShrink: 0 }}
             >
-              <span style={{ display: 'block', width: 16, height: 1.5, background: '#374151', borderRadius: 2, transition: 'transform 0.2s', transform: menuOpen ? 'translateY(6.5px) rotate(45deg)' : 'none' }} />
-              <span style={{ display: 'block', width: 16, height: 1.5, background: '#374151', borderRadius: 2, opacity: menuOpen ? 0 : 1, transition: 'opacity 0.15s' }} />
-              <span style={{ display: 'block', width: 16, height: 1.5, background: '#374151', borderRadius: 2, transition: 'transform 0.2s', transform: menuOpen ? 'translateY(-6.5px) rotate(-45deg)' : 'none' }} />
+              <span style={{ display: 'block', width: 16, height: 1.5, background: '#334155', borderRadius: 2, transition: 'transform 0.2s', transform: menuOpen ? 'translateY(6.5px) rotate(45deg)' : 'none' }} />
+              <span style={{ display: 'block', width: 16, height: 1.5, background: '#334155', borderRadius: 2, opacity: menuOpen ? 0 : 1, transition: 'opacity 0.15s' }} />
+              <span style={{ display: 'block', width: 16, height: 1.5, background: '#334155', borderRadius: 2, transition: 'transform 0.2s', transform: menuOpen ? 'translateY(-6.5px) rotate(-45deg)' : 'none' }} />
             </button>
           </div>
         </div>
@@ -98,7 +98,7 @@ export default function Header() {
       {menuOpen && (
         <div
           onClick={e => e.stopPropagation()}
-          style={{ position: 'fixed', top: 60, left: 0, right: 0, zIndex: 99, background: '#ffffff', borderBottom: '1px solid #f3f4f6', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', padding: '8px 24px 16px' }}
+          style={{ position: 'fixed', top: 60, left: 0, right: 0, zIndex: 99, background: '#ffffff', borderBottom: '1px solid #f1f5f9', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', padding: '8px 24px 16px' }}
           className="header-mobile-menu"
         >
           {navLinks.map(item => (
@@ -106,7 +106,7 @@ export default function Header() {
               key={item.href}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              style={{ display: 'block', fontSize: 15, fontWeight: 500, color: '#111827', padding: '12px 0', borderBottom: '1px solid #f9fafb', textDecoration: 'none' }}
+              style={{ display: 'block', fontSize: 15, fontWeight: 500, color: '#111827', padding: '12px 0', borderBottom: '1px solid #f8fafc', textDecoration: 'none' }}
             >
               {item.label}
             </a>
@@ -114,7 +114,7 @@ export default function Header() {
           <a
             href="/partner-with-us"
             onClick={() => setMenuOpen(false)}
-            style={{ display: 'block', fontSize: 15, fontWeight: 700, color: '#1e40af', padding: '12px 0', borderBottom: '1px solid #f9fafb', textDecoration: 'none' }}
+            style={{ display: 'block', fontSize: 15, fontWeight: 700, color: '#1c3a5e', padding: '12px 0', borderBottom: '1px solid #f8fafc', textDecoration: 'none' }}
           >
             Partner With Us
           </a>

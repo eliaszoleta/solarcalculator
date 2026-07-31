@@ -50,7 +50,7 @@ function buildFullReportUrl(results, form, lead, forPopup = false, installerConf
 function ReportContent({ results, form, lead, installerConfig, onReset, embedded, popup }) {
   const { system, cost, incentives, savings, chart } = results;
   const cta = installerConfig || {};
-  const primary = cta.primaryColor || '#3b6cf4';
+  const primary = cta.primaryColor || '#1c3a5e';
   const primaryDark = darkenHex(primary);
   const isCash = lead?.paymentMethod === 'cash';
   const hasFinancing = !isCash && savings.monthlyPaymentFinanced > 0;
@@ -242,11 +242,11 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
               <h3 style={{ fontSize: 20, fontWeight: 800, color: 'white', marginBottom: 8 }}>
                 {cta.ctaHeadline || 'Ready to Go Solar?'}
               </h3>
-              <p style={{ color: '#bfdbfe', fontSize: 14, marginBottom: 20, lineHeight: 1.6 }}>
+              <p style={{ color: '#c3ceda', fontSize: 14, marginBottom: 20, lineHeight: 1.6 }}>
                 {cta.ctaSubtext || 'Our team will design a custom solar system — free, no obligation.'}
               </p>
               {cta.companyName && (
-                <p style={{ color: '#93c5fd', fontSize: 13, marginBottom: 16, fontWeight: 600 }}>{cta.companyName}</p>
+                <p style={{ color: '#9fb3c8', fontSize: 13, marginBottom: 16, fontWeight: 600 }}>{cta.companyName}</p>
               )}
               <a
                 href={cta.ctaButtonUrl || (cta.ctaPhone ? `tel:${cta.ctaPhone}` : '#')}
@@ -254,7 +254,7 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
               >
                 {cta.ctaButtonText || 'Contact Us'}
               </a>
-              {cta.ctaPhone && <p style={{ color: '#93c5fd', fontSize: 14, marginTop: 12 }}>{cta.ctaPhone}</p>}
+              {cta.ctaPhone && <p style={{ color: '#9fb3c8', fontSize: 14, marginTop: 12 }}>{cta.ctaPhone}</p>}
             </div>
           </div>
         ) : (
@@ -293,7 +293,7 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
 export default function ResultsScreen({ results, onReset, form, lead, installerConfig, embedded, popup }) {
   const { system, cost, incentives, savings, chart } = results;
   const cta = installerConfig || {};
-  const primary = cta.primaryColor || '#3b6cf4';
+  const primary = cta.primaryColor || '#1c3a5e';
   const primaryDark = darkenHex(primary);
   const isCash = lead?.paymentMethod === 'cash';
 
@@ -512,7 +512,7 @@ function PublicEmailCapture({ results, form, savings, system }) {
     <div style={{ textAlign: 'center', padding: '4px 0 8px' }}>
       <div style={{ marginBottom: 10 }}><MailIcon size={26} color="white" /></div>
       <h3 style={{ fontSize: 18, fontWeight: 700, color: 'white', marginBottom: 6 }}>Send report to your email</h3>
-      <p style={{ color: '#bfdbfe', fontSize: 13, marginBottom: 16, lineHeight: 1.5 }}>
+      <p style={{ color: '#c3ceda', fontSize: 13, marginBottom: 16, lineHeight: 1.5 }}>
         Get your personalized solar savings summary delivered to your inbox.
       </p>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 9, maxWidth: 340, margin: '0 auto' }}>
