@@ -46,6 +46,46 @@ function staticHeader() {
 </header>`;
 }
 
+// Static footer with real internal links, visible to Googlebot's raw HTML crawl without
+// needing JS to render. Without this, every page besides the header nav is only
+// discoverable via sitemap.xml or the client-side (post-hydration) footer.
+function staticFooter(categories) {
+  const catLinks = categories.map(cat =>
+    `<a href="/blog/category/${cat.slug}" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">${esc(cat.label)}</a>`
+  ).join('\n        ');
+
+  return `<footer style="background:#0f172a;color:#94a3b8">
+  <div style="max-width:1200px;margin:0 auto;padding:64px 24px 40px;font-family:'Poppins','Poppins Fallback',Arial,sans-serif">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:40px;margin-bottom:48px">
+      <div>
+        <div style="color:white;font-weight:700;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">Blog Categories</div>
+        ${catLinks}
+        <a href="/blog" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">All Blog Posts</a>
+      </div>
+      <div>
+        <div style="color:white;font-weight:700;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">Resources</div>
+        <a href="/about" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">About MySolarWidget</a>
+        <a href="/contact" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Contact</a>
+      </div>
+      <div>
+        <div style="color:white;font-weight:700;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">For Installers</div>
+        <a href="/for-installers" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Solar Widget for Installers</a>
+        <a href="/partner-with-us" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Partner With Us</a>
+      </div>
+      <div>
+        <div style="color:white;font-weight:700;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">Legal</div>
+        <a href="/privacy-policy" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Privacy Policy</a>
+        <a href="/terms-of-service" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Terms of Service</a>
+      </div>
+    </div>
+    <div style="border-top:1px solid #1e293b;padding-top:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div style="color:white;font-weight:700">MySolarWidget</div>
+      <div style="font-size:13px;color:#64748b">&copy; ${new Date().getFullYear()} MySolarWidget. All rights reserved.</div>
+    </div>
+  </div>
+</footer>`;
+}
+
 // Vanilla JS search injected into the prerendered page (works before React loads)
 const vanillaSearch = `
 <script>
@@ -106,7 +146,7 @@ function articleSchema(post) {
   });
 }
 
-function renderBlogPost(post, assets) {
+function renderBlogPost(post, categories, assets) {
   const sectionsHtml = (post.sections || []).map(s =>
     `<section>\n<h2>${s.title}</h2>\n${s.content}\n</section>`
   ).join('\n');
@@ -151,7 +191,7 @@ function renderBlogPost(post, assets) {
   <div>${post.intro || ''}</div>
   ${sectionsHtml}
   ${faqHtml}
-</article></div>
+</article>${staticFooter(categories)}</div>
   ${assets.jsScripts}
 </body>
 </html>`;
@@ -248,14 +288,14 @@ ${staticHeader()}
 
   </div>
 </div>
-</div>
+${staticFooter(categories)}</div>
 ${vanillaSearch}
   ${assets.jsScripts}
 </body>
 </html>`;
 }
 
-function renderCategoryPage(cat, posts, assets) {
+function renderCategoryPage(cat, posts, categories, assets) {
   const catPosts = posts.filter(p => p.category === cat.slug);
 
   const articleRows = catPosts.map(p => {
@@ -323,7 +363,7 @@ ${staticHeader()}
 
   </div>
 </div>
-</div>
+${staticFooter(categories)}</div>
   ${assets.jsScripts}
 </body>
 </html>`;
@@ -368,7 +408,7 @@ const STATIC_ROUTES = [
   },
 ];
 
-function renderStaticRoute(route, assets) {
+function renderStaticRoute(route, categories, assets) {
   const url = `${DOMAIN}/${route.path}`;
   return `<!DOCTYPE html>
 <html lang="en">
@@ -398,7 +438,7 @@ function renderStaticRoute(route, assets) {
     <h1 style="font-size:clamp(26px,4vw,38px);font-weight:800;color:#0f172a;margin-bottom:14px">${esc(route.heading)}</h1>
     <p style="font-size:16px;color:#64748b;line-height:1.7">${esc(route.description)}</p>
   </div>
-</div></div>
+</div>${staticFooter(categories)}</div>
   ${assets.jsScripts}
 </body>
 </html>`;
@@ -409,7 +449,7 @@ function renderStaticRoute(route, assets) {
 // heading, subtitle, and font. The generic template used a plain white background and
 // system-ui font, so for the brief window before React hydrates, visitors saw a visibly
 // different page flash into the real one. Matching the hero here removes that flash.
-function renderContactStatic(assets) {
+function renderContactStatic(categories, assets) {
   const url = `${DOMAIN}/contact`;
   const title = 'Contact Us | MySolarWidget';
   const description = 'Contact MySolarWidget with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message.';
@@ -448,7 +488,7 @@ ${staticHeader()}
   </div>
 </div>
 <div style="max-width:900px;margin:-56px auto 0;padding:0 24px 80px;position:relative;min-height:400px"></div>
-</div></div>
+${staticFooter(categories)}</div></div>
   ${assets.jsScripts}
 </body>
 </html>`;
@@ -498,7 +538,7 @@ function injectHomepage(posts, categories) {
       <div><h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px">How accurate is this solar calculator?</h3><p style="font-size:14px;color:#334155;line-height:1.7;margin:0">Our estimates are 80&ndash;90% accurate vs. real installer quotes, using NREL PVWatts real irradiance data for your ZIP code and current 2026 market installation rates ($2.50&ndash;$3.50/watt).</p></div>
     </div>
   </div>
-</div></div>`;
+</div>${staticFooter(categories)}</div>`;
 
   html = html.replace('<div id="root"></div>', `<div id="root">${staticContent}</div>`);
   fs.writeFileSync(indexPath, html, 'utf8');
@@ -524,23 +564,23 @@ function main() {
   injectHomepage(POSTS, CATEGORIES);
 
   for (const route of STATIC_ROUTES) {
-    writeFile(route.path, renderStaticRoute(route, assets));
+    writeFile(route.path, renderStaticRoute(route, CATEGORIES, assets));
     count++;
   }
 
-  writeFile('contact', renderContactStatic(assets));
+  writeFile('contact', renderContactStatic(CATEGORIES, assets));
   count++;
 
   writeFile('blog', renderBlogIndex(POSTS, CATEGORIES, assets));
   count++;
 
   for (const cat of CATEGORIES) {
-    writeFile(`blog/category/${cat.slug}`, renderCategoryPage(cat, POSTS, assets));
+    writeFile(`blog/category/${cat.slug}`, renderCategoryPage(cat, POSTS, CATEGORIES, assets));
     count++;
   }
 
   for (const post of POSTS) {
-    writeFile(`blog/${post.slug}`, renderBlogPost(post, assets));
+    writeFile(`blog/${post.slug}`, renderBlogPost(post, CATEGORIES, assets));
     count++;
   }
 
