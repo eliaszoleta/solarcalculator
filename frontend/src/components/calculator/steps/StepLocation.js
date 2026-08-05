@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapPinIcon, SunIcon } from '../../ui/Icons';
+import { getAllStates } from '../../../data/statePricing';
 
 const US_STATES = [
   ['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],
@@ -17,9 +18,11 @@ const US_STATES = [
 
 export default function StepLocation({ zip, state, onZipChange, onStateChange, serviceStates }) {
   const isOutOfArea = serviceStates && serviceStates.length > 0 && state && !serviceStates.includes(state);
+  const stateData = state ? getAllStates().find(s => s.code === state) : null;
 
   return (
     <div className="sloc-fade-in">
+      <div className="sloc-medallion"><MapPinIcon size={20} color="#1c3a5e" /></div>
       <h2 className="step-title">Where is your home located?</h2>
       <p className="step-desc">Your location determines sunlight availability, electricity rates, and solar incentives.</p>
 
@@ -72,6 +75,13 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
             <strong>We don't currently serve {state}.</strong> This installer operates in a specific service area — try a different state or contact them directly.
           </span>
         </div>
+      ) : stateData ? (
+        <div className="location-note sloc-note-live">
+          <span className="note-icon"><SunIcon size={16} /></span>
+          <span>
+            <strong>{stateData.name}</strong> gets <strong>{stateData.sunHours} peak sun hours/day</strong> and averages <strong>{(stateData.electricityRate * 100).toFixed(1)}&cent;/kWh</strong> — both factor directly into your system size and savings estimate.
+          </span>
+        </div>
       ) : (
         <div className="location-note">
           <span className="note-icon"><SunIcon size={16} /></span>
@@ -85,6 +95,15 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
           to   { opacity: 1; transform: translateY(0); }
         }
         .sloc-fade-in { animation: sloc-in 0.3s ease; }
+        .sloc-medallion {
+          width: 40px; height: 40px; border-radius: 11px;
+          background: #eef1f5; border: 1.5px solid #c7d2e0;
+          display: flex; align-items: center; justify-content: center;
+          margin-bottom: 12px;
+          animation: sloc-in 0.3s ease;
+        }
+        .sloc-note-live { animation: sloc-in 0.25s ease; background: #eef1f5 !important; color: #12283f !important; }
+        .sloc-note-live .note-icon { color: #1c3a5e; }
         .location-fields {
           display: flex;
           flex-direction: column;

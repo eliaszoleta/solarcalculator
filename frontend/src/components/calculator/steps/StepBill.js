@@ -1,28 +1,19 @@
 import React from 'react';
-import { LightBulbIcon, ClockIcon, ShieldIcon, BoltIcon } from '../../ui/Icons';
-
-const TRUST_ITEMS = [
-  { Icon: ClockIcon, label: '2-minute estimate' },
-  { Icon: ShieldIcon, label: 'No account needed' },
-  { Icon: BoltIcon,  label: 'Instant results' },
-];
+import { LightBulbIcon, BoltIcon } from '../../ui/Icons';
 
 export default function StepBill({ value, onChange, primaryColor }) {
   const accent = primaryColor || '#1c3a5e';
+  const percent = ((value - 50) / (500 - 50)) * 100;
+
   return (
     <div className="sb-fade-in">
+      <div className="sb-medallion" style={{ background: `${accent}14`, border: `1.5px solid ${accent}30` }}>
+        <BoltIcon size={20} color={accent} />
+      </div>
       <h2 className="step-title">What's your average monthly electric bill?</h2>
       <p className="step-desc">This is the most important factor for sizing your solar system.</p>
 
-      <div className="sb-trust-row">
-        {TRUST_ITEMS.map(({ Icon, label }) => (
-          <div key={label} className="sb-trust-item">
-            <Icon size={13} color={accent} strokeWidth={2} /> {label}
-          </div>
-        ))}
-      </div>
-
-      <div className="bill-display">
+      <div className="bill-display" style={{ background: `radial-gradient(circle, ${accent}10 0%, ${accent}00 72%)` }}>
         <span className="bill-amount">${value}</span>
         <span className="bill-label">/month</span>
       </div>
@@ -35,6 +26,7 @@ export default function StepBill({ value, onChange, primaryColor }) {
         value={value}
         onChange={e => onChange(parseInt(e.target.value))}
         className="bill-slider"
+        style={{ background: `linear-gradient(to right, ${accent} ${percent}%, #e2e8f0 ${percent}%)` }}
       />
 
       <div className="slider-labels">
@@ -68,27 +60,22 @@ export default function StepBill({ value, onChange, primaryColor }) {
           to   { opacity: 1; transform: translateY(0); }
         }
         .sb-fade-in { animation: sb-in 0.3s ease; }
-        .sb-trust-row {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 6px 16px;
-          margin-bottom: 14px;
-        }
-        .sb-trust-item {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          font-size: 12px;
-          color: #64748b;
-          font-weight: 500;
+        .sb-medallion {
+          width: 40px; height: 40px; border-radius: 11px;
+          display: flex; align-items: center; justify-content: center;
+          margin-bottom: 12px;
+          animation: sb-in 0.3s ease;
         }
         .bill-display {
           text-align: center;
           margin: 16px 0 8px;
+          padding: 18px 0 14px;
+          border-radius: 20px;
           animation: sb-in 0.35s ease 0.05s backwards;
+          transition: background 0.2s;
         }
         .bill-amount {
-          font-size: 52px;
+          font-size: 56px;
           font-weight: 800;
           color: ${accent};
           line-height: 1;
@@ -100,13 +87,36 @@ export default function StepBill({ value, onChange, primaryColor }) {
           margin-left: 4px;
         }
         .bill-slider {
+          -webkit-appearance: none;
+          appearance: none;
           width: 100%;
-          height: 6px;
+          height: 8px;
           border-radius: 999px;
           outline: none;
           cursor: pointer;
-          accent-color: ${accent};
           margin: 16px 0 8px;
+          transition: background 0.1s;
+        }
+        .bill-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: ${accent};
+          border: 3px solid white;
+          box-shadow: 0 2px 8px rgba(15,23,42,0.35);
+          cursor: pointer;
+          transition: transform 0.12s;
+        }
+        .bill-slider::-webkit-slider-thumb:hover { transform: scale(1.12); }
+        .bill-slider::-moz-range-thumb {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: ${accent};
+          border: 3px solid white;
+          box-shadow: 0 2px 8px rgba(15,23,42,0.35);
+          cursor: pointer;
         }
         .slider-labels {
           display: flex;
