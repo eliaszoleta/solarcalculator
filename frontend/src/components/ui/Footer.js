@@ -8,6 +8,14 @@ const links = {
     { label: 'Solar Incentives', href: '/blog/category/solar-incentives' },
     { label: 'Solar Costs', href: '/blog/category/solar-costs' },
   ],
+  'Cost Guides': [
+    { label: 'Cost by System Size', href: '/solar-panels/solar-system-size-cost' },
+    { label: 'Cost by Roof Type', href: '/solar-panels/solar-cost-by-roof-type' },
+    { label: 'Tesla Powerwall Cost', href: '/solar-panels/tesla-powerwall-cost' },
+    { label: 'Cost in California', href: '/solar-cost/california' },
+    { label: 'Cost in Texas', href: '/solar-cost/texas' },
+    { label: 'Cost in Florida', href: '/solar-cost/florida' },
+  ],
   'For Installers': [
     { label: 'Dashboard', href: '/installer' },
     { label: 'Embed Widget', href: '/for-installers' },

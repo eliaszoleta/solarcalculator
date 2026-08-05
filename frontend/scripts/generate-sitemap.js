@@ -21,6 +21,18 @@ const posts = slugMatches.map((m, i) => ({
   date: dateMatches[i]?.[1] || TODAY,
 }));
 
+const servicesFile = fs.readFileSync(
+  path.join(__dirname, '../src/data/services.js'),
+  'utf8'
+);
+const serviceSlugs = [...servicesFile.matchAll(/(?<!\w)slug:\s*['"]([^'"]+)['"]\s*/g)].map(m => m[1]);
+
+const statesFile = fs.readFileSync(
+  path.join(__dirname, '../src/data/statePricing.js'),
+  'utf8'
+);
+const stateSlugs = [...statesFile.matchAll(/(?<!\w)slug:\s*['"]([^'"]+)['"]\s*/g)].map(m => m[1]);
+
 const staticPages = [
   { path: '/',                 priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
   { path: '/for-installers',   priority: '0.9', changefreq: 'monthly', lastmod: TODAY },
@@ -55,10 +67,20 @@ const xml = [
     urlEntry({ loc: `${SITE_URL}/blog/category/${slug}`, lastmod: TODAY, changefreq: 'weekly', priority: '0.7' })
   ),
   '',
+  '  <!-- Solar cost topics (auto-generated from services.js) -->',
+  ...serviceSlugs.map(slug =>
+    urlEntry({ loc: `${SITE_URL}/solar-panels/${slug}`, lastmod: TODAY, changefreq: 'monthly', priority: '0.9' })
+  ),
+  '',
+  '  <!-- Solar cost by state (auto-generated from statePricing.js) -->',
+  ...stateSlugs.map(slug =>
+    urlEntry({ loc: `${SITE_URL}/solar-cost/${slug}`, lastmod: TODAY, changefreq: 'monthly', priority: '0.8' })
+  ),
+  '',
   '</urlset>',
 ].join('\n') + '\n';
 
 const outPath = path.join(__dirname, '../public/sitemap.xml');
 fs.writeFileSync(outPath, xml, 'utf8');
 
-console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugs.length} categories`);
+console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugs.length} categories, ${serviceSlugs.length} topics, ${stateSlugs.length} states`);

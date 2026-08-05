@@ -19,6 +19,8 @@ import PrivacyPolicy from './components/pages/PrivacyPolicy';
 import TermsOfService from './components/pages/TermsOfService';
 import About from './components/pages/About';
 import Contact from './components/pages/Contact';
+import StatePage from './components/pages/StatePage';
+import TopicPage from './components/pages/TopicPage';
 import './App.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
@@ -33,6 +35,8 @@ const isAbout = pathname === '/about';
 const isContact = pathname === '/contact';
 const isResults = pathname === '/results';
 const isPartnerWithUs = pathname === '/partner-with-us';
+const isStatePage = pathname.startsWith('/solar-cost/');
+const isTopicPage = pathname.startsWith('/solar-panels/');
 const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
 
 function BlogRouter() {
@@ -206,6 +210,9 @@ export default function App() {
   if (isResults) return <HelmetProvider><ResultsPage /></HelmetProvider>;
   if (isForInstallers) return <HelmetProvider><InstallerLanding /></HelmetProvider>;
   if (isPartnerWithUs) return <HelmetProvider><div className="app"><Header /><main><PartnerWithUs /></main><Footer /></div></HelmetProvider>;
+
+  if (isStatePage) return <HelmetProvider><div className="app"><Header /><main><StatePage slug={pathname.replace('/solar-cost/', '')} /></main><Footer /></div></HelmetProvider>;
+  if (isTopicPage) return <HelmetProvider><div className="app"><Header /><main><TopicPage slug={pathname.replace('/solar-panels/', '')} /></main><Footer /></div></HelmetProvider>;
 
   if (isPrivacyPolicy) return <HelmetProvider><div className="app"><Header /><main><PrivacyPolicy /></main><Footer /></div></HelmetProvider>;
   if (isTermsOfService) return <HelmetProvider><div className="app"><Header /><main><TermsOfService /></main><Footer /></div></HelmetProvider>;
