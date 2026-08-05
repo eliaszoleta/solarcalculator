@@ -8,6 +8,17 @@ const SRC    = path.join(__dirname, '../src');
 const DOMAIN = 'https://www.mysolarwidget.com';
 const PRIMARY = '#1c3a5e';
 
+// Mirrors the favicon/manifest links in public/index.html. That file only backs the
+// homepage — every other prerendered page builds its own <head> from scratch here, so
+// without this the browser tab (and Google's favicon in search results) shows blank on
+// every page except "/".
+const FAVICON_LINKS = `<link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/logo-icon-navy.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">`;
+
 function loadBlogData() {
   const raw = fs.readFileSync(path.join(SRC, 'data/blogPosts.js'), 'utf8');
   const src = raw
@@ -197,6 +208,7 @@ function renderBlogPost(post, categories, assets) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  ${FAVICON_LINKS}
   <title>${esc(post.seoTitle || post.title)}</title>
   <meta name="description" content="${esc(post.metaDescription || post.excerpt)}">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -273,6 +285,7 @@ function renderBlogIndex(posts, categories, assets) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  ${FAVICON_LINKS}
   <title>Solar Blog 2026 &mdash; Cost Guides, Savings &amp; Incentives | MySolarWidget</title>
   <meta name="description" content="Expert solar guides: cost estimates, savings calculations, financing options, tax credits, and installation advice. Free resources for homeowners.">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -359,6 +372,7 @@ function renderCategoryPage(cat, posts, categories, assets) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  ${FAVICON_LINKS}
   <title>${esc(seoTitle)}</title>
   <meta name="description" content="${esc(seoDesc)}">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -450,6 +464,7 @@ function renderStaticRoute(route, categories, assets) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  ${FAVICON_LINKS}
   <title>${esc(route.title)}</title>
   <meta name="description" content="${esc(route.description)}">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -493,6 +508,7 @@ function renderContactStatic(categories, assets) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  ${FAVICON_LINKS}
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(description)}">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -611,6 +627,7 @@ function pageHead({ title, description, canonicalPath, extraHead = '' }) {
   const url = `${DOMAIN}${canonicalPath}`;
   return `<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  ${FAVICON_LINKS}
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(description)}">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
