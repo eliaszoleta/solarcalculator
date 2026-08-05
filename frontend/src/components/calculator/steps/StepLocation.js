@@ -19,7 +19,7 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
   const isOutOfArea = serviceStates && serviceStates.length > 0 && state && !serviceStates.includes(state);
 
   return (
-    <div>
+    <div className="sloc-fade-in">
       <h2 className="step-title">Where is your home located?</h2>
       <p className="step-desc">Your location determines sunlight availability, electricity rates, and solar incentives.</p>
 
@@ -80,11 +80,17 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
       )}
 
       <style>{`
+        @keyframes sloc-in {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .sloc-fade-in { animation: sloc-in 0.3s ease; }
         .location-fields {
           display: flex;
           flex-direction: column;
           gap: 12px;
           margin-bottom: 20px;
+          animation: sloc-in 0.35s ease 0.05s backwards;
         }
         .field-group {
           display: flex;
@@ -114,6 +120,7 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
         }
         .field-input:focus {
           border-color: #1c3a5e;
+          box-shadow: 0 0 0 3px rgba(28,58,94,0.08);
         }
         .field-divider {
           text-align: center;
@@ -130,6 +137,7 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
           border-radius: 10px;
           font-size: 13px;
           color: #78350f;
+          animation: sloc-in 0.35s ease 0.1s backwards;
         }
         .note-icon {
           flex-shrink: 0;

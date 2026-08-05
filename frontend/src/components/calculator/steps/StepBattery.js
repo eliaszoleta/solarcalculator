@@ -42,12 +42,15 @@ export default function StepBattery({ value, onChange }) {
       <p className="step-desc">Battery storage lets you use solar energy at night and during grid outages.</p>
 
       <div className="option-grid">
-        {BATTERY_OPTIONS.map(opt => (
+        {BATTERY_OPTIONS.map((opt, i) => (
           <button
             key={opt.value}
             className={`option-card battery-card ${value === opt.value ? 'selected' : ''}`}
             onClick={() => onChange(opt.value)}
-            style={value === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
+            style={{
+              ...(value === opt.value ? { borderColor: opt.color, background: opt.bg } : {}),
+              animationDelay: `${i * 45}ms`,
+            }}
           >
             {opt.popular && <span className="popular-badge">Most Popular</span>}
             <div className="battery-row">
@@ -65,10 +68,15 @@ export default function StepBattery({ value, onChange }) {
       </div>
 
       <style>{`
+        @keyframes sbat-in {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
         .battery-card {
           text-align: left;
           padding: 14px 16px;
           position: relative;
+          animation: sbat-in 0.3s ease backwards;
         }
         .battery-row {
           display: flex;

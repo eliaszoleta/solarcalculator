@@ -28,12 +28,15 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
       <p className="step-desc">This helps determine if solar is a good fit for your property.</p>
 
       <div className="option-grid option-grid-3">
-        {HOME_TYPES.map(opt => (
+        {HOME_TYPES.map((opt, i) => (
           <button
             key={opt.value}
-            className={`option-card illus-card ${homeType === opt.value ? 'selected' : ''}`}
+            className={`option-card illus-card sh-card ${homeType === opt.value ? 'selected' : ''}`}
             onClick={() => { onHomeTypeChange(opt.value); onOwnsHomeChange(null); }}
-            style={homeType === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
+            style={{
+              ...(homeType === opt.value ? { borderColor: opt.color, background: opt.bg } : {}),
+              animationDelay: `${i * 45}ms`,
+            }}
           >
             <span className="option-icon illus-icon">
               <opt.Illustration />
@@ -48,12 +51,15 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
         <div style={{ marginTop: 20 }}>
           <p style={{ fontSize: 14, fontWeight: 600, color: '#334155', marginBottom: 10 }}>Do you own or rent this home?</p>
           <div className="option-grid option-grid-2">
-            {OWN_OPTIONS.map(opt => (
+            {OWN_OPTIONS.map((opt, i) => (
               <button
                 key={String(opt.value)}
-                className={`option-card illus-card ${ownsHome === opt.value ? 'selected' : ''}`}
+                className={`option-card illus-card sh-card ${ownsHome === opt.value ? 'selected' : ''}`}
                 onClick={() => onOwnsHomeChange(opt.value)}
-                style={ownsHome === opt.value ? { borderColor: opt.color, background: opt.bg } : {}}
+                style={{
+                  ...(ownsHome === opt.value ? { borderColor: opt.color, background: opt.bg } : {}),
+                  animationDelay: `${i * 45}ms`,
+                }}
               >
                 <span className="option-icon illus-icon">
                   <opt.Illustration />
@@ -89,6 +95,11 @@ export default function StepHome({ homeType, ownsHome, onHomeTypeChange, onOwnsH
       )}
 
       <style>{`
+        @keyframes sh-in {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .sh-card { animation: sh-in 0.3s ease backwards; }
         .illus-card { padding: 10px 8px 12px; }
         .illus-icon {
           display: flex;

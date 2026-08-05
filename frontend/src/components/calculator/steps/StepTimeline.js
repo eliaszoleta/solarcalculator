@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { SunIcon } from '../../ui/Icons';
+import { SunIcon, ClockIcon, CalendarIcon, SparklesIcon } from '../../ui/Icons';
 
 const TIMELINES = [
-  { value: 'asap', label: 'ASAP', desc: 'Ready to move forward now' },
-  { value: '3months', label: 'Within 3 months', desc: 'Actively researching' },
-  { value: '6months', label: 'Within 6 months', desc: 'Planning ahead' },
-  { value: 'exploring', label: 'Just exploring', desc: 'Curious about solar' },
+  { value: 'asap', Icon: ClockIcon,     label: 'ASAP', desc: 'Ready to move forward now' },
+  { value: '3months', Icon: CalendarIcon, label: 'Within 3 months', desc: 'Actively researching' },
+  { value: '6months', Icon: CalendarIcon, label: 'Within 6 months', desc: 'Planning ahead' },
+  { value: 'exploring', Icon: SparklesIcon, label: 'Just exploring', desc: 'Curious about solar' },
 ];
 
 export default function StepTimeline({ timeline, onTimelineChange, onSubmit, loading, requireContact, embedded, primaryColor, formBgColor }) {
@@ -19,20 +19,22 @@ export default function StepTimeline({ timeline, onTimelineChange, onSubmit, loa
   };
 
   return (
-    <div style={formBgColor ? { background: formBgColor, borderRadius: 12, padding: embedded ? '8px 4px' : '12px 4px' } : {}}>
+    <div className="st-fade-in" style={formBgColor ? { background: formBgColor, borderRadius: 12, padding: embedded ? '8px 4px' : '12px 4px' } : {}}>
       <h2 className="step-title">Almost there!</h2>
       <p className="step-desc">When are you looking to go solar?</p>
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: embedded ? 6 : 10 }}>
         <div>
           <div className="option-grid option-grid-2">
-            {TIMELINES.map(t => (
+            {TIMELINES.map((t, i) => (
               <button
                 key={t.value}
                 type="button"
-                className={`option-card option-card-sm${timeline === t.value ? ' st-selected' : ''}`}
+                className={`option-card option-card-sm st-card${timeline === t.value ? ' st-selected' : ''}`}
                 onClick={() => { onTimelineChange(t.value); setError(null); }}
+                style={{ animationDelay: `${i * 40}ms` }}
               >
+                <t.Icon size={15} className="st-card-icon" style={{ marginBottom: 4 }} />
                 <div className="option-label">{t.label}</div>
                 <div className="option-desc">{t.desc}</div>
               </button>
@@ -67,6 +69,14 @@ export default function StepTimeline({ timeline, onTimelineChange, onSubmit, loa
       )}
 
       <style>{`
+        @keyframes st-in {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .st-fade-in { animation: st-in 0.3s ease; }
+        .st-card { animation: st-in 0.3s ease backwards; }
+        .st-card-icon { color: #94a3b8; transition: color 0.15s; }
+        .st-selected .st-card-icon { color: white; }
         .field-error { color: #dc2626; font-size: 12px; margin-top: 4px; }
         .option-card-sm { padding: ${embedded ? '6px 8px' : '9px 12px'}; }
         .option-grid-2 { grid-template-columns: 1fr 1fr; gap: ${embedded ? '6px' : '8px'}; }
