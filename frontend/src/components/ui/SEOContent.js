@@ -4,6 +4,7 @@ import { BoltIcon, SunIcon, RulerIcon, DollarSignIcon, CategoryIcon, getCategory
 import { CATEGORIES } from '../../data/blogPosts';
 import { getAllFaqs } from '../../data/faqs';
 import { getFeaturedStates } from '../../data/statePricing';
+import { getServiceBySlug } from '../../data/services';
 
 function formatPrice(n) {
   return `$${Math.round(n).toLocaleString('en-US')}`;
@@ -12,6 +13,7 @@ function formatPrice(n) {
 export default function SEOContent() {
   const faqs = getAllFaqs();
   const featuredStates = getFeaturedStates();
+  const systemSizeService = getServiceBySlug('solar-system-size-cost');
 
   const faqSchema = {
     '@context': 'https://schema.org',
@@ -29,6 +31,21 @@ export default function SEOContent() {
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
 
+      {/* Get a Free Solar Cost Estimate Online */}
+      <section style={{ padding: '80px 24px 64px', background: '#ffffff' }}>
+        <div style={{ maxWidth: 780, margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{ fontSize: 'clamp(24px, 4vw, 34px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 18, letterSpacing: '-0.025em' }}>
+            Get a Free Solar Cost Estimate Online
+          </h2>
+          <p style={{ fontSize: 15.5, color: '#475569', lineHeight: 1.75, marginBottom: 16 }}>
+            Solar Cost Predictor is a free solar cost calculator and solar panel cost estimator built for US homeowners who want a real number before talking to an installer. Enter your ZIP code and average monthly electric bill, and our solar savings calculator instantly estimates your recommended system size, installation cost, 30% federal tax credit, monthly savings, and solar payback period — no signup, no phone call, no pushy sales pitch.
+          </p>
+          <p style={{ fontSize: 15.5, color: '#475569', lineHeight: 1.75, marginBottom: 0 }}>
+            Every estimate factors in more than a national average. Your state's real electricity rate and sun hours change how big a system you need and how fast it pays for itself, while your roof type and battery choice adjust installation cost. Whether you're comparing solar financing options, checking today's solar incentives, or just curious how much solar panels cost in 2026, our home solar calculator gives you a personalized, installer-grade estimate in under two minutes.
+          </p>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section id="how-it-works" style={{ padding: '96px 24px', background: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
@@ -37,10 +54,10 @@ export default function SEOContent() {
               How It Works
             </div>
             <h2 style={{ fontSize: 'clamp(26px, 4vw, 40px)', fontWeight: 900, color: '#0a0a0a', letterSpacing: '-0.03em', marginBottom: 14 }}>
-              Built on real data. Not guesses.
+              How Our Solar Cost Calculator Estimates Your Price
             </h2>
             <p style={{ fontSize: 17, color: '#64748b', maxWidth: 520, margin: '0 auto', lineHeight: 1.65 }}>
-              We use the same formulas solar installers use — powered by real sunlight data and current electricity rates.
+              Built on real data, not guesses — we use the same formulas solar installers use, powered by real sunlight data and current electricity rates.
             </p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: 16 }}>
@@ -68,8 +85,45 @@ export default function SEOContent() {
         </div>
       </section>
 
-      {/* Average Costs by State */}
+      {/* Average Solar Costs (2026) */}
       <section style={{ padding: '80px 24px', background: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
+            Average Solar Costs (2026)
+          </h2>
+          <p style={{ color: '#64748b', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
+            Nationally, solar installation runs a flat $2.80 per watt — panels, labor, inverter, permits, and installer margin included. Here's what that looks like across common system sizes, before and after the 30% federal tax credit.
+          </p>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14, background: '#ffffff', borderRadius: 14, overflow: 'hidden', border: '1px solid #e2e8f0' }}>
+              <thead>
+                <tr style={{ background: '#f1f5f9' }}>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 700, color: '#374151' }}>System Size</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 700, color: '#374151', whiteSpace: 'nowrap' }}>Cost Before Credit</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 700, color: '#374151', whiteSpace: 'nowrap' }}>Net Cost After 30% ITC</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 700, color: '#374151' }}>Typical For</th>
+                </tr>
+              </thead>
+              <tbody>
+                {systemSizeService.tiers.map((tier, i) => (
+                  <tr key={tier.label} style={{ background: i % 2 === 0 ? 'white' : '#fafafa' }}>
+                    <td style={{ padding: '12px 16px', color: '#0f172a', fontWeight: 600, borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{tier.label}</td>
+                    <td style={{ padding: '12px 16px', color: '#475569', borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{formatPrice(tier.low)}–{formatPrice(tier.high)}</td>
+                    <td style={{ padding: '12px 16px', color: '#1c3a5e', fontWeight: 700, borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{formatPrice(tier.low * 0.7)}–{formatPrice(tier.high * 0.7)}</td>
+                    <td style={{ padding: '12px 16px', color: '#64748b', borderTop: '1px solid #f1f5f9' }}>{tier.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 16 }}>
+            *Based on a flat $2.80/watt all-in installed price and the 30% federal Investment Tax Credit. Your actual system size depends on your usage, roof, and location — <a href="/solar-panels/solar-system-size-cost" style={{ color: '#1c3a5e' }}>see the full breakdown by system size</a>.
+          </p>
+        </div>
+      </section>
+
+      {/* Average Costs by State */}
+      <section style={{ padding: '80px 24px', background: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
             Solar Installation Cost by State (2026)
@@ -91,6 +145,61 @@ export default function SEOContent() {
           <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 16 }}>
             *Net cost after the federal 30% Investment Tax Credit, for a representative $150/month bill, full sun exposure, asphalt roof, no battery. Your actual system size, cost, and payback depend on your real usage, roof, and location — use our calculator above for a personalized estimate.
           </p>
+        </div>
+      </section>
+
+      {/* Key Solar Pricing Factors */}
+      <section style={{ padding: '80px 24px', background: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
+            Key Solar Pricing Factors
+          </h2>
+          <p style={{ color: '#64748b', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
+            Two homes with identical electric bills can get very different solar quotes. Here's what actually moves the number.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
+            {[
+              'System size — cost scales directly with the kW you need, which is set by your electricity usage',
+              'Your state\'s electricity rate and sun hours — states with expensive power or strong sun need smaller (cheaper) systems for the same bill offset',
+              'Roof type — asphalt has no surcharge, metal adds $500, flat adds $800, tile adds $1,500',
+              'Battery backup — adding one Tesla Powerwall adds $11,500, two adds $23,000',
+              'The 30% federal tax credit — applies to your entire system cost, including battery, cutting your net price by nearly a third',
+              'Financing choice — cash, loan, lease, or PPA all change your effective cost and who keeps the tax credit',
+            ].map(text => (
+              <div key={text} style={{ background: '#ffffff', padding: '18px 20px', borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 13.5, color: '#334155', lineHeight: 1.6 }}>
+                {text}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What Affects Your Solar Price, by Factor */}
+      <section style={{ padding: '80px 24px', background: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
+            What Affects Your Solar Price, by Factor
+          </h2>
+          <p style={{ color: '#64748b', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
+            A closer look at each factor our calculator uses to size and price your system.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+            {[
+              { title: 'System Size', desc: 'The biggest lever — cost scales directly with the kW your home needs, from a 4 kW minimum to a 20 kW maximum.', href: '/solar-panels/solar-system-size-cost' },
+              { title: 'Roof Type', desc: 'Mounting hardware and labor vary by roofing material, adding $0–$1,500 to a typical system.', href: '/solar-panels/solar-cost-by-roof-type' },
+              { title: 'Battery Backup', desc: 'Adding a Tesla Powerwall for outage protection adds a flat $11,500 (one) or $23,000 (two) to your system.', href: '/solar-panels/tesla-powerwall-cost' },
+              { title: 'Your State', desc: 'Electricity rates and sun hours vary widely by state, changing both your system size and payback period.', href: null },
+              { title: 'Home Energy Usage', desc: 'Your monthly bill determines your usage, which is the starting point for every other calculation.', href: null },
+            ].map(item => (
+              <div key={item.title} style={{ background: '#f8fafc', padding: '22px 20px', borderRadius: 14, border: '1px solid #e2e8f0' }}>
+                <div style={{ fontWeight: 800, fontSize: 15, color: '#0a0a0a', marginBottom: 8 }}>{item.title}</div>
+                <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, margin: item.href ? '0 0 14px' : 0 }}>{item.desc}</p>
+                {item.href && (
+                  <a href={item.href} style={{ fontSize: 13, fontWeight: 700, color: '#1c3a5e', textDecoration: 'none' }}>See pricing →</a>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

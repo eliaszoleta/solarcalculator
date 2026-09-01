@@ -559,7 +559,7 @@ ${staticFooter(categories)}</div></div>
 </html>`;
 }
 
-function injectHomepage(posts, categories) {
+function injectHomepage(posts, categories, servicesMod) {
   const indexPath = path.join(BUILD, 'index.html');
   if (!fs.existsSync(indexPath)) return;
 
@@ -571,14 +571,24 @@ function injectHomepage(posts, categories) {
     `<li style="margin-bottom:10px"><a href="/blog/${p.slug}" style="color:${PRIMARY};text-decoration:none;font-size:14px;font-weight:500;line-height:1.5">${esc(p.title)}</a></li>`
   ).join('\n      ');
 
+  const systemSizeService = servicesMod.getServiceBySlug('solar-system-size-cost');
+  const avgCostRows = systemSizeService.tiers.map(tier =>
+    `<tr><td style="padding:10px 14px;color:#0f172a;font-weight:600;border-top:1px solid #f1f5f9;white-space:nowrap">${esc(tier.label)}</td><td style="padding:10px 14px;color:#475569;border-top:1px solid #f1f5f9;white-space:nowrap">${fmt(tier.low)}&ndash;${fmt(tier.high)}</td><td style="padding:10px 14px;color:${PRIMARY};font-weight:700;border-top:1px solid #f1f5f9;white-space:nowrap">${fmt(tier.low * 0.7)}&ndash;${fmt(tier.high * 0.7)}</td><td style="padding:10px 14px;color:#64748b;border-top:1px solid #f1f5f9">${esc(tier.note)}</td></tr>`
+  ).join('\n      ');
+
   const staticContent = `${staticHeader()}<div style="font-family:'Poppins','Poppins Fallback',Arial,sans-serif;background:#f8fafc;min-height:80vh"><div style="max-width:1100px;margin:0 auto;padding:40px 24px 64px">
   <div style="text-align:center;padding:32px 0 40px">
     <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;color:#0f172a;line-height:1.2;margin-bottom:14px">Free Solar Panel Cost Calculator 2026</h1>
     <p style="font-size:17px;color:#64748b;max-width:560px;margin:0 auto 28px;line-height:1.6">Enter your ZIP code and monthly electric bill to get an instant estimate for solar installation cost, monthly savings, and 30-year ROI. Free &mdash; no signup required.</p>
     <div style="display:inline-block;background:${PRIMARY};color:white;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600">Loading calculator&hellip;</div>
   </div>
+  <div style="background:white;border-radius:16px;padding:36px;margin-bottom:32px;border:1px solid #e2e8f0;text-align:center">
+    <h2 style="font-size:22px;font-weight:900;color:#0f172a;margin-bottom:14px">Get a Free Solar Cost Estimate Online</h2>
+    <p style="font-size:14.5px;color:#475569;line-height:1.75;max-width:640px;margin:0 auto 12px">Solar Cost Predictor is a free solar cost calculator and solar panel cost estimator built for US homeowners who want a real number before talking to an installer. Enter your ZIP code and average monthly electric bill for an instant estimate of system size, installation cost, the 30% federal tax credit, monthly savings, and payback period &mdash; no signup required.</p>
+    <p style="font-size:14.5px;color:#475569;line-height:1.75;max-width:640px;margin:0 auto">Your state's real electricity rate and sun hours change how big a system you need, while your roof type and battery choice adjust installation cost &mdash; so every estimate is personalized, not a national average.</p>
+  </div>
   <div style="background:white;border-radius:16px;padding:36px;margin-bottom:32px;border:1px solid #e2e8f0">
-    <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:24px;text-align:center">How It Works &mdash; 3 Simple Steps</h2>
+    <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:24px;text-align:center">How Our Solar Cost Calculator Estimates Your Price</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
       <div style="background:#f8fafc;border-radius:10px;padding:22px"><div style="background:${PRIMARY};color:white;width:32px;height:32px;border-radius:8px;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:10px">1</div><h3 style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px">Enter Your Electric Bill</h3><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0">Your average monthly bill determines your solar system size and savings potential.</p></div>
       <div style="background:#f8fafc;border-radius:10px;padding:22px"><div style="background:${PRIMARY};color:white;width:32px;height:32px;border-radius:8px;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:10px">2</div><h3 style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px">Enter Your ZIP Code</h3><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0">We use real NREL PVWatts sunlight data for your exact location and EIA electricity rates by state.</p></div>
@@ -593,6 +603,38 @@ function injectHomepage(posts, categories) {
       ${postLinks}
     </ul>
     <p style="margin-top:16px;margin-bottom:0"><a href="/blog" style="color:${PRIMARY};font-weight:600;font-size:14px;text-decoration:none">View all solar guides &rarr;</a></p>
+  </div>
+  <div style="background:white;border-radius:16px;padding:36px;margin-bottom:32px;border:1px solid #e2e8f0">
+    <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:8px">Average Solar Costs (2026)</h2>
+    <p style="font-size:14px;color:#64748b;margin-bottom:20px">Nationally, solar installation runs a flat $2.80 per watt. Here's what that looks like across common system sizes, before and after the 30% federal tax credit.</p>
+    <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px">
+      <thead><tr style="background:#f8fafc"><th style="padding:10px 14px;text-align:left;font-weight:700;color:#374151;border-bottom:2px solid #e2e8f0">System Size</th><th style="padding:10px 14px;text-align:left;font-weight:700;color:#374151;border-bottom:2px solid #e2e8f0;white-space:nowrap">Before Credit</th><th style="padding:10px 14px;text-align:left;font-weight:700;color:#374151;border-bottom:2px solid #e2e8f0;white-space:nowrap">Net After 30% ITC</th><th style="padding:10px 14px;text-align:left;font-weight:700;color:#374151;border-bottom:2px solid #e2e8f0">Typical For</th></tr></thead>
+      <tbody>
+      ${avgCostRows}
+      </tbody>
+    </table></div>
+  </div>
+  <div style="background:white;border-radius:16px;padding:36px;margin-bottom:32px;border:1px solid #e2e8f0">
+    <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:8px">Key Solar Pricing Factors</h2>
+    <p style="font-size:14px;color:#64748b;margin-bottom:20px">Two homes with identical electric bills can get very different solar quotes. Here's what actually moves the number.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+      <div style="background:#f8fafc;border-radius:10px;padding:16px 18px;font-size:13.5px;color:#334155;line-height:1.6">System size &mdash; cost scales directly with the kW you need, set by your electricity usage</div>
+      <div style="background:#f8fafc;border-radius:10px;padding:16px 18px;font-size:13.5px;color:#334155;line-height:1.6">Your state's electricity rate and sun hours &mdash; affects how big a system you need for the same bill offset</div>
+      <div style="background:#f8fafc;border-radius:10px;padding:16px 18px;font-size:13.5px;color:#334155;line-height:1.6">Roof type &mdash; asphalt has no surcharge, metal adds $500, flat adds $800, tile adds $1,500</div>
+      <div style="background:#f8fafc;border-radius:10px;padding:16px 18px;font-size:13.5px;color:#334155;line-height:1.6">Battery backup &mdash; one Tesla Powerwall adds $11,500, two adds $23,000</div>
+      <div style="background:#f8fafc;border-radius:10px;padding:16px 18px;font-size:13.5px;color:#334155;line-height:1.6">The 30% federal tax credit &mdash; applies to your entire system cost, cutting net price by nearly a third</div>
+      <div style="background:#f8fafc;border-radius:10px;padding:16px 18px;font-size:13.5px;color:#334155;line-height:1.6">Financing choice &mdash; cash, loan, lease, or PPA change your effective cost and who keeps the tax credit</div>
+    </div>
+  </div>
+  <div style="background:white;border-radius:16px;padding:36px;margin-bottom:32px;border:1px solid #e2e8f0">
+    <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:20px">What Affects Your Solar Price, by Factor</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+      <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">System Size</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0 0 12px">The biggest lever &mdash; from a 4 kW minimum to a 20 kW maximum.</p><a href="/solar-panels/solar-system-size-cost" style="font-size:13px;font-weight:700;color:${PRIMARY};text-decoration:none">See pricing &rarr;</a></div>
+      <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">Roof Type</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0 0 12px">Mounting hardware and labor vary by roofing material, adding $0&ndash;$1,500.</p><a href="/solar-panels/solar-cost-by-roof-type" style="font-size:13px;font-weight:700;color:${PRIMARY};text-decoration:none">See pricing &rarr;</a></div>
+      <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">Battery Backup</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0 0 12px">A Tesla Powerwall for outage protection adds $11,500 (one) or $23,000 (two).</p><a href="/solar-panels/tesla-powerwall-cost" style="font-size:13px;font-weight:700;color:${PRIMARY};text-decoration:none">See pricing &rarr;</a></div>
+      <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">Your State</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0">Electricity rates and sun hours vary widely by state, changing your system size and payback period.</p></div>
+      <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">Home Energy Usage</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0">Your monthly bill determines your usage, the starting point for every other calculation.</p></div>
+    </div>
   </div>
   <div style="background:white;border-radius:16px;padding:36px;margin-bottom:32px;border:1px solid #e2e8f0">
     <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:8px">Key Features for Businesses</h2>
@@ -870,7 +912,7 @@ function main() {
 
   let count = 0;
 
-  injectHomepage(POSTS, CATEGORIES);
+  injectHomepage(POSTS, CATEGORIES, servicesMod);
 
   for (const route of STATIC_ROUTES) {
     writeFile(route.path, renderStaticRoute(route, CATEGORIES, assets));
