@@ -115,8 +115,15 @@ function staticFooter(categories) {
       </div>
       <div>
         <div style="color:white;font-weight:700;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">For Installers</div>
-        <a href="/for-installers" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Solar Widget for Installers</a>
-        <a href="/partner-with-us" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Partner With Us</a>
+        <a href="/installer" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Dashboard</a>
+        <a href="/for-installers" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Embed Widget</a>
+        <a href="/for-installers#pricing" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Pricing</a>
+      </div>
+      <div>
+        <div style="color:white;font-weight:700;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">Partner Program</div>
+        <a href="/partner-with-us" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Become a Partner</a>
+        <a href="/partner-with-us" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Exclusive City Placement</a>
+        <a href="/partner-with-us#apply" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Apply Now</a>
       </div>
       <div>
         <div style="color:white;font-weight:700;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">Legal</div>
@@ -578,6 +585,15 @@ function injectHomepage(posts, categories) {
       ${postLinks}
     </ul>
     <p style="margin-top:16px;margin-bottom:0"><a href="/blog" style="color:${PRIMARY};font-weight:600;font-size:14px;text-decoration:none">View all solar guides &rarr;</a></p>
+  </div>
+  <div style="background:white;border-radius:16px;padding:36px;margin-bottom:32px;border:1px solid #e2e8f0">
+    <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:8px">Key Features for Businesses</h2>
+    <p style="font-size:14px;color:#64748b;margin-bottom:20px">Solar installers can grow their pipeline with Solar Cost Predictor in two ways &mdash; get exclusive local leads, or put our calculator on your own site.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+      <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">Local Partner Program</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0 0 12px">Exclusive, one-installer-per-city placement on every solar estimate result &mdash; $350/month per city.</p><a href="/partner-with-us" style="font-size:13px;font-weight:700;color:${PRIMARY};text-decoration:none">Become a Partner &rarr;</a></div>
+      <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">Website Integration</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0 0 12px">Embed the branded calculator widget on your own installer website &mdash; $159/month after a 7-day free trial.</p><a href="/for-installers" style="font-size:13px;font-weight:700;color:${PRIMARY};text-decoration:none">Embed the Widget &rarr;</a></div>
+      <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">No Signup Needed for Homeowners</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0 0 12px">Homeowners get an instant estimate with no account or contact info required &mdash; reducing friction and increasing lead quality.</p><a href="/" style="font-size:13px;font-weight:700;color:${PRIMARY};text-decoration:none">Try the Calculator &rarr;</a></div>
+    </div>
   </div>
   <div style="background:white;border-radius:16px;padding:36px;border:1px solid #e2e8f0">
     <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:24px">Frequently Asked Questions</h2>

@@ -21,6 +21,12 @@ const links = {
     { label: 'Embed Widget', href: '/for-installers' },
     { label: 'Pricing', href: '/for-installers#pricing' },
   ],
+  'Partner Program': [
+    { label: 'Become a Partner', href: '/partner-with-us' },
+    { label: 'Exclusive City Placement', href: '/partner-with-us' },
+    { label: 'Partner Pricing', href: '/partner-with-us#apply' },
+    { label: 'Apply Now', href: '/partner-with-us#apply' },
+  ],
   Company: [
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },

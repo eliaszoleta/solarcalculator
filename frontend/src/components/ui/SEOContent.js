@@ -193,6 +193,46 @@ export default function SEOContent() {
         </div>
       </section>
 
+      {/* Key Features for Businesses */}
+      <section style={{ padding: '80px 24px', background: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
+            Key Features for Businesses
+          </h2>
+          <p style={{ color: '#64748b', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
+            Solar installers can grow their pipeline with Solar Cost Predictor in two ways — get exclusive local leads, or put our calculator on your own site.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
+            {[
+              {
+                title: 'Local Partner Program',
+                desc: 'Exclusive, one-installer-per-city placement on every solar estimate result for homeowners in your service area — $350/month per city.',
+                href: '/partner-with-us',
+                cta: 'Become a Partner',
+              },
+              {
+                title: 'Website Integration',
+                desc: 'Embed the branded solar calculator widget on your own installer website to capture leads directly — $159/month after a 7-day free trial.',
+                href: '/for-installers',
+                cta: 'Embed the Widget',
+              },
+              {
+                title: 'No Signup Needed for Homeowners',
+                desc: 'Homeowners get an instant, accurate solar cost and savings estimate with no account, email, or phone number required — reducing friction and increasing lead quality for you.',
+                href: '/',
+                cta: 'Try the Calculator',
+              },
+            ].map(item => (
+              <div key={item.title} style={{ background: '#f8fafc', padding: '24px 22px', borderRadius: 16, border: '1px solid #e2e8f0' }}>
+                <div style={{ fontWeight: 800, fontSize: 16, color: '#0a0a0a', marginBottom: 10 }}>{item.title}</div>
+                <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.65, margin: '0 0 16px' }}>{item.desc}</p>
+                <a href={item.href} style={{ fontSize: 13.5, fontWeight: 700, color: '#1c3a5e', textDecoration: 'none' }}>{item.cta} →</a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Browse by Category */}
       <section style={{ padding: '96px 24px', background: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
