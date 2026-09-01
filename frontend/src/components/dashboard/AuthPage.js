@@ -78,8 +78,11 @@ export default function AuthPage({ onAuth }) {
     }}>
       <div style={{ width: '100%', maxWidth: 420 }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <img src="/logo-icon-dark.svg" alt="Solar Cost Predictor" style={{ height: 52, width: 'auto' }} />
-          <div style={{ fontSize: 14, color: '#a8c3b5', marginTop: 4 }}>Installer Dashboard</div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+            <img src="/logo-icon-navy.svg" alt="" style={{ height: 44, width: 44, borderRadius: 11, flexShrink: 0 }} />
+            <span style={{ fontSize: 20, fontWeight: 800, color: 'white', letterSpacing: '-0.01em' }}>Solar Cost <span style={{ color: '#4ade80' }}>Predictor</span></span>
+          </div>
+          <div style={{ fontSize: 14, color: '#a8c3b5', marginTop: 8 }}>Installer Dashboard</div>
         </div>
 
         <div style={{ background: 'white', borderRadius: 20, padding: 36, boxShadow: '0 25px 50px rgba(0,0,0,0.3)' }}>

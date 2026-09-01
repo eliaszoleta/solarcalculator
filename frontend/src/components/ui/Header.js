@@ -41,8 +41,9 @@ export default function Header() {
       }}>
         <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
-          <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
-            <img src="/logo-icon-light.svg" alt="Solar Cost Predictor" style={{ height: 44, width: 'auto' }} />
+          <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0 }}>
+            <img src="/logo-icon-navy.svg" alt="" style={{ height: 42, width: 42, borderRadius: 11, flexShrink: 0 }} />
+            <span className="header-brand-text" style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>Solar Cost <span style={{ color: '#16a34a' }}>Predictor</span></span>
           </a>
 
           <nav style={{ display: 'flex', alignItems: 'center', gap: 4 }} className="header-desktop-nav">
@@ -130,6 +131,9 @@ export default function Header() {
         @media (max-width: 639px) {
           .header-desktop-nav { display: none  !important; }
           .header-mobile-nav  { display: flex !important; }
+        }
+        @media (max-width: 460px) {
+          .header-brand-text { display: none !important; }
         }
       `}</style>
     </>

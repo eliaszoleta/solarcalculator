@@ -21,13 +21,11 @@ export default function StepLead({
   return (
     <div className="sl-fade-in" style={formBgColor ? { background: formBgColor, borderRadius: 12, padding: embedded ? '8px 4px' : '12px 4px' } : {}}>
       <h2 className="step-title">
-        {requireContact ? "You're one step away from your estimate" : 'Almost there!'}
+        {requireContact ? "You're one step away from your estimate" : 'Tell us a bit about your solar plans'}
       </h2>
-      <p className="step-desc">
-        {requireContact
-          ? 'Where should we send your personalized solar savings report?'
-          : 'Tell us a bit about your solar plans to get your free estimate.'}
-      </p>
+      {requireContact && (
+        <p className="step-desc">Where should we send your personalized solar savings report?</p>
+      )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap }}>
         {requireContact && (

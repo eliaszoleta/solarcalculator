@@ -69,8 +69,9 @@ function getAssetTags() {
 function staticHeader() {
   return `<header id="static-header" style="position:sticky;top:0;z-index:100;height:60px;display:flex;align-items:center;padding:0 12px;background:#ffffff;border-bottom:1px solid #f1f5f9;box-sizing:border-box">
   <div style="max-width:1120px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between">
-    <a href="/" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0">
-      <img src="/logo-icon-light.svg" alt="Solar Cost Predictor" style="height:44px;width:auto" />
+    <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0">
+      <img src="/logo-icon-navy.svg" alt="" style="height:42px;width:42px;border-radius:11px;flex-shrink:0" />
+      <span style="font-size:18px;font-weight:800;color:#0f172a;letter-spacing:-0.01em;white-space:nowrap">Solar Cost <span style="color:#16a34a">Predictor</span></span>
     </a>
     <nav class="pr-desktop-nav" style="display:flex;align-items:center;gap:4px">
       <a href="/#how-it-works" style="font-size:14px;font-weight:500;color:#475569;padding:6px 12px;border-radius:8px;text-decoration:none">How It Works</a>
@@ -135,7 +136,10 @@ function staticFooter(categories) {
       </div>
     </div>
     <div style="border-top:1px solid #1e293b;padding-top:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-      <div style="color:white;font-weight:700">Solar Cost Predictor</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <img src="/logo-icon-navy.svg" alt="" style="height:24px;width:24px;border-radius:6px;flex-shrink:0" />
+        <span style="color:white;font-weight:700">Solar Cost <span style="color:#4ade80">Predictor</span></span>
+      </div>
       <div style="font-size:13px;color:#64748b">&copy; ${new Date().getFullYear()} Solar Cost Predictor. All rights reserved.</div>
     </div>
   </div>

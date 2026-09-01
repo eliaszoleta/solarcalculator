@@ -49,8 +49,9 @@ export default function Footer() {
 
           {/* Brand */}
           <div style={{ maxWidth: 260 }}>
-            <a href="/" style={{ display: 'inline-flex', alignItems: 'center', marginBottom: 16, textDecoration: 'none' }}>
-              <img src="/logo-icon-dark.svg" alt="Solar Cost Predictor" style={{ height: 48, width: 'auto' }} />
+            <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 16, textDecoration: 'none' }}>
+              <img src="/logo-icon-navy.svg" alt="" style={{ height: 40, width: 40, borderRadius: 10, flexShrink: 0 }} />
+              <span style={{ fontSize: 17, fontWeight: 800, color: 'white', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>Solar Cost <span style={{ color: '#4ade80' }}>Predictor</span></span>
             </a>
             <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.65 }}>
               Free solar savings calculator for US homeowners — powered by real NREL data and EIA electricity rates.

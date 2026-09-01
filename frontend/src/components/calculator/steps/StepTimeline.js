@@ -20,8 +20,7 @@ export default function StepTimeline({ timeline, onTimelineChange, onSubmit, loa
 
   return (
     <div className="st-fade-in" style={formBgColor ? { background: formBgColor, borderRadius: 12, padding: embedded ? '8px 4px' : '12px 4px' } : {}}>
-      <h2 className="step-title">Almost there!</h2>
-      <p className="step-desc">When are you looking to go solar?</p>
+      <h2 className="step-title">When are you looking to go solar?</h2>
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: embedded ? 6 : 10 }}>
         <div>

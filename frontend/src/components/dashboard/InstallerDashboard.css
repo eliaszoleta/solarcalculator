@@ -33,7 +33,7 @@
 }
 
 .dash-brand-name span {
-  color: var(--primary, #1b4d3e);
+  color: var(--accent, #16a34a);
 }
 
 .dash-nav {
