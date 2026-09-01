@@ -139,7 +139,7 @@ export default function PartnerWithUs() {
       {/* Hero */}
       <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #123529 100%)', color: 'white', padding: 'clamp(60px, 10vw, 100px) 24px' }}>
         <div style={{ maxWidth: 780, margin: '0 auto', textAlign: 'center' }}>
-          <h1 style={{ fontSize: 'clamp(32px, 6vw, 58px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-1.5px', marginBottom: 22 }}>
+          <h1 style={{ fontSize: 'clamp(28px, 6vw, 58px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-1.5px', marginBottom: 22 }}>
             Get Recommended to Thousands of Homeowners
             <span style={{ display: 'block', color: '#a8c3b5' }}> Ready to Go Solar</span>
           </h1>

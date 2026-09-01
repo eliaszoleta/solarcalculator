@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
         <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(168,195,181,0.12)', border: '1px solid rgba(168,195,181,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 18 }}>
           <span style={{ fontSize: 11.5, fontWeight: 700, color: '#a8c3b5', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Legal</span>
         </div>
-        <h1 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 10, letterSpacing: '-0.02em' }}>Privacy Policy</h1>
+        <h1 style={{ fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 10, letterSpacing: '-0.02em' }}>Privacy Policy</h1>
         <p style={{ fontSize: 14, color: '#64748b', margin: 0 }}>Last updated: March 20, 2026</p>
       </div>
 
