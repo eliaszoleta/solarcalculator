@@ -51,7 +51,7 @@ export default function Contact() {
     <div style={{ background: '#f1f5f9', minHeight: '100vh', fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <Helmet>
         <title>Contact Us | Solar Cost Predictor</title>
-        <meta name="description" content="Contact Solar Cost Predictor with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message." />
+        <meta name="description" content="Contact Solar Cost Predictor with questions about our free solar savings calculator, installer program, or your solar estimate. We read every message." />
         <link rel="canonical" href={`${DOMAIN}/contact`} />
         <meta name="robots" content="index, follow" />
       </Helmet>

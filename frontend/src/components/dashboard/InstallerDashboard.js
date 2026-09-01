@@ -481,7 +481,7 @@ export default function InstallerDashboard({ user, onLogout }) {
               { label: 'Total Leads',    value: activeLeads.length,                                   Icon: ChartBarIcon, color: '#16a34a', bg: '#eaf3ee' },
               { label: 'This Month',     value: thisMonth.length,                                      Icon: CalendarIcon, color: '#16a34a', bg: '#f0fdf4' },
               { label: 'Avg Savings/yr', value: avgSavings > 0 ? `$${Math.round(avgSavings).toLocaleString()}` : '—', Icon: TrendingUpIcon, color: '#1b4d3e', bg: '#eaf3ee' },
-              { label: 'Widget Status',  value: isActive ? 'Active' : 'Inactive',                     Icon: GlobeIcon,    color: isActive ? '#16a34a' : '#dc2626', bg: isActive ? '#f0fdf4' : '#fef2f2' },
+              { label: 'Calculator Status',  value: isActive ? 'Active' : 'Inactive',                     Icon: GlobeIcon,    color: isActive ? '#16a34a' : '#dc2626', bg: isActive ? '#f0fdf4' : '#fef2f2' },
             ];
 
             return (
@@ -663,7 +663,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                 <SettingRow label="Form Background">
                   <ColorInput value={config.formBgColor || '#ffffff'} onChange={v => update('formBgColor', v)} />
                 </SettingRow>
-                <SettingRow label="Font Style" hint="Applied to the calculator widget on your site">
+                <SettingRow label="Font Style" hint="Applied to the calculator on your site">
                   <select
                     value={config.fontFamily || ''}
                     onChange={e => update('fontFamily', e.target.value)}
@@ -682,7 +682,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                     <option value="Roboto">Roboto — clean &amp; technical</option>
                   </select>
                 </SettingRow>
-                <SettingRow label="Corner Radius" hint="Rounded corners on the calculator widget (0 = sharp, 24 = very round)">
+                <SettingRow label="Corner Radius" hint="Rounded corners on the calculator (0 = sharp, 24 = very round)">
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <input
                       type="range" min="0" max="24" step="2"
@@ -808,7 +808,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                 {/* Preview link */}
                 <div style={{ background: 'linear-gradient(135deg, #eaf3ee, #d9f0e1)', border: '1px solid #bfe3cf', borderRadius: 12, padding: '18px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14 }}>
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: 14, color: '#166534', marginBottom: 4 }}>Preview your widget</div>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: '#166534', marginBottom: 4 }}>Preview your calculator</div>
                     <p style={{ fontSize: 13, color: '#123529', margin: 0 }}>See exactly how it looks before embedding on your site.</p>
                   </div>
                   <a href={`/embed?installer=${installerId}`} target="_blank" rel="noopener noreferrer"
@@ -1506,7 +1506,7 @@ function CustomStepsPanel({ steps, onChange }) {
 }
 
 const SUBSCRIPTION_FEATURES = [
-  { Icon: GlobeIcon,      text: 'Embeddable solar calculator widget on your website' },
+  { Icon: GlobeIcon,      text: 'Embeddable solar calculator on your website' },
   { Icon: PaintBrushIcon, text: 'Custom branding — colors, logo, and CTA text' },
   { Icon: ChartBarIcon,   text: 'Lead capture & CRM dashboard' },
   { Icon: DollarSignIcon, text: 'Pricing controls and per-watt margin settings' },

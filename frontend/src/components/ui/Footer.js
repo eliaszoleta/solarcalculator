@@ -19,7 +19,7 @@ const links = {
   ],
   'For Installers': [
     { label: 'Dashboard', href: '/installer' },
-    { label: 'Embed Widget', href: '/for-installers' },
+    { label: 'Embed Calculator', href: '/for-installers' },
     { label: 'Pricing', href: '/for-installers#pricing' },
   ],
   'Partner Program': [

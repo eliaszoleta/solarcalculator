@@ -76,9 +76,9 @@ function staticHeader() {
       <a href="/#how-it-works" style="font-size:14px;font-weight:500;color:#475569;padding:6px 12px;border-radius:8px;text-decoration:none">How It Works</a>
       <a href="/blog" style="font-size:14px;font-weight:500;color:#475569;padding:6px 12px;border-radius:8px;text-decoration:none">Blog</a>
       <a href="/#faq" style="font-size:14px;font-weight:500;color:#475569;padding:6px 12px;border-radius:8px;text-decoration:none">FAQ</a>
-      <a href="/for-installers" style="margin-left:8px;font-size:13px;font-weight:600;color:${PRIMARY};padding:7px 16px;border-radius:9px;border:1.5px solid ${PRIMARY};text-decoration:none">Get Solar Widget</a>
+      <a href="/for-installers" style="margin-left:8px;font-size:13px;font-weight:600;color:${PRIMARY};padding:7px 16px;border-radius:9px;border:1.5px solid ${PRIMARY};text-decoration:none">Get Solar Estimator</a>
     </nav>
-    <a href="/for-installers" class="pr-mobile-cta" style="display:none;font-size:11px;font-weight:600;color:${PRIMARY};padding:5px 10px;border-radius:8px;border:1.5px solid ${PRIMARY};text-decoration:none">Get Solar Widget</a>
+    <a href="/for-installers" class="pr-mobile-cta" style="display:none;font-size:11px;font-weight:600;color:${PRIMARY};padding:5px 10px;border-radius:8px;border:1.5px solid ${PRIMARY};text-decoration:none">Get Solar Estimator</a>
   </div>
   <style>
     @media(max-width:639px){.pr-desktop-nav{display:none!important}.pr-mobile-cta{display:inline-block!important}}
@@ -119,7 +119,7 @@ function staticFooter(categories) {
       <div>
         <div style="color:white;font-weight:700;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">For Installers</div>
         <a href="/installer" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Dashboard</a>
-        <a href="/for-installers" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Embed Widget</a>
+        <a href="/for-installers" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Embed Calculator</a>
         <a href="/for-installers#pricing" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Pricing</a>
       </div>
       <div>
@@ -437,9 +437,9 @@ ${staticFooter(categories)}</div>
 const STATIC_ROUTES = [
   {
     path: 'for-installers',
-    title: 'Solar Calculator Widget for Installers | Solar Cost Predictor',
+    title: 'Solar Calculator for Installers | Solar Cost Predictor',
     description: 'Embed a branded solar savings calculator on your website in minutes. Capture leads, show instant estimates, and close more solar deals. Free trial for solar installers.',
-    heading: 'Solar Calculator Widget for Installers',
+    heading: 'Solar Calculator for Installers',
   },
   {
     path: 'partner-with-us',
@@ -518,7 +518,7 @@ function renderStaticRoute(route, categories, assets) {
 function renderContactStatic(categories, assets) {
   const url = `${DOMAIN}/contact`;
   const title = 'Contact Us | Solar Cost Predictor';
-  const description = 'Contact Solar Cost Predictor with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message.';
+  const description = 'Contact Solar Cost Predictor with questions about our free solar savings calculator, installer program, or your solar estimate. We read every message.';
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -643,7 +643,7 @@ function injectHomepage(posts, categories, servicesMod) {
     <p style="font-size:14px;color:#64748b;margin-bottom:20px">Solar installers can grow their pipeline with Solar Cost Predictor in two ways &mdash; get exclusive local leads, or put our calculator on your own site.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
       <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">Local Partner Program</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0 0 12px">Exclusive, one-installer-per-city placement on every solar estimate result &mdash; $350/month per city.</p><a href="/partner-with-us" style="font-size:13px;font-weight:700;color:${PRIMARY};text-decoration:none">Become a Partner &rarr;</a></div>
-      <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">Website Integration</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0 0 12px">Embed the branded calculator widget on your own installer website &mdash; $159/month after a 7-day free trial.</p><a href="/for-installers" style="font-size:13px;font-weight:700;color:${PRIMARY};text-decoration:none">Embed the Widget &rarr;</a></div>
+      <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">Website Integration</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0 0 12px">Embed the branded calculator on your own installer website &mdash; $159/month after a 7-day free trial.</p><a href="/for-installers" style="font-size:13px;font-weight:700;color:${PRIMARY};text-decoration:none">Embed the Calculator &rarr;</a></div>
       <div style="background:#f8fafc;border-radius:10px;padding:20px"><div style="font-weight:800;font-size:14.5px;color:#0f172a;margin-bottom:8px">No Signup Needed for Homeowners</div><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0 0 12px">Homeowners get an instant estimate with no account or contact info required &mdash; reducing friction and increasing lead quality.</p><a href="/" style="font-size:13px;font-weight:700;color:${PRIMARY};text-decoration:none">Try the Calculator &rarr;</a></div>
     </div>
   </div>

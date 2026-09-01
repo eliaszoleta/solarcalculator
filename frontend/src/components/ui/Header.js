@@ -71,7 +71,7 @@ export default function Header() {
               onMouseEnter={e => { e.currentTarget.style.background = '#1b4d3e'; e.currentTarget.style.color = '#ffffff'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1b4d3e'; }}
             >
-              Get Solar Widget
+              Get Solar Estimator
             </a>
           </nav>
 
@@ -80,7 +80,7 @@ export default function Header() {
               href="/for-installers"
               style={{ fontSize: 11, fontWeight: 600, color: '#1b4d3e', padding: '5px 10px', borderRadius: 8, border: '1.5px solid #1b4d3e', background: 'transparent', textDecoration: 'none', whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}
             >
-              Get Solar Widget
+              Get Solar Estimator
             </a>
             <button
               onClick={e => { e.stopPropagation(); setMenuOpen(o => !o); }}

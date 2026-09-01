@@ -326,9 +326,9 @@ export default function SEOContent() {
               },
               {
                 title: 'Website Integration',
-                desc: 'Embed the branded solar calculator widget on your own installer website to capture leads directly — $159/month after a 7-day free trial.',
+                desc: 'Embed the branded solar calculator on your own installer website to capture leads directly — $159/month after a 7-day free trial.',
                 href: '/for-installers',
-                cta: 'Embed the Widget',
+                cta: 'Embed the Calculator',
               },
               {
                 title: 'No Signup Needed for Homeowners',

@@ -6,17 +6,17 @@ export default function InstallerLanding() {
   return (
     <>
       <Helmet>
-        <title>Solar Calculator Widget for Installers | Solar Cost Predictor</title>
+        <title>Solar Calculator for Installers | Solar Cost Predictor</title>
         <meta name="description" content="Embed a branded solar savings calculator on your website in minutes. Capture leads, show instant estimates, and close more solar deals. Free trial for solar installers." />
         <link rel="canonical" href="https://www.solarcostpredictor.com/for-installers" />
-        <meta property="og:title" content="Solar Calculator Widget for Installers | Solar Cost Predictor" />
+        <meta property="og:title" content="Solar Calculator for Installers | Solar Cost Predictor" />
         <meta property="og:description" content="Embed a branded solar savings calculator on your website. Capture leads and close more deals. Free trial available." />
         <meta property="og:url" content="https://www.solarcostpredictor.com/for-installers" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Solar Cost Predictor" />
         <meta property="og:image" content="https://www.solarcostpredictor.com/android-chrome-512x512.png" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Solar Calculator Widget for Installers | Solar Cost Predictor" />
+        <meta name="twitter:title" content="Solar Calculator for Installers | Solar Cost Predictor" />
         <meta name="twitter:description" content="Embed a branded solar savings calculator on your website. Capture leads and close more deals." />
         <meta name="twitter:image" content="https://www.solarcostpredictor.com/android-chrome-512x512.png" />
       </Helmet>
@@ -409,7 +409,7 @@ function WhatItDoesForYou() {
         <div style={{ textAlign: 'center' }}>
           <SectionLabel>Business Impact</SectionLabel>
           <h2 style={sectionTitle}>What it actually does for your pipeline</h2>
-          <p style={sectionSub}>More than a widget — a 24/7 lead qualification machine for your solar business.</p>
+          <p style={sectionSub}>More than a calculator — a 24/7 lead qualification machine for your solar business.</p>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 40 }}>

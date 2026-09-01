@@ -127,7 +127,7 @@ export default function About() {
           <div style={{ background: 'white', borderRadius: 16, padding: '28px 32px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
             <h2 style={{ ...h2Style, marginTop: 0 }}>Also Built for Solar Installers</h2>
             <p style={pStyle}>
-              In addition to the free public calculator, Solar Cost Predictor offers a white-label embeddable widget that solar installers can add to their own websites. Installers get a branded calculator pre-configured with their service area, pricing, and lead routing — turning website visitors into qualified leads automatically.
+              In addition to the free public calculator, Solar Cost Predictor offers a white-label embeddable calculator that solar installers can add to their own websites. Installers get a branded calculator pre-configured with their service area, pricing, and lead routing — turning website visitors into qualified leads automatically.
             </p>
             <a
               href="/for-installers"
@@ -145,7 +145,7 @@ export default function About() {
                 transition: 'background 0.15s',
               }}
             >
-              Learn about the Installer Widget
+              Learn about the Installer Calculator
             </a>
           </div>
         </section>
