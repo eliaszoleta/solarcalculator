@@ -42,7 +42,7 @@ export default function Header() {
         <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
           <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
-            <img src="/logo-horizontal-light.svg" alt="Solar Cost Predictor" style={{ height: 44, width: 'auto' }} />
+            <img src="/logo-icon-light.svg" alt="Solar Cost Predictor" style={{ height: 44, width: 'auto' }} />
           </a>
 
           <nav style={{ display: 'flex', alignItems: 'center', gap: 4 }} className="header-desktop-nav">

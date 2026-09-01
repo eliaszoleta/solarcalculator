@@ -49,7 +49,7 @@ function LandingNav() {
     }}>
       <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, minWidth: 0 }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 1, minWidth: 0, overflow: 'hidden' }}>
-          <img src="/logo-horizontal-light.svg" alt="Solar Cost Predictor" style={{ height: 44, width: 'auto', maxWidth: '100%' }} />
+          <img src="/logo-icon-light.svg" alt="Solar Cost Predictor" style={{ height: 44, width: 'auto', maxWidth: '100%' }} />
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <a href="/installer" style={{
@@ -527,7 +527,7 @@ function LandingFooter() {
   return (
     <footer style={{ background: '#0f172a', padding: '32px 24px', textAlign: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-        <img src="/logo-horizontal-dark.svg" alt="Solar Cost Predictor" style={{ height: 44, width: 'auto' }} />
+        <img src="/logo-icon-dark.svg" alt="Solar Cost Predictor" style={{ height: 44, width: 'auto' }} />
       </div>
       <div style={{ display: 'flex', gap: 24, justifyContent: 'center', marginBottom: 20, flexWrap: 'wrap' }}>
         <a href="/" style={footerLink}>Home</a>

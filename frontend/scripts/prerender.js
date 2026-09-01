@@ -70,7 +70,7 @@ function staticHeader() {
   return `<header id="static-header" style="position:sticky;top:0;z-index:100;height:60px;display:flex;align-items:center;padding:0 12px;background:#ffffff;border-bottom:1px solid #f1f5f9;box-sizing:border-box">
   <div style="max-width:1120px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between">
     <a href="/" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0">
-      <img src="/logo-horizontal-light.svg" alt="Solar Cost Predictor" style="height:44px;width:auto" />
+      <img src="/logo-icon-light.svg" alt="Solar Cost Predictor" style="height:44px;width:auto" />
     </a>
     <nav class="pr-desktop-nav" style="display:flex;align-items:center;gap:4px">
       <a href="/#how-it-works" style="font-size:14px;font-weight:500;color:#475569;padding:6px 12px;border-radius:8px;text-decoration:none">How It Works</a>
