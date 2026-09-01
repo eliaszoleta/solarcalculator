@@ -102,6 +102,7 @@ function staticFooter(categories) {
       </div>
       <div>
         <div style="color:white;font-weight:700;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">Resources</div>
+        <a href="/how-we-calculate-solar-costs" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">How We Calculate Your Estimate</a>
         <a href="/about" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">About Solar Cost Predictor</a>
         <a href="/contact" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Contact</a>
       </div>
@@ -451,6 +452,12 @@ const STATIC_ROUTES = [
     heading: 'About Solar Cost Predictor',
   },
   {
+    path: 'how-we-calculate-solar-costs',
+    title: 'How We Calculate Your Solar Cost Estimate | Solar Cost Predictor',
+    description: 'See exactly how Solar Cost Predictor estimates your solar installation cost, savings, and payback period — real NREL sun data, EIA electricity rates, and current market pricing, step by step.',
+    heading: 'How We Calculate Your Solar Cost Estimate',
+  },
+  {
     path: 'privacy-policy',
     title: 'Privacy Policy | Solar Cost Predictor',
     description: 'Solar Cost Predictor privacy policy. Learn how we collect, use, and protect your personal information when you use our free solar savings calculator.',
@@ -577,6 +584,7 @@ function injectHomepage(posts, categories) {
       <div style="background:#f8fafc;border-radius:10px;padding:22px"><div style="background:${PRIMARY};color:white;width:32px;height:32px;border-radius:8px;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:10px">2</div><h3 style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px">Enter Your ZIP Code</h3><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0">We use real NREL PVWatts sunlight data for your exact location and EIA electricity rates by state.</p></div>
       <div style="background:#f8fafc;border-radius:10px;padding:22px"><div style="background:${PRIMARY};color:white;width:32px;height:32px;border-radius:8px;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:10px">3</div><h3 style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px">Get Your Free Estimate</h3><p style="font-size:13px;color:#64748b;line-height:1.6;margin:0">See personalized installation cost, 30% federal tax credit, monthly savings, and 25-year ROI.</p></div>
     </div>
+    <div style="text-align:center;margin-top:24px"><a href="/how-we-calculate-solar-costs" style="font-size:14px;font-weight:700;color:${PRIMARY};text-decoration:none">See the full methodology, step by step &rarr;</a></div>
   </div>
   <div style="background:white;border-radius:16px;padding:36px;margin-bottom:32px;border:1px solid #e2e8f0">
     <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:8px">Solar Cost Guides &amp; Resources</h2>

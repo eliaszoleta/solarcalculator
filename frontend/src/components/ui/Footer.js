@@ -3,6 +3,7 @@ import React from 'react';
 const links = {
   Resources: [
     { label: 'How It Works', href: '/#how-it-works' },
+    { label: 'How We Calculate Your Estimate', href: '/how-we-calculate-solar-costs' },
     { label: 'FAQ', href: '/#faq' },
     { label: 'Solar Blog', href: '/blog' },
     { label: 'Solar Incentives', href: '/blog/category/solar-incentives' },

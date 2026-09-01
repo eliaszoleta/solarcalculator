@@ -60,6 +60,11 @@ export default function SEOContent() {
               </div>
             ))}
           </div>
+          <div style={{ textAlign: 'center', marginTop: 32 }}>
+            <a href="/how-we-calculate-solar-costs" style={{ fontSize: 14, fontWeight: 700, color: '#1c3a5e', textDecoration: 'none' }}>
+              See the full methodology, step by step →
+            </a>
+          </div>
         </div>
       </section>
 

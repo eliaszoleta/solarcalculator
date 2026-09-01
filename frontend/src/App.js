@@ -21,6 +21,7 @@ import About from './components/pages/About';
 import Contact from './components/pages/Contact';
 import StatePage from './components/pages/StatePage';
 import TopicPage from './components/pages/TopicPage';
+import HowItsCalculated from './components/pages/HowItsCalculated';
 import './App.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
@@ -37,6 +38,7 @@ const isResults = pathname === '/results';
 const isPartnerWithUs = pathname === '/partner-with-us';
 const isStatePage = pathname.startsWith('/solar-cost/');
 const isTopicPage = pathname.startsWith('/solar-panels/');
+const isHowItsCalculated = pathname === '/how-we-calculate-solar-costs';
 const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
 
 function BlogRouter() {
@@ -217,6 +219,7 @@ export default function App() {
   if (isPrivacyPolicy) return <HelmetProvider><div className="app"><Header /><main><PrivacyPolicy /></main><Footer /></div></HelmetProvider>;
   if (isTermsOfService) return <HelmetProvider><div className="app"><Header /><main><TermsOfService /></main><Footer /></div></HelmetProvider>;
   if (isAbout) return <HelmetProvider><div className="app"><Header /><main><About /></main><Footer /></div></HelmetProvider>;
+  if (isHowItsCalculated) return <HelmetProvider><div className="app"><Header /><main><HowItsCalculated /></main><Footer /></div></HelmetProvider>;
   if (isContact) return <HelmetProvider><div className="app"><Header /><main><Contact /></main><Footer /></div></HelmetProvider>;
 
   if (isBlog) return <HelmetProvider><div className="app"><Header /><main><BlogRouter /></main><Footer /></div></HelmetProvider>;
