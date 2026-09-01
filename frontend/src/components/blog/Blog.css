@@ -33,7 +33,7 @@
 }
 
 .blog-breadcrumb a {
-  color: #1c3a5e;
+  color: #1b4d3e;
   font-weight: 500;
   text-decoration: none;
 }
@@ -52,14 +52,14 @@
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 20px;
-  background: #eef1f5;
-  color: #1c3a5e;
+  background: #eaf3ee;
+  color: #1b4d3e;
   border: 1px solid rgba(28,58,94,0.2);
   text-decoration: none;
   white-space: nowrap;
 }
 
-.blog-badge:hover { background: #e2e7ed; }
+.blog-badge:hover { background: #e0ece4; }
 
 /* ══════════════════════════════════════════════════════════════
    BLOG INDEX PAGE
@@ -67,7 +67,7 @@
 
 /* ── Hero ── */
 .blog-hero {
-  background: linear-gradient(135deg, #0f172a 0%, #12283f 70%, #1c3a5e 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #123529 70%, #1b4d3e 100%);
   color: white;
   padding: 52px 24px 40px;
   text-align: left;
@@ -82,7 +82,7 @@
 
 .blog-hero p {
   font-size: 15px;
-  color: #9fb3c8;
+  color: #a8c3b5;
   max-width: 480px;
   margin: 0 auto 24px;
   line-height: 1.6;
@@ -112,7 +112,7 @@
 .blog-search::placeholder { color: rgba(255,255,255,0.45); }
 
 .blog-search:focus {
-  border-color: #f59e0b;
+  border-color: #16a34a;
   background: rgba(255,255,255,0.12);
 }
 
@@ -164,8 +164,8 @@
 }
 
 .blog-cat-pill--active {
-  background: #1c3a5e;
-  border-color: #1c3a5e;
+  background: #1b4d3e;
+  border-color: #1b4d3e;
   color: white;
 }
 
@@ -181,9 +181,9 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #d97706;
-  background: #fffbeb;
-  border: 1px solid #fde68a;
+  color: #166534;
+  background: #eaf3ee;
+  border: 1px solid #bfe3cf;
   padding: 3px 10px;
   border-radius: 999px;
   margin-bottom: 16px;
@@ -260,21 +260,21 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #1c3a5e;
+  color: #1b4d3e;
   font-weight: 700;
   font-size: 14px;
   padding: 10px 20px;
   border-radius: 8px;
-  background: #eef1f5;
+  background: #eaf3ee;
   border: 1px solid rgba(28,58,94,0.2);
   transition: all 0.15s;
   width: fit-content;
 }
 
 .blog-featured__card:hover .blog-featured__cta {
-  background: #1c3a5e;
+  background: #1b4d3e;
   color: white;
-  border-color: #1c3a5e;
+  border-color: #1b4d3e;
 }
 
 /* ── Post grid ── */
@@ -382,7 +382,7 @@
 .blog-card__read-more {
   font-size: 13px;
   font-weight: 700;
-  color: #1c3a5e;
+  color: #1b4d3e;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -428,11 +428,11 @@
   transition: all 0.15s;
 }
 
-.blog-page-btn:hover { border-color: #1c3a5e; color: #1c3a5e; background: #eef1f5; }
+.blog-page-btn:hover { border-color: #1b4d3e; color: #1b4d3e; background: #eaf3ee; }
 
 .blog-page-btn--active {
-  background: #1c3a5e;
-  border-color: #1c3a5e;
+  background: #1b4d3e;
+  border-color: #1b4d3e;
   color: white;
   box-shadow: 0 2px 8px rgba(28,58,94,0.3);
 }
@@ -521,7 +521,7 @@
 ══════════════════════════════════════════════════════════════ */
 
 .post-hero {
-  background: linear-gradient(135deg, #0f172a 0%, #12283f 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #123529 100%);
   color: white;
   padding: 36px 24px 44px;
 }
@@ -545,7 +545,7 @@
   align-items: center;
   gap: 16px;
   font-size: 14px;
-  color: #9fb3c8;
+  color: #a8c3b5;
   flex-wrap: wrap;
 }
 
@@ -621,7 +621,7 @@
   margin-bottom: 6px;
 }
 
-.post-section a:not([class]) { color: #1c3a5e; font-weight: 600; }
+.post-section a:not([class]) { color: #1b4d3e; font-weight: 600; }
 .post-section a:not([class]):hover { text-decoration: underline; }
 .post-section strong { color: #0f172a; }
 
@@ -656,7 +656,7 @@
 
 /* ── Inline CTA ── */
 .post-cta-inline {
-  background: #eef1f5;
+  background: #eaf3ee;
   border: 1.5px solid rgba(28,58,94,0.2);
   border-radius: 12px;
   padding: 16px 20px;
@@ -690,7 +690,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #1c3a5e;
+  background: #1b4d3e;
   color: white;
   font-weight: 700;
   font-size: 13px;
@@ -702,7 +702,7 @@
   box-shadow: 0 2px 8px rgba(28,58,94,0.25);
 }
 
-.post-cta-inline__btn:hover { background: #12283f; transform: translateY(-1px); }
+.post-cta-inline__btn:hover { background: #123529; transform: translateY(-1px); }
 
 /* ── FAQ section ── */
 .post-faq {
@@ -747,7 +747,7 @@
 
 .faq-question__arrow {
   font-size: 18px;
-  color: #1c3a5e;
+  color: #1b4d3e;
   flex-shrink: 0;
   transition: transform 0.2s;
   line-height: 1.4;
@@ -796,8 +796,8 @@
 }
 
 .post-related__card:hover {
-  border-color: #1c3a5e;
-  background: #eef1f5;
+  border-color: #1b4d3e;
+  background: #eaf3ee;
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(28,58,94,0.1);
 }
@@ -805,7 +805,7 @@
 .post-related__cat {
   font-size: 11px;
   font-weight: 700;
-  color: #1c3a5e;
+  color: #1b4d3e;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   display: flex;
@@ -830,7 +830,7 @@
 
 /* ── Big CTA block ── */
 .post-cta-block {
-  background: linear-gradient(135deg, #0f172a, #12283f);
+  background: linear-gradient(135deg, #0f172a, #123529);
   border-radius: 16px;
   padding: 32px 28px;
   text-align: center;
@@ -850,7 +850,7 @@
 
 .post-cta-block p {
   font-size: 14px;
-  color: #c3ceda;
+  color: #bfe3cf;
   margin: 0 0 20px;
   line-height: 1.6;
 }
@@ -859,7 +859,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #1c3a5e;
+  background: #1b4d3e;
   color: white;
   font-weight: 700;
   font-size: 14px;
@@ -922,14 +922,14 @@
 
 .post-toc__link:hover,
 .post-toc__link--active {
-  color: #1c3a5e;
-  background: #eef1f5;
-  border-left-color: #1c3a5e;
+  color: #1b4d3e;
+  background: #eaf3ee;
+  border-left-color: #1b4d3e;
 }
 
 /* ── Sidebar CTA ── */
 .sidebar-cta {
-  background: linear-gradient(135deg, #0f172a, #12283f);
+  background: linear-gradient(135deg, #0f172a, #123529);
   border-radius: 12px;
   padding: 20px 16px;
   text-align: center;
@@ -947,14 +947,14 @@
 
 .sidebar-cta p {
   font-size: 12px;
-  color: #9fb3c8;
+  color: #a8c3b5;
   line-height: 1.5;
   margin: 0 0 14px;
 }
 
 .sidebar-cta__btn {
   display: block;
-  background: #1c3a5e;
+  background: #1b4d3e;
   color: white;
   font-weight: 700;
   font-size: 13px;

@@ -494,12 +494,12 @@ export function CategoryIcon({ slug, size = 18, style, color }) {
 
 /* Per-category color themes — matches reference card style */
 export const CATEGORY_COLORS = {
-  'solar-costs':        { bg: '#fffbeb', border: '#fde68a', iconBg: '#fef3c7', iconColor: '#d97706' },
-  'solar-financing':    { bg: '#eef1f5', border: '#c3ceda', iconBg: '#e2e7ed', iconColor: '#1c3a5e' },
+  'solar-costs':        { bg: '#eef7f1', border: '#bfe3cf', iconBg: '#dcf3e3', iconColor: '#0f3d2e' },
+  'solar-financing':    { bg: '#f0f5f2', border: '#cfe0d5', iconBg: '#e0ece4', iconColor: '#1f4d3a' },
   'solar-savings':      { bg: '#f0fdf4', border: '#bbf7d0', iconBg: '#dcfce7', iconColor: '#16a34a' },
-  'solar-incentives':   { bg: '#faf5ff', border: '#e9d5ff', iconBg: '#f3e8ff', iconColor: '#9333ea' },
-  'solar-installation': { bg: '#fff7ed', border: '#fed7aa', iconBg: '#ffedd5', iconColor: '#ea580c' },
-  'solar-basics':       { bg: '#fefce8', border: '#fef08a', iconBg: '#fef9c3', iconColor: '#ca8a04' },
+  'solar-incentives':   { bg: '#eaf6ee', border: '#b8ddc4', iconBg: '#d7ecdf', iconColor: '#15803d' },
+  'solar-installation': { bg: '#f2f7f3', border: '#c9ddce', iconBg: '#e2ece5', iconColor: '#14532d' },
+  'solar-basics':       { bg: '#edf7f0', border: '#b7ddc6', iconBg: '#d9f0e1', iconColor: '#059669' },
 };
 
 export function RefreshCwIcon(p) {
@@ -550,7 +550,7 @@ export function GlobeIcon(p) {
 }
 
 export function getCategoryColors(slug) {
-  return CATEGORY_COLORS[slug] || { bg: '#f8fafc', border: '#e2e8f0', iconBg: '#f1f5f9', iconColor: '#1c3a5e' };
+  return CATEGORY_COLORS[slug] || { bg: '#f8fafc', border: '#e2e8f0', iconBg: '#f1f5f9', iconColor: '#1b4d3e' };
 }
 
 

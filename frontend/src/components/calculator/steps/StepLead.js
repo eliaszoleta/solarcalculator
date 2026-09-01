@@ -13,7 +13,7 @@ export default function StepLead({
   onNameChange, onEmailChange, onPhoneChange, onPaymentMethodChange,
   requireContact, embedded, primaryColor, formBgColor,
 }) {
-  const accentColor = primaryColor || '#1c3a5e';
+  const accentColor = primaryColor || '#1b4d3e';
   const gap = embedded ? 6 : 10;
 
   const phoneInvalid = phone.trim() && phone.replace(/\D/g, '').length < 10;

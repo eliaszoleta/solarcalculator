@@ -67,12 +67,12 @@ function ResultsPage() {
 
   if (!data) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', fontFamily: 'sans-serif' }}>
-      Report not found. <a href="/" style={{ color: '#1c3a5e', marginLeft: 6 }}>Start a new estimate →</a>
+      Report not found. <a href="/" style={{ color: '#1b4d3e', marginLeft: 6 }}>Start a new estimate →</a>
     </div>
   );
 
   const installerConfig = data.c || null;
-  const primaryColor = installerConfig?.primaryColor || '#1c3a5e';
+  const primaryColor = installerConfig?.primaryColor || '#1b4d3e';
 
   const screen = (
     <ResultsScreen

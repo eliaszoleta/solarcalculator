@@ -67,22 +67,22 @@ export default function Contact() {
 
       {/* Page Hero */}
       <div style={{
-        background: 'linear-gradient(135deg, #0f172a 0%, #12283f 60%, #1c3a5e 100%)',
+        background: 'linear-gradient(135deg, #0f172a 0%, #123529 60%, #1b4d3e 100%)',
         padding: '64px 24px 96px',
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
       }}>
         <div style={{ position: 'absolute', bottom: -60, left: -40, width: 240, height: 240, borderRadius: '50%', background: 'rgba(125,147,171,0.1)', filter: 'blur(50px)' }} />
-        <div style={{ position: 'absolute', top: -50, right: -30, width: 200, height: 200, borderRadius: '50%', background: 'rgba(159,179,200,0.12)', filter: 'blur(50px)' }} />
+        <div style={{ position: 'absolute', top: -50, right: -30, width: 200, height: 200, borderRadius: '50%', background: 'rgba(168,195,181,0.12)', filter: 'blur(50px)' }} />
         <div style={{ position: 'relative', maxWidth: 560, margin: '0 auto' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(159,179,200,0.12)', border: '1px solid rgba(159,179,200,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
-            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#9fb3c8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Get in Touch</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(168,195,181,0.12)', border: '1px solid rgba(168,195,181,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
+            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#a8c3b5', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Get in Touch</span>
           </div>
           <h1 style={{ fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 14, letterSpacing: '-0.02em' }}>
             Contact Us
           </h1>
-          <p style={{ fontSize: 16, color: '#9fb3c8', lineHeight: 1.65, maxWidth: 420, margin: '0 auto' }}>
+          <p style={{ fontSize: 16, color: '#a8c3b5', lineHeight: 1.65, maxWidth: 420, margin: '0 auto' }}>
             We're a small team and we read every message. Send us a note and expect a reply within 1–2 business days.
           </p>
         </div>
@@ -93,14 +93,14 @@ export default function Contact() {
 
           {/* Sidebar */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <SideCard icon={<ClockIcon size={20} />} title="Fast response" body="Most messages get a reply within 1–2 business days." color="#1c3a5e" bg="#e2e7ed" />
+            <SideCard icon={<ClockIcon size={20} />} title="Fast response" body="Most messages get a reply within 1–2 business days." color="#1b4d3e" bg="#e0ece4" />
             <SideCard icon={<ShieldIcon size={20} />} title="Real humans, no bots" body="A real person on our small team reads every single message." color="#16a34a" bg="#dcfce7" />
-            <SideCard icon={<InboxIcon size={20} />} title="Anything's fair game" body="Feedback, bug reports, installer partnerships, or privacy requests — just ask." color="#7c3aed" bg="#ede9fe" />
+            <SideCard icon={<InboxIcon size={20} />} title="Anything's fair game" body="Feedback, bug reports, installer partnerships, or privacy requests — just ask." color="#15803d" bg="#eaf6ee" />
 
-            <div style={{ padding: '18px 20px', background: '#eef1f5', borderRadius: 14, border: '1px solid #c3ceda' }}>
-              <p style={{ fontSize: 13, color: '#12283f', fontWeight: 700, marginBottom: 6 }}>Looking for quick answers?</p>
+            <div style={{ padding: '18px 20px', background: '#eaf3ee', borderRadius: 14, border: '1px solid #bfe3cf' }}>
+              <p style={{ fontSize: 13, color: '#123529', fontWeight: 700, marginBottom: 6 }}>Looking for quick answers?</p>
               <p style={{ fontSize: 13, color: '#334155', lineHeight: 1.65, margin: 0 }}>
-                Check our <a href="/#faq" style={{ color: '#1c3a5e', fontWeight: 600 }}>FAQ</a> or browse the <a href="/blog" style={{ color: '#1c3a5e', fontWeight: 600 }}>Solar Blog</a> for guides on costs, savings, and tax credits.
+                Check our <a href="/#faq" style={{ color: '#1b4d3e', fontWeight: 600 }}>FAQ</a> or browse the <a href="/blog" style={{ color: '#1b4d3e', fontWeight: 600 }}>Solar Blog</a> for guides on costs, savings, and tax credits.
               </p>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function Contact() {
                   <div style={{ marginBottom: 14, color: '#16a34a', display: 'flex', justifyContent: 'center' }}><CheckCircleIcon size={44} /></div>
                   <p style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', marginBottom: 8 }}>Message sent!</p>
                   <p style={{ fontSize: 14, color: '#64748b', marginBottom: 22 }}>Thanks for reaching out — we typically reply within 1–2 business days.</p>
-                  <button onClick={() => setStatus('idle')} style={{ padding: '10px 22px', background: '#1c3a5e', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600, fontSize: 14, fontFamily: 'inherit' }}>
+                  <button onClick={() => setStatus('idle')} style={{ padding: '10px 22px', background: '#1b4d3e', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600, fontSize: 14, fontFamily: 'inherit' }}>
                     Send Another Message
                   </button>
                 </div>
@@ -129,11 +129,11 @@ export default function Contact() {
                   <div className="contact-row">
                     <div>
                       <label style={labelStyle} htmlFor="contact-name">Name *</label>
-                      <input id="contact-name" name="name" type="text" required value={form.name} onChange={handleChange} placeholder="Your name" style={inputStyle} onFocus={e => e.target.style.borderColor = '#1c3a5e'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                      <input id="contact-name" name="name" type="text" required value={form.name} onChange={handleChange} placeholder="Your name" style={inputStyle} onFocus={e => e.target.style.borderColor = '#1b4d3e'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
                     </div>
                     <div>
                       <label style={labelStyle} htmlFor="contact-email">Email *</label>
-                      <input id="contact-email" name="email" type="email" required value={form.email} onChange={handleChange} placeholder="you@example.com" style={inputStyle} onFocus={e => e.target.style.borderColor = '#1c3a5e'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                      <input id="contact-email" name="email" type="email" required value={form.email} onChange={handleChange} placeholder="you@example.com" style={inputStyle} onFocus={e => e.target.style.borderColor = '#1b4d3e'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
                     </div>
                   </div>
 
@@ -151,7 +151,7 @@ export default function Contact() {
 
                   <div>
                     <label style={labelStyle} htmlFor="contact-message">Message *</label>
-                    <textarea id="contact-message" name="message" required rows={5} value={form.message} onChange={handleChange} placeholder="How can we help?" style={{ ...inputStyle, resize: 'vertical' }} onFocus={e => e.target.style.borderColor = '#1c3a5e'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                    <textarea id="contact-message" name="message" required rows={5} value={form.message} onChange={handleChange} placeholder="How can we help?" style={{ ...inputStyle, resize: 'vertical' }} onFocus={e => e.target.style.borderColor = '#1b4d3e'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
                   </div>
 
                   {status === 'error' && (
@@ -166,7 +166,7 @@ export default function Contact() {
                     disabled={status === 'sending'}
                     style={{
                       padding: '13px 28px',
-                      background: '#1c3a5e',
+                      background: '#1b4d3e',
                       color: 'white',
                       border: 'none',
                       borderRadius: 9,
@@ -179,8 +179,8 @@ export default function Contact() {
                       fontFamily: 'inherit',
                       boxShadow: '0 4px 14px rgba(28,58,94,0.28)',
                     }}
-                    onMouseEnter={e => { if (status !== 'sending') e.currentTarget.style.background = '#12283f'; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = '#1c3a5e'; }}
+                    onMouseEnter={e => { if (status !== 'sending') e.currentTarget.style.background = '#123529'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = '#1b4d3e'; }}
                   >
                     {status === 'sending' ? 'Sending…' : 'Send Message'}
                   </button>

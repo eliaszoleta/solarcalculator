@@ -59,17 +59,17 @@ export default function Header() {
             ))}
             <a
               href="/partner-with-us"
-              style={{ fontSize: 14, fontWeight: 700, color: '#1c3a5e', padding: '6px 12px', borderRadius: 8, transition: 'color 0.12s, background 0.12s', textDecoration: 'none', whiteSpace: 'nowrap' }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#eef1f5'; }}
+              style={{ fontSize: 14, fontWeight: 700, color: '#1b4d3e', padding: '6px 12px', borderRadius: 8, transition: 'color 0.12s, background 0.12s', textDecoration: 'none', whiteSpace: 'nowrap' }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#eaf3ee'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
             >
               Partner With Us
             </a>
             <a
               href="/for-installers"
-              style={{ marginLeft: 8, fontSize: 13, fontWeight: 600, color: '#1c3a5e', padding: '7px 16px', borderRadius: 9, border: '1.5px solid #1c3a5e', background: 'transparent', textDecoration: 'none', transition: 'background 0.12s, color 0.12s', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#1c3a5e'; e.currentTarget.style.color = '#ffffff'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1c3a5e'; }}
+              style={{ marginLeft: 8, fontSize: 13, fontWeight: 600, color: '#1b4d3e', padding: '7px 16px', borderRadius: 9, border: '1.5px solid #1b4d3e', background: 'transparent', textDecoration: 'none', transition: 'background 0.12s, color 0.12s', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#1b4d3e'; e.currentTarget.style.color = '#ffffff'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1b4d3e'; }}
             >
               Get Solar Widget
             </a>
@@ -78,7 +78,7 @@ export default function Header() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }} className="header-mobile-nav">
             <a
               href="/for-installers"
-              style={{ fontSize: 11, fontWeight: 600, color: '#1c3a5e', padding: '5px 10px', borderRadius: 8, border: '1.5px solid #1c3a5e', background: 'transparent', textDecoration: 'none', whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}
+              style={{ fontSize: 11, fontWeight: 600, color: '#1b4d3e', padding: '5px 10px', borderRadius: 8, border: '1.5px solid #1b4d3e', background: 'transparent', textDecoration: 'none', whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}
             >
               Get Solar Widget
             </a>
@@ -114,7 +114,7 @@ export default function Header() {
           <a
             href="/partner-with-us"
             onClick={() => setMenuOpen(false)}
-            style={{ display: 'block', fontSize: 15, fontWeight: 700, color: '#1c3a5e', padding: '12px 0', borderBottom: '1px solid #f8fafc', textDecoration: 'none' }}
+            style={{ display: 'block', fontSize: 15, fontWeight: 700, color: '#1b4d3e', padding: '12px 0', borderBottom: '1px solid #f8fafc', textDecoration: 'none' }}
           >
             Partner With Us
           </a>

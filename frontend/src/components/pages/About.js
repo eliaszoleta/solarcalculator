@@ -36,21 +36,21 @@ export default function About() {
 
       {/* Page Hero */}
       <div style={{
-        background: 'linear-gradient(135deg, #0f172a 0%, #12283f 60%, #1c3a5e 100%)',
+        background: 'linear-gradient(135deg, #0f172a 0%, #123529 60%, #1b4d3e 100%)',
         padding: '64px 24px 56px',
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
       }}>
-        <div style={{ position: 'absolute', top: -60, right: -60, width: 280, height: 280, borderRadius: '50%', background: 'rgba(245,158,11,0.1)', filter: 'blur(50px)' }} />
+        <div style={{ position: 'absolute', top: -60, right: -60, width: 280, height: 280, borderRadius: '50%', background: 'rgba(22,163,74,0.12)', filter: 'blur(50px)' }} />
         <div style={{ position: 'relative', maxWidth: 640, margin: '0 auto' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(159,179,200,0.12)', border: '1px solid rgba(159,179,200,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
-            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#9fb3c8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>About Us</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(168,195,181,0.12)', border: '1px solid rgba(168,195,181,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
+            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#a8c3b5', letterSpacing: '0.08em', textTransform: 'uppercase' }}>About Us</span>
           </div>
           <h1 style={{ fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 16, letterSpacing: '-0.02em' }}>
             About Solar Cost Predictor
           </h1>
-          <p style={{ fontSize: 17, color: '#9fb3c8', lineHeight: 1.7, maxWidth: 520, margin: '0 auto' }}>
+          <p style={{ fontSize: 17, color: '#a8c3b5', lineHeight: 1.7, maxWidth: 520, margin: '0 auto' }}>
             We built the solar calculator we wished existed — honest, fast, and backed by real government data.
           </p>
         </div>
@@ -78,17 +78,17 @@ export default function About() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
             {[
               {
-                icon: <SunIcon size={24} />, iconBg: '#fef9c3', iconColor: '#ca8a04',
+                icon: <SunIcon size={24} />, iconBg: '#d9f0e1', iconColor: '#059669',
                 title: 'NREL PVWatts API',
                 desc: "When you enter a ZIP code, we query the National Renewable Energy Laboratory's PVWatts database for your exact location's peak sun hours and irradiance — the same dataset used by professional installers."
               },
               {
-                icon: <BoltIcon size={24} />, iconBg: '#fef3c7', iconColor: '#d97706',
+                icon: <BoltIcon size={24} />, iconBg: '#e0ece4', iconColor: '#1f4d3a',
                 title: 'EIA Electricity Rates',
                 desc: "We use real residential electricity rates from the U.S. Energy Information Administration (EIA) for each state, updated regularly. Your savings estimate reflects what you actually pay per kWh."
               },
               {
-                icon: <WrenchIcon size={24} />, iconBg: '#ffedd5', iconColor: '#ea580c',
+                icon: <WrenchIcon size={24} />, iconBg: '#dcf3e3', iconColor: '#0f3d2e',
                 title: 'Market Installation Costs',
                 desc: "Our installation cost estimates ($2.50–$3.50/watt) are based on current national averages from SEIA and Lawrence Berkeley National Laboratory's Tracking the Sun report."
               },
@@ -111,7 +111,7 @@ export default function About() {
 
         {/* Accuracy note */}
         <section style={{ marginBottom: 40 }}>
-          <div style={{ background: '#fffbeb', borderRadius: 16, padding: '28px 32px', border: '1px solid #fde68a' }}>
+          <div style={{ background: '#eaf3ee', borderRadius: 16, padding: '28px 32px', border: '1px solid #bfe3cf' }}>
             <h2 style={{ ...h2Style, marginTop: 0 }}>A Note on Accuracy</h2>
             <p style={pStyle}>
               Our estimates are <strong>80–90% accurate</strong> compared to real installer quotes. On a typical $25,000 system, that's within $2,500–$5,000 of what an installer would actually propose. That's accurate enough to know whether solar makes financial sense for you and to spot an overpriced quote — but not a substitute for an on-site assessment.
@@ -136,7 +136,7 @@ export default function About() {
                 alignItems: 'center',
                 gap: 6,
                 padding: '10px 20px',
-                background: '#1c3a5e',
+                background: '#1b4d3e',
                 color: 'white',
                 borderRadius: 8,
                 fontWeight: 600,
@@ -152,13 +152,13 @@ export default function About() {
 
         {/* Contact CTA */}
         <section style={{
-          background: 'linear-gradient(135deg, #0f172a, #12283f)',
+          background: 'linear-gradient(135deg, #0f172a, #123529)',
           borderRadius: 20,
           padding: '40px 32px',
           textAlign: 'center',
         }}>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: 'white', marginBottom: 10, letterSpacing: '-0.01em' }}>Questions or Feedback?</h2>
-          <p style={{ color: '#9fb3c8', marginBottom: 24, fontSize: 15, lineHeight: 1.6 }}>We're a small team and we read every message.</p>
+          <p style={{ color: '#a8c3b5', marginBottom: 24, fontSize: 15, lineHeight: 1.6 }}>We're a small team and we read every message.</p>
           <a
             href="/contact"
             style={{

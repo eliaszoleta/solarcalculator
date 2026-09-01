@@ -27,7 +27,7 @@ const BATTERY_OPTIONS = [
   {
     value: 'two',
     Illustration: TwoBatteriesIllustration,
-    color: '#d97706', bg: '#fffbeb',
+    color: '#14532d', bg: '#eaf3ee',
     label: '2 Batteries',
     desc: 'Maximum storage. Nearly full energy independence.',
     price: '+$23,000',

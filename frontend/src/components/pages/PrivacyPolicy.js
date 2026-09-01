@@ -15,8 +15,8 @@ export default function PrivacyPolicy() {
 
       {/* Page Hero */}
       <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', padding: '56px 24px 48px', textAlign: 'center' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(159,179,200,0.12)', border: '1px solid rgba(159,179,200,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 18 }}>
-          <span style={{ fontSize: 11.5, fontWeight: 700, color: '#9fb3c8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Legal</span>
+        <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(168,195,181,0.12)', border: '1px solid rgba(168,195,181,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 18 }}>
+          <span style={{ fontSize: 11.5, fontWeight: 700, color: '#a8c3b5', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Legal</span>
         </div>
         <h1 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 10, letterSpacing: '-0.02em' }}>Privacy Policy</h1>
         <p style={{ fontSize: 14, color: '#64748b', margin: 0 }}>Last updated: March 20, 2026</p>
@@ -156,4 +156,4 @@ function Section({ title, children }) {
 
 const h3Style = { fontSize: 14, fontWeight: 700, color: '#0f172a', marginTop: 6, marginBottom: 4 };
 const ulStyle = { paddingLeft: 20, margin: '4px 0', lineHeight: 1.8 };
-const linkStyle = { color: '#1c3a5e', textDecoration: 'underline' };
+const linkStyle = { color: '#1b4d3e', textDecoration: 'underline' };

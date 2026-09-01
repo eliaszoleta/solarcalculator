@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-const PRIMARY = '#1c3a5e';
+const PRIMARY = '#1b4d3e';
 const WEB3FORMS_KEY = 'b0da3f48-9982-4a5a-9195-4200a80ba8c6';
 const DOMAIN = 'https://www.solarcostpredictor.com';
 
@@ -137,11 +137,11 @@ export default function PartnerWithUs() {
       </Helmet>
 
       {/* Hero */}
-      <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #12283f 100%)', color: 'white', padding: 'clamp(60px, 10vw, 100px) 24px' }}>
+      <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #123529 100%)', color: 'white', padding: 'clamp(60px, 10vw, 100px) 24px' }}>
         <div style={{ maxWidth: 780, margin: '0 auto', textAlign: 'center' }}>
           <h1 style={{ fontSize: 'clamp(32px, 6vw, 58px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-1.5px', marginBottom: 22 }}>
             Get Recommended to Thousands of Homeowners
-            <span style={{ display: 'block', color: '#9fb3c8' }}> Ready to Go Solar</span>
+            <span style={{ display: 'block', color: '#a8c3b5' }}> Ready to Go Solar</span>
           </h1>
           <p style={{ fontSize: 'clamp(15px, 2.5vw, 18px)', color: '#cbd5e1', lineHeight: 1.7, maxWidth: 620, margin: '0 auto 36px' }}>
             Solar Cost Predictor gets <strong style={{ color: 'white' }}>20,000&ndash;30,000 organic visits per month</strong> from homeowners actively calculating their solar savings &mdash; not casual browsers, but people who have already decided they want solar and are comparing costs.
@@ -176,7 +176,7 @@ export default function PartnerWithUs() {
               { icon: <IconWallet />, title: 'They know their numbers', body: "Our calculator shows them system cost, federal tax credit, monthly savings, and 25-year ROI. By the time they see you, they're informed and ready to get a real quote." },
             ].map((card, i) => (
               <div key={i} style={{ background: '#f8fafc', borderRadius: 14, padding: '28px 24px', border: '1px solid #e2e8f0' }}>
-                <div style={{ width: 52, height: 52, background: '#eef1f5', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>{card.icon}</div>
+                <div style={{ width: 52, height: 52, background: '#eaf3ee', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>{card.icon}</div>
                 <div style={{ fontWeight: 700, fontSize: 16, color: '#0f172a', marginBottom: 8 }}>{card.title}</div>
                 <div style={{ fontSize: 14, color: '#64748b', lineHeight: 1.65 }} dangerouslySetInnerHTML={{ __html: card.body }} />
               </div>
@@ -207,7 +207,7 @@ export default function PartnerWithUs() {
             <h2 style={{ fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px', marginBottom: 12 }}>Simple, Transparent Pricing</h2>
             <p style={{ fontSize: 15, color: '#64748b' }}>One flat rate. No setup fees. No commissions. Cancel anytime.</p>
           </div>
-          <div style={{ background: 'linear-gradient(135deg, #eef1f5, #f0f9ff)', border: `2px solid ${PRIMARY}`, borderRadius: 20, padding: 'clamp(28px, 5vw, 48px)', maxWidth: 540, margin: '0 auto' }}>
+          <div style={{ background: 'linear-gradient(135deg, #eaf3ee, #f0f9ff)', border: `2px solid ${PRIMARY}`, borderRadius: 20, padding: 'clamp(28px, 5vw, 48px)', maxWidth: 540, margin: '0 auto' }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: PRIMARY, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Per City Plan</div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 6 }}>
               <span style={{ fontSize: 56, fontWeight: 900, color: '#0f172a', letterSpacing: '-2px', lineHeight: 1 }}>$350</span>
@@ -222,7 +222,7 @@ export default function PartnerWithUs() {
               <Check>Cancel anytime with 30 days notice</Check>
               <Check>Add more cities at the same rate as you grow</Check>
             </div>
-            <div style={{ background: 'white', borderRadius: 10, padding: '14px 18px', border: '1px solid #c3ceda', fontSize: 13.5, color: '#1c3a5e', lineHeight: 1.6 }}>
+            <div style={{ background: 'white', borderRadius: 10, padding: '14px 18px', border: '1px solid #bfe3cf', fontSize: 13.5, color: '#1b4d3e', lineHeight: 1.6 }}>
               <strong>Example:</strong> An installer serving Phoenix and Tucson pays $700/month and appears on every solar estimate result from both cities.
             </div>
           </div>
@@ -310,7 +310,7 @@ export default function PartnerWithUs() {
               {error && (
                 <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 8, padding: '10px 14px', fontSize: 13.5, color: '#dc2626', marginBottom: 14 }}>{error}</div>
               )}
-              <button type="submit" disabled={sending} style={{ width: '100%', background: sending ? '#9fb3c8' : PRIMARY, color: 'white', border: 'none', borderRadius: 10, padding: '14px 0', fontWeight: 800, fontSize: 16, cursor: sending ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, transition: 'background 0.2s' }}>
+              <button type="submit" disabled={sending} style={{ width: '100%', background: sending ? '#a8c3b5' : PRIMARY, color: 'white', border: 'none', borderRadius: 10, padding: '14px 0', fontWeight: 800, fontSize: 16, cursor: sending ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, transition: 'background 0.2s' }}>
                 {sending ? 'Sending...' : <> Send My Application <IconArrow size={18} color="white" /> </>}
               </button>
               <p style={{ fontSize: 12, color: '#94a3b8', textAlign: 'center', marginTop: 14, marginBottom: 0 }}>We'll confirm city availability and pricing within 48 hours. No payment required to apply.</p>

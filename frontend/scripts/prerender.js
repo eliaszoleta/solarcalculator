@@ -6,18 +6,20 @@ const path = require('path');
 const BUILD  = path.join(__dirname, '../build');
 const SRC    = path.join(__dirname, '../src');
 const DOMAIN = 'https://www.solarcostpredictor.com';
-const PRIMARY = '#1c3a5e';
+const PRIMARY = '#1b4d3e';
 
-// Mirrors the favicon/manifest links in public/index.html. That file only backs the
+// Mirrors the favicon/manifest/font links in public/index.html. That file only backs the
 // homepage — every other prerendered page builds its own <head> from scratch here, so
-// without this the browser tab (and Google's favicon in search results) shows blank on
-// every page except "/".
+// without this the browser tab (and Google's favicon in search results) shows blank, and
+// the Poppins font never loads, on every page except "/".
 const FAVICON_LINKS = `<link rel="icon" href="/favicon.ico">
   <link rel="icon" type="image/svg+xml" href="/logo-icon-navy.svg">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="manifest" href="/site.webmanifest">`;
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">`;
 
 function loadBlogData() {
   const raw = fs.readFileSync(path.join(SRC, 'data/blogPosts.js'), 'utf8');
@@ -259,7 +261,7 @@ function renderBlogIndex(posts, categories, assets) {
 
   const catBadge = (post) => {
     const cat = categories.find(c => c.slug === post.category) || { label: post.category };
-    return `<span style="display:inline-flex;align-items:center;gap:5px;background:#eef1f5;border:1px solid #c3ceda;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;color:${PRIMARY};text-transform:uppercase;letter-spacing:0.05em">${esc(cat.label)}</span>`;
+    return `<span style="display:inline-flex;align-items:center;gap:5px;background:#eaf3ee;border:1px solid #bfe3cf;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;color:${PRIMARY};text-transform:uppercase;letter-spacing:0.05em">${esc(cat.label)}</span>`;
   };
 
   const readTime = (post) => post.readingTime ? `${post.readingTime} min read` : (post.readTime || '');
@@ -404,7 +406,7 @@ ${staticHeader()}
     </a>
 
     <div style="margin-bottom:40px">
-      <div style="width:52px;height:52px;border-radius:14px;background:#eef1f5;border:1.5px solid #c3ceda;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:24px">&#9728;</div>
+      <div style="width:52px;height:52px;border-radius:14px;background:#eaf3ee;border:1.5px solid #bfe3cf;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:24px">&#9728;</div>
       <h1 style="font-size:clamp(24px,4vw,34px);font-weight:800;color:#0f172a;margin-bottom:8px">${esc(cat.label)}</h1>
       <p style="font-size:16px;color:#64748b">${esc(seoDesc)}</p>
     </div>
@@ -412,9 +414,9 @@ ${staticHeader()}
     <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px">All Articles</div>
     ${articleRows || '<p style="color:#64748b">No articles yet.</p>'}
 
-    <div style="background:linear-gradient(135deg,#12283f,#1c3a5e);border-radius:14px;padding:32px 36px;margin-top:48px;color:white;text-align:center">
+    <div style="background:linear-gradient(135deg,#123529,#1b4d3e);border-radius:14px;padding:32px 36px;margin-top:48px;color:white;text-align:center">
       <h3 style="font-size:20px;font-weight:800;margin-bottom:10px">Estimate Your Solar Savings</h3>
-      <p style="color:#c3ceda;margin-bottom:20px;font-size:15px">Free calculator &mdash; enter your electric bill and ZIP code for a personalized estimate.</p>
+      <p style="color:#bfe3cf;margin-bottom:20px;font-size:15px">Free calculator &mdash; enter your electric bill and ZIP code for a personalized estimate.</p>
       <a href="/" style="background:white;color:${PRIMARY};padding:13px 28px;border-radius:9px;text-decoration:none;font-weight:700;font-size:15px">Get My Free Estimate &rarr;</a>
     </div>
 
@@ -543,13 +545,13 @@ function renderContactStatic(categories, assets) {
 <body>
 <div id="root"><div style="background:#f1f5f9;min-height:100vh;font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
 ${staticHeader()}
-<div style="background:linear-gradient(135deg,#0f172a 0%,#12283f 60%,#1c3a5e 100%);padding:64px 24px 96px;text-align:center;position:relative;overflow:hidden">
+<div style="background:linear-gradient(135deg,#0f172a 0%,#123529 60%,#1b4d3e 100%);padding:64px 24px 96px;text-align:center;position:relative;overflow:hidden">
   <div style="position:relative;max-width:560px;margin:0 auto">
-    <div style="display:inline-flex;align-items:center;background:rgba(159,179,200,0.12);border:1px solid rgba(159,179,200,0.25);border-radius:999px;padding:4px 14px;margin-bottom:20px">
-      <span style="font-size:11.5px;font-weight:700;color:#9fb3c8;letter-spacing:0.08em;text-transform:uppercase">Get in Touch</span>
+    <div style="display:inline-flex;align-items:center;background:rgba(168,195,181,0.12);border:1px solid rgba(168,195,181,0.25);border-radius:999px;padding:4px 14px;margin-bottom:20px">
+      <span style="font-size:11.5px;font-weight:700;color:#a8c3b5;letter-spacing:0.08em;text-transform:uppercase">Get in Touch</span>
     </div>
     <h1 style="font-size:clamp(28px,5vw,42px);font-weight:900;color:white;line-height:1.15;margin-bottom:14px;letter-spacing:-0.02em">Contact Us</h1>
-    <p style="font-size:16px;color:#9fb3c8;line-height:1.65;max-width:420px;margin:0 auto">We're a small team and we read every message. Send us a note and expect a reply within 1&ndash;2 business days.</p>
+    <p style="font-size:16px;color:#a8c3b5;line-height:1.65;max-width:420px;margin:0 auto">We're a small team and we read every message. Send us a note and expect a reply within 1&ndash;2 business days.</p>
   </div>
 </div>
 <div style="max-width:900px;margin:-56px auto 0;padding:0 24px 80px;position:relative;min-height:400px"></div>
@@ -776,7 +778,7 @@ function renderStatePage(state, servicesMod, statesMod, faqsMod, assets) {
       <h2 style="font-size:19px;font-weight:800;color:#0f172a;margin-top:32px;margin-bottom:14px">FAQs</h2>
       ${faqAccordionHtml(faqs)}
     </div>
-    <div style="background:#eef1f5;border:1px solid #c7d2e0;border-radius:12px;padding:24px 28px;margin-bottom:32px;text-align:center">
+    <div style="background:#eaf3ee;border:1px solid #c7d2e0;border-radius:12px;padding:24px 28px;margin-bottom:32px;text-align:center">
       <div style="font-weight:800;font-size:18px;color:#0f172a;margin-bottom:6px">Ready to get an accurate estimate?</div>
       <p style="font-size:14px;color:#64748b;margin-bottom:16px">Use our free calculator for a personalized solar estimate in ${esc(state.name)} in under 2 minutes.</p>
       <a href="/" style="background:${PRIMARY};color:white;padding:12px 28px;border-radius:9px;text-decoration:none;font-weight:700;font-size:15px">Get My Free Estimate &rarr;</a>
@@ -862,7 +864,7 @@ function renderTopicPage(service, servicesMod, statesMod, assets) {
       <h2 style="font-size:19px;font-weight:800;color:#0f172a;margin-top:32px;margin-bottom:14px">FAQs</h2>
       ${faqAccordionHtml(service.faqs)}
     </div>
-    <div style="background:#eef1f5;border:1px solid #c7d2e0;border-radius:12px;padding:24px 28px;margin-bottom:32px;text-align:center">
+    <div style="background:#eaf3ee;border:1px solid #c7d2e0;border-radius:12px;padding:24px 28px;margin-bottom:32px;text-align:center">
       <div style="font-weight:800;font-size:18px;color:#0f172a;margin-bottom:6px">Ready to get an accurate estimate?</div>
       <p style="font-size:14px;color:#64748b;margin-bottom:16px">Use our free calculator for a personalized solar estimate in under 2 minutes.</p>
       <a href="/" style="background:${PRIMARY};color:white;padding:12px 28px;border-radius:9px;text-decoration:none;font-weight:700;font-size:15px">Get My Free Estimate &rarr;</a>

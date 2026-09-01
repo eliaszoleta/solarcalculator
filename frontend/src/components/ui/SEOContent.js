@@ -50,7 +50,7 @@ export default function SEOContent() {
       <section id="how-it-works" style={{ padding: '96px 24px', background: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <div style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#92400e', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
+            <div style={{ display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#166534', background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.2)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
               How It Works
             </div>
             <h2 style={{ fontSize: 'clamp(26px, 4vw, 40px)', fontWeight: 900, color: '#0a0a0a', letterSpacing: '-0.03em', marginBottom: 14 }}>
@@ -62,9 +62,9 @@ export default function SEOContent() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: 16 }}>
             {[
-              { icon: <BoltIcon size={22} />, iconBg: '#fef3c7', iconColor: '#d97706', title: 'Your Electric Bill', desc: 'We calculate exactly how much electricity your home uses based on your monthly bill and your state\'s electricity rate.' },
-              { icon: <SunIcon size={22} />, iconBg: '#fef9c3', iconColor: '#ca8a04', title: 'Sunlight Data', desc: 'Enter your ZIP code and we pull real irradiance data from the NREL PVWatts API for your exact location.' },
-              { icon: <RulerIcon size={22} />, iconBg: '#e2e7ed', iconColor: '#1c3a5e', title: 'System Sizing', desc: 'We recommend the ideal system size to offset your usage, then calculate the real installation cost based on current market rates.' },
+              { icon: <BoltIcon size={22} />, iconBg: '#e0ece4', iconColor: '#1f4d3a', title: 'Your Electric Bill', desc: 'We calculate exactly how much electricity your home uses based on your monthly bill and your state\'s electricity rate.' },
+              { icon: <SunIcon size={22} />, iconBg: '#d9f0e1', iconColor: '#059669', title: 'Sunlight Data', desc: 'Enter your ZIP code and we pull real irradiance data from the NREL PVWatts API for your exact location.' },
+              { icon: <RulerIcon size={22} />, iconBg: '#dcf3e3', iconColor: '#0f3d2e', title: 'System Sizing', desc: 'We recommend the ideal system size to offset your usage, then calculate the real installation cost based on current market rates.' },
               { icon: <DollarSignIcon size={22} />, iconBg: '#dcfce7', iconColor: '#16a34a', title: 'Savings Projection', desc: 'We project 30 years of savings accounting for 4% annual utility rate increases, tax credits, and your financing options.' },
             ].map((item, i) => (
               <div key={item.title} style={{ padding: '28px 24px', background: '#ffffff', borderRadius: 18, border: '1px solid #e2e8f0', transition: 'box-shadow 0.15s', position: 'relative' }}>
@@ -78,7 +78,7 @@ export default function SEOContent() {
             ))}
           </div>
           <div style={{ textAlign: 'center', marginTop: 32 }}>
-            <a href="/how-we-calculate-solar-costs" style={{ fontSize: 14, fontWeight: 700, color: '#1c3a5e', textDecoration: 'none' }}>
+            <a href="/how-we-calculate-solar-costs" style={{ fontSize: 14, fontWeight: 700, color: '#1b4d3e', textDecoration: 'none' }}>
               See the full methodology, step by step →
             </a>
           </div>
@@ -109,7 +109,7 @@ export default function SEOContent() {
                   <tr key={tier.label} style={{ background: i % 2 === 0 ? 'white' : '#fafafa' }}>
                     <td style={{ padding: '12px 16px', color: '#0f172a', fontWeight: 600, borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{tier.label}</td>
                     <td style={{ padding: '12px 16px', color: '#475569', borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{formatPrice(tier.low)}–{formatPrice(tier.high)}</td>
-                    <td style={{ padding: '12px 16px', color: '#1c3a5e', fontWeight: 700, borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{formatPrice(tier.low * 0.7)}–{formatPrice(tier.high * 0.7)}</td>
+                    <td style={{ padding: '12px 16px', color: '#1b4d3e', fontWeight: 700, borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{formatPrice(tier.low * 0.7)}–{formatPrice(tier.high * 0.7)}</td>
                     <td style={{ padding: '12px 16px', color: '#64748b', borderTop: '1px solid #f1f5f9' }}>{tier.note}</td>
                   </tr>
                 ))}
@@ -117,7 +117,7 @@ export default function SEOContent() {
             </table>
           </div>
           <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 16 }}>
-            *Based on a flat $2.80/watt all-in installed price and the 30% federal Investment Tax Credit. Your actual system size depends on your usage, roof, and location — <a href="/solar-panels/solar-system-size-cost" style={{ color: '#1c3a5e' }}>see the full breakdown by system size</a>.
+            *Based on a flat $2.80/watt all-in installed price and the 30% federal Investment Tax Credit. Your actual system size depends on your usage, roof, and location — <a href="/solar-panels/solar-system-size-cost" style={{ color: '#1b4d3e' }}>see the full breakdown by system size</a>.
           </p>
         </div>
       </section>
@@ -136,7 +136,7 @@ export default function SEOContent() {
               <a key={s.code} href={`/solar-cost/${s.slug}`} style={{ textDecoration: 'none' }}>
                 <div style={{ background: '#ffffff', padding: '16px 18px', borderRadius: 14, border: '1px solid #e2e8f0', height: '100%', boxSizing: 'border-box' }}>
                   <div style={{ fontWeight: 700, color: '#0a0a0a', marginBottom: 4, fontSize: 14 }}>{s.name}</div>
-                  <div style={{ fontSize: 13, color: '#1c3a5e', fontWeight: 600 }}>{formatPrice(s.estimate.netCostLow)}–{formatPrice(s.estimate.netCostHigh)}</div>
+                  <div style={{ fontSize: 13, color: '#1b4d3e', fontWeight: 600 }}>{formatPrice(s.estimate.netCostLow)}–{formatPrice(s.estimate.netCostHigh)}</div>
                   <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 4 }}>{s.estimate.systemSizeKw} kW system · {s.estimate.paybackYears}-yr payback</div>
                 </div>
               </a>
@@ -195,7 +195,7 @@ export default function SEOContent() {
                 <div style={{ fontWeight: 800, fontSize: 15, color: '#0a0a0a', marginBottom: 8 }}>{item.title}</div>
                 <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, margin: item.href ? '0 0 14px' : 0 }}>{item.desc}</p>
                 {item.href && (
-                  <a href={item.href} style={{ fontSize: 13, fontWeight: 700, color: '#1c3a5e', textDecoration: 'none' }}>See pricing →</a>
+                  <a href={item.href} style={{ fontSize: 13, fontWeight: 700, color: '#1b4d3e', textDecoration: 'none' }}>See pricing →</a>
                 )}
               </div>
             ))}
@@ -237,19 +237,19 @@ export default function SEOContent() {
               {
                 title: 'Solar Loan',
                 tag: 'Most popular',
-                tagColor: '#1c3a5e', tagBg: '#e2e7ed',
+                tagColor: '#15803d', tagBg: '#eaf6ee',
                 desc: 'Borrow to buy. You own the system and keep the ITC. Terms run 5–20 years at 4–8% APR. Monthly loan payment is typically less than your current electric bill.',
               },
               {
                 title: 'Solar Lease',
                 tag: '$0 down',
-                tagColor: '#d97706', tagBg: '#fef3c7',
+                tagColor: '#1f4d3a', tagBg: '#f0f5f2',
                 desc: 'Rent the solar panels from a company. No upfront cost, predictable monthly payments. You do not own the system and do not receive the federal tax credit.',
               },
               {
                 title: 'Solar PPA',
                 tag: 'Pay per kWh',
-                tagColor: '#9333ea', tagBg: '#f3e8ff',
+                tagColor: '#0f3d2e', tagBg: '#eef7f1',
                 desc: 'Power Purchase Agreement — you pay only for the electricity the panels produce, often at a rate below your utility. No ownership, no maintenance costs.',
               },
             ].map(item => (
@@ -277,7 +277,7 @@ export default function SEOContent() {
               {
                 title: '30% Federal Solar Tax Credit (ITC)',
                 desc: 'The Investment Tax Credit lets you deduct 30% of your total solar installation cost from your federal income taxes. For a $20,000 system, that\'s a $6,000 credit. Applies to systems installed through 2032.',
-                color: '#1c3a5e', bg: '#eef1f5',
+                color: '#0f3d2e', bg: '#eef7f1',
               },
               {
                 title: 'Net Metering',
@@ -287,12 +287,12 @@ export default function SEOContent() {
               {
                 title: 'State & Utility Rebates',
                 desc: 'Many states add their own incentives: NY-Sun (New York), SMART (Massachusetts), SGIP battery rebates (California), Xcel Solar Rewards (Colorado), and more. Stack with the federal ITC for maximum savings.',
-                color: '#d97706', bg: '#fffbeb',
+                color: '#15803d', bg: '#eaf6ee',
               },
               {
                 title: 'Property & Sales Tax Exemptions',
                 desc: 'Over 30 states exempt the added home value from solar from property taxes. Florida, Texas, Arizona, and New York also offer full sales tax exemptions on solar equipment purchases.',
-                color: '#9333ea', bg: '#faf5ff',
+                color: '#1f4d3a', bg: '#f0f5f2',
               },
             ].map(item => (
               <div key={item.title} style={{ background: item.bg, padding: '20px 18px', borderRadius: 14, border: `1px solid ${item.color}22` }}>
@@ -340,7 +340,7 @@ export default function SEOContent() {
               <div key={item.title} style={{ background: '#f8fafc', padding: '24px 22px', borderRadius: 16, border: '1px solid #e2e8f0' }}>
                 <div style={{ fontWeight: 800, fontSize: 16, color: '#0a0a0a', marginBottom: 10 }}>{item.title}</div>
                 <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.65, margin: '0 0 16px' }}>{item.desc}</p>
-                <a href={item.href} style={{ fontSize: 13.5, fontWeight: 700, color: '#1c3a5e', textDecoration: 'none' }}>{item.cta} →</a>
+                <a href={item.href} style={{ fontSize: 13.5, fontWeight: 700, color: '#1b4d3e', textDecoration: 'none' }}>{item.cta} →</a>
               </div>
             ))}
           </div>

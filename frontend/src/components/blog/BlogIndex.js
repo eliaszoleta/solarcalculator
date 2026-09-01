@@ -4,7 +4,7 @@ import { POSTS, CATEGORIES, getFeaturedPost } from '../../data/blogPosts';
 import { CategoryIcon } from '../ui/Icons';
 
 const SITE_URL = 'https://www.solarcostpredictor.com';
-const PRIMARY = '#1c3a5e';
+const PRIMARY = '#1b4d3e';
 
 function PostCard({ post, featured = false }) {
   const catLabel = (CATEGORIES.find(c => c.slug === post.category) || {}).label || post.category;
@@ -28,7 +28,7 @@ function PostCard({ post, featured = false }) {
         onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: '#eef1f5', border: '1px solid #c3ceda', borderRadius: 6, padding: '3px 9px 3px 7px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: '#eaf3ee', border: '1px solid #bfe3cf', borderRadius: 6, padding: '3px 9px 3px 7px' }}>
             <CategoryIcon slug={post.category} size={11} color={PRIMARY} />
             <span style={{ fontSize: 11, fontWeight: 700, color: PRIMARY, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{catLabel}</span>
           </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function StepCustom({ step, value, onChange, primaryColor }) {
-  const accent = primaryColor || '#1c3a5e';
+  const accent = primaryColor || '#1b4d3e';
   const selectedStyle = { borderColor: accent, background: `${accent}10` };
 
   if (step.type === 'yes-no') {

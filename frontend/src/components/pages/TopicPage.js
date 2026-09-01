@@ -29,7 +29,7 @@ function TiersTable({ service }) {
           {service.tiers.map((tier, i) => (
             <tr key={i} style={{ background: i % 2 === 0 ? 'white' : '#fafafa' }}>
               <td style={{ padding: '10px 14px', color: '#0f172a', fontWeight: 600, borderBottom: '1px solid #f1f5f9' }}>{tier.label}</td>
-              <td style={{ padding: '10px 14px', color: '#1c3a5e', fontWeight: 700, borderBottom: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>
+              <td style={{ padding: '10px 14px', color: '#1b4d3e', fontWeight: 700, borderBottom: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>
                 {tier.low === tier.high ? formatPrice(tier.low) : `${formatPrice(tier.low)}–${formatPrice(tier.high)}`}
               </td>
               <td style={{ padding: '10px 14px', color: '#475569', borderBottom: '1px solid #f1f5f9' }}>{tier.note}</td>
@@ -48,8 +48,8 @@ function StateLinks() {
       {states.map(state => (
         <a key={state.code} href={`/solar-cost/${state.slug}`} style={{ textDecoration: 'none' }}>
           <div style={{ border: '1px solid #f1f5f9', background: '#fafafa', borderRadius: 8, padding: '11px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: '#0f172a' }}><MapPinIcon size={11} color="#1c3a5e" />{state.name}</span>
-            <span style={{ fontSize: 12.5, fontWeight: 700, color: '#1c3a5e', whiteSpace: 'nowrap' }}>{formatPrice(state.estimate.netCostLow)}–{formatPrice(state.estimate.netCostHigh)}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: '#0f172a' }}><MapPinIcon size={11} color="#1b4d3e" />{state.name}</span>
+            <span style={{ fontSize: 12.5, fontWeight: 700, color: '#1b4d3e', whiteSpace: 'nowrap' }}>{formatPrice(state.estimate.netCostLow)}–{formatPrice(state.estimate.netCostHigh)}</span>
           </div>
         </a>
       ))}
@@ -91,7 +91,7 @@ export default function TopicPage({ slug }) {
   if (!service) return (
     <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12 }}>
       <h2 style={{ color: '#0f172a' }}>Page not found</h2>
-      <a href="/" style={{ color: '#1c3a5e', fontWeight: 600 }}>← Back to home</a>
+      <a href="/" style={{ color: '#1b4d3e', fontWeight: 600 }}>← Back to home</a>
     </div>
   );
 
@@ -138,25 +138,25 @@ export default function TopicPage({ slug }) {
           </div>
 
           <div style={{ background: 'white', borderRadius: 14, border: '1px solid #e2e8f0', padding: '32px 36px', marginBottom: 24 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: '#eef1f5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-              <Icon size={22} color="#1c3a5e" />
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: '#eaf3ee', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+              <Icon size={22} color="#1b4d3e" />
             </div>
             <h1 style={{ fontSize: 'clamp(24px,4vw,32px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.25, marginBottom: 10 }}>{service.name} 2026</h1>
             <p style={{ fontSize: 15.5, color: '#64748b', lineHeight: 1.7, marginBottom: 20 }}>{service.tagline}</p>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 30, fontWeight: 800, color: '#1c3a5e' }}>
+              <span style={{ fontSize: 30, fontWeight: 800, color: '#1b4d3e' }}>
                 {cost.low === cost.high ? formatPrice(cost.low) : `${formatPrice(cost.low)} – ${formatPrice(cost.high)}`}
               </span>
               <span style={{ fontSize: 13, color: '#94a3b8' }}>{service.unit}</span>
             </div>
           </div>
 
-          <div style={{ background: 'linear-gradient(135deg, #1c3a5e, #16324f)', borderRadius: 12, padding: '18px 24px', marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+          <div style={{ background: 'linear-gradient(135deg, #1b4d3e, #16324f)', borderRadius: 12, padding: '18px 24px', marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
             <div style={{ color: 'white' }}>
               <div style={{ fontWeight: 700, fontSize: 15 }}>Get a personalized solar estimate</div>
               <div style={{ fontSize: 13, opacity: 0.9 }}>Free · No signup · 2 minutes</div>
             </div>
-            <a href="/" style={{ background: 'white', color: '#1c3a5e', padding: '10px 20px', borderRadius: 8, textDecoration: 'none', fontWeight: 700, fontSize: 14, whiteSpace: 'nowrap' }}>
+            <a href="/" style={{ background: 'white', color: '#1b4d3e', padding: '10px 20px', borderRadius: 8, textDecoration: 'none', fontWeight: 700, fontSize: 14, whiteSpace: 'nowrap' }}>
               Calculate Now →
             </a>
           </div>
@@ -183,10 +183,10 @@ export default function TopicPage({ slug }) {
             <FaqAccordion faqs={service.faqs} />
           </div>
 
-          <div style={{ background: '#eef1f5', border: '1px solid #c7d2e0', borderRadius: 12, padding: '24px 28px', marginBottom: 32, textAlign: 'center' }}>
+          <div style={{ background: '#eaf3ee', border: '1px solid #c7d2e0', borderRadius: 12, padding: '24px 28px', marginBottom: 32, textAlign: 'center' }}>
             <div style={{ fontWeight: 800, fontSize: 18, color: '#0f172a', marginBottom: 6 }}>Ready to get an accurate estimate?</div>
             <p style={{ fontSize: 14, color: '#64748b', marginBottom: 16 }}>Use our free calculator for a personalized solar estimate in under 2 minutes.</p>
-            <a href="/" style={{ background: '#1c3a5e', color: 'white', padding: '12px 28px', borderRadius: 9, textDecoration: 'none', fontWeight: 700, fontSize: 15 }}>
+            <a href="/" style={{ background: '#1b4d3e', color: 'white', padding: '12px 28px', borderRadius: 9, textDecoration: 'none', fontWeight: 700, fontSize: 15 }}>
               Get My Free Estimate →
             </a>
           </div>
@@ -199,7 +199,7 @@ export default function TopicPage({ slug }) {
                   <a key={r.slug} href={`/solar-panels/${r.slug}`} style={{ textDecoration: 'none' }}>
                     <div style={{ background: 'white', borderRadius: 10, border: '1px solid #e2e8f0', padding: '16px 18px' }}>
                       <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', lineHeight: 1.4, marginBottom: 6 }}>{r.name}</div>
-                      <span style={{ fontSize: 12.5, color: '#1c3a5e', fontWeight: 600 }}>See pricing →</span>
+                      <span style={{ fontSize: 12.5, color: '#1b4d3e', fontWeight: 600 }}>See pricing →</span>
                     </div>
                   </a>
                 ))}

@@ -150,7 +150,7 @@ export default function BlogPost({ slug }) {
         <div><SearchIcon size={48} /></div>
         <h1 style={{ fontSize: 24, color: '#0f172a', margin: 0 }}>Article not found</h1>
         <p style={{ color: '#64748b' }}>The article you're looking for doesn't exist.</p>
-        <a href="/blog" style={{ color: '#1c3a5e', fontWeight: 700 }}>← Back to Blog</a>
+        <a href="/blog" style={{ color: '#1b4d3e', fontWeight: 700 }}>← Back to Blog</a>
       </div>
     );
   }

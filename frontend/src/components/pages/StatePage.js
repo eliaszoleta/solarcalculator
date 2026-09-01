@@ -30,7 +30,7 @@ function BillScenarioTable({ state }) {
               <tr key={bill} style={{ background: i % 2 === 0 ? 'white' : '#fafafa' }}>
                 <td style={{ padding: '10px 14px', color: '#0f172a', fontWeight: 600, borderBottom: '1px solid #f1f5f9' }}>${bill}/mo</td>
                 <td style={{ padding: '10px 14px', color: '#475569', borderBottom: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{est.systemSizeKw} kW ({est.panelCount} panels)</td>
-                <td style={{ padding: '10px 14px', color: '#1c3a5e', fontWeight: 700, borderBottom: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{formatPrice(est.netCostLow)}–{formatPrice(est.netCostHigh)}</td>
+                <td style={{ padding: '10px 14px', color: '#1b4d3e', fontWeight: 700, borderBottom: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{formatPrice(est.netCostLow)}–{formatPrice(est.netCostHigh)}</td>
                 <td style={{ padding: '10px 14px', color: '#475569', borderBottom: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{est.paybackYears ? `${est.paybackYears} yrs` : '—'}</td>
               </tr>
             );
@@ -49,7 +49,7 @@ function TopicLinks() {
         <a key={t.slug} href={`/solar-panels/${t.slug}`} style={{ textDecoration: 'none' }}>
           <div style={{ background: 'white', borderRadius: 10, border: '1px solid #e2e8f0', padding: '16px 18px' }}>
             <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', lineHeight: 1.4, marginBottom: 6 }}>{t.name}</div>
-            <span style={{ fontSize: 12.5, color: '#1c3a5e', fontWeight: 600 }}>See pricing →</span>
+            <span style={{ fontSize: 12.5, color: '#1b4d3e', fontWeight: 600 }}>See pricing →</span>
           </div>
         </a>
       ))}
@@ -91,7 +91,7 @@ export default function StatePage({ slug }) {
   if (!state) return (
     <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12 }}>
       <h2 style={{ color: '#0f172a' }}>State not found</h2>
-      <a href="/" style={{ color: '#1c3a5e', fontWeight: 600 }}>← Back to home</a>
+      <a href="/" style={{ color: '#1b4d3e', fontWeight: 600 }}>← Back to home</a>
     </div>
   );
 
@@ -142,15 +142,15 @@ export default function StatePage({ slug }) {
 
           <div style={{ background: 'white', borderRadius: 14, border: '1px solid #e2e8f0', padding: '32px 36px', marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <MapPinIcon size={18} color="#1c3a5e" />
-              <span style={{ fontSize: 12, fontWeight: 700, color: '#1c3a5e', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{state.name}</span>
+              <MapPinIcon size={18} color="#1b4d3e" />
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#1b4d3e', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{state.name}</span>
             </div>
             <h1 style={{ fontSize: 'clamp(24px,4vw,32px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.25, marginBottom: 10 }}>Solar Panel Cost in {state.name} (2026)</h1>
             <p style={{ fontSize: 15.5, color: '#64748b', lineHeight: 1.7, marginBottom: 20 }}>
               {state.name} homeowners pay a flat $2.80/watt installed nationwide — what's different here is your electricity rate ({(state.electricityRate * 100).toFixed(1)}¢/kWh) and sun hours ({state.sunHours} peak hours/day), which change how big a system you need to offset a typical bill.
             </p>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 30, fontWeight: 800, color: '#1c3a5e' }}>{formatPrice(est.netCostLow)} – {formatPrice(est.netCostHigh)}</span>
+              <span style={{ fontSize: 30, fontWeight: 800, color: '#1b4d3e' }}>{formatPrice(est.netCostLow)} – {formatPrice(est.netCostHigh)}</span>
               <span style={{ fontSize: 13, color: '#94a3b8' }}>net cost after 30% tax credit, $150/mo bill</span>
             </div>
             <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 6 }}>≈ {est.systemSizeKw} kW system ({est.panelCount} panels) · {est.paybackYears ? `${est.paybackYears}-year payback` : ''}</div>
@@ -175,12 +175,12 @@ export default function StatePage({ slug }) {
             </div>
           </div>
 
-          <div style={{ background: 'linear-gradient(135deg, #1c3a5e, #16324f)', borderRadius: 12, padding: '18px 24px', marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+          <div style={{ background: 'linear-gradient(135deg, #1b4d3e, #16324f)', borderRadius: 12, padding: '18px 24px', marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
             <div style={{ color: 'white' }}>
               <div style={{ fontWeight: 700, fontSize: 15 }}>Get a personalized estimate for {state.name}</div>
               <div style={{ fontSize: 13, opacity: 0.9 }}>Free · No signup · 2 minutes</div>
             </div>
-            <a href="/" style={{ background: 'white', color: '#1c3a5e', padding: '10px 20px', borderRadius: 8, textDecoration: 'none', fontWeight: 700, fontSize: 14, whiteSpace: 'nowrap' }}>
+            <a href="/" style={{ background: 'white', color: '#1b4d3e', padding: '10px 20px', borderRadius: 8, textDecoration: 'none', fontWeight: 700, fontSize: 14, whiteSpace: 'nowrap' }}>
               Calculate Now →
             </a>
           </div>
@@ -197,10 +197,10 @@ export default function StatePage({ slug }) {
             <FaqAccordion faqs={faqs} />
           </div>
 
-          <div style={{ background: '#eef1f5', border: '1px solid #c7d2e0', borderRadius: 12, padding: '24px 28px', marginBottom: 32, textAlign: 'center' }}>
+          <div style={{ background: '#eaf3ee', border: '1px solid #c7d2e0', borderRadius: 12, padding: '24px 28px', marginBottom: 32, textAlign: 'center' }}>
             <div style={{ fontWeight: 800, fontSize: 18, color: '#0f172a', marginBottom: 6 }}>Ready to get an accurate estimate?</div>
             <p style={{ fontSize: 14, color: '#64748b', marginBottom: 16 }}>Use our free calculator for a personalized solar estimate in {state.name} in under 2 minutes.</p>
-            <a href="/" style={{ background: '#1c3a5e', color: 'white', padding: '12px 28px', borderRadius: 9, textDecoration: 'none', fontWeight: 700, fontSize: 15 }}>
+            <a href="/" style={{ background: '#1b4d3e', color: 'white', padding: '12px 28px', borderRadius: 9, textDecoration: 'none', fontWeight: 700, fontSize: 15 }}>
               Get My Free Estimate →
             </a>
           </div>

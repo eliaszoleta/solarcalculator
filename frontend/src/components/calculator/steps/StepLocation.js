@@ -22,7 +22,7 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
 
   return (
     <div className="sloc-fade-in">
-      <div className="sloc-medallion"><MapPinIcon size={20} color="#1c3a5e" /></div>
+      <div className="sloc-medallion"><MapPinIcon size={20} color="#1b4d3e" /></div>
       <h2 className="step-title">Where is your home located?</h2>
       <p className="step-desc">Your location determines sunlight availability, electricity rates, and solar incentives.</p>
 
@@ -97,13 +97,13 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
         .sloc-fade-in { animation: sloc-in 0.3s ease; }
         .sloc-medallion {
           width: 40px; height: 40px; border-radius: 11px;
-          background: #eef1f5; border: 1.5px solid #c7d2e0;
+          background: #eaf3ee; border: 1.5px solid #c7d2e0;
           display: flex; align-items: center; justify-content: center;
           margin-bottom: 12px;
           animation: sloc-in 0.3s ease;
         }
-        .sloc-note-live { animation: sloc-in 0.25s ease; background: #eef1f5 !important; color: #12283f !important; }
-        .sloc-note-live .note-icon { color: #1c3a5e; }
+        .sloc-note-live { animation: sloc-in 0.25s ease; background: #eaf3ee !important; color: #123529 !important; }
+        .sloc-note-live .note-icon { color: #1b4d3e; }
         .location-fields {
           display: flex;
           flex-direction: column;
@@ -138,7 +138,7 @@ export default function StepLocation({ zip, state, onZipChange, onStateChange, s
           width: 100%;
         }
         .field-input:focus {
-          border-color: #1c3a5e;
+          border-color: #1b4d3e;
           box-shadow: 0 0 0 3px rgba(28,58,94,0.08);
         }
         .field-divider {

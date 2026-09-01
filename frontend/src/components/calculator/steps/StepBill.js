@@ -2,7 +2,7 @@ import React from 'react';
 import { LightBulbIcon, BoltIcon } from '../../ui/Icons';
 
 export default function StepBill({ value, onChange, primaryColor }) {
-  const accent = primaryColor || '#1c3a5e';
+  const accent = primaryColor || '#1b4d3e';
   const percent = ((value - 50) / (500 - 50)) * 100;
 
   return (

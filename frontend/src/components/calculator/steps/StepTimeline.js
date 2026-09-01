@@ -10,7 +10,7 @@ const TIMELINES = [
 
 export default function StepTimeline({ timeline, onTimelineChange, onSubmit, loading, requireContact, embedded, primaryColor, formBgColor }) {
   const [error, setError] = useState(null);
-  const accentColor = primaryColor || '#1c3a5e';
+  const accentColor = primaryColor || '#1b4d3e';
 
   const handleSubmit = e => {
     e.preventDefault();

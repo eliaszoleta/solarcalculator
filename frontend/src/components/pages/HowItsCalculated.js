@@ -6,17 +6,17 @@ const DOMAIN = 'https://www.solarcostpredictor.com';
 
 const STEPS = [
   {
-    icon: <MapPinIcon size={22} />, iconBg: '#e2e7ed', iconColor: '#1c3a5e',
+    icon: <MapPinIcon size={22} />, iconBg: '#e0ece4', iconColor: '#1f4d3a',
     title: '1. Location & Sun Data',
     desc: "Your ZIP code is geocoded to a precise latitude and longitude (via OpenStreetMap Nominatim). We use that to query the National Renewable Energy Laboratory's PVWatts v8 API — the same government dataset professional solar engineers use — for your exact location's annual solar production. If the API is unavailable, we fall back to your state's average peak sun hours instead.",
   },
   {
-    icon: <BoltIcon size={22} />, iconBg: '#fef3c7', iconColor: '#d97706',
+    icon: <BoltIcon size={22} />, iconBg: '#d9f0e1', iconColor: '#059669',
     title: '2. Usage & System Sizing',
     desc: "We divide your monthly electric bill by your state's real EIA electricity rate to estimate how many kWh you use. Your recommended system is then sized to offset about 85% of that usage — a realistic target installers use, since 100% offset rarely pencils out. System size is capped between 4 kW and 20 kW to keep estimates in a normal residential range.",
   },
   {
-    icon: <RulerIcon size={22} />, iconBg: '#fef9c3', iconColor: '#ca8a04',
+    icon: <RulerIcon size={22} />, iconBg: '#dcf3e3', iconColor: '#0f3d2e',
     title: '3. Installation Cost',
     desc: 'System size is priced at a flat $2.80 per watt, all-in — panels, labor, inverter, permits, and installer margin included. We then add your roof type surcharge ($0 for asphalt shingle, $500 for metal, $800 for flat, $1,500 for tile) and battery cost ($0 with no battery, $11,500 for one Tesla Powerwall, $23,000 for two).',
   },
@@ -26,12 +26,12 @@ const STEPS = [
     desc: 'The 30% federal solar Investment Tax Credit (ITC) is applied to your total system cost, including any battery — giving you your net out-of-pocket cost. This credit is scheduled to remain at 30% for systems installed through 2032.',
   },
   {
-    icon: <SunIcon size={22} />, iconBg: '#faf5ff', iconColor: '#9333ea',
+    icon: <SunIcon size={22} />, iconBg: '#eaf6ee', iconColor: '#15803d',
     title: '5. Savings & Payback',
     desc: 'Annual savings are based on how much of your usage your system\'s real projected production offsets, at your actual electricity rate. We project 30 years of savings assuming a 4% annual utility rate increase (consistent with long-run historical averages), and calculate your payback year as the point your cumulative savings exceed your net system cost.',
   },
   {
-    icon: <PlugIcon size={22} />, iconBg: '#eef1f5', iconColor: '#1c3a5e',
+    icon: <PlugIcon size={22} />, iconBg: '#f0f5f2', iconColor: '#1b4d3e',
     title: '6. Financing (Optional)',
     desc: "If you'd rather finance than pay cash, we also show an estimated monthly loan payment based on a 25-year term at 5.99% APR — a standard rate structure used in solar financing offers — so you can compare a financed monthly payment against your current electric bill.",
   },
@@ -84,21 +84,21 @@ export default function HowItsCalculated() {
 
       {/* Hero */}
       <div style={{
-        background: 'linear-gradient(135deg, #0f172a 0%, #12283f 60%, #1c3a5e 100%)',
+        background: 'linear-gradient(135deg, #0f172a 0%, #123529 60%, #1b4d3e 100%)',
         padding: '64px 24px 56px',
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
       }}>
-        <div style={{ position: 'absolute', top: -60, right: -60, width: 280, height: 280, borderRadius: '50%', background: 'rgba(245,158,11,0.1)', filter: 'blur(50px)' }} />
+        <div style={{ position: 'absolute', top: -60, right: -60, width: 280, height: 280, borderRadius: '50%', background: 'rgba(22,163,74,0.12)', filter: 'blur(50px)' }} />
         <div style={{ position: 'relative', maxWidth: 680, margin: '0 auto' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(159,179,200,0.12)', border: '1px solid rgba(159,179,200,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
-            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#9fb3c8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Methodology</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(168,195,181,0.12)', border: '1px solid rgba(168,195,181,0.25)', borderRadius: 999, padding: '4px 14px', marginBottom: 20 }}>
+            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#a8c3b5', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Methodology</span>
           </div>
           <h1 style={{ fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 16, letterSpacing: '-0.02em' }}>
             How We Calculate Your Solar Cost Estimate
           </h1>
-          <p style={{ fontSize: 17, color: '#9fb3c8', lineHeight: 1.7, maxWidth: 560, margin: '0 auto' }}>
+          <p style={{ fontSize: 17, color: '#a8c3b5', lineHeight: 1.7, maxWidth: 560, margin: '0 auto' }}>
             No guesswork, no rough averages — here's exactly what happens between entering your ZIP code and seeing your estimate.
           </p>
         </div>
@@ -139,7 +139,7 @@ export default function HowItsCalculated() {
 
         {/* Accuracy note */}
         <section style={{ marginBottom: 40 }}>
-          <div style={{ background: '#fffbeb', borderRadius: 16, padding: '28px 32px', border: '1px solid #fde68a' }}>
+          <div style={{ background: '#eaf3ee', borderRadius: 16, padding: '28px 32px', border: '1px solid #bfe3cf' }}>
             <h2 style={{ ...h2Style, marginTop: 0 }}>A Note on Accuracy</h2>
             <p style={pStyle}>
               Our estimates are <strong>80–90% accurate</strong> compared to real installer quotes for the same home. On a typical $25,000 system, that's within $2,500–$5,000 of what an installer would actually propose — close enough to know if solar makes sense and to spot an overpriced quote.
@@ -165,13 +165,13 @@ export default function HowItsCalculated() {
 
         {/* CTA */}
         <section style={{
-          background: 'linear-gradient(135deg, #0f172a, #12283f)',
+          background: 'linear-gradient(135deg, #0f172a, #123529)',
           borderRadius: 20,
           padding: '40px 32px',
           textAlign: 'center',
         }}>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: 'white', marginBottom: 10, letterSpacing: '-0.01em' }}>See Your Own Numbers</h2>
-          <p style={{ color: '#9fb3c8', marginBottom: 24, fontSize: 15, lineHeight: 1.6 }}>Enter your ZIP code and monthly bill to get a personalized estimate in under 2 minutes.</p>
+          <p style={{ color: '#a8c3b5', marginBottom: 24, fontSize: 15, lineHeight: 1.6 }}>Enter your ZIP code and monthly bill to get a personalized estimate in under 2 minutes.</p>
           <a
             href="/"
             style={{
