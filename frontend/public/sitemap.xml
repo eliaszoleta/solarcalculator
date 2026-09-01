@@ -3,49 +3,49 @@
 
   <!-- Core & company pages -->
   <url>
-    <loc>https://www.mysolarwidget.com/</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/for-installers</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/for-installers</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/blog</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/partner-with-us</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/partner-with-us</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/about</loc>
+    <loc>https://www.solarcostpredictor.com/about</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/contact</loc>
+    <loc>https://www.solarcostpredictor.com/contact</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/privacy-policy</loc>
+    <loc>https://www.solarcostpredictor.com/privacy-policy</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/terms-of-service</loc>
+    <loc>https://www.solarcostpredictor.com/terms-of-service</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
@@ -53,109 +53,109 @@
 
   <!-- Blog posts (auto-generated from blogPosts.js) -->
   <url>
-    <loc>https://www.mysolarwidget.com/blog/how-much-do-solar-panels-cost</loc>
+    <loc>https://www.solarcostpredictor.com/blog/how-much-do-solar-panels-cost</loc>
     <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-financing-options</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-financing-options</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/how-much-can-solar-save-you</loc>
+    <loc>https://www.solarcostpredictor.com/blog/how-much-can-solar-save-you</loc>
     <lastmod>2026-02-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/federal-solar-tax-credit-guide</loc>
+    <loc>https://www.solarcostpredictor.com/blog/federal-solar-tax-credit-guide</loc>
     <lastmod>2026-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-installation-process</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-installation-process</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/how-do-solar-panels-work</loc>
+    <loc>https://www.solarcostpredictor.com/blog/how-do-solar-panels-work</loc>
     <lastmod>2026-01-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-panel-maintenance-costs</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-panel-maintenance-costs</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-battery-storage-cost</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-battery-storage-cost</loc>
     <lastmod>2026-02-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-loan-guide</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-loan-guide</loc>
     <lastmod>2026-02-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-lease-vs-ppa</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-lease-vs-ppa</loc>
     <lastmod>2026-02-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-net-metering-explained</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-net-metering-explained</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-roi-payback-period</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-roi-payback-period</loc>
     <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/state-solar-rebates-2026</loc>
+    <loc>https://www.solarcostpredictor.com/blog/state-solar-rebates-2026</loc>
     <lastmod>2026-02-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-srec-income</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-srec-income</loc>
     <lastmod>2026-03-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/how-to-choose-solar-installer</loc>
+    <loc>https://www.solarcostpredictor.com/blog/how-to-choose-solar-installer</loc>
     <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-panel-types-guide</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-panel-types-guide</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/solar-panel-efficiency-explained</loc>
+    <loc>https://www.solarcostpredictor.com/blog/solar-panel-efficiency-explained</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/grid-tied-vs-off-grid-solar</loc>
+    <loc>https://www.solarcostpredictor.com/blog/grid-tied-vs-off-grid-solar</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -163,366 +163,366 @@
 
   <!-- Blog category pages -->
   <url>
-    <loc>https://www.mysolarwidget.com/blog/category/solar-costs</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/blog/category/solar-costs</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/category/solar-financing</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/blog/category/solar-financing</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/category/solar-savings</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/blog/category/solar-savings</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/category/solar-incentives</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/blog/category/solar-incentives</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/category/solar-installation</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/blog/category/solar-installation</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/blog/category/solar-basics</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/blog/category/solar-basics</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Solar cost topics (auto-generated from services.js) -->
   <url>
-    <loc>https://www.mysolarwidget.com/solar-panels/solar-system-size-cost</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-panels/solar-system-size-cost</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-panels/solar-cost-by-roof-type</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-panels/solar-cost-by-roof-type</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-panels/tesla-powerwall-cost</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-panels/tesla-powerwall-cost</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- Solar cost by state (auto-generated from statePricing.js) -->
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/alabama</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/alabama</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/alaska</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/alaska</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/arizona</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/arizona</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/arkansas</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/arkansas</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/california</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/california</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/colorado</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/colorado</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/connecticut</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/connecticut</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/delaware</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/delaware</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/washington-dc</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/washington-dc</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/florida</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/florida</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/georgia</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/georgia</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/hawaii</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/hawaii</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/idaho</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/idaho</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/illinois</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/illinois</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/indiana</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/indiana</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/iowa</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/iowa</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/kansas</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/kansas</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/kentucky</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/kentucky</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/louisiana</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/louisiana</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/maine</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/maine</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/maryland</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/maryland</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/massachusetts</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/massachusetts</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/michigan</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/michigan</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/minnesota</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/minnesota</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/mississippi</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/mississippi</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/missouri</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/missouri</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/montana</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/montana</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/nebraska</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/nebraska</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/nevada</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/nevada</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/new-hampshire</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/new-hampshire</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/new-jersey</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/new-jersey</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/new-mexico</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/new-mexico</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/new-york</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/new-york</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/north-carolina</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/north-carolina</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/north-dakota</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/north-dakota</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/ohio</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/ohio</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/oklahoma</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/oklahoma</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/oregon</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/oregon</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/pennsylvania</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/pennsylvania</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/rhode-island</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/rhode-island</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/south-carolina</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/south-carolina</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/south-dakota</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/south-dakota</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/tennessee</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/tennessee</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/texas</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/texas</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/utah</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/utah</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/vermont</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/vermont</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/virginia</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/virginia</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/washington</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/washington</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/west-virginia</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/west-virginia</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/wisconsin</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/wisconsin</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mysolarwidget.com/solar-cost/wyoming</loc>
-    <lastmod>2026-08-05</lastmod>
+    <loc>https://www.solarcostpredictor.com/solar-cost/wyoming</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

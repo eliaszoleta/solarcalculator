@@ -32,8 +32,8 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     /\.vercel\.app$/,
-    'https://mysolarwidget.com',
-    'https://www.mysolarwidget.com',
+    'https://solarcostpredictor.com',
+    'https://www.solarcostpredictor.com',
     process.env.FRONTEND_URL,
   ].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'DELETE'],

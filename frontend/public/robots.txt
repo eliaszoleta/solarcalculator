@@ -5,4 +5,4 @@ Disallow: /installer/
 Disallow: /embed/
 Disallow: /api/
 
-Sitemap: https://www.mysolarwidget.com/sitemap.xml
+Sitemap: https://www.solarcostpredictor.com/sitemap.xml

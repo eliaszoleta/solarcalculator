@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { POSTS, CATEGORIES, getFeaturedPost } from '../../data/blogPosts';
 import { CategoryIcon } from '../ui/Icons';
 
-const SITE_URL = 'https://www.mysolarwidget.com';
+const SITE_URL = 'https://www.solarcostpredictor.com';
 const PRIMARY = '#1c3a5e';
 
 function PostCard({ post, featured = false }) {
@@ -63,20 +63,20 @@ export default function BlogIndex() {
   return (
     <>
       <Helmet>
-        <title>Solar Blog 2026 — Cost Guides, Savings &amp; Incentives | MySolarWidget</title>
+        <title>Solar Blog 2026 — Cost Guides, Savings &amp; Incentives | Solar Cost Predictor</title>
         <meta name="description" content="Expert solar guides: cost estimates, savings calculations, financing options, tax credits, and installation advice. Free resources for homeowners." />
         <link rel="canonical" href={`${SITE_URL}/blog`} />
-        <meta property="og:title" content="Solar Blog 2026 — Cost Guides, Savings &amp; Incentives | MySolarWidget" />
+        <meta property="og:title" content="Solar Blog 2026 — Cost Guides, Savings &amp; Incentives | Solar Cost Predictor" />
         <meta property="og:description" content="Expert solar guides: cost estimates, savings calculations, financing options, tax credits, and installation advice." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/blog`} />
         <script type="application/ld+json">{JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'Blog',
-          'name': 'MySolarWidget Solar Blog',
+          'name': 'Solar Cost Predictor Solar Blog',
           'description': 'Expert guides on solar costs, savings, financing, incentives, and installation.',
           'url': `${SITE_URL}/blog`,
-          'publisher': { '@type': 'Organization', 'name': 'MySolarWidget', 'url': SITE_URL },
+          'publisher': { '@type': 'Organization', 'name': 'Solar Cost Predictor', 'url': SITE_URL },
         })}</script>
       </Helmet>
 

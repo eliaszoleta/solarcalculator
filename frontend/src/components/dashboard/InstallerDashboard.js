@@ -270,7 +270,7 @@ export default function InstallerDashboard({ user, onLogout }) {
     const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = 'mysolarwidget-leads.csv'; a.click();
+    const a = document.createElement('a'); a.href = url; a.download = 'solarcostpredictor-leads.csv'; a.click();
     URL.revokeObjectURL(url);
   };
 
@@ -365,7 +365,7 @@ export default function InstallerDashboard({ user, onLogout }) {
   const frameWidth = config.frameWidth;
   const iframeWidth = frameWidth ? `${frameWidth}px` : '100%';
   const maxWidth = frameWidth ? `${frameWidth}px` : '100%';
-  const embedCode = `<!-- MySolarWidget Solar Calculator -->
+  const embedCode = `<!-- Solar Cost Predictor Solar Calculator -->
 <iframe src="${siteUrl}/embed?installer=${installerId}" width="${iframeWidth}" height="${frameHeight}" frameborder="0" scrolling="no" style="border:none;width:${iframeWidth};max-width:${maxWidth};display:block;" title="Solar Savings Calculator"></iframe>
 <script>
 (function(){var o=null;function cl(){if(o&&o.parentNode)o.parentNode.removeChild(o);document.body.style.overflow='';o=null;}window.addEventListener('message',function(e){if(!e.data)return;if(e.data.type==='MSW_OPEN_REPORT'&&!o){var st=document.createElement('style');st.textContent='@keyframes mswIn{from{opacity:0;transform:translateY(12px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}';document.head.appendChild(st);o=document.createElement('div');o.style.cssText='position:fixed;inset:0;z-index:2147483647;background:rgba(2,6,23,0.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';var m=document.createElement('div');m.style.cssText='width:100%;max-width:660px;height:90vh;border-radius:10px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,0.5);animation:mswIn 0.22s cubic-bezier(0.34,1.06,0.64,1) both;';var fr=document.createElement('iframe');fr.src=e.data.url;fr.style.cssText='width:100%;height:100%;border:none;display:block;';fr.scrolling='yes';m.appendChild(fr);o.appendChild(m);o.onclick=function(ev){if(ev.target===o)cl();};document.body.appendChild(o);document.body.style.overflow='hidden';}if(e.data.type==='MSW_CLOSE_REPORT'){cl();}});})();
@@ -376,7 +376,7 @@ export default function InstallerDashboard({ user, onLogout }) {
       <aside className="dash-sidebar">
         <div className="dash-brand">
           <div style={{ background: 'white', borderRadius: 8, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 36, width: 'auto', display: 'block' }} />
+            <img src="/logo-horizontal-light.svg" alt="Solar Cost Predictor" style={{ height: 36, width: 'auto', display: 'block' }} />
           </div>
         </div>
         <div style={{ padding: '8px 18px 14px', fontSize: 12, color: '#94a3b8', borderBottom: '1px solid #e2e8f0', marginBottom: 4 }}>
@@ -740,7 +740,7 @@ export default function InstallerDashboard({ user, onLogout }) {
             const iframeWidth = w ? `${w}px` : '100%';
             const iframeCode = `<iframe\n  src="${siteUrl}/embed?installer=${installerId}"\n  width="${iframeWidth}"\n  height="${h}"\n  style="border:none;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"\n  title="Solar Savings Calculator"\n  loading="lazy">\n</iframe>`;
             const scriptCode = embedCode;
-            const wpCode = `[mysolarwidget installer_id="${installerId}" height="${h}"]`;
+            const wpCode = `[solarcostpredictor installer_id="${installerId}" height="${h}"]`;
 
             const EmbedCard = ({ title, badge, desc, code, copied, onCopy }) => (
               <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 14 }}>
@@ -767,7 +767,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                 <div style={{ marginBottom: 22 }}>
                   <EmbedCard title="Full Embed (Recommended)" badge="Recommended" desc="iFrame + popup handler. Enables the full-screen report overlay when visitors click 'Open Full Solar Report'." code={scriptCode} copied={scriptCopied} onCopy={() => { navigator.clipboard.writeText(scriptCode); setScriptCopied(true); setTimeout(() => setScriptCopied(false), 2500); }} />
                   <EmbedCard title="iFrame Only" desc="Basic embed without the full-report popup. Use only if you don't need the full report overlay." code={iframeCode} copied={embedCopied} onCopy={() => { navigator.clipboard.writeText(iframeCode); setEmbedCopied(true); setTimeout(() => setEmbedCopied(false), 2500); }} />
-                  <EmbedCard title="WordPress Shortcode" desc="Install the MySolarWidget plugin, then paste this shortcode anywhere on your site." code={wpCode} copied={wpCopied} onCopy={() => { navigator.clipboard.writeText(wpCode); setWpCopied(true); setTimeout(() => setWpCopied(false), 2500); }} />
+                  <EmbedCard title="WordPress Shortcode" desc="Install the Solar Cost Predictor plugin, then paste this shortcode anywhere on your site." code={wpCode} copied={wpCopied} onCopy={() => { navigator.clipboard.writeText(wpCode); setWpCopied(true); setTimeout(() => setWpCopied(false), 2500); }} />
                 </div>
 
                 {/* Frame size settings */}
@@ -1556,7 +1556,7 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
     <div style={{ maxWidth: 600 }}>
       <div style={{ marginBottom: 24 }}>
         <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', marginBottom: 3, letterSpacing: '-0.3px' }}>Subscription</h2>
-        <p style={{ color: '#64748b', fontSize: 14 }}>Manage your MySolarWidget plan and billing.</p>
+        <p style={{ color: '#64748b', fontSize: 14 }}>Manage your Solar Cost Predictor plan and billing.</p>
       </div>
 
       {/* Success banner after returning from Stripe checkout */}

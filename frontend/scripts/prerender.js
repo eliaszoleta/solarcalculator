@@ -5,7 +5,7 @@ const path = require('path');
 
 const BUILD  = path.join(__dirname, '../build');
 const SRC    = path.join(__dirname, '../src');
-const DOMAIN = 'https://www.mysolarwidget.com';
+const DOMAIN = 'https://www.solarcostpredictor.com';
 const PRIMARY = '#1c3a5e';
 
 // Mirrors the favicon/manifest links in public/index.html. That file only backs the
@@ -68,7 +68,7 @@ function staticHeader() {
   return `<header id="static-header" style="position:sticky;top:0;z-index:100;height:60px;display:flex;align-items:center;padding:0 12px;background:#ffffff;border-bottom:1px solid #f1f5f9;box-sizing:border-box">
   <div style="max-width:1120px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between">
     <a href="/" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0">
-      <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style="height:44px;width:auto" />
+      <img src="/logo-horizontal-light.svg" alt="Solar Cost Predictor" style="height:44px;width:auto" />
     </a>
     <nav class="pr-desktop-nav" style="display:flex;align-items:center;gap:4px">
       <a href="/#how-it-works" style="font-size:14px;font-weight:500;color:#475569;padding:6px 12px;border-radius:8px;text-decoration:none">How It Works</a>
@@ -102,7 +102,7 @@ function staticFooter(categories) {
       </div>
       <div>
         <div style="color:white;font-weight:700;font-size:14px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">Resources</div>
-        <a href="/about" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">About MySolarWidget</a>
+        <a href="/about" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">About Solar Cost Predictor</a>
         <a href="/contact" style="display:block;color:#94a3b8;text-decoration:none;font-size:14px;margin-bottom:10px">Contact</a>
       </div>
       <div>
@@ -125,8 +125,8 @@ function staticFooter(categories) {
       </div>
     </div>
     <div style="border-top:1px solid #1e293b;padding-top:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-      <div style="color:white;font-weight:700">MySolarWidget</div>
-      <div style="font-size:13px;color:#64748b">&copy; ${new Date().getFullYear()} MySolarWidget. All rights reserved.</div>
+      <div style="color:white;font-weight:700">Solar Cost Predictor</div>
+      <div style="font-size:13px;color:#64748b">&copy; ${new Date().getFullYear()} Solar Cost Predictor. All rights reserved.</div>
     </div>
   </div>
 </footer>`;
@@ -180,10 +180,10 @@ function articleSchema(post) {
     '@type': 'Article',
     headline: post.title,
     description: post.metaDescription || post.excerpt,
-    author: { '@type': 'Organization', name: 'MySolarWidget' },
+    author: { '@type': 'Organization', name: 'Solar Cost Predictor' },
     publisher: {
       '@type': 'Organization',
-      name: 'MySolarWidget',
+      name: 'Solar Cost Predictor',
       logo: { '@type': 'ImageObject', url: `${DOMAIN}/android-chrome-512x512.png` },
     },
     datePublished: post.publishDate,
@@ -218,7 +218,7 @@ function renderBlogPost(post, categories, assets) {
   <meta property="og:description" content="${esc(post.metaDescription || post.excerpt)}">
   <meta property="og:url" content="${DOMAIN}/blog/${post.slug}">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="MySolarWidget">
+  <meta property="og:site_name" content="Solar Cost Predictor">
   <meta property="og:image" content="${DOMAIN}/android-chrome-512x512.png">
   <meta name="twitter:card" content="summary_large_image">
   <script type="application/ld+json">${articleSchema(post)}</script>
@@ -233,7 +233,7 @@ function renderBlogPost(post, categories, assets) {
   </nav>
   <h1 style="font-size:clamp(24px,4vw,40px);font-weight:900;line-height:1.2;margin-bottom:16px">${esc(post.title)}</h1>
   <p style="color:#64748b;font-size:13px;margin-bottom:32px">
-    By MySolarWidget Team &middot; ${formatDate(post.publishDate)} &middot; ${post.readingTime || 8} min read
+    By Solar Cost Predictor Team &middot; ${formatDate(post.publishDate)} &middot; ${post.readingTime || 8} min read
   </p>
   <div>${post.intro || ''}</div>
   ${sectionsHtml}
@@ -286,16 +286,16 @@ function renderBlogIndex(posts, categories, assets) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   ${FAVICON_LINKS}
-  <title>Solar Blog 2026 &mdash; Cost Guides, Savings &amp; Incentives | MySolarWidget</title>
+  <title>Solar Blog 2026 &mdash; Cost Guides, Savings &amp; Incentives | Solar Cost Predictor</title>
   <meta name="description" content="Expert solar guides: cost estimates, savings calculations, financing options, tax credits, and installation advice. Free resources for homeowners.">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <link rel="canonical" href="${DOMAIN}/blog">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-  <meta property="og:title" content="Solar Blog 2026 | MySolarWidget">
+  <meta property="og:title" content="Solar Blog 2026 | Solar Cost Predictor">
   <meta property="og:description" content="Expert solar guides: cost estimates, savings calculations, financing options, tax credits, and installation advice.">
   <meta property="og:url" content="${DOMAIN}/blog">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="MySolarWidget">
+  <meta property="og:site_name" content="Solar Cost Predictor">
   ${assets.cssLinks}
 </head>
 <body>
@@ -364,7 +364,7 @@ function renderCategoryPage(cat, posts, categories, assets) {
     </a>`;
   }).join('');
 
-  const seoTitle = `${cat.label} Guide 2026 | MySolarWidget`;
+  const seoTitle = `${cat.label} Guide 2026 | Solar Cost Predictor`;
   const seoDesc = cat.description || `Expert guides on ${cat.label.toLowerCase()} for homeowners.`;
 
   return `<!DOCTYPE html>
@@ -382,7 +382,7 @@ function renderCategoryPage(cat, posts, categories, assets) {
   <meta property="og:description" content="${esc(seoDesc)}">
   <meta property="og:url" content="${DOMAIN}/blog/category/${cat.slug}">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="MySolarWidget">
+  <meta property="og:site_name" content="Solar Cost Predictor">
   ${assets.cssLinks}
 </head>
 <body>
@@ -427,32 +427,32 @@ ${staticFooter(categories)}</div>
 const STATIC_ROUTES = [
   {
     path: 'for-installers',
-    title: 'Solar Calculator Widget for Installers | MySolarWidget',
+    title: 'Solar Calculator Widget for Installers | Solar Cost Predictor',
     description: 'Embed a branded solar savings calculator on your website in minutes. Capture leads, show instant estimates, and close more solar deals. Free trial for solar installers.',
     heading: 'Solar Calculator Widget for Installers',
   },
   {
     path: 'partner-with-us',
-    title: 'Partner With Us | MySolarWidget',
-    description: "Get your solar installation business recommended to thousands of homeowners actively getting solar estimates in your area. Join MySolarWidget's partner network for $350/month per city.",
+    title: 'Partner With Us | Solar Cost Predictor',
+    description: "Get your solar installation business recommended to thousands of homeowners actively getting solar estimates in your area. Join Solar Cost Predictor's partner network for $350/month per city.",
     heading: 'Partner With Us',
   },
   {
     path: 'about',
-    title: 'About MySolarWidget | Free Solar Savings Calculator',
-    description: 'MySolarWidget is a free solar savings calculator for US homeowners. We use NREL PVWatts data and real electricity rates to estimate your solar costs and savings in under 2 minutes.',
-    heading: 'About MySolarWidget',
+    title: 'About Solar Cost Predictor | Free Solar Savings Calculator',
+    description: 'Solar Cost Predictor is a free solar savings calculator for US homeowners. We use NREL PVWatts data and real electricity rates to estimate your solar costs and savings in under 2 minutes.',
+    heading: 'About Solar Cost Predictor',
   },
   {
     path: 'privacy-policy',
-    title: 'Privacy Policy | MySolarWidget',
-    description: 'MySolarWidget privacy policy. Learn how we collect, use, and protect your personal information when you use our free solar savings calculator.',
+    title: 'Privacy Policy | Solar Cost Predictor',
+    description: 'Solar Cost Predictor privacy policy. Learn how we collect, use, and protect your personal information when you use our free solar savings calculator.',
     heading: 'Privacy Policy',
   },
   {
     path: 'terms-of-service',
-    title: 'Terms of Service | MySolarWidget',
-    description: 'MySolarWidget terms of service. Read our terms and conditions for using the MySolarWidget free solar savings calculator.',
+    title: 'Terms of Service | Solar Cost Predictor',
+    description: 'Solar Cost Predictor terms of service. Read our terms and conditions for using the Solar Cost Predictor free solar savings calculator.',
     heading: 'Terms of Service',
   },
 ];
@@ -474,7 +474,7 @@ function renderStaticRoute(route, categories, assets) {
   <meta property="og:description" content="${esc(route.description)}">
   <meta property="og:url" content="${url}">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="MySolarWidget">
+  <meta property="og:site_name" content="Solar Cost Predictor">
   <meta property="og:image" content="${DOMAIN}/android-chrome-512x512.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${esc(route.title)}">
@@ -501,8 +501,8 @@ function renderStaticRoute(route, categories, assets) {
 // different page flash into the real one. Matching the hero here removes that flash.
 function renderContactStatic(categories, assets) {
   const url = `${DOMAIN}/contact`;
-  const title = 'Contact Us | MySolarWidget';
-  const description = 'Contact MySolarWidget with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message.';
+  const title = 'Contact Us | Solar Cost Predictor';
+  const description = 'Contact Solar Cost Predictor with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message.';
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -518,7 +518,7 @@ function renderContactStatic(categories, assets) {
   <meta property="og:description" content="${esc(description)}">
   <meta property="og:url" content="${url}">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="MySolarWidget">
+  <meta property="og:site_name" content="Solar Cost Predictor">
   <meta property="og:image" content="${DOMAIN}/android-chrome-512x512.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${esc(title)}">
@@ -637,7 +637,7 @@ function pageHead({ title, description, canonicalPath, extraHead = '' }) {
   <meta property="og:description" content="${esc(description)}">
   <meta property="og:url" content="${url}">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="MySolarWidget">
+  <meta property="og:site_name" content="Solar Cost Predictor">
   <meta property="og:image" content="${DOMAIN}/android-chrome-512x512.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${esc(title)}">
@@ -653,7 +653,7 @@ function renderStatePage(state, servicesMod, statesMod, faqsMod, assets) {
   const faqs = faqsMod.getAllFaqs().slice(0, 5);
   const est = state.estimate;
 
-  const title = `Solar Panel Cost in ${state.name} (2026) | Installation Prices & Savings | MySolarWidget`;
+  const title = `Solar Panel Cost in ${state.name} (2026) | Installation Prices & Savings | Solar Cost Predictor`;
   const description = `See average solar panel costs, savings, and payback period in ${state.name} for 2026, based on real electricity rates and sun hours. Get a free instant estimate.`;
 
   const billRows = BILL_SCENARIOS.map((bill, i) => {

@@ -235,18 +235,18 @@ export default function App() {
     <HelmetProvider>
       <div className="app">
         <Helmet>
-          <title>Free Solar Panel Cost Calculator 2026 | MySolarWidget</title>
+          <title>Free Solar Panel Cost Calculator 2026 | Solar Cost Predictor</title>
           <meta name="description" content="Free solar panel cost calculator for US homeowners. Estimate installation cost, monthly savings &amp; 30-year ROI. Enter your electric bill and ZIP code — takes under 2 minutes." />
-          <link rel="canonical" href="https://www.mysolarwidget.com/" />
-          <meta property="og:title" content="Free Solar Panel Cost Calculator 2026 | MySolarWidget" />
+          <link rel="canonical" href="https://www.solarcostpredictor.com/" />
+          <meta property="og:title" content="Free Solar Panel Cost Calculator 2026 | Solar Cost Predictor" />
           <meta property="og:description" content="Free solar panel cost calculator for US homeowners. Estimate installation cost, monthly savings &amp; 30-year ROI. Enter your electric bill and ZIP code." />
-          <meta property="og:url" content="https://www.mysolarwidget.com/" />
+          <meta property="og:url" content="https://www.solarcostpredictor.com/" />
           <meta property="og:type" content="website" />
-          <meta property="og:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
+          <meta property="og:image" content="https://www.solarcostpredictor.com/android-chrome-512x512.png" />
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="Free Solar Panel Cost Calculator 2026 | MySolarWidget" />
+          <meta name="twitter:title" content="Free Solar Panel Cost Calculator 2026 | Solar Cost Predictor" />
           <meta name="twitter:description" content="Instantly estimate your solar installation cost and 30-year savings. Free, powered by real NREL data. Takes under 2 minutes." />
-          <meta name="twitter:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
+          <meta name="twitter:image" content="https://www.solarcostpredictor.com/android-chrome-512x512.png" />
         </Helmet>
         <Header />
         <main>

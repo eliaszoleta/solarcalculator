@@ -1,14 +1,14 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-const DOMAIN = 'https://www.mysolarwidget.com';
+const DOMAIN = 'https://www.solarcostpredictor.com';
 
 export default function TermsOfService() {
   return (
     <div style={{ background: 'var(--bg, #f1f5f9)', minHeight: '100vh' }}>
       <Helmet>
-        <title>Terms of Service | MySolarWidget</title>
-        <meta name="description" content="MySolarWidget terms of service. Read our terms and conditions for using the MySolarWidget free solar savings calculator." />
+        <title>Terms of Service | Solar Cost Predictor</title>
+        <meta name="description" content="Solar Cost Predictor terms of service. Read our terms and conditions for using the Solar Cost Predictor free solar savings calculator." />
         <link rel="canonical" href={`${DOMAIN}/terms-of-service`} />
         <meta name="robots" content="index, follow" />
       </Helmet>
@@ -25,12 +25,12 @@ export default function TermsOfService() {
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '40px 24px 80px' }}>
 
         <Section title="1. Acceptance of Terms">
-          <p>By accessing or using the MySolarWidget website at mysolarwidget.com (the "Site") or the solar savings calculator (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use the Site or Service.</p>
+          <p>By accessing or using the Solar Cost Predictor website at solarcostpredictor.com (the "Site") or the solar savings calculator (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use the Site or Service.</p>
           <p>We reserve the right to modify these Terms at any time. Continued use of the Site after changes constitutes acceptance of the updated Terms.</p>
         </Section>
 
         <Section title="2. Description of Service">
-          <p>MySolarWidget provides a free online solar savings calculator that estimates solar panel installation costs, monthly savings, and return on investment for residential homeowners in the United States. The calculator uses publicly available data including:</p>
+          <p>Solar Cost Predictor provides a free online solar savings calculator that estimates solar panel installation costs, monthly savings, and return on investment for residential homeowners in the United States. The calculator uses publicly available data including:</p>
           <ul style={ulStyle}>
             <li>Solar irradiance data from the NREL PVWatts API</li>
             <li>Electricity rate data from the U.S. Energy Information Administration (EIA)</li>
@@ -64,15 +64,15 @@ export default function TermsOfService() {
         <Section title="5. Lead Submission & Installer Connection">
           <p>The calculator includes an optional lead capture form. By submitting your contact information:</p>
           <ul style={ulStyle}>
-            <li>You consent to being contacted by MySolarWidget and/or solar installers in your area</li>
+            <li>You consent to being contacted by Solar Cost Predictor and/or solar installers in your area</li>
             <li>You understand that submitting the form does not obligate you to purchase anything</li>
             <li>You may opt out of communications at any time</li>
           </ul>
-          <p>MySolarWidget is not a solar installer and does not endorse or guarantee any specific installer. We are not responsible for the products, services, or representations made by any installer.</p>
+          <p>Solar Cost Predictor is not a solar installer and does not endorse or guarantee any specific installer. We are not responsible for the products, services, or representations made by any installer.</p>
         </Section>
 
         <Section title="6. Intellectual Property">
-          <p>All content on the Site, including but not limited to text, graphics, logos, icons, images, audio clips, and software, is the property of MySolarWidget or its content suppliers and is protected by applicable copyright and intellectual property laws.</p>
+          <p>All content on the Site, including but not limited to text, graphics, logos, icons, images, audio clips, and software, is the property of Solar Cost Predictor or its content suppliers and is protected by applicable copyright and intellectual property laws.</p>
           <p>You may use the Site for personal, non-commercial purposes. You may not reproduce, distribute, modify, or create derivative works without our prior written permission.</p>
         </Section>
 
@@ -86,12 +86,12 @@ export default function TermsOfService() {
         </Section>
 
         <Section title="9. Limitation of Liability">
-          <p>TO THE FULLEST EXTENT PERMITTED BY LAW, MYSOLARWIDGET SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR RELATED TO YOUR USE OF THE SITE OR SERVICE, INCLUDING ANY DECISIONS MADE BASED ON CALCULATOR ESTIMATES.</p>
+          <p>TO THE FULLEST EXTENT PERMITTED BY LAW, SOLAR COST PREDICTOR SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR RELATED TO YOUR USE OF THE SITE OR SERVICE, INCLUDING ANY DECISIONS MADE BASED ON CALCULATOR ESTIMATES.</p>
           <p>Our total liability to you for any claim shall not exceed $100.</p>
         </Section>
 
         <Section title="10. Indemnification">
-          <p>You agree to indemnify, defend, and hold harmless MySolarWidget and its officers, directors, employees, and agents from any claims, damages, losses, and expenses (including reasonable attorneys' fees) arising from your use of the Site or violation of these Terms.</p>
+          <p>You agree to indemnify, defend, and hold harmless Solar Cost Predictor and its officers, directors, employees, and agents from any claims, damages, losses, and expenses (including reasonable attorneys' fees) arising from your use of the Site or violation of these Terms.</p>
         </Section>
 
         <Section title="11. Governing Law">
@@ -102,9 +102,9 @@ export default function TermsOfService() {
           <p>For questions about these Terms, please contact us:</p>
           <div style={{ background: '#f8fafc', borderRadius: 12, padding: '20px 24px', marginTop: 12 }}>
             <p style={{ margin: 0, lineHeight: 2 }}>
-              <strong>MySolarWidget</strong><br />
-              Email: <a href="mailto:legal@mysolarwidget.com" style={linkStyle}>legal@mysolarwidget.com</a><br />
-              Website: <a href={DOMAIN} style={linkStyle}>www.mysolarwidget.com</a>
+              <strong>Solar Cost Predictor</strong><br />
+              Email: <a href="mailto:legal@solarcostpredictor.com" style={linkStyle}>legal@solarcostpredictor.com</a><br />
+              Website: <a href={DOMAIN} style={linkStyle}>www.solarcostpredictor.com</a>
             </p>
           </div>
         </Section>

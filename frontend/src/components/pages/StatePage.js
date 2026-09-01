@@ -99,15 +99,15 @@ export default function StatePage({ slug }) {
   const faqs = getAllFaqs().slice(0, 5);
   const est = state.estimate;
 
-  const title = `Solar Panel Cost in ${state.name} (2026) | Installation Prices & Savings | MySolarWidget`;
+  const title = `Solar Panel Cost in ${state.name} (2026) | Installation Prices & Savings | Solar Cost Predictor`;
   const description = `See average solar panel costs, savings, and payback period in ${state.name} for 2026, based on real electricity rates and sun hours. Get a free instant estimate.`;
 
   const breadcrumb = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.mysolarwidget.com' },
-      { '@type': 'ListItem', position: 2, name: `Solar Cost in ${state.name}`, item: `https://www.mysolarwidget.com/solar-cost/${state.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.solarcostpredictor.com' },
+      { '@type': 'ListItem', position: 2, name: `Solar Cost in ${state.name}`, item: `https://www.solarcostpredictor.com/solar-cost/${state.slug}` },
     ],
   };
   const faqSchema = {
@@ -121,7 +121,7 @@ export default function StatePage({ slug }) {
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
-        <link rel="canonical" href={`https://www.mysolarwidget.com/solar-cost/${state.slug}`} />
+        <link rel="canonical" href={`https://www.solarcostpredictor.com/solar-cost/${state.slug}`} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:type" content="website" />

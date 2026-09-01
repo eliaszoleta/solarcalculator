@@ -6,19 +6,19 @@ export default function InstallerLanding() {
   return (
     <>
       <Helmet>
-        <title>Solar Calculator Widget for Installers | MySolarWidget</title>
+        <title>Solar Calculator Widget for Installers | Solar Cost Predictor</title>
         <meta name="description" content="Embed a branded solar savings calculator on your website in minutes. Capture leads, show instant estimates, and close more solar deals. Free trial for solar installers." />
-        <link rel="canonical" href="https://www.mysolarwidget.com/for-installers" />
-        <meta property="og:title" content="Solar Calculator Widget for Installers | MySolarWidget" />
+        <link rel="canonical" href="https://www.solarcostpredictor.com/for-installers" />
+        <meta property="og:title" content="Solar Calculator Widget for Installers | Solar Cost Predictor" />
         <meta property="og:description" content="Embed a branded solar savings calculator on your website. Capture leads and close more deals. Free trial available." />
-        <meta property="og:url" content="https://www.mysolarwidget.com/for-installers" />
+        <meta property="og:url" content="https://www.solarcostpredictor.com/for-installers" />
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="MySolarWidget" />
-        <meta property="og:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
+        <meta property="og:site_name" content="Solar Cost Predictor" />
+        <meta property="og:image" content="https://www.solarcostpredictor.com/android-chrome-512x512.png" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Solar Calculator Widget for Installers | MySolarWidget" />
+        <meta name="twitter:title" content="Solar Calculator Widget for Installers | Solar Cost Predictor" />
         <meta name="twitter:description" content="Embed a branded solar savings calculator on your website. Capture leads and close more deals." />
-        <meta name="twitter:image" content="https://www.mysolarwidget.com/android-chrome-512x512.png" />
+        <meta name="twitter:image" content="https://www.solarcostpredictor.com/android-chrome-512x512.png" />
       </Helmet>
       <div style={{ fontFamily: "'Poppins', 'Poppins Fallback', Arial, sans-serif", color: '#0f172a', overflowX: 'hidden' }}>
         <LandingNav />
@@ -49,7 +49,7 @@ function LandingNav() {
     }}>
       <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, minWidth: 0 }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 1, minWidth: 0, overflow: 'hidden' }}>
-          <img src="/logo-horizontal-light.svg" alt="MySolarWidget" style={{ height: 44, width: 'auto', maxWidth: '100%' }} />
+          <img src="/logo-horizontal-light.svg" alt="Solar Cost Predictor" style={{ height: 44, width: 'auto', maxWidth: '100%' }} />
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <a href="/installer" style={{
@@ -527,7 +527,7 @@ function LandingFooter() {
   return (
     <footer style={{ background: '#0f172a', padding: '32px 24px', textAlign: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-        <img src="/logo-horizontal-dark.svg" alt="MySolarWidget" style={{ height: 44, width: 'auto' }} />
+        <img src="/logo-horizontal-dark.svg" alt="Solar Cost Predictor" style={{ height: 44, width: 'auto' }} />
       </div>
       <div style={{ display: 'flex', gap: 24, justifyContent: 'center', marginBottom: 20, flexWrap: 'wrap' }}>
         <a href="/" style={footerLink}>Home</a>
@@ -535,7 +535,7 @@ function LandingFooter() {
         <a href="/installer" style={footerLink}>Installer Login</a>
       </div>
       <p style={{ fontSize: 12, color: '#475569' }}>
-        © {new Date().getFullYear()} MySolarWidget. Solar production data powered by NREL PVWatts.
+        © {new Date().getFullYear()} Solar Cost Predictor. Solar production data powered by NREL PVWatts.
       </p>
     </footer>
   );

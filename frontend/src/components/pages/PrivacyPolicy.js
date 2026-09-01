@@ -1,14 +1,14 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-const DOMAIN = 'https://www.mysolarwidget.com';
+const DOMAIN = 'https://www.solarcostpredictor.com';
 
 export default function PrivacyPolicy() {
   return (
     <div style={{ background: 'var(--bg, #f1f5f9)', minHeight: '100vh' }}>
       <Helmet>
-        <title>Privacy Policy | MySolarWidget</title>
-        <meta name="description" content="MySolarWidget privacy policy. Learn how we collect, use, and protect your personal information when you use our free solar savings calculator." />
+        <title>Privacy Policy | Solar Cost Predictor</title>
+        <meta name="description" content="Solar Cost Predictor privacy policy. Learn how we collect, use, and protect your personal information when you use our free solar savings calculator." />
         <link rel="canonical" href={`${DOMAIN}/privacy-policy`} />
         <meta name="robots" content="index, follow" />
       </Helmet>
@@ -25,7 +25,7 @@ export default function PrivacyPolicy() {
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '40px 24px 80px' }}>
 
         <Section title="1. Introduction">
-          <p>MySolarWidget ("we," "us," or "our") operates the website at mysolarwidget.com (the "Site"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our Site or use our free solar savings calculator.</p>
+          <p>Solar Cost Predictor ("we," "us," or "our") operates the website at solarcostpredictor.com (the "Site"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our Site or use our free solar savings calculator.</p>
           <p>By using our Site you agree to the collection and use of information in accordance with this policy. If you do not agree, please do not use the Site.</p>
         </Section>
 
@@ -108,7 +108,7 @@ export default function PrivacyPolicy() {
             <li><strong>Opt-out:</strong> Opt out of marketing communications at any time</li>
             <li><strong>Data portability:</strong> Request your data in a portable format</li>
           </ul>
-          <p>To exercise these rights, contact us at <a href="mailto:privacy@mysolarwidget.com" style={linkStyle}>privacy@mysolarwidget.com</a>.</p>
+          <p>To exercise these rights, contact us at <a href="mailto:privacy@solarcostpredictor.com" style={linkStyle}>privacy@solarcostpredictor.com</a>.</p>
           <p><strong>California residents</strong> have additional rights under the California Consumer Privacy Act (CCPA). We do not sell personal information as defined by the CCPA.</p>
         </Section>
 
@@ -128,9 +128,9 @@ export default function PrivacyPolicy() {
           <p>If you have questions about this Privacy Policy or our data practices, please contact us:</p>
           <div style={{ background: '#f8fafc', borderRadius: 12, padding: '20px 24px', marginTop: 12 }}>
             <p style={{ margin: 0, lineHeight: 2 }}>
-              <strong>MySolarWidget</strong><br />
-              Email: <a href="mailto:privacy@mysolarwidget.com" style={linkStyle}>privacy@mysolarwidget.com</a><br />
-              Website: <a href={DOMAIN} style={linkStyle}>www.mysolarwidget.com</a>
+              <strong>Solar Cost Predictor</strong><br />
+              Email: <a href="mailto:privacy@solarcostpredictor.com" style={linkStyle}>privacy@solarcostpredictor.com</a><br />
+              Website: <a href={DOMAIN} style={linkStyle}>www.solarcostpredictor.com</a>
             </p>
           </div>
         </Section>

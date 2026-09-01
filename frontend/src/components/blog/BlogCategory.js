@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { CATEGORIES, getPostsByCategory, getCategoryBySlug } from '../../data/blogPosts';
 import { CategoryIcon } from '../ui/Icons';
 
-const SITE_URL = 'https://www.mysolarwidget.com';
+const SITE_URL = 'https://www.solarcostpredictor.com';
 const PRIMARY = '#1c3a5e';
 
 export default function BlogCategory({ category: categorySlug }) {
@@ -19,7 +19,7 @@ export default function BlogCategory({ category: categorySlug }) {
     );
   }
 
-  const seoTitle = `${category.label} Guide 2026 | MySolarWidget`;
+  const seoTitle = `${category.label} Guide 2026 | Solar Cost Predictor`;
   const seoDesc = category.description || `Expert guides on ${category.label.toLowerCase()} for homeowners.`;
 
   return (

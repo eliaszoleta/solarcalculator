@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ClockIcon, ShieldIcon, InboxIcon, CheckCircleIcon, AlertTriangleIcon } from '../ui/Icons';
 
-const DOMAIN = 'https://www.mysolarwidget.com';
+const DOMAIN = 'https://www.solarcostpredictor.com';
 const WEB3FORMS_ACCESS_KEY = 'b0da3f48-9982-4a5a-9195-4200a80ba8c6';
 
 export default function Contact() {
@@ -27,8 +27,8 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
-          subject: `New MySolarWidget message: ${form.subject}`,
-          from_name: 'MySolarWidget Contact Form',
+          subject: `New Solar Cost Predictor message: ${form.subject}`,
+          from_name: 'Solar Cost Predictor Contact Form',
           name: form.name,
           email: form.email,
           topic: form.subject,
@@ -50,8 +50,8 @@ export default function Contact() {
   return (
     <div style={{ background: '#f1f5f9', minHeight: '100vh', fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <Helmet>
-        <title>Contact Us | MySolarWidget</title>
-        <meta name="description" content="Contact MySolarWidget with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message." />
+        <title>Contact Us | Solar Cost Predictor</title>
+        <meta name="description" content="Contact Solar Cost Predictor with questions about our free solar savings calculator, installer widget, or your solar estimate. We read every message." />
         <link rel="canonical" href={`${DOMAIN}/contact`} />
         <meta name="robots" content="index, follow" />
       </Helmet>

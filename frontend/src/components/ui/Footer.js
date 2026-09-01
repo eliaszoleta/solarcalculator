@@ -43,7 +43,7 @@ export default function Footer() {
           {/* Brand */}
           <div style={{ maxWidth: 260 }}>
             <a href="/" style={{ display: 'inline-flex', alignItems: 'center', marginBottom: 16, textDecoration: 'none' }}>
-              <img src="/logo-horizontal-dark.svg" alt="MySolarWidget" style={{ height: 48, width: 'auto' }} />
+              <img src="/logo-horizontal-dark.svg" alt="Solar Cost Predictor" style={{ height: 48, width: 'auto' }} />
             </a>
             <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.65 }}>
               Free solar savings calculator for US homeowners — powered by real NREL data and EIA electricity rates.
@@ -78,7 +78,7 @@ export default function Footer() {
         {/* Bottom row */}
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 28, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
           <p style={{ fontSize: 12.5, color: '#475569' }}>
-            © {new Date().getFullYear()} MySolarWidget · Estimates are for informational purposes only ·{' '}
+            © {new Date().getFullYear()} Solar Cost Predictor · Estimates are for informational purposes only ·{' '}
             <a href="/privacy-policy" style={{ color: '#64748b' }}>Privacy</a>
             {' · '}
             <a href="/terms-of-service" style={{ color: '#64748b' }}>Terms</a>

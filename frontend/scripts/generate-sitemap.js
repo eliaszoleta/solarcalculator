@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE_URL = 'https://www.mysolarwidget.com';
+const SITE_URL = 'https://www.solarcostpredictor.com';
 const TODAY = new Date().toISOString().split('T')[0];
 
 const postsFile = fs.readFileSync(

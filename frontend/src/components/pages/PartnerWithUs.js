@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 
 const PRIMARY = '#1c3a5e';
 const WEB3FORMS_KEY = 'b0da3f48-9982-4a5a-9195-4200a80ba8c6';
-const DOMAIN = 'https://www.mysolarwidget.com';
+const DOMAIN = 'https://www.solarcostpredictor.com';
 
 const IconSun = () => (
   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={PRIMARY} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -102,7 +102,7 @@ export default function PartnerWithUs() {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: WEB3FORMS_KEY,
-          subject: 'Partnership Inquiry - MySolarWidget',
+          subject: 'Partnership Inquiry - Solar Cost Predictor',
           from_name: form.name,
           name: form.name,
           business: form.business,
@@ -130,8 +130,8 @@ export default function PartnerWithUs() {
   return (
     <>
       <Helmet>
-        <title>Partner With Us | MySolarWidget</title>
-        <meta name="description" content="Get your solar installation business recommended to thousands of homeowners actively getting solar estimates in your area. Join MySolarWidget's partner network for $350/month per city." />
+        <title>Partner With Us | Solar Cost Predictor</title>
+        <meta name="description" content="Get your solar installation business recommended to thousands of homeowners actively getting solar estimates in your area. Join Solar Cost Predictor's partner network for $350/month per city." />
         <link rel="canonical" href={`${DOMAIN}/partner-with-us`} />
         <meta name="robots" content="index, follow" />
       </Helmet>
@@ -144,7 +144,7 @@ export default function PartnerWithUs() {
             <span style={{ display: 'block', color: '#9fb3c8' }}> Ready to Go Solar</span>
           </h1>
           <p style={{ fontSize: 'clamp(15px, 2.5vw, 18px)', color: '#cbd5e1', lineHeight: 1.7, maxWidth: 620, margin: '0 auto 36px' }}>
-            MySolarWidget gets <strong style={{ color: 'white' }}>20,000&ndash;30,000 organic visits per month</strong> from homeowners actively calculating their solar savings &mdash; not casual browsers, but people who have already decided they want solar and are comparing costs.
+            Solar Cost Predictor gets <strong style={{ color: 'white' }}>20,000&ndash;30,000 organic visits per month</strong> from homeowners actively calculating their solar savings &mdash; not casual browsers, but people who have already decided they want solar and are comparing costs.
           </p>
           <a href="#apply" style={{ display: 'inline-flex', alignItems: 'center', background: PRIMARY, color: 'white', padding: '15px 36px', borderRadius: 10, textDecoration: 'none', fontWeight: 800, fontSize: 17, letterSpacing: '-0.2px', gap: 4 }}>
             Get My City <IconArrow size={18} color="white" />

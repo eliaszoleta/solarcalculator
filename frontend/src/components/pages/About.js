@@ -2,20 +2,20 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SunIcon, BoltIcon, WrenchIcon, DollarSignIcon } from '../ui/Icons';
 
-const DOMAIN = 'https://www.mysolarwidget.com';
+const DOMAIN = 'https://www.solarcostpredictor.com';
 
 export default function About() {
   return (
     <div style={{ background: 'var(--bg, #f1f5f9)', minHeight: '100vh' }}>
       <Helmet>
-        <title>About MySolarWidget | Free Solar Savings Calculator</title>
-        <meta name="description" content="MySolarWidget is a free solar savings calculator for US homeowners. We use NREL PVWatts data and real electricity rates to estimate your solar costs and savings in under 2 minutes." />
+        <title>About Solar Cost Predictor | Free Solar Savings Calculator</title>
+        <meta name="description" content="Solar Cost Predictor is a free solar savings calculator for US homeowners. We use NREL PVWatts data and real electricity rates to estimate your solar costs and savings in under 2 minutes." />
         <link rel="canonical" href={`${DOMAIN}/about`} />
         <meta name="robots" content="index, follow" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          "name": "MySolarWidget",
+          "name": "Solar Cost Predictor",
           "url": DOMAIN,
           "description": "Free solar savings calculator for US homeowners. Powered by NREL PVWatts real sunlight data.",
           "logo": {
@@ -27,7 +27,7 @@ export default function About() {
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer support",
-            "email": "hello@mysolarwidget.com",
+            "email": "hello@solarcostpredictor.com",
             "url": `${DOMAIN}/contact`
           },
           "sameAs": []
@@ -48,7 +48,7 @@ export default function About() {
             <span style={{ fontSize: 11.5, fontWeight: 700, color: '#9fb3c8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>About Us</span>
           </div>
           <h1 style={{ fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 16, letterSpacing: '-0.02em' }}>
-            About MySolarWidget
+            About Solar Cost Predictor
           </h1>
           <p style={{ fontSize: 17, color: '#9fb3c8', lineHeight: 1.7, maxWidth: 520, margin: '0 auto' }}>
             We built the solar calculator we wished existed — honest, fast, and backed by real government data.
@@ -66,7 +66,7 @@ export default function About() {
               Going solar is one of the biggest financial decisions a homeowner can make — yet most people walk into installer sales meetings with no idea what a fair price looks like. Installers charge anywhere from $2.50 to $4.50 per watt for the exact same equipment, and the difference can be $10,000 or more.
             </p>
             <p style={{ ...pStyle, marginBottom: 0 }}>
-              MySolarWidget exists to level the playing field. Our free calculator gives you an independent, data-driven estimate <em>before</em> you talk to a single installer. Armed with that number, you can negotiate from a position of knowledge, compare quotes confidently, and avoid getting taken advantage of.
+              Solar Cost Predictor exists to level the playing field. Our free calculator gives you an independent, data-driven estimate <em>before</em> you talk to a single installer. Armed with that number, you can negotiate from a position of knowledge, compare quotes confidently, and avoid getting taken advantage of.
             </p>
           </div>
         </section>
@@ -127,7 +127,7 @@ export default function About() {
           <div style={{ background: 'white', borderRadius: 16, padding: '28px 32px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
             <h2 style={{ ...h2Style, marginTop: 0 }}>Also Built for Solar Installers</h2>
             <p style={pStyle}>
-              In addition to the free public calculator, MySolarWidget offers a white-label embeddable widget that solar installers can add to their own websites. Installers get a branded calculator pre-configured with their service area, pricing, and lead routing — turning website visitors into qualified leads automatically.
+              In addition to the free public calculator, Solar Cost Predictor offers a white-label embeddable widget that solar installers can add to their own websites. Installers get a branded calculator pre-configured with their service area, pricing, and lead routing — turning website visitors into qualified leads automatically.
             </p>
             <a
               href="/for-installers"

@@ -4,7 +4,7 @@ import { getPostBySlug, getRelatedPosts, getCategoryBySlug } from '../../data/bl
 import { CategoryIcon, SearchIcon, PencilIcon, CalendarIcon, ClockIcon, BoltIcon } from '../ui/Icons';
 import './Blog.css';
 
-const SITE_URL = 'https://www.mysolarwidget.com';
+const SITE_URL = 'https://www.solarcostpredictor.com';
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -73,7 +73,7 @@ function TableOfContents({ sections, activeId }) {
 function SidebarCTA() {
   return (
     <div className="sidebar-cta">
-      <img src="/logo-icon-navy.svg" alt="MySolarWidget" className="sidebar-cta__icon" style={{ width: 48, height: 48, borderRadius: 12, marginBottom: 10 }} />
+      <img src="/logo-icon-navy.svg" alt="Solar Cost Predictor" className="sidebar-cta__icon" style={{ width: 48, height: 48, borderRadius: 12, marginBottom: 10 }} />
       <h4>Free Solar Calculator</h4>
       <p>See how much solar saves you based on your real electricity bill and location.</p>
       <a href="/" className="sidebar-cta__btn">Get My Estimate</a>
@@ -172,7 +172,7 @@ export default function BlogPost({ slug }) {
     },
     'publisher': {
       '@type': 'Organization',
-      'name': 'MySolarWidget',
+      'name': 'Solar Cost Predictor',
       'url': SITE_URL,
       'logo': { '@type': 'ImageObject', 'url': `${SITE_URL}/logo.png` },
     },
@@ -220,7 +220,7 @@ export default function BlogPost({ slug }) {
         <meta property="og:title" content={post.seoTitle} />
         <meta property="og:description" content={post.metaDescription} />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:site_name" content="MySolarWidget" />
+        <meta property="og:site_name" content="Solar Cost Predictor" />
         <meta property="article:published_time" content={formatDateISO(post.publishDate)} />
         <meta property="article:author" content={post.author} />
         <meta property="article:section" content={category?.label || post.category} />

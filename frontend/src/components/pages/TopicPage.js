@@ -108,8 +108,8 @@ export default function TopicPage({ slug }) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.mysolarwidget.com' },
-      { '@type': 'ListItem', position: 2, name: service.name, item: `https://www.mysolarwidget.com/solar-panels/${service.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.solarcostpredictor.com' },
+      { '@type': 'ListItem', position: 2, name: service.name, item: `https://www.solarcostpredictor.com/solar-panels/${service.slug}` },
     ],
   };
 
@@ -118,7 +118,7 @@ export default function TopicPage({ slug }) {
       <Helmet>
         <title>{service.seoTitle}</title>
         <meta name="description" content={service.metaDescription} />
-        <link rel="canonical" href={`https://www.mysolarwidget.com/solar-panels/${service.slug}`} />
+        <link rel="canonical" href={`https://www.solarcostpredictor.com/solar-panels/${service.slug}`} />
         <meta property="og:title" content={service.seoTitle} />
         <meta property="og:description" content={service.metaDescription} />
         <meta property="og:type" content="website" />

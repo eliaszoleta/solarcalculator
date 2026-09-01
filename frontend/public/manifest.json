@@ -1,6 +1,6 @@
 {
-  "name": "MySolarWidget",
-  "short_name": "MySolarWidget",
+  "name": "Solar Cost Predictor",
+  "short_name": "Solar Cost Predictor",
   "description": "Free solar panel savings calculator for homeowners.",
   "start_url": "/",
   "display": "standalone",

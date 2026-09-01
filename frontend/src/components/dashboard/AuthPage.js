@@ -42,7 +42,7 @@ export default function AuthPage({ onAuth }) {
       password: form.password,
       options: {
         data: { company_name: form.companyName },
-        emailRedirectTo: 'https://www.mysolarwidget.com/installer',
+        emailRedirectTo: 'https://www.solarcostpredictor.com/installer',
       },
     });
     if (error) { setError(error.message); }
@@ -54,7 +54,7 @@ export default function AuthPage({ onAuth }) {
     e.preventDefault();
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(form.email, {
-      redirectTo: 'https://www.mysolarwidget.com/installer',
+      redirectTo: 'https://www.solarcostpredictor.com/installer',
     });
     if (error) { setError(error.message); }
     else { setMode('check_email'); }
@@ -78,7 +78,7 @@ export default function AuthPage({ onAuth }) {
     }}>
       <div style={{ width: '100%', maxWidth: 420 }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <img src="/logo-horizontal-dark.svg" alt="MySolarWidget" style={{ height: 52, width: 'auto' }} />
+          <img src="/logo-horizontal-dark.svg" alt="Solar Cost Predictor" style={{ height: 52, width: 'auto' }} />
           <div style={{ fontSize: 14, color: '#9fb3c8', marginTop: 4 }}>Installer Dashboard</div>
         </div>
 
