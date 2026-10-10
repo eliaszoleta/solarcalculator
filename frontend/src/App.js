@@ -23,6 +23,8 @@ import StatePage from './components/pages/StatePage';
 import CityPage from './components/pages/CityPage';
 import TopicPage from './components/pages/TopicPage';
 import HowItsCalculated from './components/pages/HowItsCalculated';
+import StartSolarBusinessIndex from './components/pages/StartSolarBusinessIndex';
+import StartSolarBusinessStatePage from './components/pages/StartSolarBusinessStatePage';
 import './App.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
@@ -41,6 +43,8 @@ const isCityPage = pathname.startsWith('/solar-cost/city/');
 const isStatePage = pathname.startsWith('/solar-cost/') && !isCityPage;
 const isTopicPage = pathname.startsWith('/solar-panels/');
 const isHowItsCalculated = pathname === '/how-we-calculate-solar-costs';
+const isStartBusinessIndex = pathname === '/start-a-solar-business';
+const isStartBusinessState = pathname.startsWith('/start-a-solar-business/');
 const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
 
 function BlogRouter() {
@@ -218,6 +222,9 @@ export default function App() {
   if (isCityPage)  return <HelmetProvider><div className="app"><Header /><main><CityPage slug={pathname.replace('/solar-cost/city/', '')} /></main><Footer /></div></HelmetProvider>;
   if (isStatePage) return <HelmetProvider><div className="app"><Header /><main><StatePage slug={pathname.replace('/solar-cost/', '')} /></main><Footer /></div></HelmetProvider>;
   if (isTopicPage) return <HelmetProvider><div className="app"><Header /><main><TopicPage slug={pathname.replace('/solar-panels/', '')} /></main><Footer /></div></HelmetProvider>;
+
+  if (isStartBusinessState) return <HelmetProvider><div className="app"><Header /><main><StartSolarBusinessStatePage slug={pathname.replace('/start-a-solar-business/', '')} /></main><Footer /></div></HelmetProvider>;
+  if (isStartBusinessIndex) return <HelmetProvider><div className="app"><Header /><main><StartSolarBusinessIndex /></main><Footer /></div></HelmetProvider>;
 
   if (isPrivacyPolicy) return <HelmetProvider><div className="app"><Header /><main><PrivacyPolicy /></main><Footer /></div></HelmetProvider>;
   if (isTermsOfService) return <HelmetProvider><div className="app"><Header /><main><TermsOfService /></main><Footer /></div></HelmetProvider>;

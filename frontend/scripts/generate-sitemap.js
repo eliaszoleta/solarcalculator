@@ -68,6 +68,7 @@ const staticPages = [
   { path: '/for-installers',   priority: '0.9', changefreq: 'monthly', lastmod: TODAY },
   { path: '/blog',             priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
   { path: '/partner-with-us',  priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
+  { path: '/start-a-solar-business', priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
   { path: '/how-we-calculate-solar-costs', priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
   { path: '/about',            priority: '0.6', changefreq: 'monthly', lastmod: '2026-03-01' },
   { path: '/contact',          priority: '0.5', changefreq: 'monthly', lastmod: '2026-03-01' },
@@ -113,10 +114,15 @@ const xml = [
     urlEntry({ loc: `${SITE_URL}/solar-cost/city/${slug}`, lastmod: TODAY, changefreq: 'monthly', priority: '0.7' })
   ),
   '',
+  '  <!-- Start a solar business (auto-generated from statePricing.js) -->',
+  ...stateSlugs.map(slug =>
+    urlEntry({ loc: `${SITE_URL}/start-a-solar-business/${slug}`, lastmod: TODAY, changefreq: 'monthly', priority: '0.75' })
+  ),
+  '',
   '</urlset>',
 ].join('\n') + '\n';
 
 const outPath = path.join(__dirname, '../public/sitemap.xml');
 fs.writeFileSync(outPath, xml, 'utf8');
 
-console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugs.length} categories, ${serviceSlugs.length} topics, ${stateSlugs.length} states, ${citySlugs.length} cities`);
+console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugs.length} categories, ${serviceSlugs.length} topics, ${stateSlugs.length} states, ${citySlugs.length} cities, ${stateSlugs.length} start-a-solar-business states`);
