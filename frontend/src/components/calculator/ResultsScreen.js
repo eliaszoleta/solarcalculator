@@ -81,7 +81,7 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
           {fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)}
         </div>
         <div className="hero-sub">
-          net cost after 30% federal credit · {fmtDollar(savings.monthly)}/mo savings · paid off in {savings.paybackYears ? `${savings.paybackYears} yrs` : 'N/A'}
+          installed cost · {fmtDollar(savings.monthly)}/mo savings · paid off in {savings.paybackYears ? `${savings.paybackYears} yrs` : 'N/A'}
         </div>
       </div>
 
@@ -89,22 +89,13 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
       <div className="results-card">
         <div className="card-section-label">COST BREAKDOWN</div>
 
-        <div className="cost-line">
-          <span>Total installation cost</span>
-          <span>{fmtDollar(cost.low)} – {fmtDollar(cost.high)}</span>
-        </div>
-        <div className="cost-line cost-line-credit">
-          <span>Federal solar tax credit (30%)</span>
-          <span>− {fmtDollar(incentives.federalTaxCredit)}</span>
-        </div>
-        <div className="cost-line cost-line-divider" />
         <div className="cost-line cost-line-net">
-          <span><strong>Net cost after incentives</strong></span>
-          <span className="cost-net-val">{fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)}</span>
+          <span><strong>Total installation cost</strong></span>
+          <span className="cost-net-val">{fmtDollar(cost.low)} – {fmtDollar(cost.high)}</span>
         </div>
 
         <p className="tax-disclaimer">
-          * The 30% federal tax credit is claimed when you file your taxes — not an instant discount at purchase. Consult a tax professional to confirm eligibility.
+          * The 30% federal residential solar tax credit (Section 25D) ended for systems placed in service after December 31, 2025, and isn't included in this estimate. State or utility incentives may still apply where you live — a local installer can confirm what's currently available.
         </p>
 
         {hasFinancing && (
@@ -135,7 +126,7 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
         <div className="metrics-grid">
           {isCash ? (
             <div className="metric-card metric-green">
-              <div className="metric-label">Net Cost (after credit)</div>
+              <div className="metric-label">Installed Cost</div>
               <div className="metric-value">{fmtDollar(incentives.netCost)}</div>
               <div className="metric-sub">one-time cash purchase</div>
             </div>
@@ -328,14 +319,14 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
             </div>
             <div style={{ fontSize: isCash ? 24 : 30, fontWeight: 800, lineHeight: 1.15, marginBottom: 6 }}>
               {isCash
-                ? <>{fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)} net cost</>
+                ? <>{fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)} installed cost</>
                 : <>Save <span style={{ color: '#86efac' }}>{fmtDollar(daySavings)}/mo</span> from day one</>
               }
             </div>
             <div style={{ fontSize: 12, opacity: 0.8, lineHeight: 1.5 }}>
               {isCash
                 ? `${fmtDollar(savings.annual)}/yr savings · paid off in ${savings.paybackYears} yrs`
-                : `net cost ${fmtDollar(incentives.netCostLow)}–${fmtDollar(incentives.netCostHigh)} · ${savings.paybackYears} yr payback`
+                : `installed cost ${fmtDollar(incentives.netCostLow)}–${fmtDollar(incentives.netCostHigh)} · ${savings.paybackYears} yr payback`
               }
             </div>
           </div>
@@ -358,7 +349,7 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           {/* System pill + installation range */}
           <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', marginBottom: 14, fontSize: 12, color: '#475569', lineHeight: 1.7 }}>
             <div><strong style={{ color: '#0f172a' }}>{system.sizeKw} kW system</strong> · {system.panelCount} panels · {system.offsetPercent}% energy offset</div>
-            <div style={{ color: '#64748b' }}>Installation: {fmtDollar(cost.low)} – {fmtDollar(cost.high)} · After 30% credit: <span style={{ color: primary, fontWeight: 600 }}>{fmtDollar(incentives.netCostLow)} – {fmtDollar(incentives.netCostHigh)}</span></div>
+            <div style={{ color: '#64748b' }}>Installation: <span style={{ color: primary, fontWeight: 600 }}>{fmtDollar(cost.low)} – {fmtDollar(cost.high)}</span></div>
           </div>
 
           {/* Installer CTA */}

@@ -23,7 +23,7 @@ const STEPS = [
   {
     icon: <DollarSignIcon size={22} />, iconBg: '#dcfce7', iconColor: '#16a34a',
     title: '4. Federal Tax Credit',
-    desc: 'The 30% federal solar Investment Tax Credit (ITC) is applied to your total system cost, including any battery — giving you your net out-of-pocket cost. This credit is scheduled to remain at 30% for systems installed through 2032.',
+    desc: "The 30% federal residential solar tax credit (Section 25D) ended for systems placed in service after December 31, 2025, so we no longer apply it to the estimate — the number you see is the full installed cost. State and utility incentives aren't affected by this change and can still reduce your real cost; check what's available where you live.",
   },
   {
     icon: <SunIcon size={22} />, iconBg: '#eaf6ee', iconColor: '#15803d',
@@ -129,7 +129,7 @@ export default function HowItsCalculated() {
               Say you're in Texas with a $150/month electric bill. At Texas's real EIA rate (14¢/kWh), that's about 1,070 kWh/month. To offset 85% of that, you'd need roughly a 6 kW system — about 15 panels.
             </p>
             <p style={pStyle}>
-              At $2.80/watt, a 6 kW system on an asphalt roof with no battery costs $16,800 before incentives. After the 30% federal tax credit ($5,040), your net cost is $11,760. Using Texas's real 5.5 peak sun hours/day, that system would produce enough electricity to save you roughly $150/month — putting payback around 7–8 years, then decades of savings from a fully paid-off system.
+              At $2.80/watt, a 6 kW system on an asphalt roof with no battery costs $16,800 installed — the federal residential tax credit no longer applies to 2026 installs, so that's your real out-of-pocket number before any state or utility incentives. Using Texas's real 5.5 peak sun hours/day, that system would produce enough electricity to save you roughly $150/month — putting payback around 9 years, then decades of savings from a fully paid-off system.
             </p>
             <p style={{ ...pStyle, marginBottom: 0 }}>
               Change the state, the roof type, or add a battery, and every number in that chain — usage, system size, cost, savings, payback — recalculates from real data, not a lookup table.

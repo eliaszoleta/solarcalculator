@@ -70,7 +70,10 @@ const STATES = [
 
 // Same constants as backend/src/config/defaults.js DEFAULT_INSTALLER_CONFIG
 const PRICE_PER_WATT = 2.8;
-const FEDERAL_TAX_CREDIT = 0.30;
+// The 30% residential federal credit (IRC §25D) was repealed by the One Big
+// Beautiful Bill Act for any system placed in service after Dec 31, 2025.
+// Mirrors backend/src/config/defaults.js -- keep both in sync.
+const FEDERAL_TAX_CREDIT = 0;
 const MIN_SYSTEM_KW = 4;
 const MAX_SYSTEM_KW = 20;
 const PANEL_WATTAGE = 400;

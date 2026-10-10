@@ -16,7 +16,11 @@ const DEFAULT_INSTALLER_CONFIG = {
   },
   pricePerWatt: 2.8,         // all-in installed cost per watt (panels + labor + inverter + permits + margin)
   serviceStates: [],         // e.g. ['TX', 'CA'] — empty means serve all states
-  federalTaxCredit: 0.30,    // 30% ITC
+  // The 30% residential federal credit (IRC §25D) was repealed by the One Big
+  // Beautiful Bill Act (Public Law 119-21, §70506) for any system placed in
+  // service after Dec 31, 2025 -- no phase-down, immediate termination. Do
+  // not reintroduce a nonzero default without reflecting current law in copy.
+  federalTaxCredit: 0,
   panelWattage: 400,          // watts per panel
   panelAreaM2: 2,             // m² per panel
   systemName: "Solar Calculator",

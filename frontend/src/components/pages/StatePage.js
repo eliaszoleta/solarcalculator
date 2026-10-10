@@ -19,7 +19,7 @@ function BillScenarioTable({ state }) {
           <tr style={{ background: '#f8fafc' }}>
             <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 700, color: '#374151', borderBottom: '2px solid #e2e8f0' }}>Monthly Bill</th>
             <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 700, color: '#374151', borderBottom: '2px solid #e2e8f0', whiteSpace: 'nowrap' }}>System Size</th>
-            <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 700, color: '#374151', borderBottom: '2px solid #e2e8f0', whiteSpace: 'nowrap' }}>Net Cost (after ITC)</th>
+            <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 700, color: '#374151', borderBottom: '2px solid #e2e8f0', whiteSpace: 'nowrap' }}>Installed Cost</th>
             <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 700, color: '#374151', borderBottom: '2px solid #e2e8f0', whiteSpace: 'nowrap' }}>Payback</th>
           </tr>
         </thead>
@@ -151,7 +151,7 @@ export default function StatePage({ slug }) {
             </p>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
               <span style={{ fontSize: 30, fontWeight: 800, color: '#1b4d3e' }}>{formatPrice(est.netCostLow)} – {formatPrice(est.netCostHigh)}</span>
-              <span style={{ fontSize: 13, color: '#94a3b8' }}>net cost after 30% tax credit, $150/mo bill</span>
+              <span style={{ fontSize: 13, color: '#94a3b8' }}>installed cost, $150/mo bill</span>
             </div>
             <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 6 }}>≈ {est.systemSizeKw} kW system ({est.panelCount} panels) · {est.paybackYears ? `${est.paybackYears}-year payback` : ''}</div>
 

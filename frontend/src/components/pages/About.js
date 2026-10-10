@@ -94,8 +94,8 @@ export default function About() {
               },
               {
                 icon: <DollarSignIcon size={24} />, iconBg: '#dcfce7', iconColor: '#16a34a',
-                title: 'Federal Tax Credit',
-                desc: "We apply the current 30% Investment Tax Credit (ITC) and project savings over 30 years with a 4% annual electricity rate increase, consistent with historical averages."
+                title: 'Current Incentive Rules',
+                desc: "The federal residential tax credit ended for systems placed in service after Dec 31, 2025, so we show full installed cost rather than an outdated 30% discount. We project savings over 30 years with a 4% annual electricity rate increase, consistent with historical averages."
               }
             ].map(item => (
               <div key={item.title} style={{ background: 'white', borderRadius: 14, padding: '22px 20px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>

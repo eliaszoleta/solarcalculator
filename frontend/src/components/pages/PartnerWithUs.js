@@ -173,7 +173,7 @@ export default function PartnerWithUs() {
             {[
               { icon: <IconSun />, title: 'They already want solar', body: 'Every visitor used our calculator to estimate their solar savings. They came here with a real interest in going solar — not because an ad interrupted them.' },
               { icon: <IconPin />, title: 'They give us their location', body: 'Users enter their ZIP code to get location-specific sunlight and utility rates. We know exactly where they are and match them to your service area.' },
-              { icon: <IconWallet />, title: 'They know their numbers', body: "Our calculator shows them system cost, federal tax credit, monthly savings, and 25-year ROI. By the time they see you, they're informed and ready to get a real quote." },
+              { icon: <IconWallet />, title: 'They know their numbers', body: "Our calculator shows them installed cost, monthly savings, and 25-year ROI. By the time they see you, they're informed and ready to get a real quote." },
             ].map((card, i) => (
               <div key={i} style={{ background: '#f8fafc', borderRadius: 14, padding: '28px 24px', border: '1px solid #e2e8f0' }}>
                 <div style={{ width: 52, height: 52, background: '#eaf3ee', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>{card.icon}</div>

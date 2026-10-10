@@ -13,14 +13,14 @@ export const POSTS = [
     slug: 'how-much-do-solar-panels-cost',
     title: 'How Much Do Solar Panels Cost in 2026?',
     seoTitle: 'Solar Panel Cost in 2026: Full Price Breakdown | Solar Cost Predictor',
-    metaDescription: 'The average solar panel system costs $18,000–$25,000 before incentives. After the 30% federal tax credit, most homeowners pay $12,600–$17,500. See full 2026 breakdown.',
+    metaDescription: 'The average solar panel system costs $18,000–$25,000 installed in 2026. The federal residential tax credit ended in 2025 -- see the full breakdown and what incentives remain.',
     category: 'solar-costs',
     tags: ['cost', 'pricing', 'installation', '2026'],
     author: 'Solar Cost Predictor Team',
     publishDate: '2026-01-14',
     readingTime: 9,
     featured: true,
-    excerpt: 'The average residential solar system costs $18,000–$25,000 before incentives. After the 30% federal tax credit, most homeowners pay $12,600–$17,500. Here is the complete 2026 cost breakdown by system size, state, and financing type.',
+    excerpt: 'The average residential solar system costs $18,000–$25,000 installed in 2026 -- the federal residential tax credit that used to cut 30% off this price ended Dec 31, 2025. Here is the complete 2026 cost breakdown by system size, state, and financing type.',
     intro: `<p>Solar panels have become significantly more affordable over the last decade — costs have dropped more than <strong>90% since 2010</strong>. But "how much does solar cost?" still depends on several variables: your home's energy usage, your location, the installer you choose, and whether you finance or pay cash.</p>
 <p>In this guide, we break down exactly what drives solar pricing in 2026, provide cost ranges by system size and state, and show you how to calculate a realistic estimate for your home.</p>`,
     sections: [
@@ -29,16 +29,16 @@ export const POSTS = [
         title: 'Average Solar Panel Cost in 2026',
         content: `<p>The national average cost of a fully installed residential solar system in 2026 is <strong>$2.95 per watt</strong>, all-in. That includes panels, inverter, mounting hardware, wiring, labor, permitting fees, and installer margin.</p>
 <table>
-  <thead><tr><th>System Size</th><th>Typical Home</th><th>Cost Before Incentives</th><th>After 30% Tax Credit</th></tr></thead>
+  <thead><tr><th>System Size</th><th>Typical Home</th><th>Installed Cost</th></tr></thead>
   <tbody>
-    <tr><td>4 kW</td><td>Small condo / low usage</td><td>$10,000–$14,000</td><td>$7,000–$9,800</td></tr>
-    <tr><td>6 kW</td><td>Average US home</td><td>$15,000–$21,000</td><td>$10,500–$14,700</td></tr>
-    <tr><td>8 kW</td><td>Larger home / EV charger</td><td>$20,000–$28,000</td><td>$14,000–$19,600</td></tr>
-    <tr><td>10 kW</td><td>Large home / pool</td><td>$25,000–$35,000</td><td>$17,500–$24,500</td></tr>
-    <tr><td>12 kW</td><td>Very large / high usage</td><td>$30,000–$42,000</td><td>$21,000–$29,400</td></tr>
+    <tr><td>4 kW</td><td>Small condo / low usage</td><td>$10,000–$14,000</td></tr>
+    <tr><td>6 kW</td><td>Average US home</td><td>$15,000–$21,000</td></tr>
+    <tr><td>8 kW</td><td>Larger home / EV charger</td><td>$20,000–$28,000</td></tr>
+    <tr><td>10 kW</td><td>Large home / pool</td><td>$25,000–$35,000</td></tr>
+    <tr><td>12 kW</td><td>Very large / high usage</td><td>$30,000–$42,000</td></tr>
   </tbody>
 </table>
-<p>The most common system size for US homeowners is <strong>6–8 kW</strong>, covering 80–100% of average electricity usage.</p>`
+<p>The most common system size for US homeowners is <strong>6–8 kW</strong>, covering 80–100% of average electricity usage. These are full installed prices -- the federal residential tax credit that used to reduce them by 30% ended for systems placed in service after December 31, 2025.</p>`
       },
       {
         id: 'what-drives-price',
@@ -62,26 +62,25 @@ export const POSTS = [
         title: 'Solar Panel Cost by State (2026)',
         content: `<p>Where you live has a major impact on solar pricing due to local labor rates, permitting complexity, and competition among installers.</p>
 <table>
-  <thead><tr><th>State</th><th>Avg. Cost (6 kW)</th><th>After Tax Credit</th><th>Avg. Payback</th></tr></thead>
+  <thead><tr><th>State</th><th>Avg. Cost (6 kW)</th><th>Avg. Payback</th></tr></thead>
   <tbody>
-    <tr><td>California</td><td>$16,800</td><td>$11,760</td><td>7–9 years</td></tr>
-    <tr><td>Texas</td><td>$15,600</td><td>$10,920</td><td>9–12 years</td></tr>
-    <tr><td>Florida</td><td>$15,000</td><td>$10,500</td><td>8–11 years</td></tr>
-    <tr><td>New York</td><td>$19,200</td><td>$13,440</td><td>7–9 years</td></tr>
-    <tr><td>New Jersey</td><td>$18,000</td><td>$12,600</td><td>6–8 years</td></tr>
-    <tr><td>Arizona</td><td>$14,400</td><td>$10,080</td><td>8–11 years</td></tr>
-    <tr><td>Massachusetts</td><td>$19,800</td><td>$13,860</td><td>6–8 years</td></tr>
-    <tr><td>Georgia</td><td>$15,600</td><td>$10,920</td><td>9–12 years</td></tr>
+    <tr><td>California</td><td>$16,800</td><td>10–13 years</td></tr>
+    <tr><td>Texas</td><td>$15,600</td><td>13–17 years</td></tr>
+    <tr><td>Florida</td><td>$15,000</td><td>11–16 years</td></tr>
+    <tr><td>New York</td><td>$19,200</td><td>10–13 years</td></tr>
+    <tr><td>New Jersey</td><td>$18,000</td><td>9–11 years</td></tr>
+    <tr><td>Arizona</td><td>$14,400</td><td>11–16 years</td></tr>
+    <tr><td>Massachusetts</td><td>$19,800</td><td>9–11 years</td></tr>
+    <tr><td>Georgia</td><td>$15,600</td><td>13–17 years</td></tr>
   </tbody>
 </table>
-<p>Note: Payback period accounts for the 30% federal tax credit. States with high electricity rates (MA, NJ, CA) have shorter paybacks despite higher upfront costs.</p>`
+<p>Note: These are full installed prices and payback periods with no federal tax credit applied -- it ended for systems placed in service after Dec 31, 2025. States with high electricity rates (MA, NJ, CA) still have shorter paybacks despite higher upfront costs.</p>`
       },
       {
         id: 'after-tax-credit',
-        title: 'Your True Net Cost After Incentives',
-        content: `<p>The <strong>30% federal Investment Tax Credit (ITC)</strong> remains the most valuable solar incentive available. It applies to the full installed cost of your system — panels, labor, permitting, and batteries all included.</p>
-<p>Example: A $20,000 system qualifies for a <strong>$6,000 federal tax credit</strong>, bringing your net cost to $14,000. This is a dollar-for-dollar reduction in your tax liability — not a deduction.</p>
-<p>Beyond the federal credit, many states offer additional incentives:</p>
+        title: 'What Incentives Are Actually Available Now',
+        content: `<p>The 30% federal Residential Clean Energy Credit (Section 25D) was the most valuable solar incentive for over a decade, but it ended for any system placed in service after December 31, 2025, repealed by the One Big Beautiful Bill Act. If you're installing in 2026, the price you're quoted is the real price — there's no federal credit coming off it. See our <a href="/blog/federal-solar-tax-credit-guide">full guide to what changed</a>.</p>
+<p>State incentives weren't touched by that change and still vary widely:</p>
 <ul>
   <li><strong>New York:</strong> 25% state tax credit (up to $5,000)</li>
   <li><strong>Massachusetts:</strong> 15% state tax credit (up to $1,000) + SMART program payments</li>
@@ -89,7 +88,7 @@ export const POSTS = [
   <li><strong>Maryland:</strong> $1,000 state grant + property tax exemption</li>
   <li><strong>Arizona:</strong> 25% state tax credit (up to $1,000)</li>
 </ul>
-<p>Between federal and state incentives, some homeowners in high-incentive states effectively cut their cost by 40–50%.</p>`
+<p>In states that stack several of these, you can still meaningfully reduce your cost — just not by the 30% the federal credit used to provide. Check what applies in your specific state before assuming the math doesn't work.</p>`
       },
       {
         id: 'hidden-costs',
@@ -108,7 +107,7 @@ export const POSTS = [
         title: 'Is Solar Worth the Cost?',
         content: `<p>For the majority of US homeowners, yes — solar is a solid financial investment. Here's why:</p>
 <ul>
-  <li>Average payback period: <strong>7–12 years</strong></li>
+  <li>Average payback period: <strong>9–17 years</strong> now that the federal tax credit has ended (was 7–12 years with the credit)</li>
   <li>System lifespan: <strong>25–30 years</strong> (with performance warranties)</li>
   <li>Lifetime savings: <strong>$25,000–$75,000</strong> depending on state and electricity rates</li>
   <li>Home value increase: <strong>3–4%</strong> average (Zillow research, 2024)</li>
@@ -117,8 +116,8 @@ export const POSTS = [
       }
     ],
     faq: [
-      { question: 'How much do solar panels cost for a 2,000 sq ft house?', answer: 'A 2,000 sq ft home typically uses 10,000–12,000 kWh per year, requiring a 6–8 kW solar system. At 2026 prices, that costs $15,000–$28,000 before incentives, or $10,500–$19,600 after the 30% federal tax credit.' },
-      { question: 'What is the cheapest way to get solar panels?', answer: 'A solar loan (often called a $0-down loan) lets you install solar with no upfront cost and monthly payments that are typically less than your current electricity bill. You own the system and claim the 30% tax credit. This is usually better than a lease or PPA because you build equity in the system.' },
+      { question: 'How much do solar panels cost for a 2,000 sq ft house?', answer: 'A 2,000 sq ft home typically uses 10,000–12,000 kWh per year, requiring a 6–8 kW solar system. At 2026 prices, that costs $15,000–$28,000 installed. The federal tax credit that used to reduce this by 30% ended for systems placed in service after Dec 31, 2025.' },
+      { question: 'What is the cheapest way to get solar panels?', answer: 'A solar loan (often called a $0-down loan) lets you install solar with no upfront cost and monthly payments that are typically less than your current electricity bill. You own the system outright. This is usually better than a lease or PPA because you build equity in the system, even though the federal tax credit that used to favor ownership ended in 2025.' },
       { question: 'Are solar panels worth it if my electricity rate is low?', answer: 'Solar is less financially compelling in low-rate states (Louisiana, Oklahoma), where rates are $0.09–$0.11/kWh. Payback periods can stretch to 15+ years. However, locking in a fixed solar payment still protects against future rate increases.' },
       { question: 'Do solar panel prices include installation?', answer: 'Yes — reputable quotes always include panels, inverter, mounting hardware, electrical wiring, labor, permit fees, and utility interconnection. Always ask for an "all-in" price per watt to compare quotes fairly.' },
       { question: 'Will solar panel prices drop further in 2026?', answer: 'Panel prices have largely plateaued after their dramatic decline. All-in installed costs are expected to remain around $2.75–$3.25/watt in 2026. Tariffs on imported panels and rising labor costs are offsetting efficiency gains from panel manufacturers.' },
@@ -145,11 +144,10 @@ export const POSTS = [
       {
         id: 'cash-purchase',
         title: 'Option 1: Cash Purchase',
-        content: `<p>Paying cash is the simplest path and produces the highest lifetime return. You own the system outright from day one, you claim the full 30% federal tax credit, and you start saving immediately with zero monthly payment.</p>
+        content: `<p>Paying cash is the simplest path and produces the highest lifetime return. You own the system outright from day one and start saving immediately with zero monthly payment. Note: the federal residential tax credit that used to reward ownership with a 30% deduction ended for systems placed in service after Dec 31, 2025 — you're paying full price either way now, but ownership still means you keep 100% of the savings with no interest paid.</p>
 <h3>Pros</h3>
 <ul>
   <li>Highest 25-year savings (no interest to pay)</li>
-  <li>You claim the full 30% federal tax credit</li>
   <li>Full ownership — home value increase is fully yours</li>
   <li>Simple: no lender, no contract complexity</li>
 </ul>
@@ -163,7 +161,7 @@ export const POSTS = [
       {
         id: 'solar-loan',
         title: 'Option 2: Solar Loan ($0 Down)',
-        content: `<p>Solar loans are the most popular financing option, used by roughly 60% of buyers. You borrow the full installation cost and pay it back monthly — typically over 10, 15, or 25 years. You still own the system and claim the tax credit.</p>
+        content: `<p>Solar loans are the most popular financing option, used by roughly 60% of buyers. You borrow the full installation cost and pay it back monthly — typically over 10, 15, or 25 years. You still own the system, though the federal tax credit that used to apply to owned systems ended for installs after Dec 31, 2025.</p>
 <h3>How Solar Loans Work</h3>
 <p>Most solar loans are <strong>unsecured</strong> (no home equity required), with rates currently ranging from <strong>4.99%–8.99% APR</strong> depending on your credit score and loan term. The lender pays the installer directly; you make monthly payments to the lender.</p>
 <table>
@@ -174,12 +172,12 @@ export const POSTS = [
     <tr><td>25 years @ 5.99%</td><td>$96/month</td><td>$13,800</td></tr>
   </tbody>
 </table>
-<h3>The Tax Credit Strategy</h3>
-<p>Many solar loans are structured as 18-month "promotional" loans. The expectation is that you use your 30% federal tax credit to pay down the principal in year one, then refinance the remainder at a long-term rate. This dramatically reduces total interest paid — but <strong>read the fine print</strong>, as some loans have a balloon payment if you don't use the tax credit.</p>
+<h3>Watch for "18-Month Promotional" Loan Structures</h3>
+<p>Many solar loans are still marketed as 18-month "promotional" loans, originally designed around paying down the principal with a 30% federal tax credit in year one, then refinancing the remainder at a long-term rate. <strong>That credit no longer exists for systems placed in service after Dec 31, 2025</strong> — if a lender or installer pitches this structure to you in 2026, ask exactly what you're expected to pay down the loan with, since some of these loans carry a balloon payment if that lump sum doesn't materialize.</p>
 <h3>Pros</h3>
 <ul>
   <li>$0 down, immediate monthly savings</li>
-  <li>You own the system and claim the tax credit</li>
+  <li>You own the system outright</li>
   <li>No home equity required</li>
 </ul>
 <h3>Cons</h3>
@@ -191,7 +189,7 @@ export const POSTS = [
       {
         id: 'solar-lease',
         title: 'Option 3: Solar Lease',
-        content: `<p>With a solar lease, you don't own the panels — a solar company does. They install the system on your roof for free and charge you a fixed monthly "rental" fee (typically $50–$150/month). You keep the electricity the panels produce, but the leasing company keeps the tax credit and SRECs.</p>
+        content: `<p>With a solar lease, you don't own the panels — a solar company does. They install the system on your roof for free and charge you a fixed monthly "rental" fee (typically $50–$150/month). You keep the electricity the panels produce, but the leasing company keeps any tax benefits and SRECs. Since the federal residential credit ended in 2025, this is now less of a gap than it used to be — the leasing company may still be eligible for a separate commercial credit and could pass some of that value through in your rate.</p>
 <h3>Pros</h3>
 <ul>
   <li>$0 down and no ownership responsibility</li>
@@ -200,7 +198,7 @@ export const POSTS = [
 </ul>
 <h3>Cons</h3>
 <ul>
-  <li>You do NOT get the 30% federal tax credit</li>
+  <li>No ownership, so any tax benefits stay with the leasing company</li>
   <li>Savings are smaller than ownership options (30–50% less over 25 years)</li>
   <li>Lease complicates home sale — buyers must assume the lease</li>
   <li>Annual payment escalators (2–3%/year) in some contracts</li>
@@ -219,7 +217,7 @@ export const POSTS = [
 </ul>
 <h3>Cons</h3>
 <ul>
-  <li>No system ownership — no tax credit, no home value benefit</li>
+  <li>No system ownership — no home value benefit, and no direct tax credit (though note the federal residential credit ended for owned systems too in 2025)</li>
   <li>20-year contracts can complicate home sales</li>
   <li>Rate escalators of 2–3%/year are common</li>
   <li>Not available in all states (most common: CA, AZ, TX, NY, NJ, MA)</li>
@@ -228,23 +226,23 @@ export const POSTS = [
       {
         id: 'comparison',
         title: 'Which Option Saves You the Most?',
-        content: `<p>Here's a 25-year comparison for a 6 kW system ($18,000 installed) in a state with $0.16/kWh electricity rates:</p>
+        content: `<p>Here's a 25-year comparison for a 6 kW system ($18,000 installed) in a state with $0.16/kWh electricity rates. These reflect full installed cost, since the federal residential tax credit ended for systems placed in service after Dec 31, 2025:</p>
 <table>
   <thead><tr><th>Option</th><th>Upfront Cost</th><th>25-Year Savings</th><th>Own System?</th></tr></thead>
   <tbody>
-    <tr><td>Cash</td><td>$12,600 (after ITC)</td><td>$38,000–$48,000</td><td>Yes</td></tr>
-    <tr><td>Loan (25yr @ 5.99%)</td><td>$0</td><td>$22,000–$32,000</td><td>Yes</td></tr>
+    <tr><td>Cash</td><td>$18,000</td><td>$33,000–$43,000</td><td>Yes</td></tr>
+    <tr><td>Loan (25yr @ 5.99%)</td><td>$0</td><td>$16,000–$26,000</td><td>Yes</td></tr>
     <tr><td>Lease</td><td>$0</td><td>$8,000–$15,000</td><td>No</td></tr>
     <tr><td>PPA</td><td>$0</td><td>$6,000–$14,000</td><td>No</td></tr>
   </tbody>
 </table>
-<p>Cash wins financially, but a solar loan comes close while preserving capital. Leases and PPAs offer convenience at the cost of significantly lower lifetime savings.</p>
+<p>Cash still wins financially, and a solar loan still beats a lease or PPA on lifetime savings — the gap between ownership and leasing options is now smaller than it used to be, since ownership no longer carries the extra benefit of the federal tax credit. Leases and PPAs offer convenience at the cost of lower lifetime savings either way.</p>
 <p>Use our <a href="/">Solar Calculator</a> to estimate your specific savings under each scenario based on your actual electricity bill and location.</p>`
       }
     ],
     faq: [
       { question: 'Can I get solar with bad credit?', answer: 'Yes, but your options are limited. Leases and PPAs typically have more flexible credit requirements (sometimes 600+ score). Solar loans usually require 640–680+. PACE financing (Property Assessed Clean Energy) is secured by your home and may be available with lower credit scores, but carries higher rates.' },
-      { question: 'Is a solar loan better than a solar lease?', answer: 'Almost always, yes. With a loan you own the system, claim the 30% tax credit, and earn significantly more savings over 25 years — often $15,000–$25,000 more than a lease on the same system.' },
+      { question: 'Is a solar loan better than a solar lease?', answer: 'Usually, yes. With a loan you own the system and earn more savings over 25 years — often $8,000–$11,000 more than a lease on the same system. That gap used to be larger when ownership also came with the 30% federal tax credit, which ended for systems placed in service after Dec 31, 2025.' },
       { question: 'What happens if I sell my home with a solar lease?', answer: 'You have two options: transfer the lease to the buyer (who must qualify and agree), or pay a buyout fee to terminate the lease early. Both can complicate or slow a home sale. This is the biggest drawback of leases and PPAs.' },
       { question: 'What credit score do I need for a solar loan?', answer: 'Most solar lenders require a minimum FICO score of 640–680 for approval, though the best rates (under 5%) go to borrowers with 720+. Some specialized solar lenders like Mosaic and Sunlight Financial serve borrowers in the 600–640 range.' },
     ],
@@ -344,113 +342,83 @@ export const POSTS = [
   // ─── ARTICLE 4 ────────────────────────────────────────────────────────────
   {
     slug: 'federal-solar-tax-credit-guide',
-    title: 'The 30% Federal Solar Tax Credit: Complete 2026 Guide',
-    seoTitle: 'Federal Solar Tax Credit 2026: How to Claim the 30% ITC | Solar Cost Predictor',
-    metaDescription: 'The federal solar Investment Tax Credit (ITC) is worth 30% of your total system cost through 2032. Learn exactly how to claim it, who qualifies, and how much you\'ll save.',
+    title: 'The Federal Solar Tax Credit Ended in 2025 — What Homeowners Need to Know for 2026',
+    seoTitle: 'Federal Solar Tax Credit 2026: What Changed, What\'s Left | Solar Cost Predictor',
+    metaDescription: 'The 30% federal residential solar tax credit (Section 25D) ended Dec 31, 2025. Here\'s exactly what changed, who\'s affected, and what incentives are still available in 2026.',
     category: 'solar-incentives',
-    tags: ['tax credit', 'ITC', 'federal incentive', '30%', '2026'],
+    tags: ['tax credit', 'Section 25D', 'federal incentive', '2026', 'OBBBA'],
     author: 'Solar Cost Predictor Team',
     publishDate: '2026-01-22',
     readingTime: 7,
     featured: false,
-    excerpt: 'The federal solar Investment Tax Credit (ITC) lets homeowners deduct 30% of their total solar installation cost from federal taxes — dollar for dollar. On a $20,000 system, that is a $6,000 credit. Here is exactly how it works.',
-    intro: `<p>The federal solar Investment Tax Credit (ITC) is the single most valuable solar incentive available to American homeowners. Enacted as part of the Inflation Reduction Act of 2022, the 30% credit applies to systems installed between 2022 and 2032.</p>
-<p>On a typical $18,000–$25,000 solar installation, the ITC saves homeowners <strong>$5,400–$7,500</strong> in federal taxes. Understanding how it works — and whether you qualify — is critical before making your solar decision.</p>`,
+    excerpt: 'For years, the 30% federal solar tax credit was the single biggest incentive for going solar. It ended for homeowners on December 31, 2025. Here\'s what changed, why, and what\'s still available in 2026.',
+    intro: `<p>Until the end of 2025, the federal Residential Clean Energy Credit (IRC Section 25D) let homeowners deduct 30% of their total solar installation cost from their federal taxes, dollar for dollar. It was the single most valuable solar incentive in the country.</p>
+<p>That credit <strong>ended for any system placed in service after December 31, 2025</strong>, repealed by the One Big Beautiful Bill Act (Public Law 119-21, signed July 4, 2025) with no phase-down. If you're pricing solar in 2026, the number you're quoted is the real number — there's no 30% coming off at tax time anymore for a typical cash or loan purchase.</p>`,
     sections: [
       {
-        id: 'what-is-itc',
-        title: 'What Is the Investment Tax Credit (ITC)?',
-        content: `<p>The ITC is a <strong>federal income tax credit</strong> — not a deduction, not a rebate. A tax credit reduces your tax liability dollar-for-dollar. If you owe $8,000 in federal taxes and have a $6,000 solar credit, you owe $2,000 instead.</p>
-<p>Key facts:</p>
+        id: 'what-changed',
+        title: 'What Actually Changed',
+        content: `<p>The One Big Beautiful Bill Act amended Section 25D of the tax code to end the residential credit for systems placed in service after December 31, 2025. Unlike the original phase-down schedule in the Inflation Reduction Act — which would have stepped the credit down gradually through 2035 — this was an immediate, full termination with no transition period.</p>
 <ul>
-  <li>Credit rate: <strong>30%</strong> of total installed system cost</li>
-  <li>Applies to: Panels, inverter, mounting hardware, labor, permitting, sales tax, and battery storage</li>
-  <li>Form: Filed on <strong>IRS Form 5695</strong> when you file your annual taxes</li>
-  <li>Carryover: If your credit exceeds your tax liability in year one, the unused portion carries forward to future tax years</li>
-  <li>Refundable? No — you must have sufficient federal tax liability to use it</li>
+  <li><strong>Before:</strong> 30% credit on total system cost (panels, inverter, labor, permitting, battery storage), scheduled through 2032 with a gradual step-down after</li>
+  <li><strong>Now:</strong> No federal credit for residential systems placed in service in 2026 or later</li>
+  <li><strong>Who it hits:</strong> Homeowners who buy their system outright or finance it with a loan — the ownership model the credit was built for</li>
+  <li><strong>What it doesn't touch:</strong> State tax credits, utility rebates, net metering policies, and property/sales tax exemptions are unaffected — those come from separate state and local laws, not Section 25D</li>
 </ul>`
       },
       {
-        id: 'how-much-is-it-worth',
-        title: 'How Much Is the ITC Worth?',
-        content: `<p>The credit is 30% of every dollar you spend on the system — including labor. Batteries are now included if installed alongside panels (or even in some standalone cases under the IRA).</p>
+        id: 'what-it-used-to-be-worth',
+        title: 'What the Credit Used to Be Worth',
+        content: `<p>For context on just how big this change is, here's what homeowners used to get back on a typical system before the credit ended:</p>
 <table>
-  <thead><tr><th>System Cost</th><th>30% Tax Credit</th><th>Your Net Cost</th></tr></thead>
+  <thead><tr><th>System Cost</th><th>Old 30% Credit</th><th>Old Net Cost</th><th>2026 Cost (No Credit)</th></tr></thead>
   <tbody>
-    <tr><td>$12,000</td><td>$3,600</td><td>$8,400</td></tr>
-    <tr><td>$16,000</td><td>$4,800</td><td>$11,200</td></tr>
-    <tr><td>$20,000</td><td>$6,000</td><td>$14,000</td></tr>
-    <tr><td>$25,000</td><td>$7,500</td><td>$17,500</td></tr>
-    <tr><td>$30,000</td><td>$9,000</td><td>$21,000</td></tr>
-    <tr><td>$40,000 (+ battery)</td><td>$12,000</td><td>$28,000</td></tr>
+    <tr><td>$12,000</td><td>$3,600</td><td>$8,400</td><td>$12,000</td></tr>
+    <tr><td>$16,800</td><td>$5,040</td><td>$11,760</td><td>$16,800</td></tr>
+    <tr><td>$20,000</td><td>$6,000</td><td>$14,000</td><td>$20,000</td></tr>
+    <tr><td>$25,000</td><td>$7,500</td><td>$17,500</td><td>$25,000</td></tr>
   </tbody>
 </table>
-<p>If you add a Tesla Powerwall ($11,500) to a $20,000 solar system, your total qualifies for a 30% credit on the combined $31,500 — that's <strong>$9,450</strong> back.</p>`
+<p>That's a real difference — on an $18,000–$25,000 system, homeowners installing in 2026 are paying $5,400–$7,500 more out of pocket than someone who installed the same system in 2025.</p>`
       },
       {
-        id: 'who-qualifies',
-        title: 'Who Qualifies for the Solar Tax Credit?',
-        content: `<p>Eligibility requirements are straightforward:</p>
+        id: 'who-is-affected',
+        title: 'Who This Affects — and Who It Doesn\'t',
+        content: `<p>The expired credit was always tied to <strong>ownership</strong>: you had to buy the system (cash or loan) and have federal tax liability to use it. That shapes who feels this change most:</p>
 <ul>
-  <li><strong>Own the system:</strong> You must purchase (cash or loan) — not lease or use a PPA. Leasing companies claim the credit, not you.</li>
-  <li><strong>Primary or secondary home:</strong> The panels must be on your primary or secondary US residence.</li>
-  <li><strong>New installation:</strong> The credit applies to new installations, not used equipment.</li>
-  <li><strong>Tax liability:</strong> You must owe federal income taxes. If you have no federal tax liability (e.g., you're retired on Social Security), you cannot use the credit.</li>
-  <li><strong>Install date:</strong> System must be "placed in service" (operational and approved by utility) in the tax year you claim it.</li>
-</ul>
-<h3>Do Renters Qualify?</h3>
-<p>Generally no — renters cannot claim the credit because they don't own the property or the solar installation.</p>
-<h3>What About LLCs and Businesses?</h3>
-<p>Businesses that install solar also qualify for a 30% Investment Tax Credit (via the commercial ITC, also called Section 48). Rules differ slightly from the residential credit.</p>`
+  <li><strong>Cash buyers and loan financers:</strong> Hit hardest — you now pay the full installed cost with no federal offset.</li>
+  <li><strong>Leases and PPAs:</strong> The homeowner never claimed the residential credit in these arrangements anyway — the leasing company owned the system and claimed it. Commercial installers can still claim a separate 30% credit (Section 48E) on systems they own and lease out, through 2027 under current law, and may pass some of that value through in lower lease or PPA payments. Ask an installer directly whether their pricing reflects that.</li>
+  <li><strong>Businesses installing solar on commercial property:</strong> Unaffected — the commercial Investment Tax Credit under Section 48E is a separate program from the residential Section 25D credit this article covers.</li>
+</ul>`
       },
       {
-        id: 'how-to-claim',
-        title: 'How to Claim the Solar Tax Credit',
-        content: `<p>Claiming the ITC is done at tax time — not immediately after installation. Here's the process:</p>
-<ol>
-  <li><strong>Install your system</strong> and receive Permission to Operate (PTO) from your utility.</li>
-  <li><strong>Keep all receipts</strong> — the installer's final invoice is your primary documentation.</li>
-  <li><strong>File IRS Form 5695</strong> ("Residential Energy Credits") with your federal tax return for the year the system was placed in service.</li>
-  <li>Enter your total system cost on Part I of Form 5695. The 30% credit is calculated automatically.</li>
-  <li>The credit reduces your tax liability on Form 1040, Line 20.</li>
-</ol>
-<p>Most tax software (TurboTax, H&R Block, TaxAct) guides you through Form 5695 automatically. If you use a CPA, simply tell them you installed solar and provide the invoice — they'll handle the rest.</p>`
-      },
-      {
-        id: 'state-incentives',
-        title: 'State Solar Tax Credits and Incentives',
-        content: `<p>Beyond the 30% federal credit, many states offer additional incentives that stack on top:</p>
-<table>
-  <thead><tr><th>State</th><th>Incentive</th><th>Value</th></tr></thead>
-  <tbody>
-    <tr><td>New York</td><td>State Tax Credit</td><td>25% of cost, up to $5,000</td></tr>
-    <tr><td>Massachusetts</td><td>State Tax Credit + SMART program</td><td>15% credit (up to $1,000) + solar incentive payments</td></tr>
-    <tr><td>Maryland</td><td>Residential Clean Energy Grant</td><td>Up to $1,000 grant</td></tr>
-    <tr><td>New Jersey</td><td>Sales Tax Exemption + SRECs</td><td>Saves 6.6% on system + $200–$400/year in SREC income</td></tr>
-    <tr><td>Arizona</td><td>State Tax Credit</td><td>25% of cost, up to $1,000</td></tr>
-    <tr><td>South Carolina</td><td>State Tax Credit</td><td>25% of cost, up to $3,500</td></tr>
-  </tbody>
-</table>
-<p>Property tax exemptions (36 states) and sales tax exemptions (25 states) also add significant value by preventing solar from raising your property tax assessment.</p>`
-      },
-      {
-        id: 'when-does-it-expire',
-        title: 'When Does the 30% Credit Expire?',
-        content: `<p>Under the Inflation Reduction Act (IRA), the 30% residential solar credit is locked in through <strong>December 31, 2032</strong>. After that:</p>
+        id: 'what-still-exists',
+        title: 'What Solar Incentives Still Exist in 2026',
+        content: `<p>The federal residential credit is gone, but it was never the only incentive. What's left varies a lot by state — check these before assuming solar no longer pencils out:</p>
 <ul>
-  <li>2033: Credit drops to 26%</li>
-  <li>2034: Credit drops to 22%</li>
-  <li>2035: Credit expires (unless renewed by Congress)</li>
+  <li><strong>Net metering:</strong> Most states still require utilities to credit you for excess solar power sent to the grid — this has nothing to do with the federal credit and wasn't touched by its expiration.</li>
+  <li><strong>State tax credits and rebates:</strong> Programs like NY-Sun (New York), the SMART program (Massachusetts), and SGIP battery rebates (California) are state-level and remain in place as of 2026 — eligibility and amounts vary, so check your state energy office.</li>
+  <li><strong>Property and sales tax exemptions:</strong> Many states still exempt the added home value from solar from property tax assessments, and some exempt solar equipment from sales tax entirely.</li>
+  <li><strong>Utility-specific programs:</strong> Some utilities offer their own rebates or performance payments independent of state or federal policy.</li>
 </ul>
-<p>For homeowners considering solar in the next few years, there's no urgency from the tax credit alone — 30% is available through 2032. However, electricity rates continue rising every year, and every year you delay is a year of savings lost.</p>
-<p>Use our <a href="/">Solar Calculator</a> to see your personalized tax credit amount alongside your projected savings.</p>`
+<p>Use our <a href="/">solar cost calculator</a> to see your installed cost with current 2026 assumptions — it no longer applies the expired federal credit, so the number you get is the real price before any state or utility incentive you might still qualify for.</p>`
+      },
+      {
+        id: 'what-to-do-now',
+        title: 'What This Means If You\'re Considering Solar in 2026',
+        content: `<p>Going solar in 2026 still saves most homeowners money over the life of the system — it just takes longer to pay back without the federal credit. A few things worth doing before you sign a contract:</p>
+<ul>
+  <li>Get the <strong>full installed price</strong>, not a number that assumes a federal credit that no longer applies to your purchase — some installers may still be quoting stale numbers.</li>
+  <li>Ask your installer directly what state, utility, or local incentives apply in your specific location, since these vary by zip code, not just by state.</li>
+  <li>If you're comparing a lease or PPA to buying, ask the provider whether their pricing reflects any commercial credit they're still eligible to claim — that can change which option actually saves you more now that ownership no longer carries the federal credit.</li>
+</ul>`
       }
     ],
     faq: [
-      { question: 'Can I claim the solar tax credit if I lease my panels?', answer: 'No. When you lease solar panels, the leasing company owns the system and claims the 30% tax credit — not you. This is one of the key financial disadvantages of leasing vs. buying.' },
-      { question: 'What if my tax credit is larger than my tax bill?', answer: 'The unused portion carries forward to the following tax year. For example, if you have a $7,500 credit but only owe $5,000 in taxes, the remaining $2,500 rolls to the next year. The credit has no expiration on carryforward within the program\'s life.' },
-      { question: 'Does the solar tax credit apply to battery storage?', answer: 'Yes. Under the Inflation Reduction Act, battery storage systems installed with solar (or even standalone in some cases) qualify for the 30% federal tax credit. A $13,000 Powerwall would add $3,900 to your total credit.' },
-      { question: 'Is the solar tax credit a rebate or a refund?', answer: 'Neither. It is a non-refundable tax credit. It reduces your federal tax liability dollar-for-dollar. If you owe no taxes, you cannot get a "refund" of the credit — though unused portions carry forward to future years.' },
+      { question: 'Is the federal solar tax credit really gone for 2026?', answer: 'Yes, for homeowners who buy or finance their own system. The 30% residential credit (Section 25D) ended for any system placed in service after December 31, 2025, under the One Big Beautiful Bill Act, with no phase-down or transition period.' },
+      { question: 'I signed a solar contract in 2025 but installation finishes in 2026 — do I still get the credit?', answer: 'Likely not. The law applies based on when the system is "placed in service" (operational, with utility approval), not when you signed the contract or made a deposit. If your system isn\'t placed in service by December 31, 2025, consult a tax professional about your specific situation.' },
+      { question: 'Can I still get any tax credit for solar in 2026?', answer: 'Not a federal one for a typical homeowner-owned residential system. Some states offer their own solar tax credits independent of the federal program — check your state\'s energy office or a local installer for what applies where you live.' },
+      { question: 'Does this affect solar leases and PPAs?', answer: 'Not directly for the homeowner — you never claimed the residential credit under a lease or PPA anyway, since the leasing company owned the system. The leasing company may still claim a separate commercial credit and could pass some of that value through in your monthly payment; ask directly.' },
     ],
     relatedSlugs: ['how-much-do-solar-panels-cost', 'how-much-can-solar-save-you', 'solar-financing-options'],
   },
@@ -645,7 +613,7 @@ export const POSTS = [
   <li><strong>Backup power during outages:</strong> When the grid goes down, a battery-backed system can keep your lights, refrigerator, and essential appliances running.</li>
   <li><strong>Time-of-use optimization:</strong> In states with time-of-use rates (where electricity costs more in the evening), batteries let you store cheap midday solar and use it during peak-price hours — increasing your effective savings.</li>
 </ol>
-<p>A single Tesla Powerwall (13.5 kWh) costs approximately $11,000–$14,000 installed and qualifies for the 30% federal tax credit. For most grid-tied homeowners in states without frequent outages or extreme TOU rates, the financial case for adding a battery is marginal — but for peace of mind in storm-prone areas, it's increasingly popular.</p>`
+<p>A single Tesla Powerwall (13.5 kWh) costs approximately $11,000–$14,000 installed — the federal residential tax credit that used to apply to batteries ended for systems placed in service after Dec 31, 2025, so this is the full price. For most grid-tied homeowners in states without frequent outages or extreme TOU rates, the financial case for adding a battery is marginal — but for peace of mind in storm-prone areas, it's increasingly popular.</p>`
       },
       {
         id: 'panel-lifespan',
@@ -795,7 +763,7 @@ export const POSTS = [
     <tr><td>Generac PWRcell</td><td>9–18 kWh</td><td>$10,000–$20,000</td><td>10 years</td></tr>
   </tbody>
 </table>
-<p>Most homeowners adding a single battery pay <strong>$10,000–$15,000</strong> installed. The federal 30% tax credit applies to batteries installed with solar (and since 2023, to standalone battery systems too).</p>`
+<p>Most homeowners adding a single battery pay <strong>$10,000–$15,000</strong> installed. That used to come down 30% via the federal tax credit, which applied to batteries installed with solar and to standalone battery systems — but that credit ended for any system placed in service after December 31, 2025. State-level battery incentives, like California's SGIP, are unaffected and still apply where available.</p>`
       },
       {
         id: 'when-battery-worth-it',
@@ -808,19 +776,18 @@ export const POSTS = [
 <h3>Frequent Outages</h3>
 <p>If your area experiences regular grid outages — from storms, wildfires, or aging infrastructure — the value of backup power is real and quantifiable. A single avoided hotel stay or food spoilage event is worth $300–$1,000.</p>
 <h3>Simple Payback Analysis</h3>
-<p>With a $12,000 battery (after 30% tax credit: $8,400), saving $800/year on TOU arbitrage = <strong>10.5-year payback</strong>. That is borderline for a 10-year warranted device. In states with high TOU differentials or outage-prone areas, the economics improve significantly.</p>`
+<p>With a $12,000 battery at full installed price (the federal tax credit that used to bring this to $8,400 ended in 2025), saving $800/year on TOU arbitrage = <strong>15-year payback</strong> — longer than most 10-year warranties. In states with high TOU differentials, outage-prone areas, or a state battery rebate (like California's SGIP), the economics improve significantly.</p>`
       },
       {
         id: 'battery-incentives',
-        title: 'Battery Tax Credits and Incentives',
-        content: `<p>The Inflation Reduction Act made standalone batteries eligible for the 30% federal Investment Tax Credit (ITC) starting in 2023 — a major change from before when batteries only qualified if installed alongside solar.</p>
+        title: 'Battery Incentives in 2026',
+        content: `<p>The Inflation Reduction Act made standalone batteries eligible for the 30% federal Investment Tax Credit starting in 2023 — but that federal residential credit ended entirely for systems (solar or standalone battery) placed in service after December 31, 2025, repealed by the One Big Beautiful Bill Act. State and utility incentives weren't affected by that change:</p>
 <ul>
-  <li><strong>Federal ITC (30%):</strong> Applies to both solar+battery and standalone batteries with capacity ≥ 3 kWh</li>
   <li><strong>California SGIP:</strong> California's Self-Generation Incentive Program offers $200–$1,000 per kWh for battery storage in qualifying areas</li>
   <li><strong>Massachusetts SMART:</strong> Battery adder of $0.05–$0.10/kWh on top of solar compensation</li>
   <li><strong>Utility rebates:</strong> Many utilities offer $200–$500 rebates for battery enrollment in demand response programs</li>
 </ul>
-<p>After incentives, a $13,500 Powerwall 3 can cost as little as <strong>$7,000–$9,000</strong> in high-incentive states.</p>`
+<p>In a state with a strong battery rebate like SGIP, a $13,500 Powerwall 3 can still cost meaningfully less than sticker price — just not the 30% the expired federal credit used to provide. Check what your state and utility currently offer.</p>`
       },
     ],
     faq: [
@@ -833,8 +800,8 @@ export const POSTS = [
         answer: 'Yes — most modern batteries can be added to existing solar systems. Compatibility depends on your inverter type. AC-coupled batteries (like Powerwall) work with virtually any system. DC-coupled batteries require compatible inverters.',
       },
       {
-        question: 'Does the 30% tax credit apply to batteries?',
-        answer: 'Yes. Since 2023, the federal Investment Tax Credit (ITC) applies to standalone home battery systems with capacity of 3 kWh or more, not just batteries installed alongside new solar panels.',
+        question: 'Does a tax credit still apply to batteries in 2026?',
+        answer: 'Not federally. From 2023 through 2025, the federal Investment Tax Credit applied to standalone home battery systems with capacity of 3 kWh or more, not just batteries installed alongside solar. That credit ended for any system placed in service after December 31, 2025. Some states, like California through SGIP, still offer their own battery rebates.',
       },
     ],
     relatedSlugs: ['how-much-do-solar-panels-cost', 'solar-panel-maintenance-costs', 'federal-solar-tax-credit-guide'],
@@ -852,8 +819,8 @@ export const POSTS = [
     publishDate: '2026-02-10',
     readingTime: 8,
     featured: false,
-    excerpt: 'A solar loan lets you own your system with $0 down while keeping all tax credits and long-term savings. Rates range from 4.99%–9.99% depending on your credit score and loan type. Here is everything you need to know before signing.',
-    intro: `<p>Solar loans have become the most popular way to go solar in the US — surpassing both leases and cash purchases in recent years. The reason is simple: you get all the <strong>financial benefits of ownership</strong> (tax credits, increased home value, long-term savings) with <strong>no money out of pocket at signing</strong>.</p>
+    excerpt: 'A solar loan lets you own your system with $0 down and keep all your long-term savings and home-value increase. Rates range from 4.99%–9.99% depending on your credit score and loan type. Here is everything you need to know before signing.',
+    intro: `<p>Solar loans have become the most popular way to go solar in the US — surpassing both leases and cash purchases in recent years. The reason is simple: you get the <strong>financial benefits of ownership</strong> (increased home value, long-term savings) with <strong>no money out of pocket at signing</strong>. Note: the federal residential tax credit that used to be one of those ownership benefits ended for systems placed in service after Dec 31, 2025 — see our <a href="/blog/federal-solar-tax-credit-guide">guide to what changed</a>.</p>
 <p>But not all solar loans are created equal. Dealer fees, interest rate structures, and prepayment terms vary dramatically between lenders. This guide explains what to look for.</p>`,
     sections: [
       {
@@ -885,13 +852,11 @@ export const POSTS = [
       },
       {
         id: 'tax-credit-and-loans',
-        title: 'Using the Tax Credit to Pay Down Your Loan',
-        content: `<p>Most solar loans are structured assuming you will apply your <strong>30% federal tax credit</strong> as a lump-sum payment in year 1 or 2. This is sometimes called a "tax credit bridge" or "advance payment."</p>
-<h3>How It Works</h3>
-<p>Example: $20,000 system, 25-year loan at 6.99%. Monthly payment = ~$141. After receiving a $6,000 tax credit refund, you pay it toward the principal. Remaining balance = $14,000. New payment on $14,000 over remaining term = ~$99/month.</p>
-<p>Some loans have a 12–18 month promotional period with reduced payments specifically designed around the timing of your tax refund. <strong>Make sure you will actually owe enough in taxes to use the full credit</strong> — otherwise you may be paying higher monthly payments than projected.</p>
-<h3>What If You Cannot Use the Full Credit?</h3>
-<p>The ITC can be carried forward to future tax years. If you only owe $3,000 in taxes but your credit is $6,000, you use $3,000 this year and roll $3,000 to next year.</p>`
+        title: 'Why "Tax Credit Bridge" Loans No Longer Work as Advertised',
+        content: `<p>For years, most solar loans were structured assuming you'd apply a 30% federal tax credit refund as a lump-sum payment in year 1 or 2 — sometimes marketed as a "tax credit bridge" or "advance payment" loan, with reduced payments for the first 12–18 months.</p>
+<h3>That Mechanism No Longer Applies</h3>
+<p>The federal residential tax credit (Section 25D) that this structure depended on ended for any system placed in service after December 31, 2025. If a lender or installer offers you this kind of promotional loan structure in 2026, there's no tax refund coming to make the "bridge" payment — ask exactly what lump sum you're expected to pay at the end of the promotional period, since some of these loans carry a balloon payment if nothing offsets the principal.</p>
+<p>Example: a $20,000 system on a 25-year loan at 6.99% runs about $141/month for the full term now, with no reduced promotional period assumption built in — compare that real number against any "promotional rate" quote before signing.</p>`
       },
       {
         id: 'choosing-right-loan',
@@ -949,7 +914,7 @@ export const POSTS = [
   <li>Typically 20–25 year lease terms</li>
   <li>Annual payment escalator of 2–3% per year (payments increase over time)</li>
   <li>Solar company owns the system and handles maintenance</li>
-  <li>You do <strong>not</strong> receive the federal 30% tax credit — the leasing company keeps it</li>
+  <li>You do <strong>not</strong> receive any tax credit — any tax benefit stays with the leasing company (note: the federal residential credit that used to apply to owned systems also ended for installs after Dec 31, 2025, narrowing this gap)</li>
   <li>At term end: purchase option, extend the lease, or system removal</li>
 </ul>
 <h3>Typical Savings</h3>
@@ -965,7 +930,7 @@ export const POSTS = [
   <li>PPA rates typically 10–30% below local utility rates at signing</li>
   <li>Annual escalator of 2–3% per year on the per-kWh rate</li>
   <li>Solar company owns the system and handles maintenance</li>
-  <li>You do <strong>not</strong> receive the federal tax credit</li>
+  <li>You do <strong>not</strong> receive any tax credit — the provider owns the system (note: the federal residential credit for owned systems also ended for installs after Dec 31, 2025, narrowing this gap)</li>
   <li>Lower months (winter, cloudy periods) = lower bills since you pay per kWh produced</li>
 </ul>
 <h3>Typical Savings</h3>
@@ -1112,15 +1077,15 @@ export const POSTS = [
     slug: 'solar-roi-payback-period',
     title: 'Solar ROI and Payback Period: How to Calculate Your Real Return',
     seoTitle: 'Solar ROI & Payback Period Calculator Guide 2026 | Solar Cost Predictor',
-    metaDescription: 'The average solar payback period is 7–10 years with a lifetime ROI of 200–400%. Learn how to calculate your specific return using your electricity rate, system cost, and local incentives.',
+    metaDescription: 'The average solar payback period is 9–14 years with a lifetime ROI of 100–225%, now that the federal tax credit has ended. Learn how to calculate your specific return using your electricity rate and system cost.',
     category: 'solar-savings',
     tags: ['ROI', 'payback', 'savings', 'return', 'investment'],
     author: 'Solar Cost Predictor Team',
     publishDate: '2026-03-05',
     readingTime: 8,
     featured: false,
-    excerpt: 'The average solar payback period in the US is 7–10 years, with a 25-year ROI of 200–400% after all costs and incentives. But your specific return depends on electricity rates, system cost, financing, and local incentives — here is how to calculate it accurately.',
-    intro: `<p>Solar is one of the best investments a homeowner can make — but "best" depends on your specific numbers. A system that pays back in 6 years in Massachusetts might take 12 years in a low-electricity-rate state. Understanding your real return requires looking at your actual utility bills, local incentives, and financing costs.</p>
+    excerpt: 'The average solar payback period in the US is 9–14 years, with a 25-year ROI of roughly 100–225% after all costs. Payback runs longer than it used to since the federal residential tax credit ended in 2025 — your specific return still depends on electricity rates, system cost, financing, and any state incentives you qualify for. Here is how to calculate it accurately.',
+    intro: `<p>Solar is one of the best investments a homeowner can make — but "best" depends on your specific numbers. A system that pays back in 7–8 years in Massachusetts might take 13+ years in a low-electricity-rate state. Understanding your real return requires looking at your actual utility bills, local incentives, and financing costs — and accounting for the federal residential tax credit's expiration at the end of 2025.</p>
 <p>This guide walks you through exactly how to calculate your solar payback period and lifetime ROI — and what factors have the biggest impact.</p>`,
     sections: [
       {
@@ -1129,12 +1094,11 @@ export const POSTS = [
         content: `<p>The simple payback formula:</p>
 <p><strong>Payback Period = Net System Cost ÷ Annual Savings</strong></p>
 <h3>Step 1: Net System Cost</h3>
-<p>Start with the total installed cost, then subtract incentives:</p>
+<p>Start with the total installed cost, then subtract any incentives you actually qualify for. As of 2026, that no longer includes a federal credit — the residential 30% credit ended for systems placed in service after December 31, 2025:</p>
 <ul>
   <li>Gross system cost: e.g., $22,000</li>
-  <li>Minus 30% federal tax credit: −$6,600</li>
   <li>Minus state rebate (if applicable): −$1,000</li>
-  <li><strong>Net cost: $14,400</strong></li>
+  <li><strong>Net cost: $21,000</strong></li>
 </ul>
 <h3>Step 2: Annual Savings</h3>
 <p>Estimate annual savings from your solar production:</p>
@@ -1144,27 +1108,27 @@ export const POSTS = [
   <li><strong>Annual savings: 9,000 × $0.14 = $1,260/year</strong></li>
 </ul>
 <h3>Step 3: Payback Period</h3>
-<p>$14,400 ÷ $1,260 = <strong>11.4 years</strong></p>
-<p>In a state with higher electricity rates ($0.22/kWh): $14,400 ÷ $1,980 = <strong>7.3 years</strong></p>`
+<p>$21,000 ÷ $1,260 = <strong>16.7 years</strong></p>
+<p>In a state with higher electricity rates ($0.22/kWh): $21,000 ÷ $1,980 = <strong>10.6 years</strong></p>`
       },
       {
         id: 'roi-by-state',
         title: 'Solar ROI by State (2026)',
-        content: `<p>These calculations assume a 7 kW system, 30% federal ITC applied, and average local electricity rates:</p>
+        content: `<p>These calculations assume a 7 kW system at full installed price and average local electricity rates. No federal credit is applied — it ended for systems placed in service after December 31, 2025:</p>
 <table>
-  <thead><tr><th>State</th><th>Net Cost</th><th>Annual Savings</th><th>Payback</th><th>25-Year ROI</th></tr></thead>
+  <thead><tr><th>State</th><th>Installed Cost</th><th>Annual Savings</th><th>Payback</th><th>25-Year ROI</th></tr></thead>
   <tbody>
-    <tr><td>Massachusetts</td><td>$14,000</td><td>$2,100</td><td>6.7 years</td><td>275%</td></tr>
-    <tr><td>New Jersey</td><td>$13,500</td><td>$1,980</td><td>6.8 years</td><td>266%</td></tr>
-    <tr><td>California</td><td>$13,000</td><td>$2,400</td><td>5.4 years</td><td>361%</td></tr>
-    <tr><td>New York</td><td>$14,500</td><td>$2,100</td><td>6.9 years</td><td>261%</td></tr>
-    <tr><td>Florida</td><td>$12,000</td><td>$1,680</td><td>7.1 years</td><td>250%</td></tr>
-    <tr><td>Texas</td><td>$12,500</td><td>$1,440</td><td>8.7 years</td><td>188%</td></tr>
-    <tr><td>Arizona</td><td>$11,500</td><td>$1,560</td><td>7.4 years</td><td>238%</td></tr>
-    <tr><td>Georgia</td><td>$12,500</td><td>$1,320</td><td>9.5 years</td><td>164%</td></tr>
+    <tr><td>Massachusetts</td><td>$20,000</td><td>$2,100</td><td>9.5 years</td><td>163%</td></tr>
+    <tr><td>New Jersey</td><td>$19,300</td><td>$1,980</td><td>9.7 years</td><td>157%</td></tr>
+    <tr><td>California</td><td>$18,600</td><td>$2,400</td><td>7.7 years</td><td>223%</td></tr>
+    <tr><td>New York</td><td>$20,700</td><td>$2,100</td><td>9.9 years</td><td>154%</td></tr>
+    <tr><td>Florida</td><td>$17,100</td><td>$1,680</td><td>10.2 years</td><td>145%</td></tr>
+    <tr><td>Texas</td><td>$17,900</td><td>$1,440</td><td>12.4 years</td><td>102%</td></tr>
+    <tr><td>Arizona</td><td>$16,400</td><td>$1,560</td><td>10.5 years</td><td>137%</td></tr>
+    <tr><td>Georgia</td><td>$17,900</td><td>$1,320</td><td>13.5 years</td><td>85%</td></tr>
   </tbody>
 </table>
-<p>Note: California figures use NEM 3.0 with a battery, which improves self-consumption significantly.</p>`
+<p>Note: California figures use NEM 3.0 with a battery, which improves self-consumption significantly. State rebates and net metering policies (unaffected by the federal credit's expiration) can meaningfully improve these numbers — check what's available in your state.</p>`
       },
       {
         id: 'factors-that-affect-roi',
@@ -1173,7 +1137,7 @@ export const POSTS = [
 <h3>1. Electricity Rate (Biggest Impact)</h3>
 <p>Every $0.01/kWh increase in your electricity rate improves annual savings by about $90 for a 9,000 kWh/year system. Homeowners paying $0.25+/kWh have dramatically better ROI than those paying $0.10/kWh.</p>
 <h3>2. Available Incentives</h3>
-<p>The 30% federal ITC alone improves payback by 2–4 years. Additional state rebates and credits compound this significantly. New Jersey's SREC market can add $500–$1,000/year in income on top of electricity savings.</p>
+<p>The federal residential tax credit that used to improve payback by several years ended for systems placed in service after December 31, 2025. What's left in 2026 is state-level: state rebates and credits can still meaningfully improve payback where available. New Jersey's SREC market, for example, can add $500–$1,000/year in income on top of electricity savings.</p>
 <h3>3. Electricity Rate Escalation</h3>
 <p>Historical US electricity rate inflation is ~2.5%/year. A system with a 10-year payback in year 1 at $0.14/kWh will have effectively shortened to ~8 years when accounting for rate escalation — your savings grow while your loan payment stays fixed.</p>
 <h3>4. System Production (Sunlight Hours)</h3>
@@ -1185,7 +1149,7 @@ export const POSTS = [
     faq: [
       {
         question: 'Is solar a good investment in 2026?',
-        answer: 'Yes for most homeowners — particularly those paying $0.14+/kWh for electricity. Average 25-year returns of 200–400% (after all costs and incentives) outperform many traditional investments, with the added benefit of guaranteed returns unaffected by market volatility.',
+        answer: 'Yes for most homeowners — particularly those paying $0.14+/kWh for electricity. Average 25-year returns of roughly 100–225% (after all costs, now that the federal tax credit has ended) still outperform many traditional investments, with the added benefit of guaranteed returns unaffected by market volatility.',
       },
       {
         question: 'How does electricity rate inflation affect solar ROI?',
@@ -1204,16 +1168,16 @@ export const POSTS = [
     slug: 'state-solar-rebates-2026',
     title: 'State Solar Rebates and Incentives: The Complete 2026 Guide',
     seoTitle: 'State Solar Rebates 2026: Every State Incentive Listed | Solar Cost Predictor',
-    metaDescription: 'Beyond the 30% federal tax credit, 38+ states offer additional solar rebates, tax credits, and exemptions. See every major state incentive available in 2026 with dollar amounts.',
+    metaDescription: 'The federal 30% solar tax credit ended for homeowners in 2025, but 38+ states still offer their own rebates, tax credits, and exemptions. See every major state incentive available in 2026 with dollar amounts.',
     category: 'solar-incentives',
     tags: ['state-rebates', 'incentives', 'tax-credit', 'rebate', '2026'],
     author: 'Solar Cost Predictor Team',
     publishDate: '2026-02-20',
     readingTime: 9,
     featured: false,
-    excerpt: 'The 30% federal tax credit is just the starting point. Most states add their own rebates, income tax credits, property tax exemptions, and sales tax exemptions on top. In some states, stacking all available incentives cuts your net solar cost by 50–60%.',
-    intro: `<p>Every solar buyer knows about the federal 30% Investment Tax Credit (ITC). But fewer know that most states layer additional incentives on top — reducing the effective out-of-pocket cost even further.</p>
-<p>This guide catalogs the major state-level solar incentives available in 2026, organized by type. Check your state to see what you can stack on top of the federal credit.</p>`,
+    excerpt: 'The 30% federal residential tax credit ended for any system placed in service after December 31, 2025. What remains in 2026 are state-level incentives — rebates, income tax credits, property tax exemptions, and sales tax exemptions. In some states, stacking what\'s left can still meaningfully cut your net solar cost.',
+    intro: `<p>For years, the federal 30% Residential Clean Energy Credit was the biggest solar incentive available — and it ended for homeowners installing in 2026. See our <a href="/blog/federal-solar-tax-credit-guide">guide to what changed</a> for the full story. What a lot of buyers don't realize is that most states layer their <em>own</em> incentives on top of (or instead of) the now-expired federal one.</p>
+<p>This guide catalogs the major state-level solar incentives available in 2026, organized by type. None of these were affected by the federal credit's expiration — check your state to see what you still qualify for.</p>`,
     sections: [
       {
         id: 'types-of-state-incentives',
@@ -1231,7 +1195,7 @@ export const POSTS = [
       {
         id: 'best-state-incentives',
         title: 'Best State Solar Incentive Programs (2026)',
-        content: `<p>These states offer the most generous additional incentives beyond the federal ITC:</p>
+        content: `<p>These states offer the most generous solar incentive programs in 2026, independent of the now-expired federal credit:</p>
 <table>
   <thead><tr><th>State</th><th>Income Tax Credit</th><th>Rebate</th><th>Property Tax Exempt</th><th>Sales Tax Exempt</th></tr></thead>
   <tbody>
@@ -1263,32 +1227,31 @@ export const POSTS = [
       {
         id: 'stacking-incentives',
         title: 'How to Stack Incentives for Maximum Savings',
-        content: `<p>Example: New York homeowner, $22,000 system:</p>
+        content: `<p>Example: New York homeowner, $22,000 system, 2026 incentive rules (no federal credit):</p>
 <table>
   <thead><tr><th>Incentive</th><th>Amount</th><th>Running Total</th></tr></thead>
   <tbody>
     <tr><td>Gross system cost</td><td></td><td>$22,000</td></tr>
-    <tr><td>Federal ITC (30%)</td><td>−$6,600</td><td>$15,400</td></tr>
-    <tr><td>NY state tax credit (25%, max $5,000)</td><td>−$5,000</td><td>$10,400</td></tr>
-    <tr><td>NY-Sun rebate</td><td>−$3,000</td><td>$7,400</td></tr>
-    <tr><td>Sales tax exemption (8%)</td><td>−$1,760</td><td>$5,640</td></tr>
+    <tr><td>NY state tax credit (25%, max $5,000)</td><td>−$5,000</td><td>$17,000</td></tr>
+    <tr><td>NY-Sun rebate</td><td>−$3,000</td><td>$14,000</td></tr>
+    <tr><td>Sales tax exemption (8%)</td><td>−$1,760</td><td>$12,240</td></tr>
   </tbody>
 </table>
-<p>Net cost after all incentives: <strong>$5,640</strong> — a 74% reduction from the gross cost. This is an exceptional example (New York has some of the best stacking potential), but illustrates why incentive research matters.</p>`
+<p>Net cost after all state incentives: <strong>$12,240</strong> — a 44% reduction from the gross cost, entirely from state-level programs. That's a smaller reduction than when the federal credit was also in the mix, but it shows why state incentive research still matters in 2026 — New York has some of the best stacking potential in the country.</p>`
       },
     ],
     faq: [
       {
-        question: 'Can I claim both the federal ITC and a state tax credit?',
-        answer: 'Yes — federal and state tax credits are independent and can be claimed in the same year. Some states calculate their credit on the gross cost before the federal credit; others calculate it on the net cost after. Check your state\'s specific rules.',
+        question: 'Is there still a federal solar tax credit in 2026?',
+        answer: 'Not for a typical homeowner-owned residential system. The 30% federal Residential Clean Energy Credit ended for any system placed in service after December 31, 2025, repealed by the One Big Beautiful Bill Act with no phase-down. See our full guide for details.',
       },
       {
         question: 'Do solar rebates count as taxable income?',
-        answer: 'Utility rebates typically reduce the basis for your federal ITC calculation (not a separate income). State rebates may or may not be taxable depending on the program. Consult a tax professional for your specific situation.',
+        answer: 'Utility rebates typically reduce your basis in the system rather than counting as separate taxable income. State rebates may or may not be taxable depending on the program. Consult a tax professional for your specific situation.',
       },
       {
-        question: 'How long will the 30% federal ITC last?',
-        answer: 'The Inflation Reduction Act locked in the 30% ITC through 2032. In 2033 it steps down to 26%, and in 2034 to 22%, before expiring in 2035 unless extended by Congress.',
+        question: 'Can I still stack multiple state incentives in 2026?',
+        answer: 'Yes — state income tax credits, utility rebates, property tax exemptions, and sales tax exemptions are generally independent programs and can be combined in states that offer more than one. None of these were affected by the federal credit\'s expiration.',
       },
     ],
     relatedSlugs: ['federal-solar-tax-credit-guide', 'solar-srec-income', 'how-much-do-solar-panels-cost'],
@@ -1703,10 +1666,10 @@ export const POSTS = [
   <li>Highest reliability — utility grid as backup</li>
   <li>Net metering credits offset nighttime electricity costs</li>
   <li><strong>Does not work during grid outages</strong> — inverters are required by law to shut off when the grid goes down (to protect utility workers)</li>
-  <li>Eligible for all federal and state incentives</li>
+  <li>Eligible for state and utility incentives where available (the federal residential credit ended for systems placed in service after Dec 31, 2025)</li>
 </ul>
 <h3>Typical Cost</h3>
-<p>A 7 kW grid-tied system runs <strong>$15,000–$22,000</strong> installed before incentives. After the 30% federal tax credit: $10,500–$15,400.</p>`
+<p>A 7 kW grid-tied system runs <strong>$15,000–$22,000</strong> installed. This is the full price — no federal tax credit applies to 2026 installs.</p>`
       },
       {
         id: 'off-grid-solar',
@@ -1731,16 +1694,16 @@ export const POSTS = [
 <h3>How It Differs from Off-Grid</h3>
 <p>Unlike off-grid, a hybrid system does not need to be sized to meet 100% of your energy needs from storage alone. The battery covers outages and evening peak usage; the grid handles extended cloudy periods. This means a much smaller (and cheaper) battery bank — typically 13–27 kWh vs. 40+ kWh for off-grid.</p>
 <h3>Typical Cost</h3>
-<p>A 7 kW solar system + one Tesla Powerwall 3 runs <strong>$26,000–$36,000</strong> installed. After 30% ITC: $18,200–$25,200. This is the most popular configuration for homeowners who want backup power without the complexity of full off-grid.</p>
+<p>A 7 kW solar system + one Tesla Powerwall 3 runs <strong>$26,000–$36,000</strong> installed — the full price, since no federal tax credit applies to 2026 installs. This is the most popular configuration for homeowners who want backup power without the complexity of full off-grid.</p>
 <table>
   <thead><tr><th>System Type</th><th>Grid Connection</th><th>Battery</th><th>Outage Protection</th><th>Typical Cost</th></tr></thead>
   <tbody>
-    <tr><td>Grid-tied</td><td>Yes</td><td>No</td><td>None</td><td>$10,500–$15,400*</td></tr>
-    <tr><td>Hybrid</td><td>Yes</td><td>Small (13–27 kWh)</td><td>Partial/Full</td><td>$18,200–$25,200*</td></tr>
+    <tr><td>Grid-tied</td><td>Yes</td><td>No</td><td>None</td><td>$15,000–$22,000</td></tr>
+    <tr><td>Hybrid</td><td>Yes</td><td>Small (13–27 kWh)</td><td>Partial/Full</td><td>$26,000–$36,000</td></tr>
     <tr><td>Off-grid</td><td>No</td><td>Large (30–60 kWh)</td><td>Full (with generator)</td><td>$45,000–$80,000</td></tr>
   </tbody>
 </table>
-<p>*After 30% federal tax credit applied.</p>`
+<p>These are full installed prices — the federal residential tax credit ended for systems placed in service after December 31, 2025. State or utility incentives, where available, aren't reflected here.</p>`
       },
       {
         id: 'which-to-choose',

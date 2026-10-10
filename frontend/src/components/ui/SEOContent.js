@@ -38,10 +38,10 @@ export default function SEOContent() {
             Get a Free Solar Cost Estimate Online
           </h2>
           <p style={{ fontSize: 15.5, color: '#475569', lineHeight: 1.75, marginBottom: 16 }}>
-            Solar Cost Predictor is a free solar cost calculator and solar panel cost estimator built for US homeowners who want a real number before talking to an installer. Enter your ZIP code and average monthly electric bill, and our solar savings calculator instantly estimates your recommended system size, installation cost, 30% federal tax credit, monthly savings, and solar payback period — no signup, no phone call, no pushy sales pitch.
+            Solar Cost Predictor is a free solar cost calculator and solar panel cost estimator built for US homeowners who want a real number before talking to an installer. Enter your ZIP code and average monthly electric bill, and our solar savings calculator instantly estimates your recommended system size, installation cost, monthly savings, and solar payback period — no signup, no phone call, no pushy sales pitch.
           </p>
           <p style={{ fontSize: 15.5, color: '#475569', lineHeight: 1.75, marginBottom: 0 }}>
-            Every estimate factors in more than a national average. Your state's real electricity rate and sun hours change how big a system you need and how fast it pays for itself, while your roof type and battery choice adjust installation cost. Whether you're comparing solar financing options, checking today's solar incentives, or just curious how much solar panels cost in 2026, our home solar calculator gives you a personalized, installer-grade estimate in under two minutes.
+            Every estimate factors in more than a national average. Your state's real electricity rate and sun hours change how big a system you need and how fast it pays for itself, while your roof type and battery choice adjust installation cost. Whether you're comparing solar financing options, checking which state or utility incentives are still available, or just curious how much solar panels cost in 2026, our home solar calculator gives you a personalized, installer-grade estimate in under two minutes.
           </p>
         </div>
       </section>
@@ -92,15 +92,14 @@ export default function SEOContent() {
             Average Solar Costs (2026)
           </h2>
           <p style={{ color: '#64748b', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
-            Nationally, solar installation runs a flat $2.80 per watt — panels, labor, inverter, permits, and installer margin included. Here's what that looks like across common system sizes, before and after the 30% federal tax credit.
+            Nationally, solar installation runs a flat $2.80 per watt — panels, labor, inverter, permits, and installer margin included. Here's what that looks like across common system sizes. Note: the 30% federal residential tax credit ended for systems placed in service after December 31, 2025, so these are full installed prices, not post-credit numbers.
           </p>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14, background: '#ffffff', borderRadius: 14, overflow: 'hidden', border: '1px solid #e2e8f0' }}>
               <thead>
                 <tr style={{ background: '#f1f5f9' }}>
                   <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 700, color: '#374151' }}>System Size</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 700, color: '#374151', whiteSpace: 'nowrap' }}>Cost Before Credit</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 700, color: '#374151', whiteSpace: 'nowrap' }}>Net Cost After 30% ITC</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 700, color: '#374151', whiteSpace: 'nowrap' }}>Installed Cost</th>
                   <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 700, color: '#374151' }}>Typical For</th>
                 </tr>
               </thead>
@@ -108,8 +107,7 @@ export default function SEOContent() {
                 {systemSizeService.tiers.map((tier, i) => (
                   <tr key={tier.label} style={{ background: i % 2 === 0 ? 'white' : '#fafafa' }}>
                     <td style={{ padding: '12px 16px', color: '#0f172a', fontWeight: 600, borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{tier.label}</td>
-                    <td style={{ padding: '12px 16px', color: '#475569', borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{formatPrice(tier.low)}–{formatPrice(tier.high)}</td>
-                    <td style={{ padding: '12px 16px', color: '#1b4d3e', fontWeight: 700, borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{formatPrice(tier.low * 0.7)}–{formatPrice(tier.high * 0.7)}</td>
+                    <td style={{ padding: '12px 16px', color: '#1b4d3e', fontWeight: 700, borderTop: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>{formatPrice(tier.low)}–{formatPrice(tier.high)}</td>
                     <td style={{ padding: '12px 16px', color: '#64748b', borderTop: '1px solid #f1f5f9' }}>{tier.note}</td>
                   </tr>
                 ))}
@@ -117,7 +115,7 @@ export default function SEOContent() {
             </table>
           </div>
           <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 16 }}>
-            *Based on a flat $2.80/watt all-in installed price and the 30% federal Investment Tax Credit. Your actual system size depends on your usage, roof, and location — <a href="/solar-panels/solar-system-size-cost" style={{ color: '#1b4d3e' }}>see the full breakdown by system size</a>.
+            *Based on a flat $2.80/watt all-in installed price. Your actual system size depends on your usage, roof, and location — <a href="/solar-panels/solar-system-size-cost" style={{ color: '#1b4d3e' }}>see the full breakdown by system size</a>.
           </p>
         </div>
       </section>
@@ -143,7 +141,7 @@ export default function SEOContent() {
             ))}
           </div>
           <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 16 }}>
-            *Net cost after the federal 30% Investment Tax Credit, for a representative $150/month bill, full sun exposure, asphalt roof, no battery. Your actual system size, cost, and payback depend on your real usage, roof, and location — use our calculator above for a personalized estimate.
+            *Installed cost for a representative $150/month bill, full sun exposure, asphalt roof, no battery — the federal residential tax credit ended for systems placed in service after Dec 31, 2025, so this is a full installed price. Your actual system size, cost, and payback depend on your real usage, roof, and location — use our calculator above for a personalized estimate.
           </p>
         </div>
       </section>
@@ -163,8 +161,8 @@ export default function SEOContent() {
               'Your state\'s electricity rate and sun hours — states with expensive power or strong sun need smaller (cheaper) systems for the same bill offset',
               'Roof type — asphalt has no surcharge, metal adds $500, flat adds $800, tile adds $1,500',
               'Battery backup — adding one Tesla Powerwall adds $11,500, two adds $23,000',
-              'The 30% federal tax credit — applies to your entire system cost, including battery, cutting your net price by nearly a third',
-              'Financing choice — cash, loan, lease, or PPA all change your effective cost and who keeps the tax credit',
+              'State and utility incentives — the federal residential credit ended in 2025, but net metering, state rebates, and tax exemptions vary widely and can still cut your real cost',
+              'Financing choice — cash, loan, lease, or PPA all change your effective cost and eligibility for any remaining incentives',
             ].map(text => (
               <div key={text} style={{ background: '#ffffff', padding: '18px 20px', borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 13.5, color: '#334155', lineHeight: 1.6 }}>
                 {text}
@@ -232,19 +230,19 @@ export default function SEOContent() {
                 title: 'Cash Purchase',
                 tag: 'Best overall savings',
                 tagColor: '#16a34a', tagBg: '#dcfce7',
-                desc: 'Pay upfront, own the system outright. You keep the full 30% federal tax credit and all electricity savings. Typical payback: 7–10 years, then free electricity for 15+ years.',
+                desc: 'Pay upfront, own the system outright and keep all electricity savings. The federal residential tax credit ended in 2025, so this is a full-price purchase — check state and utility incentives in your area. Payback typically runs longer than it used to without the credit, then years of free electricity after.',
               },
               {
                 title: 'Solar Loan',
                 tag: 'Most popular',
                 tagColor: '#15803d', tagBg: '#eaf6ee',
-                desc: 'Borrow to buy. You own the system and keep the ITC. Terms run 5–20 years at 4–8% APR. Monthly loan payment is typically less than your current electric bill.',
+                desc: 'Borrow to buy. You own the system outright. Terms run 5–20 years at 4–8% APR. Monthly loan payment is often close to your current electric bill, with savings growing as rates rise.',
               },
               {
                 title: 'Solar Lease',
                 tag: '$0 down',
                 tagColor: '#1f4d3a', tagBg: '#f0f5f2',
-                desc: 'Rent the solar panels from a company. No upfront cost, predictable monthly payments. You do not own the system and do not receive the federal tax credit.',
+                desc: 'Rent the solar panels from a company. No upfront cost, predictable monthly payments. You do not own the system, so any tax benefits stay with the leasing company, not you.',
               },
               {
                 title: 'Solar PPA',
@@ -267,16 +265,16 @@ export default function SEOContent() {
       <section style={{ padding: '80px 24px', background: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0a0a0a', marginBottom: 10, letterSpacing: '-0.025em' }}>
-            Solar Incentives &amp; Tax Credits in 2026
+            Solar Incentives in 2026
           </h2>
           <p style={{ color: '#64748b', marginBottom: 32, fontSize: 15, maxWidth: 640 }}>
-            Federal and state solar incentives can cut your installation cost by 30–50%. Here are the key programs available to US homeowners in 2026.
+            The federal 30% residential tax credit (Section 25D) ended for systems placed in service after December 31, 2025. State, utility, and local incentives weren't affected by that change and still vary widely — here's what to check for in 2026.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 }}>
             {[
               {
-                title: '30% Federal Solar Tax Credit (ITC)',
-                desc: 'The Investment Tax Credit lets you deduct 30% of your total solar installation cost from your federal income taxes. For a $20,000 system, that\'s a $6,000 credit. Applies to systems installed through 2032.',
+                title: 'Federal Tax Credit: Ended for Homeowners',
+                desc: 'The 30% federal Residential Clean Energy Credit (Section 25D) is no longer available for systems placed in service after Dec 31, 2025, under the One Big Beautiful Bill Act. Leased or PPA systems may still see some benefit passed through by the installer, who can claim a separate commercial credit — ask your installer directly.',
                 color: '#0f3d2e', bg: '#eef7f1',
               },
               {
@@ -286,7 +284,7 @@ export default function SEOContent() {
               },
               {
                 title: 'State & Utility Rebates',
-                desc: 'Many states add their own incentives: NY-Sun (New York), SMART (Massachusetts), SGIP battery rebates (California), Xcel Solar Rewards (Colorado), and more. Stack with the federal ITC for maximum savings.',
+                desc: 'Many states add their own incentives: NY-Sun (New York), SMART (Massachusetts), SGIP battery rebates (California), Xcel Solar Rewards (Colorado), and more. These are unaffected by the federal credit’s expiration and remain the main way to lower your cost in 2026.',
                 color: '#15803d', bg: '#eaf6ee',
               },
               {
@@ -302,7 +300,7 @@ export default function SEOContent() {
             ))}
           </div>
           <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 20 }}>
-            *Our solar savings calculator automatically includes the 30% ITC in all cost estimates. State incentives vary — consult a local installer for exact amounts.
+            *Our solar savings calculator shows full installed cost, since no federal residential credit applies to 2026 installs. State and utility incentives vary — consult a local installer for exact amounts available where you live.
           </p>
         </div>
       </section>
