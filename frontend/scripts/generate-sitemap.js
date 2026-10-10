@@ -33,6 +33,36 @@ const statesFile = fs.readFileSync(
 );
 const stateSlugs = [...statesFile.matchAll(/(?<!\w)slug:\s*['"]([^'"]+)['"]\s*/g)].map(m => m[1]);
 
+// City slugs are computed at runtime (`${slugify(name)}-${stateCode}`), not a
+// literal string in the source, so the regex scan above can't find them --
+// evaluate cityPricing.js (with its statePricing.js import stripped and the
+// needed functions injected) to get the real computed slugs.
+const statesModForCities = (() => {
+  // eslint-disable-next-line no-new-func
+  const fn = new Function(
+    statesFile
+      .replace(/^export const /gm, 'const ')
+      .replace(/^export function /gm, 'function ')
+      .replace(/^export \{[^}]*\};\s*$/gm, '')
+      + '\nreturn { getStateBySlug, estimateForState };'
+  );
+  return fn();
+})();
+const cityFile = fs.readFileSync(
+  path.join(__dirname, '../src/data/cityPricing.js'),
+  'utf8'
+);
+const citySlugs = (() => {
+  const src = cityFile
+    .replace(/^import[^\n]*\n/gm, '')
+    .replace(/^export const /gm, 'const ')
+    .replace(/^export function /gm, 'function ');
+  // eslint-disable-next-line no-new-func
+  const fn = new Function('getStateBySlug', 'estimateForState', src + '\nreturn { getAllCities };');
+  return fn(statesModForCities.getStateBySlug, statesModForCities.estimateForState)
+    .getAllCities().map(c => c.slug);
+})();
+
 const staticPages = [
   { path: '/',                 priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
   { path: '/for-installers',   priority: '0.9', changefreq: 'monthly', lastmod: TODAY },
@@ -78,10 +108,15 @@ const xml = [
     urlEntry({ loc: `${SITE_URL}/solar-cost/${slug}`, lastmod: TODAY, changefreq: 'monthly', priority: '0.8' })
   ),
   '',
+  '  <!-- Solar cost by city (auto-generated from cityPricing.js) -->',
+  ...citySlugs.map(slug =>
+    urlEntry({ loc: `${SITE_URL}/solar-cost/city/${slug}`, lastmod: TODAY, changefreq: 'monthly', priority: '0.7' })
+  ),
+  '',
   '</urlset>',
 ].join('\n') + '\n';
 
 const outPath = path.join(__dirname, '../public/sitemap.xml');
 fs.writeFileSync(outPath, xml, 'utf8');
 
-console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugs.length} categories, ${serviceSlugs.length} topics, ${stateSlugs.length} states`);
+console.log(`✓ sitemap.xml — ${posts.length} posts, ${categorySlugs.length} categories, ${serviceSlugs.length} topics, ${stateSlugs.length} states, ${citySlugs.length} cities`);

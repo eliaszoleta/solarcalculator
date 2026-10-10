@@ -4,6 +4,7 @@ import { MapPinIcon, SunIcon, PlugIcon } from '../ui/Icons';
 import { getStateBySlug, getAllStates, estimateForState } from '../../data/statePricing';
 import { getAllServices } from '../../data/services';
 import { getAllFaqs } from '../../data/faqs';
+import { getCitiesByState } from '../../data/cityPricing';
 
 function formatPrice(n) {
   return `$${Math.round(n).toLocaleString('en-US')}`;
@@ -96,6 +97,7 @@ export default function StatePage({ slug }) {
   );
 
   const otherStates = getAllStates().filter(s => s.slug !== state.slug);
+  const cities = getCitiesByState(state.slug);
   const faqs = getAllFaqs().slice(0, 5);
   const est = state.estimate;
 
@@ -204,6 +206,19 @@ export default function StatePage({ slug }) {
               Get My Free Estimate →
             </a>
           </div>
+
+          {cities.length > 0 && (
+            <div style={{ marginBottom: 24 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 16 }}>Solar Costs by City in {state.name}</div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {cities.map(c => (
+                  <a key={c.slug} href={`/solar-cost/city/${c.slug}`} style={{ fontSize: 12.5, color: '#64748b', textDecoration: 'none', background: 'white', border: '1px solid #e2e8f0', borderRadius: 20, padding: '6px 12px' }}>
+                    {c.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 16 }}>Solar Costs in Other States</div>

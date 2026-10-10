@@ -20,6 +20,7 @@ import TermsOfService from './components/pages/TermsOfService';
 import About from './components/pages/About';
 import Contact from './components/pages/Contact';
 import StatePage from './components/pages/StatePage';
+import CityPage from './components/pages/CityPage';
 import TopicPage from './components/pages/TopicPage';
 import HowItsCalculated from './components/pages/HowItsCalculated';
 import './App.css';
@@ -36,7 +37,8 @@ const isAbout = pathname === '/about';
 const isContact = pathname === '/contact';
 const isResults = pathname === '/results';
 const isPartnerWithUs = pathname === '/partner-with-us';
-const isStatePage = pathname.startsWith('/solar-cost/');
+const isCityPage = pathname.startsWith('/solar-cost/city/');
+const isStatePage = pathname.startsWith('/solar-cost/') && !isCityPage;
 const isTopicPage = pathname.startsWith('/solar-panels/');
 const isHowItsCalculated = pathname === '/how-we-calculate-solar-costs';
 const embedInstallerId = isEmbed ? new URLSearchParams(window.location.search).get('installer') : null;
@@ -213,6 +215,7 @@ export default function App() {
   if (isForInstallers) return <HelmetProvider><InstallerLanding /></HelmetProvider>;
   if (isPartnerWithUs) return <HelmetProvider><div className="app"><Header /><main><PartnerWithUs /></main><Footer /></div></HelmetProvider>;
 
+  if (isCityPage)  return <HelmetProvider><div className="app"><Header /><main><CityPage slug={pathname.replace('/solar-cost/city/', '')} /></main><Footer /></div></HelmetProvider>;
   if (isStatePage) return <HelmetProvider><div className="app"><Header /><main><StatePage slug={pathname.replace('/solar-cost/', '')} /></main><Footer /></div></HelmetProvider>;
   if (isTopicPage) return <HelmetProvider><div className="app"><Header /><main><TopicPage slug={pathname.replace('/solar-panels/', '')} /></main><Footer /></div></HelmetProvider>;
 

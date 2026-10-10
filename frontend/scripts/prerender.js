@@ -59,6 +59,22 @@ function loadFaqsData() {
   return fn();
 }
 
+// cityPricing.js imports getStateBySlug/estimateForState from
+// statePricing.js, so those are injected as parameters rather than
+// re-reading/re-evaluating that file a second time.
+function loadCitiesData(statesMod) {
+  const raw = fs.readFileSync(path.join(SRC, 'data/cityPricing.js'), 'utf8');
+  const src = raw
+    .replace(/^import[^\n]*\n/gm, '')
+    .replace(/^export const /gm, 'const ')
+    .replace(/^export function /gm, 'function ');
+  const fn = new Function(
+    'getStateBySlug', 'estimateForState',
+    `${src}\nreturn { getAllCities, getCityBySlug, getCitiesByState, getFeaturedCities, estimateForCity };`
+  );
+  return fn(statesMod.getStateBySlug, statesMod.estimateForState);
+}
+
 function getAssetTags() {
   const indexHtml = fs.readFileSync(path.join(BUILD, 'index.html'), 'utf8');
   const cssLinks  = (indexHtml.match(/<link[^>]+\.css[^>]*>/g)  || []).join('\n  ');
@@ -720,8 +736,9 @@ function pageHead({ title, description, canonicalPath, extraHead = '' }) {
 
 const BILL_SCENARIOS = [100, 150, 200, 300];
 
-function renderStatePage(state, servicesMod, statesMod, faqsMod, assets) {
+function renderStatePage(state, servicesMod, statesMod, faqsMod, citiesMod, assets) {
   const otherStates = statesMod.getAllStates().filter(s => s.slug !== state.slug);
+  const cities = citiesMod.getCitiesByState(state.slug);
   const faqs = faqsMod.getAllFaqs().slice(0, 5);
   const est = state.estimate;
 
@@ -743,6 +760,11 @@ function renderStatePage(state, servicesMod, statesMod, faqsMod, assets) {
   ).join('');
 
   const otherStatesHtml = otherStates.map(s => `<a href="/solar-cost/${s.slug}" style="font-size:12.5px;color:#64748b;text-decoration:none;background:white;border:1px solid #e2e8f0;border-radius:20px;padding:6px 12px">${esc(s.name)}</a>`).join(' ');
+  const cityLinksHtml = cities.map(c => `<a href="/solar-cost/city/${c.slug}" style="font-size:12.5px;color:#64748b;text-decoration:none;background:white;border:1px solid #e2e8f0;border-radius:20px;padding:6px 12px">${esc(c.name)}</a>`).join(' ');
+  const cityLinksBlock = cities.length > 0 ? `<div style="margin-bottom:24px">
+      <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px">Solar Costs by City in ${esc(state.name)}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">${cityLinksHtml}</div>
+    </div>` : '';
 
   const body = `<div style="background:#f8fafc;min-height:100vh;padding:40px 24px 64px;font-family:'Poppins','Poppins Fallback',Arial,sans-serif">
   <div style="max-width:780px;margin:0 auto">
@@ -787,6 +809,7 @@ function renderStatePage(state, servicesMod, statesMod, faqsMod, assets) {
       <p style="font-size:14px;color:#64748b;margin-bottom:16px">Use our free calculator for a personalized solar estimate in ${esc(state.name)} in under 2 minutes.</p>
       <a href="/" style="background:${PRIMARY};color:white;padding:12px 28px;border-radius:9px;text-decoration:none;font-weight:700;font-size:15px">Get My Free Estimate &rarr;</a>
     </div>
+    ${cityLinksBlock}
     <div>
       <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px">Solar Costs in Other States</div>
       <div style="display:flex;flex-wrap:wrap;gap:8px">${otherStatesHtml}</div>
@@ -804,6 +827,111 @@ function renderStatePage(state, servicesMod, statesMod, faqsMod, assets) {
 <head>
   ${pageHead({
     title, description, canonicalPath: `/solar-cost/${state.slug}`,
+    extraHead: `<script type="application/ld+json">${faqSchema(faqs)}</script><script type="application/ld+json">${breadcrumb}</script>`,
+  })}
+  ${assets.cssLinks}
+</head>
+<body>
+<div id="root">${staticHeader()}${body}</div>
+  ${assets.jsScripts}
+</body>
+</html>`;
+}
+
+function renderCityPage(city, servicesMod, faqsMod, citiesMod, assets) {
+  const otherCitiesInState = citiesMod.getCitiesByState(city.stateSlugRef).filter(c => c.slug !== city.slug);
+  const featuredCities = citiesMod.getFeaturedCities().filter(c => c.slug !== city.slug).slice(0, 8);
+  const faqs = faqsMod.getAllFaqs().slice(0, 5);
+  const est = city.estimate;
+
+  const title = `Solar Panel Cost in ${city.name}, ${city.stateCode} (2026) | Solar Cost Predictor`;
+  const description = `See average solar panel costs, savings, and payback period in ${city.name}, ${city.stateName} for 2026, based on real electricity rates and sun hours. Get a free instant estimate.`;
+
+  const billRows = BILL_SCENARIOS.map((bill, i) => {
+    const e = citiesMod.estimateForCity(city, bill);
+    return `<tr style="background:${i % 2 === 0 ? 'white' : '#fafafa'}">
+      <td style="padding:10px 14px;color:#0f172a;font-weight:600;border-bottom:1px solid #f1f5f9">$${bill}/mo</td>
+      <td style="padding:10px 14px;color:#475569;border-bottom:1px solid #f1f5f9;white-space:nowrap">${e.systemSizeKw} kW (${e.panelCount} panels)</td>
+      <td style="padding:10px 14px;color:${PRIMARY};font-weight:700;border-bottom:1px solid #f1f5f9;white-space:nowrap">${fmt(e.netCostLow)}&ndash;${fmt(e.netCostHigh)}</td>
+      <td style="padding:10px 14px;color:#475569;border-bottom:1px solid #f1f5f9;white-space:nowrap">${e.paybackYears ? `${e.paybackYears} yrs` : '&mdash;'}</td>
+    </tr>`;
+  }).join('');
+
+  const topicLinks = servicesMod.getAllServices().map(t =>
+    `<a href="/solar-panels/${t.slug}" style="text-decoration:none"><div style="background:white;border-radius:10px;border:1px solid #e2e8f0;padding:16px 18px"><div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px">${esc(t.name)}</div><span style="font-size:12.5px;color:${PRIMARY};font-weight:600">See pricing &rarr;</span></div></a>`
+  ).join('');
+
+  const otherCitiesHtml = otherCitiesInState.map(c => `<a href="/solar-cost/city/${c.slug}" style="font-size:12.5px;color:#64748b;text-decoration:none;background:white;border:1px solid #e2e8f0;border-radius:20px;padding:6px 12px">${esc(c.name)}</a>`).join(' ');
+  const featuredCitiesHtml = featuredCities.map(c => `<a href="/solar-cost/city/${c.slug}" style="font-size:12.5px;color:#64748b;text-decoration:none;background:white;border:1px solid #e2e8f0;border-radius:20px;padding:6px 12px">${esc(c.name)}, ${esc(c.stateCode)}</a>`).join(' ');
+
+  const body = `<div style="background:#f8fafc;min-height:100vh;padding:40px 24px 64px;font-family:'Poppins','Poppins Fallback',Arial,sans-serif">
+  <div style="max-width:780px;margin:0 auto">
+    <div style="display:flex;gap:6px;font-size:13px;color:#94a3b8;margin-bottom:24px;flex-wrap:wrap">
+      <a href="/" style="color:#64748b;text-decoration:none">Home</a><span>&rsaquo;</span>
+      <a href="/solar-cost/${city.stateSlugRef}" style="color:#64748b;text-decoration:none">${esc(city.stateName)}</a><span>&rsaquo;</span>
+      <span style="color:#0f172a">${esc(city.name)}</span>
+    </div>
+    <div style="background:white;border-radius:14px;border:1px solid #e2e8f0;padding:32px 36px;margin-bottom:24px">
+      <div style="font-size:12px;font-weight:700;color:${PRIMARY};text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">${esc(city.name)}, ${esc(city.stateCode)}</div>
+      <h1 style="font-size:clamp(24px,4vw,32px);font-weight:800;color:#0f172a;line-height:1.25;margin-bottom:10px">Solar Panel Cost in ${esc(city.name)}, ${esc(city.stateCode)} (2026)</h1>
+      <p style="font-size:15.5px;color:#64748b;line-height:1.7;margin-bottom:20px">${esc(city.name)} homeowners pay a flat $2.80/watt installed nationwide &mdash; what's different here is ${esc(city.stateName)}'s electricity rate (${(city.electricityRate * 100).toFixed(1)}&cent;/kWh) and sun hours (${city.sunHours} peak hours/day), which change how big a system you need to offset a typical bill.</p>
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <span style="font-size:30px;font-weight:800;color:${PRIMARY}">${fmt(est.netCostLow)} &ndash; ${fmt(est.netCostHigh)}</span>
+        <span style="font-size:13px;color:#94a3b8">installed cost, $150/mo bill</span>
+      </div>
+      <div style="font-size:13px;color:#94a3b8;margin-top:6px">&asymp; ${est.systemSizeKw} kW system (${est.panelCount} panels) ${est.paybackYears ? `&middot; ${est.paybackYears}-year payback` : ''}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:20px">
+        <div style="background:#f8fafc;border-radius:10px;padding:12px 14px"><div style="font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-bottom:4px">Elec. Rate</div><div style="font-size:15px;font-weight:700;color:#0f172a">${(city.electricityRate * 100).toFixed(1)}&cent;/kWh</div></div>
+        <div style="background:#f8fafc;border-radius:10px;padding:12px 14px"><div style="font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-bottom:4px">Sun Hours</div><div style="font-size:15px;font-weight:700;color:#0f172a">${city.sunHours}/day</div></div>
+        <div style="background:#f8fafc;border-radius:10px;padding:12px 14px"><div style="font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-bottom:4px">Annual Savings</div><div style="font-size:15px;font-weight:700;color:#0f172a">${fmt(est.annualSavings)}</div></div>
+        <div style="background:#f8fafc;border-radius:10px;padding:12px 14px"><div style="font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-bottom:4px">Bill Offset</div><div style="font-size:15px;font-weight:700;color:#0f172a">${est.offsetPercent}%</div></div>
+      </div>
+    </div>
+    <div style="background:linear-gradient(135deg,${PRIMARY},#16324f);border-radius:12px;padding:18px 24px;margin-bottom:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div style="color:white"><div style="font-weight:700;font-size:15px">Get a personalized estimate for ${esc(city.name)}</div><div style="font-size:13px;opacity:0.9">Free &middot; No signup &middot; 2 minutes</div></div>
+      <a href="/" style="background:white;color:${PRIMARY};padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap">Calculate Now &rarr;</a>
+    </div>
+    <div style="background:white;border-radius:14px;border:1px solid #e2e8f0;padding:32px 36px;margin-bottom:24px">
+      <h2 style="font-size:19px;font-weight:800;color:#0f172a;margin-bottom:6px">Cost by Monthly Bill in ${esc(city.name)}</h2>
+      <p style="font-size:13.5px;color:#64748b;margin-bottom:4px">System size and cost scale with your usage &mdash; here's what different bill sizes look like in ${esc(city.name)}.</p>
+      <div style="overflow-x:auto;margin:20px 0"><table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead><tr style="background:#f8fafc"><th style="padding:10px 14px;text-align:left;font-weight:700;color:#374151;border-bottom:2px solid #e2e8f0">Monthly Bill</th><th style="padding:10px 14px;text-align:left;font-weight:700;color:#374151;border-bottom:2px solid #e2e8f0">System Size</th><th style="padding:10px 14px;text-align:left;font-weight:700;color:#374151;border-bottom:2px solid #e2e8f0">Installed Cost</th><th style="padding:10px 14px;text-align:left;font-weight:700;color:#374151;border-bottom:2px solid #e2e8f0">Payback</th></tr></thead>
+        <tbody>${billRows}</tbody>
+      </table></div>
+      <h2 style="font-size:19px;font-weight:800;color:#0f172a;margin-top:32px;margin-bottom:14px">Solar Cost Topics</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px">${topicLinks}</div>
+      <h2 style="font-size:19px;font-weight:800;color:#0f172a;margin-top:32px;margin-bottom:14px">FAQs</h2>
+      ${faqAccordionHtml(faqs)}
+    </div>
+    <div style="background:#eaf3ee;border:1px solid #c7d2e0;border-radius:12px;padding:24px 28px;margin-bottom:32px;text-align:center">
+      <div style="font-weight:800;font-size:18px;color:#0f172a;margin-bottom:6px">Ready to get an accurate estimate?</div>
+      <p style="font-size:14px;color:#64748b;margin-bottom:16px">Use our free calculator for a personalized solar estimate in ${esc(city.name)} in under 2 minutes.</p>
+      <a href="/" style="background:${PRIMARY};color:white;padding:12px 28px;border-radius:9px;text-decoration:none;font-weight:700;font-size:15px">Get My Free Estimate &rarr;</a>
+    </div>
+    ${otherCitiesInState.length > 0 ? `<div style="margin-bottom:32px">
+      <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px">More Cities in ${esc(city.stateName)}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">${otherCitiesHtml}
+        <a href="/solar-cost/${city.stateSlugRef}" style="font-size:12.5px;color:${PRIMARY};font-weight:700;text-decoration:none;background:#eaf3ee;border:1px solid #c7d2e0;border-radius:20px;padding:6px 12px">All of ${esc(city.stateName)} &rarr;</a>
+      </div>
+    </div>` : ''}
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px">Popular Cities</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">${featuredCitiesHtml}</div>
+    </div>
+  </div>
+</div>`;
+
+  const breadcrumb = breadcrumbSchema([
+    { name: 'Home', item: DOMAIN },
+    { name: `Solar Cost in ${city.stateName}`, item: `${DOMAIN}/solar-cost/${city.stateSlugRef}` },
+    { name: `Solar Cost in ${city.name}`, item: `${DOMAIN}/solar-cost/city/${city.slug}` },
+  ]);
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  ${pageHead({
+    title, description, canonicalPath: `/solar-cost/city/${city.slug}`,
     extraHead: `<script type="application/ld+json">${faqSchema(faqs)}</script><script type="application/ld+json">${breadcrumb}</script>`,
   })}
   ${assets.cssLinks}
@@ -914,6 +1042,7 @@ function main() {
   const servicesMod = loadServicesData();
   const statesMod = loadStatesData();
   const faqsMod = loadFaqsData();
+  const citiesMod = loadCitiesData(statesMod);
   const assets = getAssetTags();
 
   let count = 0;
@@ -949,11 +1078,17 @@ function main() {
 
   const states = statesMod.getAllStates();
   for (const state of states) {
-    writeFile(`solar-cost/${state.slug}`, renderStatePage(state, servicesMod, statesMod, faqsMod, assets));
+    writeFile(`solar-cost/${state.slug}`, renderStatePage(state, servicesMod, statesMod, faqsMod, citiesMod, assets));
     count++;
   }
 
-  console.log(`✓ prerender — ${count} pages + homepage generated (${POSTS.length} posts, ${CATEGORIES.length} categories, ${services.length} topics, ${states.length} states)`);
+  const cities = citiesMod.getAllCities();
+  for (const city of cities) {
+    writeFile(`solar-cost/city/${city.slug}`, renderCityPage(city, servicesMod, faqsMod, citiesMod, assets));
+    count++;
+  }
+
+  console.log(`✓ prerender — ${count} pages + homepage generated (${POSTS.length} posts, ${CATEGORIES.length} categories, ${services.length} topics, ${states.length} states, ${cities.length} cities)`);
 }
 
 main();
