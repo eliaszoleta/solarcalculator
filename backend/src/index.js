@@ -17,8 +17,19 @@ const { DEFAULT_INSTALLER_CONFIG } = require('./config/defaults');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Security
-app.use(helmet());
+// Security. crossOriginResourcePolicy is explicitly set to 'cross-origin'
+// here -- helmet() with no options defaults it to 'same-origin', which
+// sets Cross-Origin-Resource-Policy: same-origin on every response. That
+// header is enforced by the browser completely independently of CORS: it
+// blocked the frontend from reading /api/calculate's response even with
+// the CORS fix in place and correct Access-Control-Allow-Origin headers,
+// because this is a split-deployment API (frontend on Vercel, backend on
+// Railway) where the frontend is ALWAYS a different origin than this
+// backend -- there's no same-origin page ever served from here for the
+// default to protect. Chrome's DevTools mislabels this exact failure
+// mode under the same generic "CORS error" status as an actual CORS
+// failure, which is why the real cause took this long to find.
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
 // Public embed routes — allow any origin (widget is embedded on installer sites)
 const publicCors = cors({ origin: '*', methods: ['GET', 'POST'], allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'] });
