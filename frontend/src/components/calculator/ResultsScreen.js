@@ -199,6 +199,21 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
             <span className="sys-value sys-offset">{system.offsetPercent}%</span>
           </div>
         </div>
+        {/* Surfaces the backend's actual per-request data source -- the
+            site's marketing copy always claims "real NREL data", but until
+            now there was no way to confirm that from the live results page
+            itself (dataSource was computed server-side and returned, but
+            never read on the frontend). 'pvwatts' means NREL_API_KEY
+            genuinely fired for this estimate; 'estimate' means it fell back
+            to regional averages (missing/invalid key, or NREL's API
+            erroring/timing out for this one request) -- shown plainly
+            rather than silently, since the production number above is
+            meaningfully more accurate in the pvwatts case. */}
+        <p className="data-source-note">
+          {system.dataSource === 'pvwatts'
+            ? '☀️ Production estimate based on real NREL PVWatts solar irradiance data for your exact location.'
+            : `Production estimate based on regional solar averages${state ? ` for ${state}` : ''} (exact-location data temporarily unavailable).`}
+        </p>
       </div>
 
       {/* ── 30-YEAR CHART ── */}
@@ -350,6 +365,11 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
           <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', marginBottom: 14, fontSize: 12, color: '#475569', lineHeight: 1.7 }}>
             <div><strong style={{ color: '#0f172a' }}>{system.sizeKw} kW system</strong> · {system.panelCount} panels · {system.offsetPercent}% energy offset</div>
             <div style={{ color: '#64748b' }}>Installation: <span style={{ color: primary, fontWeight: 600 }}>{fmtDollar(cost.low)} – {fmtDollar(cost.high)}</span></div>
+            {/* Same dataSource transparency as the full report (ReportContent
+                below), kept to one compact line for the embedded widget. */}
+            <div style={{ color: '#94a3b8', fontSize: 10.5, marginTop: 2 }}>
+              {system.dataSource === 'pvwatts' ? '☀️ Based on real NREL data for this location' : 'Based on regional solar averages'}
+            </div>
           </div>
 
           {/* Installer CTA */}
