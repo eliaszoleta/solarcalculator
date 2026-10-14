@@ -39,6 +39,19 @@ async function dbUpsert(installerId, config) {
   );
 }
 
+// Used by trialScheduler.js, which has to scan every installer's config to
+// find the ones due for an activation reminder, a trial check-in, or a
+// scheduled deletion -- there's no per-installer webhook/cron for any of
+// those, so it has to look across all rows each pass.
+async function listAllInstallerConfigs() {
+  if (!SERVICE_KEY()) return [];
+  const res = await axios.get(
+    `${SUPABASE_URL}/rest/v1/installer_configs?select=installer_id,config`,
+    { headers: dbHeaders() }
+  );
+  return (res.data || []).map(row => ({ installerId: row.installer_id, config: row.config }));
+}
+
 // --- File-based fallback (used when SUPABASE_SERVICE_ROLE_KEY is not set) ---
 
 function fileLoad() {
@@ -83,8 +96,13 @@ router.get('/:id', async (req, res) => {
     let config = await getInstallerConfig(req.params.id);
     if (!config) {
       // First access — new account requires Stripe checkout to start 30-day trial (CC required)
+      // email is captured here (not just at signup) so the trial/activation
+      // scheduler and lifecycle emails have somewhere to send to without a
+      // separate Supabase admin lookup per account.
       config = {
         ...DEFAULT_INSTALLER_CONFIG,
+        email: req.user.email,
+        createdAt: new Date().toISOString(),
         subscription: {
           trialType: 'stripe',
           status: null,
@@ -94,7 +112,12 @@ router.get('/:id', async (req, res) => {
         },
       };
       await saveInstallerConfig(req.params.id, config);
-    } else if (!config.subscription?.trialStartedAt && config.subscription?.trialType !== 'stripe') {
+    } else if (!config.email) {
+      // Backfill for accounts created before `email` was captured here.
+      config.email = req.user.email;
+      await saveInstallerConfig(req.params.id, config);
+    }
+    if (!config.subscription?.trialStartedAt && config.subscription?.trialType !== 'stripe') {
       // Legacy backfill: existing accounts missing trialStartedAt (keep 30-day free trial)
       config.subscription = {
         ...(config.subscription || {}),
@@ -200,33 +223,88 @@ router.post('/:id/api-key/regenerate', async (req, res) => {
   }
 });
 
-// DELETE /api/installer/account — permanently delete account and all associated data
-router.delete('/account', async (req, res) => {
+// Actually performs the delete -- leads, config, then the Supabase auth
+// user last (so a failure partway through never leaves an auth user with
+// no way to look up their own now-deleted data). Called both by the
+// scheduler once an account's grace period elapses, and available for a
+// future admin "delete now" override if one is ever added.
+async function executeAccountDeletion(installerId) {
+  if (!SERVICE_KEY()) return;
+  await axios.delete(
+    `${SUPABASE_URL}/rest/v1/leads?installer_id=eq.${encodeURIComponent(installerId)}`,
+    { headers: dbHeaders() }
+  ).catch(e => console.warn('Delete leads warning:', e.message));
+
+  await axios.delete(
+    `${SUPABASE_URL}/rest/v1/installer_configs?installer_id=eq.${encodeURIComponent(installerId)}`,
+    { headers: dbHeaders() }
+  ).catch(e => console.warn('Delete config warning:', e.message));
+
+  await axios.delete(
+    `${SUPABASE_URL}/auth/v1/admin/users/${installerId}`,
+    { headers: { apikey: SERVICE_KEY(), Authorization: `Bearer ${SERVICE_KEY()}` } }
+  );
+}
+
+// POST /api/installer/feedback — "Before you go" cancellation feedback,
+// submitted (optionally) before an installer is redirected to the Stripe
+// Billing Portal. Both fields optional; an all-empty submission is a
+// no-op. Fails open on any DB error -- a failed/empty feedback save
+// should never block billing.
+router.post('/feedback', async (req, res) => {
   const installerId = req.user.id;
+  const reason = (req.body?.reason || '').trim().slice(0, 200) || null;
+  const note = (req.body?.note || '').trim().slice(0, 2000) || null;
+  if (!reason && !note) return res.json({ success: true, skipped: true });
+
   try {
     if (SERVICE_KEY()) {
-      // Delete leads (non-fatal if table doesn't exist or no rows)
-      await axios.delete(
-        `${SUPABASE_URL}/rest/v1/leads?installer_id=eq.${encodeURIComponent(installerId)}`,
+      await axios.post(
+        `${SUPABASE_URL}/rest/v1/cancellation_feedback`,
+        { installer_id: installerId, reason, note },
         { headers: dbHeaders() }
-      ).catch(e => console.warn('Delete leads warning:', e.message));
-
-      // Delete installer config
-      await axios.delete(
-        `${SUPABASE_URL}/rest/v1/installer_configs?installer_id=eq.${encodeURIComponent(installerId)}`,
-        { headers: dbHeaders() }
-      ).catch(e => console.warn('Delete config warning:', e.message));
-
-      // Delete Supabase auth user (must come last)
-      await axios.delete(
-        `${SUPABASE_URL}/auth/v1/admin/users/${installerId}`,
-        { headers: { apikey: SERVICE_KEY(), Authorization: `Bearer ${SERVICE_KEY()}` } }
       );
     }
     res.json({ success: true });
   } catch (err) {
-    console.error('Delete account error:', err.message);
-    res.status(500).json({ success: false, error: 'Failed to delete account. Please try again.' });
+    console.warn('Save cancellation feedback warning:', err.message);
+    res.json({ success: true }); // fails open -- never blocks the billing redirect
+  }
+});
+
+// POST /api/installer/account/schedule-deletion — 30-day grace period,
+// mirrors cleanestimator's account deletion: the calculator pauses
+// immediately (ActivationGate-equivalent on the frontend checks
+// pendingDeletionAt), but nothing is actually deleted until the grace
+// period elapses, so a change of mind just means canceling the schedule.
+router.post('/account/schedule-deletion', async (req, res) => {
+  const installerId = req.user.id;
+  try {
+    const config = (await getInstallerConfig(installerId)) || { ...DEFAULT_INSTALLER_CONFIG };
+    const scheduledFor = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+    config.pendingDeletionAt = scheduledFor;
+    await saveInstallerConfig(installerId, config);
+    const { sendAccountDeletionScheduledEmail } = require('../services/email');
+    const email = config.email || req.user.email;
+    if (email) sendAccountDeletionScheduledEmail({ to: email, companyName: config.companyName, scheduledFor }).catch(() => {});
+    res.json({ success: true, data: { pendingDeletionAt: scheduledFor } });
+  } catch (err) {
+    console.error('Schedule deletion error:', err.message);
+    res.status(500).json({ success: false, error: 'Failed to schedule account deletion. Please try again.' });
+  }
+});
+
+// POST /api/installer/account/cancel-deletion
+router.post('/account/cancel-deletion', async (req, res) => {
+  const installerId = req.user.id;
+  try {
+    const config = (await getInstallerConfig(installerId)) || {};
+    delete config.pendingDeletionAt;
+    await saveInstallerConfig(installerId, config);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Cancel deletion error:', err.message);
+    res.status(500).json({ success: false, error: 'Failed to cancel account deletion. Please try again.' });
   }
 });
 
@@ -234,3 +312,5 @@ module.exports = router;
 module.exports.getInstallerConfig = getInstallerConfig;
 module.exports.saveInstallerConfig = saveInstallerConfig;
 module.exports.dbHeaders = dbHeaders;
+module.exports.listAllInstallerConfigs = listAllInstallerConfigs;
+module.exports.executeAccountDeletion = executeAccountDeletion;

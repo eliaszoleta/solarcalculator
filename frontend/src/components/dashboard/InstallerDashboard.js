@@ -344,6 +344,18 @@ export default function InstallerDashboard({ user, onLogout }) {
     }
   };
 
+  // "Before you go" feedback, optionally submitted right before the Stripe
+  // Billing Portal redirect -- a failed/empty save should never block
+  // billing, so this never throws into the caller.
+  const handleFeedback = async ({ reason, note }) => {
+    try {
+      const headers = await getAuthHeader();
+      await axios.post(`${API_BASE}/api/installer/feedback`, { reason, note }, { headers });
+    } catch {
+      // intentionally swallowed -- see comment above
+    }
+  };
+
   const handleManageBilling = async () => {
     try {
       const headers = await getAuthHeader();
@@ -359,11 +371,25 @@ export default function InstallerDashboard({ user, onLogout }) {
     setDeleteLoading(true);
     try {
       const headers = await getAuthHeader();
-      await axios.delete(`${API_BASE}/api/installer/account`, { headers });
-      await supabase.auth.signOut();
-      onLogout();
+      const res = await axios.post(`${API_BASE}/api/installer/account/schedule-deletion`, {}, { headers });
+      update('pendingDeletionAt', res.data.data.pendingDeletionAt);
+      setDeleteConfirm('');
     } catch (err) {
-      setDeleteError(err.response?.data?.error || 'Failed to delete account. Please try again.');
+      setDeleteError(err.response?.data?.error || 'Failed to schedule account deletion. Please try again.');
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  const handleCancelDeletion = async () => {
+    setDeleteLoading(true);
+    try {
+      const headers = await getAuthHeader();
+      await axios.post(`${API_BASE}/api/installer/account/cancel-deletion`, {}, { headers });
+      update('pendingDeletionAt', undefined);
+    } catch {
+      setDeleteError('Failed to cancel account deletion. Please try again.');
+    } finally {
       setDeleteLoading(false);
     }
   };
@@ -489,6 +515,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                 <SolarCalculator
                   embedded
                   installerConfig={config}
+                  installerId={installerId}
                   internalMode
                   onShareEmail={handleShareEmail}
                 />
@@ -505,15 +532,65 @@ export default function InstallerDashboard({ user, onLogout }) {
             const recentLeads = activeLeads.slice(0, 5);
             const isActive = subscription?.active !== false;
 
+            // Covers both the internal "Run an Estimate" tab and the
+            // public embedded widget (calculate.js increments this for
+            // both) -- shown first so an installer using this purely
+            // internally, with zero public leads, still has something to
+            // show here.
+            const currentMonth = new Date().toISOString().slice(0, 7);
+            const totalRuns = config.stats?.totalRuns || 0;
+            const runsThisMonth = config.stats?.runsByMonth?.[currentMonth] || 0;
+
             const stats = [
+              { label: 'Estimates Run',  value: totalRuns,                                             Icon: BoltIcon,     color: '#7c3aed', bg: '#f5f3ff' },
               { label: 'Total Leads',    value: activeLeads.length,                                   Icon: ChartBarIcon, color: '#16a34a', bg: '#eaf3ee' },
               { label: 'This Month',     value: thisMonth.length,                                      Icon: CalendarIcon, color: '#16a34a', bg: '#f0fdf4' },
               { label: 'Avg Savings/yr', value: avgSavings > 0 ? `$${Math.round(avgSavings).toLocaleString()}` : '—', Icon: TrendingUpIcon, color: '#1b4d3e', bg: '#eaf3ee' },
               { label: 'Calculator Status',  value: isActive ? 'Active' : 'Inactive',                     Icon: GlobeIcon,    color: isActive ? '#16a34a' : '#dc2626', bg: isActive ? '#f0fdf4' : '#fef2f2' },
             ];
 
+            // First-run setup checklist -- disappears entirely once all
+            // three steps are done, same as cleanestimator's. The
+            // "embed the widget too" nudge is a bonus callout, not a
+            // checklist step -- a purely-internal installer with zero
+            // public leads shouldn't be told their setup is incomplete.
+            const setupSteps = [
+              { done: (config.serviceStates || []).length > 0, label: 'Set your service area', tab: 'pricing' },
+              { done: !!config.companyName, label: 'Add your branding', tab: 'appearance' },
+              { done: totalRuns > 0, label: 'Run your first estimate', tab: 'estimate' },
+            ];
+            const setupIncomplete = setupSteps.some(s => !s.done);
+
             return (
               <div>
+                {setupIncomplete && (
+                  <div style={{ background: 'white', borderRadius: 12, border: '1px solid #e2e8f0', padding: '18px 22px', marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>Get set up</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+                      {setupSteps.map(s => (
+                        <button
+                          key={s.label}
+                          onClick={() => setActiveTab(s.tab)}
+                          style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit' }}
+                        >
+                          <div style={{
+                            width: 20, height: 20, borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            background: s.done ? '#16a34a' : 'white', border: s.done ? 'none' : '1.5px solid #cbd5e1',
+                          }}>
+                            {s.done && <CheckCircleIcon size={14} color="white" style={{ display: 'block' }} />}
+                          </div>
+                          <span style={{ fontSize: 13.5, fontWeight: 600, color: s.done ? '#94a3b8' : '#0f172a', textDecoration: s.done ? 'line-through' : 'none' }}>{s.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                    {activeLeads.length === 0 && (
+                      <div style={{ marginTop: 14, padding: '10px 14px', border: '1px dashed #cbd5e1', borderRadius: 9, fontSize: 12.5, color: '#64748b' }}>
+                        Bonus: <button onClick={() => setActiveTab('embed')} style={{ background: 'none', border: 'none', padding: 0, color: '#1b4d3e', fontWeight: 700, cursor: 'pointer', fontSize: 12.5 }}>embed the calculator widget on your website too</button> for public lead capture — included at no extra cost.
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Stat cards */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 14, marginBottom: 24 }}>
                   {stats.map(({ label, value, Icon, color, bg }) => (
@@ -1225,42 +1302,75 @@ export default function InstallerDashboard({ user, onLogout }) {
               <div className="setting-card" style={{ border: '1px solid #fecaca' }}>
                 <div className="setting-card-header">
                   <h3 className="setting-card-title" style={{ color: '#dc2626' }}>Danger Zone</h3>
-                  <p className="setting-card-desc">Permanently delete your account and all associated data. This cannot be undone.</p>
+                  <p className="setting-card-desc">
+                    {config.pendingDeletionAt
+                      ? 'Your account is scheduled for deletion. You can still cancel it.'
+                      : 'Schedule your account for deletion. Your data is not removed until the grace period ends.'}
+                  </p>
                 </div>
                 <div className="setting-card-body">
-                  <p style={{ fontSize: 13, color: '#64748b', marginBottom: 16, lineHeight: 1.6 }}>
-                    Deleting your account will permanently remove your profile, all leads, settings, and branding. Your embedded calculator will stop working immediately.
-                  </p>
-                  <div style={{ marginBottom: 12 }}>
-                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 6 }}>
-                      Type <strong>DELETE</strong> to confirm
-                    </label>
-                    <input
-                      type="text"
-                      value={deleteConfirm}
-                      onChange={e => setDeleteConfirm(e.target.value)}
-                      placeholder="DELETE"
-                      style={{ width: '100%', padding: '8px 12px', border: '1px solid #fecaca', borderRadius: 8, fontSize: 13, boxSizing: 'border-box', background: '#fff' }}
-                    />
-                  </div>
-                  {deleteError && (
-                    <div style={{ marginBottom: 12, fontSize: 13, padding: '8px 12px', borderRadius: 7, color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca' }}>
-                      {deleteError}
-                    </div>
+                  {config.pendingDeletionAt ? (
+                    <>
+                      <p style={{ fontSize: 13, color: '#64748b', marginBottom: 16, lineHeight: 1.6 }}>
+                        Your calculator is paused immediately, but your data isn't deleted until{' '}
+                        <strong>{new Date(config.pendingDeletionAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</strong>.
+                        Changed your mind?
+                      </p>
+                      {deleteError && (
+                        <div style={{ marginBottom: 12, fontSize: 13, padding: '8px 12px', borderRadius: 7, color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca' }}>
+                          {deleteError}
+                        </div>
+                      )}
+                      <button
+                        onClick={handleCancelDeletion}
+                        disabled={deleteLoading}
+                        style={{
+                          padding: '9px 20px', background: deleteLoading ? '#f1f5f9' : '#1b4d3e',
+                          color: deleteLoading ? '#94a3b8' : 'white',
+                          border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 700,
+                          cursor: deleteLoading ? 'not-allowed' : 'pointer',
+                        }}
+                      >
+                        {deleteLoading ? 'Canceling…' : 'Cancel Deletion'}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <p style={{ fontSize: 13, color: '#64748b', marginBottom: 16, lineHeight: 1.6 }}>
+                        Scheduling deletion pauses your embedded calculator immediately. Your profile, leads, settings, and branding are permanently removed 30 days later — you can cancel anytime before then.
+                      </p>
+                      <div style={{ marginBottom: 12 }}>
+                        <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 6 }}>
+                          Type <strong>DELETE</strong> to confirm
+                        </label>
+                        <input
+                          type="text"
+                          value={deleteConfirm}
+                          onChange={e => setDeleteConfirm(e.target.value)}
+                          placeholder="DELETE"
+                          style={{ width: '100%', padding: '8px 12px', border: '1px solid #fecaca', borderRadius: 8, fontSize: 13, boxSizing: 'border-box', background: '#fff' }}
+                        />
+                      </div>
+                      {deleteError && (
+                        <div style={{ marginBottom: 12, fontSize: 13, padding: '8px 12px', borderRadius: 7, color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca' }}>
+                          {deleteError}
+                        </div>
+                      )}
+                      <button
+                        onClick={handleDeleteAccount}
+                        disabled={deleteConfirm !== 'DELETE' || deleteLoading}
+                        style={{
+                          padding: '9px 20px', background: deleteConfirm === 'DELETE' && !deleteLoading ? '#dc2626' : '#f1f5f9',
+                          color: deleteConfirm === 'DELETE' && !deleteLoading ? 'white' : '#94a3b8',
+                          border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 700,
+                          cursor: deleteConfirm === 'DELETE' && !deleteLoading ? 'pointer' : 'not-allowed',
+                          transition: 'background 0.15s, color 0.15s',
+                        }}
+                      >
+                        {deleteLoading ? 'Scheduling…' : 'Delete My Account'}
+                      </button>
+                    </>
                   )}
-                  <button
-                    onClick={handleDeleteAccount}
-                    disabled={deleteConfirm !== 'DELETE' || deleteLoading}
-                    style={{
-                      padding: '9px 20px', background: deleteConfirm === 'DELETE' && !deleteLoading ? '#dc2626' : '#f1f5f9',
-                      color: deleteConfirm === 'DELETE' && !deleteLoading ? 'white' : '#94a3b8',
-                      border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 700,
-                      cursor: deleteConfirm === 'DELETE' && !deleteLoading ? 'pointer' : 'not-allowed',
-                      transition: 'background 0.15s, color 0.15s',
-                    }}
-                  >
-                    {deleteLoading ? 'Deleting…' : 'Delete My Account'}
-                  </button>
                 </div>
               </div>
             </div>
@@ -1272,6 +1382,7 @@ export default function InstallerDashboard({ user, onLogout }) {
               loading={subLoading}
               onSubscribe={handleSubscribe}
               onManage={handleManageBilling}
+              onFeedback={handleFeedback}
               justSubscribed={new URLSearchParams(window.location.search).get('subscribed') === 'true'}
             />
           )}
@@ -1544,7 +1655,9 @@ const SUBSCRIPTION_FEATURES = [
   { Icon: SparklesIcon,   text: 'Unlimited calculator sessions per month' },
 ];
 
-function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justSubscribed }) {
+function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, onFeedback, justSubscribed }) {
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+
   if (loading) return (
     <div style={{ padding: 32, textAlign: 'center', color: '#64748b', fontSize: 14 }}>
       Loading subscription details...
@@ -1570,7 +1683,7 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
   const sc = statusConfig[status] || { Icon: AlertTriangleIcon, iconColor: '#94a3b8', bg: '#f8fafc', border: '#e2e8f0', title: 'No Active Plan' };
 
   const statusDetail = (() => {
-    if (status === 'requires_trial_setup') return 'Get 7 days free — credit card required, cancel anytime before your trial ends.';
+    if (status === 'requires_trial_setup') return 'Get 30 days free — credit card required, cancel anytime before your trial ends.';
     if (status === 'trialing' && subscription?.daysLeft > 0) return `${subscription.daysLeft} days remaining in your trial.`;
     if (status === 'trialing') return 'Your trial ends today.';
     if (status === 'active' && currentPeriodEnd) return `Renews on ${currentPeriodEnd}.`;
@@ -1610,11 +1723,11 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
             {(!isActive || status === 'trialing' || status === 'requires_trial_setup') && (
               <button onClick={onSubscribe}
                 style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '11px 22px', background: '#1b4d3e', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
-                {status === 'requires_trial_setup' ? 'Start 7-Day Trial →' : status === 'trialing' ? 'Subscribe Now →' : 'Reactivate →'}
+                {status === 'requires_trial_setup' ? 'Start 30-Day Trial →' : status === 'trialing' ? 'Subscribe Now →' : 'Reactivate →'}
               </button>
             )}
             {(status === 'active' || status === 'active_canceling' || status === 'past_due') && (
-              <button onClick={onManage}
+              <button onClick={() => setFeedbackOpen(true)}
                 style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '11px 22px', background: '#0f172a', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
                 Manage Billing →
               </button>
@@ -1622,6 +1735,18 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
           </div>
         </div>
       </div>
+
+      {feedbackOpen && (
+        <CancellationFeedbackModal
+          onSkip={() => { setFeedbackOpen(false); onManage(); }}
+          onContinue={async ({ reason, note }) => {
+            try { await onFeedback({ reason, note }); } catch { /* never blocks billing */ }
+            setFeedbackOpen(false);
+            onManage();
+          }}
+          onClose={() => setFeedbackOpen(false)}
+        />
+      )}
 
       {/* Features */}
       <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, padding: '20px 22px', marginBottom: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
@@ -1641,10 +1766,91 @@ function SubscriptionPanel({ subscription, loading, onSubscribe, onManage, justS
       {/* Pricing */}
       <div style={{ background: 'linear-gradient(135deg, #eaf3ee 0%, #f8fafc 100%)', border: '1px solid #bfe3cf', borderRadius: 12, padding: '20px 22px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginBottom: 4 }}>
-          <span style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>$159</span>
+          <span style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>$49</span>
           <span style={{ fontSize: 14, color: '#64748b', fontWeight: 500 }}>/month</span>
         </div>
         <div style={{ fontSize: 13, color: '#64748b', display: 'flex', alignItems: 'center', gap: 5 }}>Cancel anytime. &nbsp;·&nbsp; <LockIcon size={12} color="#64748b" /> Secure billing via Stripe</div>
+      </div>
+    </div>
+  );
+}
+
+const CANCELLATION_REASONS = [
+  'Just updating payment info',
+  'Too expensive',
+  'Not using it enough',
+  'Missing a feature I need',
+  'Switching to something else',
+  'Other',
+];
+
+// Captured up front, before the Stripe Billing Portal redirect -- this app
+// has no webhook that distinguishes "opened the portal to update a card"
+// from "opened it to cancel," so this is the closest it can get to
+// retention-flow feedback without owning the cancellation UI itself.
+// Entirely optional: Skip goes straight to billing with nothing saved.
+function CancellationFeedbackModal({ onSkip, onContinue, onClose }) {
+  const [reason, setReason] = useState('');
+  const [note, setNote] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleContinue = async () => {
+    setSubmitting(true);
+    await onContinue({ reason, note });
+    // no need to reset submitting -- this modal unmounts on success (the
+    // parent closes it and navigates away to the billing portal)
+  };
+
+  return (
+    <div
+      style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(15,23,42,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+      onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div style={{ background: 'white', borderRadius: 16, padding: '28px 26px', maxWidth: 440, width: '100%', boxShadow: '0 24px 64px rgba(0,0,0,0.3)' }}>
+        <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', marginBottom: 6 }}>Before you go</h3>
+        <p style={{ fontSize: 13.5, color: '#64748b', marginBottom: 18, lineHeight: 1.5 }}>Totally optional — what brings you to billing today? Helps us know what to fix.</p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 14 }}>
+          {CANCELLATION_REASONS.map(r => (
+            <button
+              key={r}
+              onClick={() => setReason(r)}
+              style={{
+                textAlign: 'left', padding: '10px 14px', borderRadius: 9, fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
+                border: `1.5px solid ${reason === r ? '#1b4d3e' : '#e2e8f0'}`,
+                background: reason === r ? '#eaf3ee' : 'white',
+                color: reason === r ? '#123529' : '#334155',
+              }}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
+
+        <textarea
+          value={note}
+          onChange={e => setNote(e.target.value)}
+          placeholder="Anything else you'd like to share? (optional)"
+          rows={3}
+          style={{ width: '100%', padding: '10px 12px', border: '1.5px solid #e2e8f0', borderRadius: 9, fontSize: 13.5, fontFamily: 'inherit', resize: 'vertical', boxSizing: 'border-box', marginBottom: 18 }}
+        />
+
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+          <button
+            onClick={onSkip}
+            disabled={submitting}
+            style={{ padding: '10px 18px', borderRadius: 8, border: '1.5px solid #e2e8f0', background: 'white', color: '#475569', fontWeight: 600, fontSize: 13.5, cursor: submitting ? 'not-allowed' : 'pointer' }}
+          >
+            Skip
+          </button>
+          <button
+            onClick={handleContinue}
+            disabled={submitting}
+            style={{ padding: '10px 18px', borderRadius: 8, border: 'none', background: '#0f172a', color: 'white', fontWeight: 700, fontSize: 13.5, cursor: submitting ? 'not-allowed' : 'pointer' }}
+          >
+            {submitting ? 'Loading…' : 'Continue to Billing →'}
+          </button>
+        </div>
       </div>
     </div>
   );

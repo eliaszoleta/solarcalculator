@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const axios = require('axios');
 
 const calculateRouter = require('./routes/calculate');
 const installerRouter = require('./routes/installer');
@@ -11,6 +12,7 @@ const subscriptionRouter = require('./routes/subscription');
 const leadsRouter = require('./routes/leads');
 const estimateShareRouter = require('./routes/estimateShare');
 const { requireAuth } = require('./middleware/auth');
+const { checkTrialReminders, checkActivationReminders, checkPendingDeletions } = require('./services/trialScheduler');
 const { getInstallerConfig } = require('./routes/installer');
 const { computeSubscriptionStatus } = require('./routes/subscription');
 const { DEFAULT_INSTALLER_CONFIG } = require('./config/defaults');
@@ -97,6 +99,35 @@ app.get('/api/installer/:id/public', async (req, res) => {
   }
 });
 
+// Login-error disambiguation (AuthPage.js) -- Supabase returns a generic
+// 400 "Invalid login credentials" for both a wrong password AND a
+// nonexistent account, by design (a login form shouldn't itself reveal
+// which emails are registered). This lookup is what lets the login screen
+// give a more specific, still safe-to-show message. Unauthenticated by
+// necessity -- it runs before the person has a session -- so it must stay
+// registered ahead of the requireAuth-protected /api/installer mount below.
+// NOTE: verify this against a real Supabase project once SUPABASE_URL /
+// SUPABASE_SERVICE_ROLE_KEY are actually configured -- the GoTrue admin
+// API's exact `email` filter support has varied across versions.
+app.get('/api/installer/check-email-exists', async (req, res) => {
+  const email = (req.query.email || '').trim().toLowerCase();
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!email || !serviceKey) return res.json({ success: true, exists: true }); // fail toward the safer, more generic message
+  try {
+    const supabaseUrl = process.env.SUPABASE_URL || 'https://mhiwlqezyenwvzamviwy.supabase.co';
+    const { data } = await axios.get(`${supabaseUrl}/auth/v1/admin/users`, {
+      params: { email },
+      headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` },
+    });
+    const users = Array.isArray(data) ? data : data?.users || [];
+    const exists = users.some(u => (u.email || '').toLowerCase() === email);
+    res.json({ success: true, exists });
+  } catch (err) {
+    console.warn('check-email-exists lookup failed:', err.message);
+    res.json({ success: true, exists: true });
+  }
+});
+
 // Auth-protected routes
 app.use('/api/installer', requireAuth, installerRouter);
 app.use('/api/subscription', requireAuth, subscriptionRouter);
@@ -110,6 +141,19 @@ app.use('/api/estimate-share', requireAuth, estimateShareRouter);
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
+
+// Lifecycle email + account-deletion scheduler. A plain setInterval, not a
+// real cron, since this runs as a single always-on Railway service -- each
+// check also runs once immediately at boot so a restart doesn't leave a
+// due reminder waiting up to an hour.
+const HOUR_MS = 60 * 60 * 1000;
+function runScheduledChecks() {
+  checkTrialReminders().catch(err => console.error('checkTrialReminders failed:', err.message));
+  checkActivationReminders().catch(err => console.error('checkActivationReminders failed:', err.message));
+  checkPendingDeletions().catch(err => console.error('checkPendingDeletions failed:', err.message));
+}
+runScheduledChecks();
+setInterval(runScheduledChecks, HOUR_MS);
 
 app.listen(PORT, () => {
   console.log(`Solar Calculator API running on port ${PORT}`);

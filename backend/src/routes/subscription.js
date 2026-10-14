@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { getInstallerConfig, saveInstallerConfig } = require('./installer');
+const { sendInstallerWelcomeEmail, sendPaymentFailedEmail, sendSubscriptionCanceledEmail } = require('../services/email');
 
 const STRIPE_SECRET_KEY = () => process.env.STRIPE_SECRET_KEY;
 const STRIPE_WEBHOOK_SECRET = () => process.env.STRIPE_WEBHOOK_SECRET;
@@ -24,6 +25,26 @@ router.post('/checkout', async (req, res) => {
     const config = (await getInstallerConfig(installerId)) || {};
     const existingCustomerId = config.subscription?.stripeCustomerId;
 
+    // Three cases, so a cancel-then-resubscribe (or a legacy no-card trial
+    // that's already partway elapsed) doesn't hand out a second full trial:
+    const sub = config.subscription || {};
+    let trialPeriodDays;
+    if (sub.stripeSubscriptionId) {
+      // Already has (or had) a real Stripe subscription -- reactivating
+      // after a cancellation, charge immediately.
+      trialPeriodDays = undefined;
+    } else if (sub.trialStartedAt) {
+      // Legacy no-card trial, never touched Stripe -- carry over only the
+      // real days remaining, collapsing to "charge immediately" if it's
+      // already expired.
+      const daysElapsed = (Date.now() - new Date(sub.trialStartedAt).getTime()) / (1000 * 60 * 60 * 24);
+      const daysLeft = Math.max(0, Math.ceil(30 - daysElapsed));
+      trialPeriodDays = daysLeft > 0 ? daysLeft : undefined;
+    } else {
+      // Brand-new account, never started a trial.
+      trialPeriodDays = 30;
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
@@ -31,7 +52,7 @@ router.post('/checkout', async (req, res) => {
       line_items: [{ price: priceId, quantity: 1 }],
       customer: existingCustomerId || undefined,
       customer_email: existingCustomerId ? undefined : req.user.email,
-      subscription_data: { trial_period_days: 30 },
+      ...(trialPeriodDays ? { subscription_data: { trial_period_days: trialPeriodDays } } : {}),
       metadata: { installerId },
       success_url: `${FRONTEND_URL}/installer?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${FRONTEND_URL}/installer?tab=subscription`,
@@ -155,6 +176,15 @@ async function handleStripeEvent(event) {
             ? new Date(subObj.current_period_end * 1000).toISOString()
             : (config.subscription?.currentPeriodEnd || null),
         };
+        // Welcome email -- sent once, the first time this installer's
+        // checkout actually completes (not on every webhook retry/update).
+        if (!config.welcomeEmailSentAt) {
+          const email = fullSession.customer_details?.email || fullSession.customer_email;
+          if (email) {
+            sendInstallerWelcomeEmail({ to: email, companyName: config.companyName }).catch(() => {});
+            config.welcomeEmailSentAt = new Date().toISOString();
+          }
+        }
         await saveInstallerConfig(installerId, config);
         console.log(`Webhook: activated installer ${installerId}`);
       } catch (err) {
@@ -199,6 +229,20 @@ async function handleStripeEvent(event) {
           status: 'canceled',
           stripeSubscriptionId: sub.id,
         };
+        // Win-back email -- deduped via a stored flag since Stripe can
+        // redeliver this webhook. Needs the customer's email, which this
+        // event doesn't carry directly.
+        if (!config.subscription.cancellationEmailSentAt) {
+          try {
+            const customer = await stripe.customers.retrieve(sub.customer);
+            if (customer?.email) {
+              sendSubscriptionCanceledEmail({ to: customer.email, companyName: config.companyName }).catch(() => {});
+              config.subscription.cancellationEmailSentAt = new Date().toISOString();
+            }
+          } catch (lookupErr) {
+            console.warn(`Could not retrieve Stripe customer ${sub.customer} for win-back email:`, lookupErr.message);
+          }
+        }
         await saveInstallerConfig(installerId, config);
         console.log(`Webhook: canceled subscription for installer ${installerId}`);
       } catch (err) {
@@ -219,6 +263,17 @@ async function handleStripeEvent(event) {
           ...(config.subscription || {}),
           status: 'past_due',
         };
+        // Deduped by Stripe invoice id, not a one-time flag -- Stripe
+        // retries a failed invoice (and re-fires this webhook) several
+        // times over the following days, and each distinct invoice is
+        // worth its own notification.
+        if (config.subscription.lastPaymentFailedInvoiceId !== invoice.id) {
+          const email = invoice.customer_email;
+          if (email) {
+            sendPaymentFailedEmail({ to: email, companyName: config.companyName }).catch(() => {});
+          }
+          config.subscription.lastPaymentFailedInvoiceId = invoice.id;
+        }
         await saveInstallerConfig(installerId, config);
         console.log(`Webhook: marked past_due for installer ${installerId}`);
       } catch (err) {

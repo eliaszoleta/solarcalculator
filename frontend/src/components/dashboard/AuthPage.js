@@ -1,23 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { supabase } from '../../lib/supabase';
 import { MailIcon } from '../ui/Icons';
 
+const API_BASE = process.env.REACT_APP_API_URL || '';
+
 export default function AuthPage({ onAuth }) {
-  const [mode, setMode] = useState('login'); // 'login' | 'signup' | 'forgot' | 'check_email'
+  // 'login' | 'signup' | 'forgot' | 'check_email' | 'redirecting_to_checkout' | 'reset_password'
+  const [mode, setMode] = useState('login');
   const [form, setForm] = useState({ email: '', password: '', companyName: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Handle password reset redirect (Supabase sends user back with a token)
+  // Signing up with Supabase email confirmation disabled grants a session
+  // immediately, which fires the SIGNED_IN listener below -- but right
+  // after signup we want to hand the new account straight to Stripe
+  // Checkout, not drop it into the dashboard with no subscription yet.
+  // This ref suppresses that one automatic onAuth call during the
+  // signup -> checkout handoff; it's only let through as a fallback if
+  // checkout session creation itself fails.
+  const suppressAutoAuth = useRef(false);
+
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
         setMode('reset_password');
       }
-      if (session && event === 'SIGNED_IN') {
+      if (session && event === 'SIGNED_IN' && !suppressAutoAuth.current) {
         onAuth(session.user);
       }
     });
+    return () => sub.subscription.unsubscribe();
   }, [onAuth]);
 
   const update = (field, value) => { setForm(p => ({ ...p, [field]: value })); setError(''); };
@@ -29,7 +42,29 @@ export default function AuthPage({ onAuth }) {
       email: form.email,
       password: form.password,
     });
-    if (error) setError(error.message);
+    if (error) {
+      // Supabase returns a generic 400 "Invalid login credentials" for both
+      // a wrong password AND a nonexistent account, on purpose (so a login
+      // form can't be used to enumerate which emails are registered). A
+      // separate, deliberate lookup here is what lets this page give a more
+      // specific, still-safe message back. Anything other than a 400 (a
+      // timeout, a 5xx from Supabase infra) is a real outage, not a bad
+      // password -- showing "wrong password" for that actively misleads
+      // someone with correct credentials, so it gets calm, generic copy
+      // instead.
+      if (error.status === 400) {
+        let accountExists = true; // fail toward the safer, more generic message
+        try {
+          const res = await axios.get(`${API_BASE}/api/installer/check-email-exists`, { params: { email: form.email } });
+          accountExists = !!res.data?.exists;
+        } catch {
+          // lookup itself failed -- keep the generic fallback above
+        }
+        setError(accountExists ? 'Wrong email or password. Please try again.' : 'Account not found. Check your email or sign up below.');
+      } else {
+        setError("We're working on a few things behind the scenes right now. Please check back in a few hours and try signing in again.");
+      }
+    }
     setLoading(false);
   };
 
@@ -37,7 +72,7 @@ export default function AuthPage({ onAuth }) {
     e.preventDefault();
     if (!form.companyName.trim()) { setError('Company name is required'); return; }
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
       options: {
@@ -45,8 +80,37 @@ export default function AuthPage({ onAuth }) {
         emailRedirectTo: 'https://www.solarcostpredictor.com/installer',
       },
     });
-    if (error) { setError(error.message); }
-    else { setMode('check_email'); }
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+      return;
+    }
+    if (data.user && !data.session) {
+      // Email confirmation required -- checkout happens after they click
+      // the link and land back on /installer with a real session.
+      setMode('check_email');
+      setLoading(false);
+      return;
+    }
+    if (data.session) {
+      suppressAutoAuth.current = true;
+      setMode('redirecting_to_checkout');
+      try {
+        const res = await axios.post(
+          `${API_BASE}/api/subscription/checkout`,
+          {},
+          { headers: { Authorization: `Bearer ${data.session.access_token}` } }
+        );
+        window.location.href = res.data.url;
+        return; // navigating away
+      } catch {
+        // Checkout session creation failed -- don't strand them on a dead
+        // spinner. Let them into the dashboard; they can retry from the
+        // Subscription tab.
+        suppressAutoAuth.current = false;
+        onAuth(data.user);
+      }
+    }
     setLoading(false);
   };
 
@@ -87,6 +151,16 @@ export default function AuthPage({ onAuth }) {
 
         <div style={{ background: 'white', borderRadius: 20, padding: 36, boxShadow: '0 25px 50px rgba(0,0,0,0.3)' }}>
 
+          {/* Redirecting to Stripe Checkout right after signup */}
+          {mode === 'redirecting_to_checkout' && (
+            <div style={{ textAlign: 'center', padding: '24px 0' }}>
+              <div style={{ width: 36, height: 36, border: '3px solid #e2e8f0', borderTopColor: '#1b4d3e', borderRadius: '50%', margin: '0 auto 20px', animation: 'ip-spin 0.8s linear infinite' }} />
+              <h2 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 6 }}>Last step — activate your calculator</h2>
+              <p style={{ fontSize: 14, color: '#64748b' }}>30 days free, then $49/month.</p>
+              <style>{`@keyframes ip-spin { to { transform: rotate(360deg); } }`}</style>
+            </div>
+          )}
+
           {/* Check email confirmation */}
           {mode === 'check_email' && (
             <div style={{ textAlign: 'center', padding: '8px 0' }}>
@@ -94,7 +168,9 @@ export default function AuthPage({ onAuth }) {
               <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Check your email</h2>
               <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>
                 We sent a link to <strong>{form.email}</strong>.<br />
-                Click it to {mode === 'check_email' && form.companyName ? 'confirm your account' : 'reset your password'}.
+                {form.companyName
+                  ? 'Click it to confirm your account, then activate your calculator with a quick checkout step — 30 days free before your first charge.'
+                  : 'Click it to reset your password.'}
               </p>
               <button onClick={() => setMode('login')} style={{ ...linkStyle, marginTop: 20, display: 'block', textAlign: 'center' }}>
                 ← Back to sign in
@@ -129,14 +205,14 @@ export default function AuthPage({ onAuth }) {
           {mode === 'signup' && (
             <>
               <h1 style={headingStyle}>Create your account</h1>
-              <p style={subStyle}>7-day free trial · Credit card required · Cancel anytime</p>
+              <p style={subStyle}>Start your 30-day free trial — card required, not charged until it ends.</p>
               <form onSubmit={handleSignup} style={formStyle}>
                 <Field label="Company Name" type="text" placeholder="SunShine Solar LLC" value={form.companyName} onChange={v => update('companyName', v)} />
                 <Field label="Email Address" type="email" placeholder="you@company.com" value={form.email} onChange={v => update('email', v)} />
                 <Field label="Password" type="password" placeholder="At least 6 characters" value={form.password} onChange={v => update('password', v)} />
                 {error && <ErrorBox>{error}</ErrorBox>}
                 <button type="submit" disabled={loading} style={submitStyle(loading)}>
-                  {loading ? 'Creating account...' : 'Create Account'}
+                  {loading ? 'Creating account...' : 'Start Free Trial'}
                 </button>
               </form>
               <div style={{ textAlign: 'center', marginTop: 16, fontSize: 14, color: '#64748b' }}>

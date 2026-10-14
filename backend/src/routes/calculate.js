@@ -51,6 +51,22 @@ router.post('/', async (req, res) => {
       },
       resolvedConfig
     );
+
+    // Usage tracking for the dashboard's Overview tab ("Estimates Run" stat
+    // + first-run checklist) -- covers both the internal "Run an Estimate"
+    // tab and the public embedded widget, since both pass installerId.
+    // Fire-and-forget: never let a stats write slow down or fail the
+    // actual calculation response.
+    if (installerId) {
+      const month = new Date().toISOString().slice(0, 7); // 'YYYY-MM'
+      const stats = resolvedConfig.stats || { totalRuns: 0, runsByMonth: {} };
+      stats.totalRuns = (stats.totalRuns || 0) + 1;
+      stats.runsByMonth = { ...(stats.runsByMonth || {}), [month]: (stats.runsByMonth?.[month] || 0) + 1 };
+      resolvedConfig.stats = stats;
+      const { saveInstallerConfig } = require('./installer');
+      saveInstallerConfig(installerId, resolvedConfig).catch(err => console.warn('Failed to record estimate run:', err.message));
+    }
+
     res.json({ success: true, data: result });
   } catch (err) {
     console.error('Calculation error:', err.message, err.stack);
