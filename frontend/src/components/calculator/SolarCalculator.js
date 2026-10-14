@@ -152,6 +152,13 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
         setError('Calculation failed. Please check your inputs and try again.');
       }
     } catch (err) {
+      // Logged for debugging (a CORS error, like the one that caused today's
+      // outage, shows up here as a specific browser-level message even
+      // though axios's own err.message is a generic "Network Error") --
+      // the user-facing message stays vague on purpose, but silently
+      // swallowing the real cause made this one take a Network-tab
+      // inspection to diagnose instead of a console glance.
+      console.error('Solar calculation request failed:', err);
       setError('Unable to connect to calculation service. Please try again.');
     } finally {
       setLoading(false);
