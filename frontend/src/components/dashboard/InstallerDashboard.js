@@ -79,7 +79,7 @@ export default function InstallerDashboard({ user, onLogout }) {
     // Open subscription tab directly if redirected from Stripe
     const params = new URLSearchParams(window.location.search);
     if (params.get('subscribed') === 'true' || params.get('tab') === 'subscription') return 'subscription';
-    return 'overview';
+    return 'estimate';
   });
   const [leads, setLeads] = useState([]);
   const [leadsLoading, setLeadsLoading] = useState(false);
@@ -324,6 +324,14 @@ export default function InstallerDashboard({ user, onLogout }) {
     }
   };
 
+  const handleShareEmail = async ({ to, clientName, monthlyBill, zip, state, homeType, sunExposure, roofType, battery, equipmentTier }) => {
+    const headers = await getAuthHeader();
+    const { data } = await axios.post(`${API_BASE}/api/estimate-share`, {
+      to, clientName, monthlyBill, zip, state, homeType, sunExposure, roofType, battery, equipmentTier,
+    }, { headers });
+    if (!data.success) throw new Error(data.error || 'Failed to send');
+  };
+
   const handleSubscribe = async () => {
     try {
       const headers = await getAuthHeader();
@@ -383,6 +391,7 @@ export default function InstallerDashboard({ user, onLogout }) {
         </div>
         <nav className="dash-nav">
           {[
+            { id: 'estimate',     icon: <BoltIcon size={16} />,        label: 'Run an Estimate' },
             { id: 'overview',     icon: <LayoutIcon size={16} />,      label: 'Overview' },
             { id: 'pricing',      icon: <DollarSignIcon size={16} />,  label: 'Pricing Settings' },
             { id: 'appearance',   icon: <PaintBrushIcon size={16} />,  label: 'Appearance' },
@@ -417,6 +426,7 @@ export default function InstallerDashboard({ user, onLogout }) {
         <div className="dash-topbar">
           <div>
             <h1 className="dash-page-title">
+              {activeTab === 'estimate'    && 'Run an Estimate'}
               {activeTab === 'overview'    && 'Dashboard Overview'}
               {activeTab === 'pricing'     && 'Pricing Settings'}
               {activeTab === 'appearance'  && 'Appearance'}
@@ -427,12 +437,18 @@ export default function InstallerDashboard({ user, onLogout }) {
               {activeTab === 'settings'    && 'Settings'}
             </h1>
             <p className="dash-page-sub">
-              {activeTab === 'overview' ? `Welcome back${config.companyName ? `, ${config.companyName}` : ''}.` : 'Configure how your solar calculator estimates costs'}
+              {activeTab === 'estimate'
+                ? 'Price a job using your own settings — nothing here is shown to a customer unless you send it.'
+                : activeTab === 'overview'
+                ? `Welcome back${config.companyName ? `, ${config.companyName}` : ''}.`
+                : 'Configure how your solar calculator estimates costs'}
             </p>
           </div>
-          <button className="btn-save" onClick={save} disabled={saving}>
-            {saving ? 'Saving...' : saved ? <><CheckCircleIcon size={14} style={{ verticalAlign: 'middle', marginRight: 4 }} />Saved</> : 'Save Changes'}
-          </button>
+          {activeTab !== 'estimate' && (
+            <button className="btn-save" onClick={save} disabled={saving}>
+              {saving ? 'Saving...' : saved ? <><CheckCircleIcon size={14} style={{ verticalAlign: 'middle', marginRight: 4 }} />Saved</> : 'Save Changes'}
+            </button>
+          )}
         </div>
 
         <div className="dash-content">
@@ -448,7 +464,7 @@ export default function InstallerDashboard({ user, onLogout }) {
                 <AlertTriangleIcon size={15} color={subscription.status === 'requires_trial_setup' ? '#1b4d3e' : '#dc2626'} />
                 <span style={{ fontWeight: 600, fontSize: 13, color: subscription.status === 'requires_trial_setup' ? '#123529' : '#dc2626' }}>
                   {subscription.status === 'requires_trial_setup'
-                    ? 'Your calculator is paused — start your 7-day free trial to activate'
+                    ? 'Your calculator is paused — start your 30-day free trial to activate'
                     : subscription.status === 'expired'
                     ? 'Your free trial has ended — subscribe to reactivate your calculator'
                     : 'Your calculator is paused — subscription issue'}
@@ -464,6 +480,19 @@ export default function InstallerDashboard({ user, onLogout }) {
               >
                 {subscription.status === 'requires_trial_setup' ? 'Start Trial →' : 'Reactivate →'}
               </button>
+            </div>
+          )}
+
+          {activeTab === 'estimate' && (
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ width: '100%', maxWidth: 640, background: 'white', borderRadius: 12, border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', overflow: 'hidden' }}>
+                <SolarCalculator
+                  embedded
+                  installerConfig={config}
+                  internalMode
+                  onShareEmail={handleShareEmail}
+                />
+              </div>
             </div>
           )}
 

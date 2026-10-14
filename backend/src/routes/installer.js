@@ -82,7 +82,7 @@ router.get('/:id', async (req, res) => {
   try {
     let config = await getInstallerConfig(req.params.id);
     if (!config) {
-      // First access — new account requires Stripe checkout to start 7-day trial (CC required)
+      // First access — new account requires Stripe checkout to start 30-day trial (CC required)
       config = {
         ...DEFAULT_INSTALLER_CONFIG,
         subscription: {

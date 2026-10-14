@@ -56,7 +56,7 @@ const initialForm = {
 
 const initialLeadForm = { name: '', email: '', phone: '', paymentMethod: '', timeline: '' };
 
-export default function SolarCalculator({ embedded, installerConfig, installerId }) {
+export default function SolarCalculator({ embedded, installerConfig, installerId, internalMode, onShareEmail }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(initialForm);
   const [leadForm, setLeadForm] = useState(initialLeadForm);
@@ -125,29 +125,34 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
       if (data.success) {
         setResults(data.data);
         setStep(TOTAL_STEPS + 1);
-        supabase.from('leads').insert({
-          installer_id: installerId || null,
-          name: leadData.name,
-          email: leadData.email,
-          phone: leadData.phone,
-          timeline: leadData.timeline,
-          payment_method: leadData.paymentMethod,
-          monthly_bill: parseFloat(form.monthlyBill) || null,
-          state: form.state || null,
-          zip: form.zip || null,
-          home_type: form.homeType || null,
-          owns_home: form.ownsHome != null ? form.ownsHome : null,
-          sun_exposure: form.sunExposure || null,
-          roof_type: form.roofType || null,
-          battery: form.battery || null,
-          system_size_kw: data.data.system?.sizeKw || null,
-          annual_savings: data.data.savings?.annual || null,
-          total_cost: data.data.cost?.total || null,
-          custom_answers: Object.keys(form.customAnswers || {}).length > 0 ? form.customAnswers : null,
-        }).then(({ data: leadRow, error }) => {
-          if (error) console.error('Lead save error:', error.message, error.details, error.hint);
-          else console.log('Lead saved:', leadRow);
-        });
+        // Internal mode (the installer's own "Run an Estimate" dashboard tab)
+        // is the installer pricing their own job, not a prospect finding the
+        // widget -- nothing is saved as a lead there.
+        if (!internalMode) {
+          supabase.from('leads').insert({
+            installer_id: installerId || null,
+            name: leadData.name,
+            email: leadData.email,
+            phone: leadData.phone,
+            timeline: leadData.timeline,
+            payment_method: leadData.paymentMethod,
+            monthly_bill: parseFloat(form.monthlyBill) || null,
+            state: form.state || null,
+            zip: form.zip || null,
+            home_type: form.homeType || null,
+            owns_home: form.ownsHome != null ? form.ownsHome : null,
+            sun_exposure: form.sunExposure || null,
+            roof_type: form.roofType || null,
+            battery: form.battery || null,
+            system_size_kw: data.data.system?.sizeKw || null,
+            annual_savings: data.data.savings?.annual || null,
+            total_cost: data.data.cost?.total || null,
+            custom_answers: Object.keys(form.customAnswers || {}).length > 0 ? form.customAnswers : null,
+          }).then(({ data: leadRow, error }) => {
+            if (error) console.error('Lead save error:', error.message, error.details, error.hint);
+            else console.log('Lead saved:', leadRow);
+          });
+        }
       } else {
         setError('Calculation failed. Please check your inputs and try again.');
       }
@@ -174,8 +179,38 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
     setError(null);
   };
 
+  // Wraps the raw per-send callback the dashboard tab passes in, injecting
+  // this run's own form inputs (mirrors cleaning-quote-estimator's
+  // CleaningCalculator pattern) so ResultsScreen only needs a 2-arg
+  // (email, clientName) call, not the whole form shape.
+  const handleShareEmail = onShareEmail
+    ? (email, clientName) => onShareEmail({
+        to: email,
+        clientName,
+        monthlyBill: form.monthlyBill,
+        zip: form.zip || null,
+        state: form.state || null,
+        homeType: form.homeType,
+        sunExposure: form.sunExposure,
+        roofType: form.roofType,
+        battery: form.battery,
+        equipmentTier: form.equipmentTier,
+      })
+    : undefined;
+
   if (results && step === TOTAL_STEPS + 1) {
-    return <ResultsScreen results={results} onReset={reset} form={form} lead={lead} installerConfig={installerConfig} embedded={embedded} />;
+    return (
+      <ResultsScreen
+        results={results}
+        onReset={reset}
+        form={form}
+        lead={lead}
+        installerConfig={installerConfig}
+        embedded={embedded}
+        internalMode={internalMode}
+        onShareEmail={handleShareEmail}
+      />
+    );
   }
 
   const progressSteps = allSteps.map(s =>
@@ -191,7 +226,8 @@ export default function SolarCalculator({ embedded, installerConfig, installerId
   );
   const step3Incomplete = isOnHomeStep && form.homeType === 'house' && form.ownsHome === null;
 
-  const requireContact = !!installerId;
+  const requireContact = !!installerId && !internalMode;
+
   const paymentStepIncomplete = isOnPaymentStep && (
     !leadForm.paymentMethod ||
     (requireContact && (

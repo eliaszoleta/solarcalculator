@@ -47,7 +47,7 @@ function buildFullReportUrl(results, form, lead, forPopup = false, installerConf
 }
 
 /* ── Shared report content (used by page + modal) ─────── */
-function ReportContent({ results, form, lead, installerConfig, onReset, embedded, popup }) {
+function ReportContent({ results, form, lead, installerConfig, onReset, embedded, popup, internalMode, onShareEmail }) {
   const { system, cost, incentives, savings, chart } = results;
   const cta = installerConfig || {};
   const primary = cta.primaryColor || '#1b4d3e';
@@ -68,6 +68,28 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
   };
 
   const handlePrint = () => window.print();
+
+  // "Email to Customer" -- only ever passed by the dashboard's "Run an
+  // Estimate" tab (internalMode), so this button and its inline form only
+  // appear there.
+  const [shareEmailOpen, setShareEmailOpen] = useState(false);
+  const [shareClientName, setShareClientName] = useState('');
+  const [shareEmailValue, setShareEmailValue] = useState('');
+  const [shareEmailStatus, setShareEmailStatus] = useState(''); // '' | 'sending' | 'sent' | 'error'
+
+  const submitShareEmail = async () => {
+    if (!shareEmailValue.trim() || !shareClientName.trim() || !onShareEmail || shareEmailStatus === 'sending') return;
+    setShareEmailStatus('sending');
+    try {
+      await onShareEmail(shareEmailValue.trim(), shareClientName.trim());
+      setShareEmailStatus('sent');
+      setShareEmailValue('');
+      setShareClientName('');
+      setTimeout(() => { setShareEmailOpen(false); setShareEmailStatus(''); }, 2000);
+    } catch {
+      setShareEmailStatus('error');
+    }
+  };
 
   return (
     <div className="results-container">
@@ -241,7 +263,7 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
       </div>
 
       {/* ── CTA ── */}
-      {!popup && (
+      {!popup && !internalMode && (
         embedded ? (
           <div className="results-card cta-card-embed">
             <div style={{ textAlign: 'center', padding: '8px 0' }}>
@@ -277,14 +299,54 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 7, flexShrink: 0 }}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             New Estimate
           </button>
-          <button className="action-btn" onClick={handleShare}>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 7, flexShrink: 0 }}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            Share Results
-          </button>
+          {!internalMode && (
+            <button className="action-btn" onClick={handleShare}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 7, flexShrink: 0 }}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              Share Results
+            </button>
+          )}
           <button className="action-btn" onClick={handlePrint}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 7, flexShrink: 0 }}><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
             Print
           </button>
+          {onShareEmail && (
+            <button className="action-btn" onClick={() => setShareEmailOpen(v => !v)}>
+              <MailIcon size={15} style={{ marginRight: 7, flexShrink: 0 }} />
+              Email to Customer
+            </button>
+          )}
+        </div>
+      )}
+
+      {onShareEmail && shareEmailOpen && (
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <input
+            type="text"
+            value={shareClientName}
+            onChange={e => setShareClientName(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && submitShareEmail()}
+            placeholder="Customer's name"
+            style={shareInputStyle}
+          />
+          <input
+            type="email"
+            value={shareEmailValue}
+            onChange={e => setShareEmailValue(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && submitShareEmail()}
+            placeholder="customer@email.com"
+            style={{ ...shareInputStyle, minWidth: 220 }}
+          />
+          <button
+            onClick={submitShareEmail}
+            disabled={shareEmailStatus === 'sending'}
+            className="action-btn"
+            style={{ background: primary, color: 'white', borderColor: primary }}
+          >
+            {shareEmailStatus === 'sending' ? 'Sending…' : shareEmailStatus === 'sent' ? 'Sent ✓' : 'Send'}
+          </button>
+          {shareEmailStatus === 'error' && (
+            <p style={{ width: '100%', textAlign: 'center', color: '#dc2626', fontSize: 12.5, margin: 0 }}>Failed to send. Please try again.</p>
+          )}
         </div>
       )}
 
@@ -296,7 +358,7 @@ function ReportContent({ results, form, lead, installerConfig, onReset, embedded
 }
 
 /* ── Main export ───────────────────────────────────────── */
-export default function ResultsScreen({ results, onReset, form, lead, installerConfig, embedded, popup }) {
+export default function ResultsScreen({ results, onReset, form, lead, installerConfig, embedded, popup, internalMode, onShareEmail }) {
   const { system, cost, incentives, savings, chart } = results;
   const cta = installerConfig || {};
   const primary = cta.primaryColor || '#1b4d3e';
@@ -318,8 +380,11 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
     }
   };
 
-  /* ── Compact embed view ── */
-  if (embedded) {
+  /* ── Compact embed view ── (internalMode always gets the full report
+     below instead, even when embedded=true for the dashboard tab's compact
+     step-form chrome — an installer pricing their own job needs the full
+     breakdown, not the tiny public-widget summary.) */
+  if (embedded && !internalMode) {
     const hasFinancing = !isCash && savings.monthlyPaymentFinanced > 0;
     const daySavings = hasFinancing ? savings.netMonthlyFinanced : savings.monthly;
 
@@ -414,9 +479,12 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
     );
   }
 
-  /* ── Full page view ── */
+  /* ── Full page view ── (also used for internalMode, since it needs the
+     full breakdown rather than the compact widget above; internalMode
+     drops the full-bleed page chrome since it's rendered inside a
+     dashboard card, not a standalone page) */
   return (
-    <section className="results-section">
+    <section className="results-section" style={internalMode ? { minHeight: 'auto', background: 'transparent', padding: '24px 20px 32px' } : undefined}>
       <ReportContent
         results={results}
         form={form}
@@ -425,6 +493,8 @@ export default function ResultsScreen({ results, onReset, form, lead, installerC
         onReset={onReset}
         embedded={embedded}
         popup={popup}
+        internalMode={internalMode}
+        onShareEmail={onShareEmail}
       />
 
       {showModal && (
@@ -541,6 +611,17 @@ function PublicEmailCapture({ results, form, savings, system }) {
     </div>
   );
 }
+
+const shareInputStyle = {
+  padding: '9px 13px',
+  borderRadius: 10,
+  border: '1.5px solid #e2e8f0',
+  background: 'white',
+  color: '#0f172a',
+  fontSize: 13.5,
+  outline: 'none',
+  minWidth: 160,
+};
 
 const inputStyle = {
   padding: '11px 13px',

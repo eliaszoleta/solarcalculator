@@ -31,7 +31,7 @@ router.post('/checkout', async (req, res) => {
       line_items: [{ price: priceId, quantity: 1 }],
       customer: existingCustomerId || undefined,
       customer_email: existingCustomerId ? undefined : req.user.email,
-      subscription_data: { trial_period_days: 7 },
+      subscription_data: { trial_period_days: 30 },
       metadata: { installerId },
       success_url: `${FRONTEND_URL}/installer?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${FRONTEND_URL}/installer?tab=subscription`,
@@ -320,7 +320,7 @@ function computeSubscriptionStatus(config) {
     return {
       active: false,
       status: 'requires_trial_setup',
-      daysLeft: 7,
+      daysLeft: 30,
       currentPeriodEnd: null,
       stripeCustomerId: sub.stripeCustomerId || null,
       stripeSubscriptionId: null,
@@ -354,7 +354,7 @@ function computeSubscriptionStatus(config) {
   return {
     active: false,
     status: 'requires_trial_setup',
-    daysLeft: 7,
+    daysLeft: 30,
     currentPeriodEnd: null,
     stripeCustomerId: null,
     stripeSubscriptionId: null,

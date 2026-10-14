@@ -9,6 +9,7 @@ const installerRouter = require('./routes/installer');
 const authRouter = require('./routes/auth');
 const subscriptionRouter = require('./routes/subscription');
 const leadsRouter = require('./routes/leads');
+const estimateShareRouter = require('./routes/estimateShare');
 const { requireAuth } = require('./middleware/auth');
 const { getInstallerConfig } = require('./routes/installer');
 const { computeSubscriptionStatus } = require('./routes/subscription');
@@ -102,6 +103,10 @@ app.use('/api/subscription', requireAuth, subscriptionRouter);
 
 // Leads API — API key authenticated (no session required)
 app.use('/api/leads', leadsRouter);
+
+// Internal "Run an Estimate" tab — email a freshly-computed estimate to a
+// customer. Session-authenticated (the installer themselves), not API-key.
+app.use('/api/estimate-share', requireAuth, estimateShareRouter);
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'ok' }));

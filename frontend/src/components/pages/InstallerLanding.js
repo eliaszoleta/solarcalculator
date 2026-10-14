@@ -1,38 +1,372 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ClipboardIcon, LinkIcon, ChartBarIcon, PaintBrushIcon, DollarSignIcon, MapPinIcon, BatteryIcon, RulerIcon, SunIcon, BoltIcon, HomeIcon, TrendingDownIcon, WrenchIcon, CreditCardIcon } from '../ui/Icons';
+import {
+  BoltIcon, MapPinIcon, SettingsIcon, CheckCircleIcon, StarIcon,
+  ShieldIcon, TrendingDownIcon, SearchIcon, MailIcon, CodeIcon, LockIcon,
+  SparklesIcon, DollarSignIcon, BuildingIcon,
+} from '../ui/Icons';
+
+const PRIMARY = '#1b4d3e';
+const ACCENT = '#16a34a';
+
+// Small local helpers so this page doesn't need a new icon-library
+// dependency just for an arrow glyph and a quote mark — mirrors how
+// cleanestimator's CompanyLanding.js keeps its own tiny Arrow() helper.
+function Arrow({ size = 15 }) {
+  return (
+    <span className="il-arrow" style={{ display: 'inline-flex' }}>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+    </span>
+  );
+}
+function QuoteMark() {
+  return <svg width={22} height={18} viewBox="0 0 24 18" fill="#dbeafe"><path d="M0 18V9.6C0 4.3 3.6.9 9.2 0l1 2.9C6.6 4 4.8 6 4.6 8.4H9V18H0zm13 0V9.6C13 4.3 16.6.9 22.2 0l1 2.9c-3.6 1.1-5.4 3.1-5.6 5.5H22V18h-9z" /></svg>;
+}
+
+// One plan, used internally by default, with a calculator widget for the
+// installer's own website included for anyone who also wants public lead
+// capture. Mirrors the "why go internal" pivot cleanestimator made with
+// CompanyLanding.js: a public price range invites negotiation before the
+// homeowner has even talked to a salesperson.
+const PROBLEMS = [
+  { Icon: TrendingDownIcon, color: '#dc2626', bg: '#fef2f2', title: 'Homeowners shop the low end', desc: 'Show someone "$18,000–$24,000 installed" and they\'ll anchor on $18,000 — even for a roof and shading situation that should price higher.' },
+  { Icon: SearchIcon,       color: '#d97706', bg: '#fffbeb', title: 'A public price invites tire-kickers', desc: 'Visitors who were never going to buy will happily grab a number off your site and move on to the next installer\'s calculator.' },
+  { Icon: ShieldIcon,       color: '#16a34a', bg: '#f0fdf4', title: 'Keep pricing power on your side', desc: 'Run the numbers yourself before a sales call, quote with confidence, and only show a figure when you decide to.' },
+];
+
+const FEATURES = [
+  { Icon: BoltIcon,       color: '#7c3aed', bg: '#f5f3ff', title: 'Unlimited internal calculations', desc: 'Price as many jobs as you need, every month, with no per-estimate cost.' },
+  { Icon: LockIcon,       color: '#1b4d3e', bg: '#eaf3ee', title: 'Instant result, nothing public',  desc: "See the number immediately on your own screen — it's never shown to a homeowner unless you choose to send it." },
+  { Icon: MailIcon,       color: '#0d9488', bg: '#f0fdfa', title: 'Email a result to a customer',    desc: 'One click sends a specific estimate to a homeowner\'s inbox after your call — no shared logins, no public page.' },
+  { Icon: MapPinIcon,     color: '#059669', bg: '#ecfdf5', title: 'Real NREL + EIA data',            desc: 'Every estimate pulls NREL PVWatts irradiance data for the exact ZIP code and EIA electricity rates for the state — not a flat national average.' },
+  { Icon: SettingsIcon,   color: '#ea580c', bg: '#fff7ed', title: 'Your pricing, your margin',       desc: 'Set your own price per watt, roof surcharges, battery costs, and system size limits — every estimate reflects your real quote structure.' },
+  { Icon: CodeIcon,       color: '#0891b2', bg: '#ecfeff', title: 'Calculator widget for your website', desc: 'Want public lead capture too? The same plan includes an embeddable, white-label calculator widget for your site — no upgrade required.' },
+];
+
+const STEPS = [
+  { n: '1', Icon: SparklesIcon,  color: '#1b4d3e', bg: '#eaf3ee', title: 'Sign up',               desc: 'Create your account and start your 30-day free trial.' },
+  { n: '2', Icon: SettingsIcon,  color: '#7c3aed', bg: '#f5f3ff', title: 'Set up your pricing',    desc: 'Add your price per watt, service area, battery costs, and company branding — accurate solar data is already built in.' },
+  { n: '3', Icon: BoltIcon,      color: '#ea580c', bg: '#fff7ed', title: 'Run instant estimates',  desc: 'Get an accurate number the moment you need one — for your own quoting, not a public page.' },
+  { n: '4', Icon: CodeIcon,      color: '#0891b2', bg: '#ecfeff', title: 'Embed it too, if you want', desc: "Want leads coming straight from your website? Paste the calculator widget's code on your site anytime — it's included." },
+];
+
+const TESTIMONIALS = [
+  { name: 'Mike R.',    company: 'SunPoint Solar — Phoenix, AZ',     text: "We stopped showing homeowners a price range on the site. I run the numbers myself before every call and quote with confidence — no more haggling from the bottom of a range." },
+  { name: 'Jenna T.',   company: 'Coastal Solar Co. — Charleston, SC', text: "We embedded it on our site too and it's generated real, pre-qualified leads every week. Conversion is way higher than our old 'Get a Quote' form because visitors already know their savings." },
+  { name: 'Derek W.',   company: 'Highline Energy — Denver, CO',      text: "My sales reps run it on their phones during the first call and email the number over right after. Every rep quotes the exact same job the exact same way now — that never happened when pricing lived in a spreadsheet." },
+];
+
+const PLAN_FEATURES = [
+  'Unlimited internal price calculations',
+  'Instant result on screen — never a public price range',
+  'Email a result to a customer in one click',
+  'Real NREL + EIA data, your pricing & margin controls',
+  'Calculator widget for your website, included whenever you want public lead capture',
+  'Automatic lead capture + CSV export once it\'s on your site',
+  'API access for CRM sync',
+];
+
+const TRUST_BADGES = [
+  { Icon: ShieldIcon, text: '30-day free trial (card required)' },
+  { Icon: BoltIcon,   text: 'First estimate in 2 minutes' },
+  { Icon: CheckCircleIcon, text: 'Cancel anytime' },
+];
+
+const cardStyle = { background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, boxShadow: '0 1px 3px rgba(15,23,42,0.04)' };
+
+function FeatureIcon({ Icon, color, bg }) {
+  return (
+    <div className="il-feature-icon" style={{ width: 42, height: 42, borderRadius: 11, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+      <Icon size={19} color={color} />
+    </div>
+  );
+}
+
+// A static mock of the internal result card (not a real screenshot) — no
+// browser-chrome wrapper around it, since that would imply a public website
+// page when this is meant to read as the installer's own internal result.
+function WidgetPreview() {
+  return (
+    <div className="il-float" style={{ position: 'relative' }}>
+      <div style={{ position: 'relative', width: '100%', minHeight: 320, borderRadius: 16, overflow: 'hidden', background: `linear-gradient(135deg, ${PRIMARY}, #0f172a)`, boxShadow: '0 30px 70px -20px rgba(2,6,23,0.55), 0 8px 20px rgba(2,6,23,0.25)', padding: '28px 24px', color: 'white' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.7, marginBottom: 10 }}>Solar Savings Estimate</div>
+        <div style={{ fontSize: 32, fontWeight: 800, marginBottom: 6 }}>Save $187/mo</div>
+        <div style={{ fontSize: 13, opacity: 0.75, marginBottom: 24 }}>installed cost $19,400 – $23,100 · 8 yr payback</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          {[['30-Year Savings', '$64,200'], ['System Size', '8.2 kW'], ['Annual Savings', '$2,244'], ['Payback', '8 yrs']].map(([label, val]) => (
+            <div key={label} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)', borderRadius: 10, padding: '12px 14px' }}>
+              <div style={{ fontSize: 18, fontWeight: 800, color: '#86efac' }}>{val}</div>
+              <div style={{ fontSize: 10.5, opacity: 0.7, marginTop: 2 }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Floating "instant result" chip -- intentionally doesn't show a
+          price, since the whole point of the internal Run an Estimate tab
+          (now the primary pitch on this page) is that the number stays off
+          any public-facing screen. */}
+      <div style={{
+        position: 'absolute', left: -18, bottom: -22, display: 'flex', alignItems: 'center', gap: 10,
+        background: 'white', borderRadius: 12, padding: '11px 16px 11px 12px',
+        boxShadow: '0 14px 32px -8px rgba(2,6,23,0.35)', border: '1px solid #f1f5f9',
+      }}>
+        <div style={{ width: 30, height: 30, borderRadius: 8, background: '#eaf3ee', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <BoltIcon size={14} color={ACCENT} />
+        </div>
+        <div>
+          <div style={{ fontSize: 12, fontWeight: 700, color: '#0f172a' }}>Estimate ready</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10.5, color: '#94a3b8' }}>
+            <span className="il-pulse-dot" /> calculated in seconds &middot; yours alone
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function InstallerLanding() {
   return (
     <>
       <Helmet>
-        <title>Solar Calculator for Installers | Solar Cost Predictor</title>
-        <meta name="description" content="Embed a branded solar savings calculator on your website in minutes. Capture leads, show instant estimates, and close more solar deals. Free trial for solar installers." />
+        <title>Internal Solar Pricing Tool for Solar Installers | Solar Cost Predictor</title>
+        <meta name="description" content="An internal pricing tool for solar installers. Run unlimited accurate estimates instantly on screen — with a calculator widget for your website included if you also want public lead capture. $49/month, 30-day free trial." />
         <link rel="canonical" href="https://www.solarcostpredictor.com/for-installers" />
-        <meta property="og:title" content="Solar Calculator for Installers | Solar Cost Predictor" />
-        <meta property="og:description" content="Embed a branded solar savings calculator on your website. Capture leads and close more deals. Free trial available." />
+        <meta property="og:title" content="Internal Solar Pricing Tool for Solar Installers | Solar Cost Predictor" />
+        <meta property="og:description" content="Price every job on your own screen before you ever show a homeowner a number. Calculator widget for your website included." />
         <meta property="og:url" content="https://www.solarcostpredictor.com/for-installers" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Solar Cost Predictor" />
         <meta property="og:image" content="https://www.solarcostpredictor.com/android-chrome-512x512.png" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Solar Calculator for Installers | Solar Cost Predictor" />
-        <meta name="twitter:description" content="Embed a branded solar savings calculator on your website. Capture leads and close more deals." />
+        <meta name="twitter:title" content="Internal Solar Pricing Tool for Solar Installers | Solar Cost Predictor" />
+        <meta name="twitter:description" content="Price every job on your own screen before you ever show a homeowner a number." />
         <meta name="twitter:image" content="https://www.solarcostpredictor.com/android-chrome-512x512.png" />
       </Helmet>
+
       <div style={{ fontFamily: "'Poppins', 'Poppins Fallback', Arial, sans-serif", color: '#0f172a', overflowX: 'hidden' }}>
         <LandingNav />
-        <Hero />
-        <LogoBar />
-        <HowItWorks />
-        <Features />
-        <AccuracySection />
-        <CalculatorPreview />
-        <WhatItDoesForYou />
-        <Pricing />
-        <FinalCTA />
+
+        {/* Hero */}
+        <div style={{ background: `linear-gradient(135deg, #0f172a 0%, #123529 60%, ${PRIMARY} 100%)`, padding: 'clamp(48px, 7vw, 80px) 24px', position: 'relative', overflow: 'hidden' }}>
+          <div aria-hidden="true" style={{ position: 'absolute', top: -100, right: '6%', width: 340, height: 340, borderRadius: '50%', background: 'radial-gradient(circle, rgba(22,163,74,0.14), transparent 70%)', pointerEvents: 'none' }} />
+          <div aria-hidden="true" style={{ position: 'absolute', bottom: -120, left: '2%', width: 280, height: 280, borderRadius: '50%', background: 'radial-gradient(circle, rgba(125,147,171,0.1), transparent 70%)', pointerEvents: 'none' }} />
+          <div className="il-hero-grid" style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 56, alignItems: 'center', position: 'relative' }}>
+            <div>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(22,163,74,0.15)', color: '#86efac', padding: '6px 14px', borderRadius: 20, fontSize: 11.5, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', border: '1px solid rgba(22,163,74,0.3)', marginBottom: 18 }}>
+                <BuildingIcon size={12} />
+                For solar installers
+              </span>
+              <h1 style={{ fontSize: 'clamp(26px,4vw,42px)', fontWeight: 900, lineHeight: 1.15, marginBottom: 16, letterSpacing: '-0.02em', color: 'white' }}>
+                Price every job right<br />
+                <span style={{ color: '#4ade80' }}>without tipping your hand</span>
+              </h1>
+              <p style={{ fontSize: 'clamp(14px, 1.8vw, 16px)', color: '#a8c3b5', maxWidth: 480, marginBottom: 32, lineHeight: 1.65 }}>
+                Solar Cost Predictor is an internal pricing tool for solar installers: unlimited, instant on-screen estimates built on real NREL production data and your own pricing — ready the second you click, no more guessing what to quote. Want a public-facing version for your website too? It's included — no separate plan to buy.
+              </p>
+              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+                <a href="/installer" className="il-btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: ACCENT, color: 'white', padding: '14px 28px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 15.5, boxShadow: '0 10px 28px rgba(22,163,74,0.35)' }}>
+                  Start Free Trial <Arrow />
+                </a>
+                <a href="#pricing" className="il-btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(255,255,255,0.08)', color: 'white', padding: '14px 28px', borderRadius: 10, textDecoration: 'none', fontWeight: 600, fontSize: 15.5, border: '1px solid rgba(255,255,255,0.18)' }}>
+                  See Pricing
+                </a>
+              </div>
+              <p style={{ fontSize: 13, color: '#64748b', marginTop: 20 }}>$49/mo after 30 days · Cancel anytime</p>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ width: '100%', maxWidth: 480 }}>
+                <WidgetPreview />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Trust strip */}
+        <div style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '22px 24px' }}>
+          <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '14px 40px' }}>
+            {TRUST_BADGES.map(({ Icon, text }) => (
+              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#475569', fontSize: 13.5, fontWeight: 600 }}>
+                <Icon size={15} color={ACCENT} />
+                {text}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Why go internal */}
+        <div style={{ padding: 'clamp(40px, 9vw, 84px) 24px', maxWidth: 1120, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 14 }}>
+            <SectionLabel color="#dc2626" bg="#fef2f2" border="#fecaca"><LockIcon size={12} /> Why go internal</SectionLabel>
+          </div>
+          <h2 style={sectionTitle}>A public price range works against you</h2>
+          <p style={sectionSub}>That's why more installers now run pricing internally instead of publishing a range on their site.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 18, marginTop: 'clamp(28px, 6vw, 52px)' }}>
+            {PROBLEMS.map(({ Icon, color, bg, title, desc }) => (
+              <div key={title} className="il-card" style={{ ...cardStyle, padding: '24px 22px' }}>
+                <FeatureIcon Icon={Icon} color={color} bg={bg} />
+                <h3 style={{ fontSize: 15.5, fontWeight: 700, color: '#0f172a', margin: '16px 0 8px' }}>{title}</h3>
+                <p style={{ fontSize: 13.5, color: '#475569', lineHeight: 1.65, margin: 0 }}>{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Features */}
+        <div style={{ background: '#f8fafc', padding: 'clamp(40px, 9vw, 84px) 24px', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0' }}>
+          <div style={{ maxWidth: 1120, margin: '0 auto' }}>
+            <h2 style={sectionTitle}>One accurate pricing engine, two ways to use it</h2>
+            <p style={sectionSub}>Keep it internal, or put it on your website too — the calculations underneath are the same either way.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 18, marginTop: 'clamp(28px, 6vw, 52px)' }}>
+              {FEATURES.map(({ Icon, color, bg, title, desc }) => (
+                <div key={title} className="il-card" style={{ ...cardStyle, padding: '24px 22px' }}>
+                  <FeatureIcon Icon={Icon} color={color} bg={bg} />
+                  <h3 style={{ fontSize: 15.5, fontWeight: 700, color: '#0f172a', margin: '16px 0 8px' }}>{title}</h3>
+                  <p style={{ fontSize: 13.5, color: '#475569', lineHeight: 1.65, margin: 0 }}>{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* How it works */}
+        <div style={{ padding: 'clamp(40px, 9vw, 84px) 24px', position: 'relative', overflow: 'hidden' }}>
+          <div aria-hidden="true" style={{ position: 'absolute', top: -80, right: '8%', width: 280, height: 280, borderRadius: '50%', background: 'radial-gradient(circle, rgba(22,163,74,0.08), transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 1120, margin: '0 auto', position: 'relative' }}>
+            <div style={{ textAlign: 'center', marginBottom: 14 }}>
+              <SectionLabel color={PRIMARY} bg="#eaf3ee" border="rgba(27,77,62,0.2)"><SparklesIcon size={12} /> Simple onboarding</SectionLabel>
+            </div>
+            <h2 style={sectionTitle}>Start quoting in minutes</h2>
+            <p style={sectionSub}>Four steps, no developer required — run your first estimate right after signup, then customize your branding and embed the widget on your site whenever you want.</p>
+            <div className="il-steps-grid" style={{ marginTop: 'clamp(28px, 6vw, 52px)' }}>
+              {STEPS.map((s, i) => (
+                <React.Fragment key={s.n}>
+                  <div className="il-card" style={{ ...cardStyle, padding: '26px 22px', position: 'relative', overflow: 'hidden' }}>
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: ACCENT }} />
+                    <div style={{ position: 'relative', width: 42, height: 42, marginBottom: 16 }}>
+                      <div className="il-feature-icon" style={{ width: 42, height: 42, borderRadius: 11, background: s.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <s.Icon size={19} color={s.color} />
+                      </div>
+                      <div className="il-step-badge" style={{ position: 'absolute', top: -6, right: -6, width: 22, height: 22, borderRadius: '50%', background: ACCENT, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 11, border: '2px solid white', boxShadow: '0 1px 3px rgba(15,23,42,0.15)' }}>{s.n}</div>
+                    </div>
+                    <h3 style={{ fontWeight: 700, fontSize: 15.5, color: '#0f172a', marginBottom: 8 }}>{s.title}</h3>
+                    <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.6, margin: 0 }}>{s.desc}</p>
+                  </div>
+                  {i < STEPS.length - 1 && <div className="il-step-arrow" aria-hidden="true"><Arrow size={18} /></div>}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Testimonials */}
+        <div style={{ background: '#f8fafc', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0', padding: 'clamp(40px, 9vw, 84px) 24px' }}>
+          <div style={{ maxWidth: 1120, margin: '0 auto' }}>
+            <h2 style={{ ...sectionTitle, marginBottom: 'clamp(24px, 5vw, 44px)' }}>What solar installers say</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 18 }}>
+              {TESTIMONIALS.map(t => (
+                <div key={t.name} className="il-card" style={{ ...cardStyle, padding: '24px 22px' }}>
+                  <div style={{ marginBottom: 10 }}><QuoteMark /></div>
+                  <div style={{ display: 'flex', gap: 2, marginBottom: 12 }}>
+                    {Array.from({ length: 5 }).map((_, i) => <StarIcon key={i} size={14} color="#f59e0b" />)}
+                  </div>
+                  <p style={{ fontSize: 14.5, color: '#374151', lineHeight: 1.7, marginBottom: 18 }}>{t.text}</p>
+                  <div style={{ fontWeight: 700, fontSize: 13.5, color: '#0f172a' }}>{t.name}</div>
+                  <div style={{ fontSize: 12.5, color: '#64748b', marginTop: 2 }}>{t.company}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Pricing + closing CTA */}
+        <div id="pricing" style={{ padding: 'clamp(40px, 9vw, 84px) 24px', position: 'relative', overflow: 'hidden' }}>
+          <div aria-hidden="true" style={{ position: 'absolute', top: -60, left: '4%', width: 260, height: 260, borderRadius: '50%', background: 'radial-gradient(circle, rgba(22,163,74,0.07), transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 980, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 56, alignItems: 'center', position: 'relative' }}>
+            <div>
+              <SectionLabel color={PRIMARY} bg="#eaf3ee" border="rgba(27,77,62,0.2)"><DollarSignIcon size={12} /> Pricing</SectionLabel>
+              <h2 style={{ ...sectionTitle, textAlign: 'left', margin: '16px 0 14px' }}>Simple, transparent pricing</h2>
+              <p style={{ color: '#64748b', fontSize: 16, lineHeight: 1.65, marginBottom: 28, maxWidth: 400 }}>
+                One plan, everything included, no surprises. Run it as your internal pricing tool from day one, or add it as a calculator widget on your website whenever you're ready, at no extra cost.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 10, maxWidth: 420 }}>
+                {TRUST_BADGES.map(({ Icon, text }) => (
+                  <div key={text} className="il-card" style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'white', border: '1px solid #e2e8f0', borderRadius: 11, padding: '12px 14px' }}>
+                    <div style={{ width: 30, height: 30, borderRadius: 9, background: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon size={15} color={ACCENT} />
+                    </div>
+                    <span style={{ color: '#334155', fontSize: 13.5, fontWeight: 600, lineHeight: 1.3 }}>{text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="il-card" style={{ ...cardStyle, borderRadius: 14, padding: 0, overflow: 'hidden' }}>
+              <div style={{ height: 3, background: `linear-gradient(90deg, ${ACCENT}, #4ade80)` }} />
+              <div style={{ padding: '30px 28px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                  <LockIcon size={16} color={PRIMARY} />
+                  <span style={{ fontWeight: 800, fontSize: 16.5, color: '#0f172a' }}>Internal Estimator</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 3, marginBottom: 6 }}>
+                  <span style={{ fontSize: 38, fontWeight: 900, color: '#0f172a', letterSpacing: '-1.5px' }}>$49</span>
+                  <span style={{ fontSize: 14, color: '#64748b' }}>/month</span>
+                </div>
+                <div style={{ color: '#64748b', fontSize: 13, marginBottom: 22 }}>After your 30-day free trial &middot; cancel anytime</div>
+                <ul style={{ listStyle: 'none', padding: 0, marginBottom: 24, textAlign: 'left' }}>
+                  {PLAN_FEATURES.map(item => (
+                    <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 9, marginBottom: 10, fontSize: 14, color: '#374151', lineHeight: 1.4 }}>
+                      <span style={{ width: 17, height: 17, borderRadius: '50%', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+                        <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke={ACCENT} strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <a href="/installer" className="il-btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: ACCENT, color: 'white', padding: '13px 0', borderRadius: 9, textDecoration: 'none', fontWeight: 700, fontSize: 15 }}>
+                  Start Free Trial <Arrow />
+                </a>
+                <div style={{ color: '#94a3b8', fontSize: 11.5, textAlign: 'center', marginTop: 10 }}>
+                  Card required to start — you won't be charged for 30 days.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <LandingFooter />
       </div>
+
+      <style>{`
+        .il-hero-grid { grid-template-columns: minmax(320px, 1fr) minmax(400px, 480px); }
+        @media (max-width: 900px) { .il-hero-grid { grid-template-columns: 1fr; } }
+        .il-steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; align-items: stretch; }
+        .il-step-arrow { display: none; }
+        @media (min-width: 900px) {
+          .il-steps-grid { grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; }
+          .il-step-arrow { display: flex; align-items: center; justify-content: center; color: #cbd5e1; }
+        }
+        .il-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+        .il-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px -10px rgba(15,23,42,0.16); border-color: #bbf7d0; }
+        .il-feature-icon { transition: transform 0.2s ease; }
+        .il-card:hover .il-feature-icon { transform: scale(1.08) rotate(-2deg); }
+        .il-step-badge { transition: background 0.2s ease, color 0.2s ease; }
+        .il-btn-primary, .il-btn-secondary { transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease; }
+        .il-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(22,163,74,0.4); }
+        .il-btn-secondary:hover { background: rgba(255,255,255,0.14); transform: translateY(-2px); }
+        .il-arrow { transition: transform 0.15s ease; }
+        .il-btn-primary:hover .il-arrow, .il-btn-secondary:hover .il-arrow { transform: translateX(3px); }
+        @keyframes il-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .il-float { animation: il-float 5s ease-in-out infinite; }
+        @keyframes il-pulse-ring { 0% { transform: scale(0.9); opacity: 0.6; } 70%, 100% { transform: scale(2.1); opacity: 0; } }
+        .il-pulse-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: ${ACCENT}; flex-shrink: 0; }
+        .il-pulse-dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: ${ACCENT}; animation: il-pulse-ring 1.8s ease-out infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .il-float, .il-pulse-dot::after { animation: none; }
+          .il-card, .il-btn-primary, .il-btn-secondary, .il-feature-icon, .il-step-badge, .il-arrow { transition: none; }
+        }
+      `}</style>
     </>
   );
 }
@@ -47,479 +381,23 @@ function LandingNav() {
       padding: '0 16px', height: 64,
       display: 'flex', alignItems: 'center',
     }}>
-      <div style={{ maxWidth: 1120, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, minWidth: 0 }}>
+      <div style={{ maxWidth: 1200, width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, minWidth: 0 }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none', flexShrink: 1, minWidth: 0, overflow: 'hidden' }}>
           <img src="/logo-icon-navy.svg" alt="" style={{ height: 40, width: 40, borderRadius: 10, flexShrink: 0 }} />
-          <span style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Solar Cost <span style={{ color: '#16a34a' }}>Predictor</span></span>
+          <span style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Solar Cost <span style={{ color: ACCENT }}>Predictor</span></span>
         </a>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-          <a href="/installer" style={{
-            fontSize: 14, color: '#1b4d3e', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap',
-            padding: '8px 18px', border: '1.5px solid #1b4d3e', borderRadius: 8,
-            transition: 'background 0.15s, color 0.15s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#1b4d3e'; e.currentTarget.style.color = 'white'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1b4d3e'; }}
-          >
-            Log in
-          </a>
-        </div>
+        <a href="/installer" style={{
+          fontSize: 14, color: PRIMARY, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap',
+          padding: '8px 18px', border: `1.5px solid ${PRIMARY}`, borderRadius: 8,
+          transition: 'background 0.15s, color 0.15s',
+        }}
+          onMouseEnter={e => { e.currentTarget.style.background = PRIMARY; e.currentTarget.style.color = 'white'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = PRIMARY; }}
+        >
+          Log in
+        </a>
       </div>
     </nav>
-  );
-}
-
-/* ─── Hero ────────────────────────────────────────────── */
-function Hero() {
-  return (
-    <section style={{
-      background: 'linear-gradient(135deg, #0f172a 0%, #123529 60%, #1b4d3e 100%)',
-      padding: '72px 24px 64px',
-      textAlign: 'center',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
-      {/* Decorative blur orbs */}
-      <div style={{ position: 'absolute', top: -80, right: -80, width: 360, height: 360, borderRadius: '50%', background: 'rgba(22,163,74,0.12)', filter: 'blur(60px)' }} />
-      <div style={{ position: 'absolute', bottom: -60, left: -60, width: 280, height: 280, borderRadius: '50%', background: 'rgba(125,147,171,0.1)', filter: 'blur(60px)' }} />
-
-      <div style={{ position: 'relative', maxWidth: 760, margin: '0 auto' }}>
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: 8,
-          background: 'rgba(22,163,74,0.15)', border: '1px solid rgba(22,163,74,0.3)',
-          borderRadius: 20, padding: '6px 16px', marginBottom: 28,
-        }}>
-          <span style={{ fontSize: 13, color: '#86efac', fontWeight: 600 }}>For Solar Installers</span>
-        </div>
-
-        <h1 style={{ fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 900, color: 'white', lineHeight: 1.1, marginBottom: 16, letterSpacing: '-0.02em' }}>
-          Give every homeowner<br />
-          <span style={{ color: '#16a34a' }}>an instant solar estimate</span><br />
-          on your website
-        </h1>
-
-        <p style={{ fontSize: 'clamp(14px, 1.8vw, 16px)', color: '#a8c3b5', lineHeight: 1.65, marginBottom: 32, maxWidth: 520, margin: '0 auto 32px' }}>
-          Embed a fully branded, real-data solar savings calculator on your site in minutes.
-          Capture leads automatically — no developer needed.
-        </p>
-
-        <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a href="/installer" style={{
-            padding: '13px 28px', background: '#1b4d3e',
-            color: 'white', borderRadius: 10, fontWeight: 700, fontSize: 15,
-            textDecoration: 'none', boxShadow: '0 4px 16px rgba(28,58,94,0.4)',
-            transition: 'transform 0.15s',
-          }}>
-            Start 7-Day Free Trial
-          </a>
-          <a href="#how-it-works" style={{
-            padding: '13px 24px', background: 'rgba(255,255,255,0.1)',
-            color: 'white', borderRadius: 10, fontWeight: 600, fontSize: 15,
-            textDecoration: 'none', border: '1px solid rgba(255,255,255,0.2)',
-          }}>
-            See how it works
-          </a>
-        </div>
-
-        <p style={{ fontSize: 13, color: '#64748b', marginTop: 20 }}>
-          $159/mo after 7 days · Cancel anytime
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Logo bar ────────────────────────────────────────── */
-function LogoBar() {
-  const stats = [
-    { value: '< 2 min', label: 'Setup time' },
-    { value: 'NREL', label: 'Powered by real solar data' },
-    { value: '85–90%', label: 'Accurate vs. real installer quotes' },
-    { value: '7 days', label: 'Free trial' },
-  ];
-  return (
-    <div style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '28px 24px' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 24 }}>
-        {stats.map(s => (
-          <div key={s.label} style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: '#1b4d3e' }}>{s.value}</div>
-            <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>{s.label}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ─── How It Works ────────────────────────────────────── */
-function HowItWorks() {
-  const steps = [
-    {
-      num: '01',
-      icon: <ClipboardIcon size={24} />, iconBg: '#e0ece4', iconColor: '#1b4d3e',
-      title: 'Create your account',
-      desc: 'Sign up in 60 seconds. Set your pricing per watt, service area, battery costs, and company branding — all from a simple dashboard.',
-    },
-    {
-      num: '02',
-      icon: <LinkIcon size={24} />, iconBg: '#d9f0e1', iconColor: '#059669',
-      title: 'Paste one line of code',
-      desc: 'Copy the embed snippet from your dashboard and paste it anywhere on your website. The calculator appears instantly, fully branded to your business.',
-    },
-    {
-      num: '03',
-      icon: <ChartBarIcon size={24} />, iconBg: '#dcfce7', iconColor: '#16a34a',
-      title: 'Receive qualified leads',
-      desc: 'Every homeowner who completes the calculator submits their name, email, phone, timeline, and payment preference — sent straight to your leads dashboard.',
-    },
-  ];
-
-  return (
-    <section id="how-it-works" style={{ padding: '72px 24px', background: 'white' }}>
-      <div style={{ maxWidth: 960, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center' }}>
-          <SectionLabel>How It Works</SectionLabel>
-          <h2 style={sectionTitle}>From signup to live on your site in minutes</h2>
-          <p style={sectionSub}>No developers. No complex setup. Just copy, paste, and watch leads come in.</p>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 24, marginTop: 40 }}>
-          {steps.map(s => (
-            <div key={s.num} style={{ position: 'relative' }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: '#1b4d3e', letterSpacing: '0.1em', marginBottom: 16, opacity: 0.5 }}>STEP {s.num}</div>
-              <div style={{ width: 52, height: 52, background: s.iconBg, color: s.iconColor, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
-                {s.icon}
-              </div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 10 }}>{s.title}</h3>
-              <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7 }}>{s.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Features ────────────────────────────────────────── */
-function Features() {
-  const features = [
-    {
-      icon: <PaintBrushIcon size={26} />,
-      iconBg: '#e0ece4', iconColor: '#1f4d3a',
-      title: 'Fully white-labeled',
-      desc: 'Your company name, your colors, your font, your CTA. Homeowners see your brand — not ours. Customize the headline, subtext, phone number, and button that appear after the estimate.',
-    },
-    {
-      icon: <DollarSignIcon size={26} />,
-      iconBg: '#dcfce7', iconColor: '#16a34a',
-      title: 'Your pricing, your margin',
-      desc: 'Set your own price per watt ($2.50–$4.00 typical), roof surcharges for tile/metal/flat, battery costs, and system size limits. Every estimate reflects your real quote structure.',
-    },
-    {
-      icon: <MapPinIcon size={26} />,
-      iconBg: '#eaf6ee', iconColor: '#15803d',
-      title: 'Service area control',
-      desc: "Restrict the calculator to your service states. Homeowners outside your area are told you don't serve their location — so you only get leads you can actually close.",
-    },
-    {
-      icon: <BatteryIcon size={26} />,
-      iconBg: '#f0f5f2', iconColor: '#14532d',
-      title: 'Battery storage options',
-      desc: 'Let homeowners compare estimates with no battery, one Powerwall, or two. Configure your exact installed battery costs so estimates match your actual proposals.',
-    },
-    {
-      icon: <ChartBarIcon size={26} />,
-      iconBg: '#dcf3e3', iconColor: '#0f3d2e',
-      title: 'Live leads dashboard',
-      desc: 'Every lead — name, email, phone, system size, annual savings, payment preference, and timeline — appears in your dashboard the moment someone submits the calculator.',
-    },
-    {
-      icon: <WrenchIcon size={26} />,
-      iconBg: '#d9f0e1', iconColor: '#059669',
-      title: 'Custom question steps',
-      desc: 'Add your own questions between the standard calculator steps — checkboxes, radio buttons, or open text. Collect the exact qualifying info your sales team needs, before the first call.',
-    },
-  ];
-
-  return (
-    <section style={{ padding: '72px 24px', background: '#f8fafc' }}>
-      <div style={{ maxWidth: 960, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center' }}>
-          <SectionLabel>Features</SectionLabel>
-          <h2 style={sectionTitle}>Everything you need. Nothing you don't.</h2>
-          <p style={sectionSub}>Built specifically for solar installers who want leads — not a full CRM.</p>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginTop: 40 }}>
-          {features.map(f => (
-            <div key={f.title} style={{ background: 'white', borderRadius: 16, padding: '28px 24px', border: '1px solid #e2e8f0', transition: 'box-shadow 0.2s, transform 0.2s' }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = ''; }}
-            >
-              <div style={{ width: 52, height: 52, borderRadius: 14, background: f.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18, color: f.iconColor }}>
-                {f.icon}
-              </div>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{f.title}</h3>
-              <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7 }}>{f.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Accuracy / How calculation works ───────────────── */
-function AccuracySection() {
-  const items = [
-    {
-      icon: <SunIcon size={20} />, iconBg: '#d9f0e1', iconColor: '#059669',
-      title: 'Real irradiance data from NREL',
-      desc: 'When a homeowner enters their ZIP code, the calculator calls the NREL PVWatts API — the same dataset used by the US Department of Energy — to get precise solar production estimates for their exact location.',
-    },
-    {
-      icon: <BoltIcon size={20} />, iconBg: '#e0ece4', iconColor: '#1f4d3a',
-      title: 'EIA electricity rates by state',
-      desc: 'Monthly bills are converted to kWh usage using the US Energy Information Administration\'s latest average electricity rates by state — not guesses.',
-    },
-    {
-      icon: <HomeIcon size={20} />, iconBg: '#eaf6ee', iconColor: '#15803d',
-      title: 'Right-sized for each home',
-      desc: 'The calculator targets 85% energy offset, accounting for roof type, sun exposure, shading, and your min/max system size settings. Panel count is calculated at 400W per panel.',
-    },
-    {
-      icon: <TrendingDownIcon size={20} />, iconBg: '#dcfce7', iconColor: '#16a34a',
-      title: '30-year savings projection',
-      desc: 'Savings are modeled at a 4%/year utility rate increase — a conservative assumption based on the historical EIA trend. Financed estimates include a 25-year loan at 5.99% APR as a reference point.',
-    },
-  ];
-
-  return (
-    <section style={{ padding: '72px 24px', background: 'white' }}>
-      <div style={{ maxWidth: 960, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center' }}>
-          <SectionLabel>Accuracy</SectionLabel>
-          <h2 style={sectionTitle}>Estimates homeowners can trust</h2>
-          <p style={sectionSub}>
-            Our estimates are <strong>85–90% accurate</strong> compared to real installer quotes for the same home. On a typical $25,000 system, that's within $2,500–$3,500 of what an installer would actually propose — close enough to set real expectations and compelling enough to get homeowners to call.
-          </p>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24, marginTop: 40 }}>
-          {items.map(item => (
-            <div key={item.title} style={{ display: 'flex', gap: 16 }}>
-              <div style={{ width: 48, height: 48, borderRadius: 12, background: item.iconBg, color: item.iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                {item.icon}
-              </div>
-              <div>
-                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', marginBottom: 6 }}>{item.title}</h3>
-                <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7 }}>{item.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ marginTop: 48, background: '#eaf3ee', borderRadius: 16, padding: '24px 28px', border: '1px solid #bfe3cf' }}>
-          <p style={{ fontSize: 14, color: '#1b4d3e', lineHeight: 1.7, margin: 0 }}>
-            <strong>Why not 100% accurate?</strong> A precise quote requires a roof inspection, shading analysis, and utility interconnection review that only a site visit can provide. The calculator's job is to give homeowners a confident starting point — and give you a warm, pre-qualified lead who already understands solar's value before they speak to you.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Calculator preview steps ───────────────────────── */
-function CalculatorPreview() {
-  const steps = [
-    { icon: <BoltIcon size={16} />, label: 'Monthly electric bill' },
-    { icon: <MapPinIcon size={16} />, label: 'ZIP code & state' },
-    { icon: <HomeIcon size={16} />, label: 'Home type & ownership' },
-    { icon: <WrenchIcon size={16} />, label: 'Roof type & sun exposure' },
-    { icon: <BatteryIcon size={16} />, label: 'Battery storage preference' },
-    { icon: <CreditCardIcon size={16} />, label: 'Timeline & payment method' },
-  ];
-
-  return (
-    <section style={{ padding: '72px 24px', background: 'linear-gradient(135deg, #0f172a, #123529)' }}>
-      <div style={{ maxWidth: 960, margin: '0 auto', textAlign: 'center' }}>
-        <SectionLabel light>The Calculator Experience</SectionLabel>
-        <h2 style={{ ...sectionTitle, color: 'white', marginBottom: 12 }}>6 built-in steps + your custom questions.</h2>
-        <p style={{ ...sectionSub, color: '#a8c3b5', marginBottom: 56, margin: '0 auto 56px' }}>
-          Homeowners complete the flow in under 2 minutes — then see a full savings breakdown with 30-year projection, before submitting their contact info to you. Add your own questions anywhere in the flow.
-        </p>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', marginBottom: 48 }}>
-          {steps.map((s, i) => (
-            <div key={s.label} style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: 50, padding: '10px 18px',
-            }}>
-              <span style={{ display: 'flex', alignItems: 'center' }}>{s.icon}</span>
-              <span style={{ fontSize: 13, color: 'white', fontWeight: 500 }}>{i + 1}. {s.label}</span>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16, maxWidth: 560, margin: '0 auto' }}>
-          {[
-            { label: 'Monthly savings', example: '$187/mo' },
-            { label: '30-year savings', example: '$68,400' },
-            { label: 'System size', example: '8.2 kW' },
-            { label: 'Payback period', example: '8 years' },
-          ].map(r => (
-            <div key={r.label} style={{ background: 'rgba(255,255,255,0.07)', borderRadius: 14, padding: '20px 16px', border: '1px solid rgba(255,255,255,0.12)' }}>
-              <div style={{ fontSize: 26, fontWeight: 800, color: '#16a34a' }}>{r.example}</div>
-              <div style={{ fontSize: 12, color: '#a8c3b5', marginTop: 4 }}>{r.label}</div>
-            </div>
-          ))}
-        </div>
-        <p style={{ fontSize: 12, color: '#475569', marginTop: 16 }}>Example output — results vary by location and usage</p>
-      </div>
-    </section>
-  );
-}
-
-/* ─── What it does for your business ─────────────────── */
-function WhatItDoesForYou() {
-  const benefits = [
-    {
-      title: 'Turn cold website traffic into warm leads',
-      desc: 'Visitors who use your calculator already know their savings potential before they talk to you. They\'re not asking "is solar worth it?" — they\'re asking "when can you come out?"',
-      stat: '3–5×',
-      statLabel: 'higher conversion vs. generic contact forms',
-    },
-    {
-      title: 'Pre-qualify leads automatically',
-      desc: 'You know their bill, their roof type, their timeline, and how they want to pay — before the first call. No time wasted on renters, apartments, or people "just curious."',
-      stat: '100%',
-      statLabel: 'of leads are homeowners who want solar',
-    },
-    {
-      title: 'Build trust before the sales call',
-      desc: 'A branded solar calculator signals expertise. Homeowners who see real data on your site trust you more than competitors with just a "Get a Quote" form.',
-      stat: '< 2 min',
-      statLabel: 'average time to complete',
-    },
-  ];
-
-  return (
-    <section style={{ padding: '72px 24px', background: '#f8fafc' }}>
-      <div style={{ maxWidth: 960, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center' }}>
-          <SectionLabel>Business Impact</SectionLabel>
-          <h2 style={sectionTitle}>What it actually does for your pipeline</h2>
-          <p style={sectionSub}>More than a calculator — a 24/7 lead qualification machine for your solar business.</p>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 40 }}>
-          {benefits.map(b => (
-            <div key={b.title} style={{
-              background: 'white', borderRadius: 14, padding: '24px 28px',
-              border: '1px solid #e2e8f0',
-              display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'center',
-            }}>
-              <div style={{ flex: 1, minWidth: 240 }}>
-                <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 10 }}>{b.title}</h3>
-                <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7 }}>{b.desc}</p>
-              </div>
-              <div style={{ textAlign: 'center', minWidth: 120 }}>
-                <div style={{ fontSize: 28, fontWeight: 900, color: '#1b4d3e' }}>{b.stat}</div>
-                <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 3, maxWidth: 120 }}>{b.statLabel}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Pricing ─────────────────────────────────────────── */
-function Pricing() {
-  const features = [
-    'Unlimited calculator sessions',
-    'White-label branding & custom colors',
-    'Lead capture dashboard',
-    'Pricing & margin controls',
-    'Embeddable calculator on your website',
-    'CSV export & API access',
-    'Priority support',
-    'Cancel anytime — no contracts',
-  ];
-  return (
-    <section id="pricing" style={{ padding: '56px 24px', background: '#f0f7ff' }}>
-      <div style={{ maxWidth: 350, margin: '0 auto', textAlign: 'center' }}>
-        <SectionLabel>Pricing</SectionLabel>
-        <h2 style={sectionTitle}>Simple, transparent pricing</h2>
-        <p style={{ ...sectionSub, margin: '0 auto 26px' }}>One plan. Everything included. No surprises.</p>
-
-        <div style={{ background: 'white', border: '2px solid #1b4d3e', borderRadius: 16, padding: '26px 24px', boxShadow: '0 6px 28px rgba(28,58,94,0.12)', textAlign: 'left' }}>
-          {/* Price */}
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 3, marginBottom: 3 }}>
-            <span style={{ fontSize: 38, fontWeight: 900, color: '#0f172a', letterSpacing: '-1.5px' }}>$159</span>
-            <span style={{ fontSize: 13, color: '#64748b' }}>/month</span>
-          </div>
-          <div style={{ color: '#16a34a', fontWeight: 600, fontSize: 12, marginBottom: 20, textAlign: 'center' }}>$159/mo after 7 days · Cancel anytime</div>
-
-          {/* Features */}
-          <ul style={{ listStyle: 'none', padding: 0, marginBottom: 20 }}>
-            {features.map(item => (
-              <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, fontSize: 13, color: '#334155' }}>
-                <span style={{ width: 16, height: 16, borderRadius: '50%', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <svg width={9} height={9} viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </span>
-                {item}
-              </li>
-            ))}
-          </ul>
-
-          <a href="/installer" style={{
-            display: 'block', background: '#1b4d3e', color: 'white',
-            padding: '11px 0', borderRadius: 8, textDecoration: 'none',
-            fontWeight: 700, fontSize: 14, textAlign: 'center',
-          }}>
-            Start Free Trial →
-          </a>
-          <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 8, textAlign: 'center' }}>
-            $159/mo after 7 days · Cancel anytime
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Final CTA ───────────────────────────────────────── */
-function FinalCTA() {
-  return (
-    <section style={{ padding: '80px 24px', background: '#f8fafc', textAlign: 'center' }}>
-      <div style={{ maxWidth: 600, margin: '0 auto' }}>
-        <SectionLabel>Get Started</SectionLabel>
-        <h2 style={{ ...sectionTitle, fontSize: 'clamp(22px, 3vw, 34px)', marginBottom: 16 }}>
-          Your competitors' websites<br />have a contact form.<br />
-          <span style={{ color: '#1b4d3e' }}>Yours will have a solar calculator.</span>
-        </h2>
-        <p style={{ ...sectionSub, margin: '0 auto 36px' }}>
-          Start your 7-day free trial today. Be live on your website today.
-        </p>
-        <a href="/installer" style={{
-          display: 'inline-block', padding: '13px 32px',
-          background: '#1b4d3e',
-          color: 'white', borderRadius: 10, fontWeight: 700, fontSize: 15,
-          textDecoration: 'none', boxShadow: '0 4px 16px rgba(28,58,94,0.3)',
-          letterSpacing: '-0.01em',
-        }}>
-          Get Started Free
-        </a>
-        <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 16 }}>
-          $159/mo after 7 days · Cancel anytime
-        </p>
-      </div>
-    </section>
   );
 }
 
@@ -544,18 +422,13 @@ function LandingFooter() {
 }
 
 /* ─── Shared helpers ──────────────────────────────────── */
-function SectionLabel({ children, light }) {
+function SectionLabel({ children, color, bg, border }) {
   return (
     <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
+      display: 'inline-flex', alignItems: 'center', gap: 6,
       fontSize: 11.5, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
-      color: light ? '#a8c3b5' : '#1b4d3e',
-      background: light ? 'rgba(168,195,181,0.12)' : '#eaf3ee',
-      border: `1px solid ${light ? 'rgba(168,195,181,0.25)' : 'rgba(28,58,94,0.15)'}`,
-      borderRadius: 999,
-      padding: '4px 12px',
-      marginBottom: 16,
+      color, background: bg, border: `1px solid ${border}`,
+      borderRadius: 999, padding: '4px 12px', marginBottom: 16,
     }}>
       {children}
     </div>
@@ -563,18 +436,12 @@ function SectionLabel({ children, light }) {
 }
 
 const sectionTitle = {
-  fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0f172a',
-  lineHeight: 1.2, marginBottom: 10, letterSpacing: '-0.02em',
+  fontSize: 'clamp(24px, 5.5vw, 32px)', fontWeight: 700, textAlign: 'center', color: '#0f172a',
+  marginBottom: 10, letterSpacing: '-0.4px',
 };
 
 const sectionSub = {
-  fontSize: 15, color: '#64748b', lineHeight: 1.65, maxWidth: 540, margin: '0 auto',
-};
-
-const ctaBtn = {
-  padding: '9px 16px', background: 'linear-gradient(135deg, #16a34a, #15803d)',
-  color: 'white', borderRadius: 10, fontWeight: 700, fontSize: 13,
-  textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0,
+  textAlign: 'center', color: '#64748b', fontSize: 16, maxWidth: 640, margin: '0 auto',
 };
 
 const footerLink = { fontSize: 13, color: '#64748b', textDecoration: 'none' };
