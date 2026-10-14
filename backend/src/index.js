@@ -27,8 +27,18 @@ app.use('/api/installer/:id/public', publicCors);
 // Leads API — open CORS, authenticated by API key
 app.use('/api/leads', publicCors);
 
-// All other routes — restrict to known origins
-app.use(cors({
+// All other routes — restrict to known origins. Scoped with a path check
+// (instead of a bare app.use(cors(...)), which has no path and therefore
+// runs on EVERY request, including the public ones above) -- a path-less
+// CORS middleware here previously ran again on /api/calculate and
+// /api/leads right after their own open-origin middleware, and could
+// override the "allow any origin" policy those routes actually need
+// (the whole point of them: a widget embedded on an installer's own site,
+// a domain that will never be in this hardcoded allowlist). This is what
+// caused a hard CORS error in the browser on the public calculator.
+const isPublicCorsRoute = (path) =>
+  path.startsWith('/api/calculate') || path.startsWith('/api/leads') || /^\/api\/installer\/[^/]+\/public/.test(path);
+const restrictedCors = cors({
   origin: [
     'http://localhost:3000',
     /\.vercel\.app$/,
@@ -38,7 +48,11 @@ app.use(cors({
   ].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+});
+app.use((req, res, next) => {
+  if (isPublicCorsRoute(req.path)) return next();
+  return restrictedCors(req, res, next);
+});
 
 // Rate limiting — 60 req/min per IP
 app.use('/api/calculate', rateLimit({
