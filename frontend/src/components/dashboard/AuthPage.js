@@ -1,304 +1,414 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { supabase } from '../../lib/supabase';
-import { MailIcon } from '../ui/Icons';
+import { MailIcon, CheckCircleIcon, EyeIcon, EyeOffIcon, LoaderIcon, BoltIcon } from '../ui/Icons';
 
 const API_BASE = process.env.REACT_APP_API_URL || '';
+const PRIMARY = '#1b4d3e';
+
+// InstallerLanding.js's "Start Free Trial" CTAs link here with ?mode=signup
+// so clicking them opens straight on Create Account instead of Sign In --
+// a returning installer navigating to /installer directly still lands on
+// Sign In by default.
+function initialMode() {
+  try {
+    return new URLSearchParams(window.location.search).get('mode') === 'signup' ? 'signup' : 'login';
+  } catch {
+    return 'login';
+  }
+}
 
 export default function AuthPage({ onAuth }) {
-  // 'login' | 'signup' | 'forgot' | 'check_email' | 'redirecting_to_checkout' | 'reset_password'
-  const [mode, setMode] = useState('login');
-  const [form, setForm] = useState({ email: '', password: '', companyName: '' });
-  const [error, setError] = useState('');
+  const [mode, setMode] = useState(initialMode);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [companyName, setCompanyName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [emailSent, setEmailSent] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+  // True for the brief window between a fresh signup succeeding and the
+  // browser actually navigating to Stripe Checkout -- window.location.href
+  // doesn't leave this page instantly, so without this the form would just
+  // sit there looking idle (or snap back to enabled) for that gap.
+  const [redirectingToCheckout, setRedirectingToCheckout] = useState(false);
 
-  // Signing up with Supabase email confirmation disabled grants a session
-  // immediately, which fires the SIGNED_IN listener below -- but right
-  // after signup we want to hand the new account straight to Stripe
-  // Checkout, not drop it into the dashboard with no subscription yet.
-  // This ref suppresses that one automatic onAuth call during the
-  // signup -> checkout handoff; it's only let through as a fallback if
-  // checkout session creation itself fails.
-  const suppressAutoAuth = useRef(false);
-
-  useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setMode('reset_password');
-      }
-      if (session && event === 'SIGNED_IN' && !suppressAutoAuth.current) {
-        onAuth(session.user);
-      }
-    });
-    return () => sub.subscription.unsubscribe();
-  }, [onAuth]);
-
-  const update = (field, value) => { setForm(p => ({ ...p, [field]: value })); setError(''); };
-
-  const handleLogin = async e => {
+  const handleForgotPassword = async (e) => {
     e.preventDefault();
-    if (!supabase) { setError('Authentication is not configured. Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY.'); return; }
+    setError('');
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: form.email,
-      password: form.password,
-    });
-    if (error) {
-      // Supabase returns a generic 400 "Invalid login credentials" for both
-      // a wrong password AND a nonexistent account, on purpose (so a login
-      // form can't be used to enumerate which emails are registered). A
-      // separate, deliberate lookup here is what lets this page give a more
-      // specific, still-safe message back. Anything other than a 400 (a
-      // timeout, a 5xx from Supabase infra) is a real outage, not a bad
-      // password -- showing "wrong password" for that actively misleads
-      // someone with correct credentials, so it gets calm, generic copy
-      // instead.
-      if (error.status === 400) {
-        let accountExists = true; // fail toward the safer, more generic message
-        try {
-          const res = await axios.get(`${API_BASE}/api/installer/check-email-exists`, { params: { email: form.email } });
-          accountExists = !!res.data?.exists;
-        } catch {
-          // lookup itself failed -- keep the generic fallback above
-        }
-        setError(accountExists ? 'Wrong email or password. Please try again.' : 'Account not found. Check your email or sign up below.');
-      } else {
-        setError("We're working on a few things behind the scenes right now. Please check back in a few hours and try signing in again.");
-      }
+    try {
+      if (!supabase) throw new Error('Authentication is not configured. Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY.');
+      // redirectTo points back at /installer -- App.js watches for
+      // Supabase's PASSWORD_RECOVERY auth event and shows a "set new
+      // password" screen instead of the normal dashboard whenever the
+      // visitor arrives via this link, even though the recovery link
+      // itself also establishes a real session.
+      const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/installer`,
+      });
+      if (err) throw err;
+      setResetSent(true);
+    } catch (err) {
+      setError(err.message || 'Failed to send reset email');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  const handleSignup = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!supabase) { setError('Authentication is not configured. Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY.'); return; }
-    if (!form.companyName.trim()) { setError('Company name is required'); return; }
+    setError('');
+
+    if (mode === 'signup' && password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
     setLoading(true);
-    const { data, error } = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-      options: {
-        data: { company_name: form.companyName },
-        emailRedirectTo: 'https://www.solarcostpredictor.com/installer',
-      },
-    });
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-    if (data.user && !data.session) {
-      // Email confirmation required -- checkout happens after they click
-      // the link and land back on /installer with a real session.
-      setMode('check_email');
-      setLoading(false);
-      return;
-    }
-    if (data.session) {
-      suppressAutoAuth.current = true;
-      setMode('redirecting_to_checkout');
-      try {
-        const res = await axios.post(
-          `${API_BASE}/api/subscription/checkout`,
-          {},
-          { headers: { Authorization: `Bearer ${data.session.access_token}` } }
-        );
-        window.location.href = res.data.url;
-        return; // navigating away
-      } catch {
-        // Checkout session creation failed -- don't strand them on a dead
-        // spinner. Let them into the dashboard; they can retry from the
-        // Subscription tab.
-        suppressAutoAuth.current = false;
+
+    try {
+      if (!supabase) throw new Error('Authentication is not configured. Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY.');
+
+      if (mode === 'signup') {
+        const { data, error: err } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { company_name: companyName },
+            emailRedirectTo: `${window.location.origin}/installer`,
+          },
+        });
+        if (err) throw err;
+        if (data.user && !data.session) {
+          setEmailSent(true);
+        } else if (data.session) {
+          // Last step to activate: send them straight to Stripe Checkout
+          // (30-day trial applied server-side -- see subscription.js's
+          // POST /checkout) instead of dropping them into the dashboard
+          // first. window.location.href doesn't navigate away instantly,
+          // so redirectingToCheckout keeps this screen showing a clear
+          // "taking you to checkout" state for that gap rather than
+          // leaving the form looking idle.
+          setRedirectingToCheckout(true);
+          try {
+            const res = await axios.post(
+              `${API_BASE}/api/subscription/checkout`,
+              {},
+              { headers: { Authorization: `Bearer ${data.session.access_token}` } }
+            );
+            window.location.href = res.data.url;
+            return;
+          } catch (checkoutErr) {
+            // Checkout session creation failed -- the account itself was
+            // still created successfully, so let them into the dashboard
+            // rather than stranding them on an error. They can retry
+            // checkout anytime from the Subscription tab.
+            setRedirectingToCheckout(false);
+            onAuth(data.user);
+          }
+        }
+      } else {
+        const { data, error: err } = await supabase.auth.signInWithPassword({ email, password });
+        if (err) {
+          // Supabase's real "Invalid login credentials" error always comes
+          // back as HTTP 400 -- anything else (5xx from Supabase's Auth
+          // service having an outage/restore hiccup, a network failure with
+          // no status at all) is Supabase's own infrastructure failing, not
+          // a wrong email or password. This used to show "Wrong email or
+          // password" for every single error regardless of cause, which is
+          // actively misleading when the real problem is a Supabase incident
+          // -- it sends someone with correct credentials into a confused
+          // "did I forget my password?" loop instead of telling them to
+          // just retry.
+          if (err.status !== 400) {
+            // Reassuring, not alarming -- this fires for paying customers on
+            // a working account, not someone who actually mistyped their
+            // password, so it shouldn't read like something is broken or
+            // make them doubt their own credentials.
+            throw new Error("We're working on a few things behind the scenes right now. Please check back in a few hours and try signing in again.");
+          }
+          // Supabase deliberately returns the same generic error for "no
+          // account with this email" and "wrong password" (anti-enumeration
+          // by design) -- this extra lookup is what lets the message below
+          // actually tell those two apart for the installer logging in.
+          let accountExists = true;
+          try {
+            const checkRes = await axios.get(`${API_BASE}/api/installer/check-email-exists`, { params: { email } });
+            accountExists = checkRes.data?.exists !== false;
+          } catch {
+            // Lookup itself failed -- fall back to the generic message rather
+            // than risk wrongly claiming a real account "doesn't exist".
+          }
+          throw new Error(accountExists ? 'Wrong email or password. Please try again.' : 'Account not found. Check your email or sign up below.');
+        }
         onAuth(data.user);
       }
+    } catch (err) {
+      setError(err.message || 'Authentication failed');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  const handleForgotPassword = async e => {
-    e.preventDefault();
-    if (!supabase) { setError('Authentication is not configured. Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY.'); return; }
-    setLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(form.email, {
-      redirectTo: 'https://www.solarcostpredictor.com/installer',
-    });
-    if (error) { setError(error.message); }
-    else { setMode('check_email'); }
-    setLoading(false);
+  const inputStyle = {
+    width: '100%', padding: '13px 16px', border: '1.5px solid #e2e8f0', borderRadius: 8,
+    fontSize: 15, outline: 'none', color: '#0f172a', background: '#fafafa',
+    transition: 'border-color 0.15s, box-shadow 0.15s', boxSizing: 'border-box',
   };
-
-  const handleResetPassword = async e => {
-    e.preventDefault();
-    if (!supabase) { setError('Authentication is not configured. Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY.'); return; }
-    setLoading(true);
-    const { error } = await supabase.auth.updateUser({ password: form.password });
-    if (error) { setError(error.message); }
-    else { setMode('login'); setError(''); alert('Password updated! Please sign in.'); }
-    setLoading(false);
+  const passwordInputStyle = { ...inputStyle, paddingRight: 44 };
+  const eyeButtonStyle = {
+    position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+    background: 'none', border: 'none', padding: 4, cursor: 'pointer', color: '#94a3b8',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
   };
+  const focusRing = `0 0 0 3px ${PRIMARY}1a`;
 
-  return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f172a 0%, #123529 100%)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
-    }}>
-      <div style={{ width: '100%', maxWidth: 420 }}>
-        <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-            <img src="/logo-icon-navy.svg" alt="" style={{ height: 44, width: 44, borderRadius: 11, flexShrink: 0 }} />
-            <span style={{ fontSize: 20, fontWeight: 800, color: 'white', letterSpacing: '-0.01em' }}>Solar Cost <span style={{ color: '#4ade80' }}>Predictor</span></span>
+  // ── Email confirmation screen ───────────────────────────────────────────────
+  if (emailSent) {
+    return (
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0f172a 0%, #123529 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: -160, right: -100, width: 480, height: 480, borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,77,62,0.35) 0%, rgba(27,77,62,0) 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div style={{ background: 'white', borderRadius: 22, padding: '52px 44px', maxWidth: 420, width: '100%', boxShadow: '0 32px 80px rgba(0,0,0,0.35)', textAlign: 'center' }}>
+          <div style={{ position: 'relative', width: 76, height: 76, margin: '0 auto 28px' }}>
+            <div style={{ width: 76, height: 76, borderRadius: '50%', background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <MailIcon size={32} color={PRIMARY} />
+            </div>
+            <div style={{ position: 'absolute', bottom: 1, right: 1, width: 24, height: 24, borderRadius: '50%', background: '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2.5px solid white' }}>
+              <CheckCircleIcon size={13} color="white" />
+            </div>
           </div>
-          <div style={{ fontSize: 14, color: '#a8c3b5', marginTop: 8 }}>Installer Dashboard</div>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', marginBottom: 10, letterSpacing: '-0.3px' }}>Check your inbox</h2>
+          <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.7, marginBottom: 10 }}>We sent a confirmation link to</p>
+          <div style={{ display: 'inline-block', background: '#f1f5f9', borderRadius: 6, padding: '6px 16px', fontSize: 14, fontWeight: 700, color: '#0f172a', marginBottom: 24 }}>{email}</div>
+          <p style={{ color: '#94a3b8', fontSize: 13, lineHeight: 1.7, marginBottom: 32 }}>
+            Click the link in the email to confirm your account, then activate your calculator with a quick checkout step — 30 days free before your first charge.
+          </p>
+          <button onClick={() => { setEmailSent(false); setMode('login'); }}
+            style={{ width: '100%', padding: '13px 0', borderRadius: 8, border: 'none', background: PRIMARY, color: 'white', fontWeight: 700, fontSize: 15, cursor: 'pointer', boxShadow: '0 4px 14px rgba(27,77,62,0.3)' }}>
+            Go to Sign In
+          </button>
+          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 16 }}>
+            Didn't get it? Check spam or{' '}
+            <button onClick={() => setEmailSent(false)} style={{ background: 'none', border: 'none', color: PRIMARY, fontWeight: 600, cursor: 'pointer', fontSize: 12, padding: 0 }}>try again</button>.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Reset email sent screen ─────────────────────────────────────────────────
+  if (resetSent) {
+    return (
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0f172a 0%, #123529 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: -160, right: -100, width: 480, height: 480, borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,77,62,0.35) 0%, rgba(27,77,62,0) 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div style={{ background: 'white', borderRadius: 22, padding: '52px 44px', maxWidth: 420, width: '100%', boxShadow: '0 32px 80px rgba(0,0,0,0.35)', textAlign: 'center' }}>
+          <div style={{ position: 'relative', width: 76, height: 76, margin: '0 auto 28px' }}>
+            <div style={{ width: 76, height: 76, borderRadius: '50%', background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <MailIcon size={32} color={PRIMARY} />
+            </div>
+            <div style={{ position: 'absolute', bottom: 1, right: 1, width: 24, height: 24, borderRadius: '50%', background: '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2.5px solid white' }}>
+              <CheckCircleIcon size={13} color="white" />
+            </div>
+          </div>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', marginBottom: 10, letterSpacing: '-0.3px' }}>Check your inbox</h2>
+          <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.7, marginBottom: 10 }}>If an account exists for</p>
+          <div style={{ display: 'inline-block', background: '#f1f5f9', borderRadius: 6, padding: '6px 16px', fontSize: 14, fontWeight: 700, color: '#0f172a', marginBottom: 24 }}>{email}</div>
+          <p style={{ color: '#94a3b8', fontSize: 13, lineHeight: 1.7, marginBottom: 32 }}>
+            we just sent a password reset link to it. Click it to set a new password — you'll land right back in your dashboard.
+          </p>
+          <button onClick={() => { setResetSent(false); setMode('login'); }}
+            style={{ width: '100%', padding: '13px 0', borderRadius: 8, border: 'none', background: PRIMARY, color: 'white', fontWeight: 700, fontSize: 15, cursor: 'pointer', boxShadow: '0 4px 14px rgba(27,77,62,0.3)' }}>
+            Back to Sign In
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Redirecting to checkout screen ──────────────────────────────────────────
+  if (redirectingToCheckout) {
+    return (
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0f172a 0%, #123529 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: -160, right: -100, width: 480, height: 480, borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,77,62,0.35) 0%, rgba(27,77,62,0) 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div style={{ background: 'white', borderRadius: 22, padding: '52px 44px', maxWidth: 420, width: '100%', boxShadow: '0 32px 80px rgba(0,0,0,0.35)', textAlign: 'center' }}>
+          <div style={{ width: 76, height: 76, borderRadius: '50%', background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 28px' }}>
+            <LoaderIcon size={32} color={PRIMARY} className="ip-spin" />
+          </div>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', marginBottom: 10, letterSpacing: '-0.3px' }}>Last step — activate your calculator</h2>
+          <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.7, marginBottom: 4 }}>
+            Your account is created. We're taking you to a secure checkout page to activate Solar Cost Predictor.
+          </p>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#f0fdf4', color: PRIMARY, padding: '7px 16px', borderRadius: 999, fontSize: 13, fontWeight: 700, marginTop: 14 }}>
+            <BoltIcon size={13} /> 30 days free, then $49/month
+          </div>
+          <style>{`@keyframes ip-spin { to { transform: rotate(360deg); } } .ip-spin { animation: ip-spin 0.8s linear infinite; }`}</style>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Forgot password screen ──────────────────────────────────────────────────
+  if (mode === 'forgot') {
+    return (
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0f172a 0%, #123529 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: -160, right: -100, width: 480, height: 480, borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,77,62,0.35) 0%, rgba(27,77,62,0) 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <div style={{ background: 'white', borderRadius: 22, padding: 'clamp(28px, 6vw, 48px) clamp(20px, 5vw, 44px)', maxWidth: 440, width: '100%', boxShadow: '0 32px 80px rgba(0,0,0,0.35)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 36 }}>
+            <img src="/logo-icon-navy.svg" alt="" style={{ height: 38, width: 38, borderRadius: 8, flexShrink: 0 }} />
+            <span style={{ fontWeight: 800, fontSize: 19, color: '#0f172a', letterSpacing: '-0.2px' }}>Solar Cost <span style={{ color: '#16a34a' }}>Predictor</span></span>
+          </div>
+
+          <h1 style={{ fontSize: 23, fontWeight: 800, color: '#0f172a', marginBottom: 5, letterSpacing: '-0.3px' }}>Reset your password</h1>
+          <p style={{ color: '#64748b', fontSize: 14, marginBottom: 28, lineHeight: 1.5 }}>Enter your email and we'll send you a link to set a new one.</p>
+
+          {error && (
+            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, padding: '12px 16px', marginBottom: 20, color: '#dc2626', fontSize: 13.5, fontWeight: 500 }}>
+              ⚠ {error}
+            </div>
+          )}
+
+          <form onSubmit={handleForgotPassword} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            <div>
+              <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 7 }}>Email address</label>
+              <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="you@yourcompany.com" style={inputStyle}
+                onFocus={e => { e.target.style.borderColor = PRIMARY; e.target.style.boxShadow = focusRing; e.target.style.background = 'white'; }}
+                onBlur={e => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; e.target.style.background = '#fafafa'; }} />
+            </div>
+
+            <button type="submit" disabled={loading}
+              style={{ marginTop: 4, padding: '14px 0', borderRadius: 8, border: 'none', background: loading ? '#94a3b8' : PRIMARY, color: 'white', fontWeight: 700, fontSize: 16, cursor: loading ? 'not-allowed' : 'pointer', boxShadow: loading ? 'none' : '0 4px 16px rgba(27,77,62,0.3)', transition: 'all 0.15s', letterSpacing: '0.01em' }}>
+              {loading ? 'Sending…' : 'Send Reset Link →'}
+            </button>
+          </form>
+
+          <div style={{ textAlign: 'center', marginTop: 24, paddingTop: 22, borderTop: '1px solid #f1f5f9' }}>
+            <button type="button" onClick={() => { setMode('login'); setError(''); }} style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: 13, cursor: 'pointer' }}>← Back to Sign In</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Main auth card ─────────────────────────────────────────────────────────
+  return (
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0f172a 0%, #123529 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+      <div style={{ background: 'white', borderRadius: 22, padding: 'clamp(28px, 6vw, 48px) clamp(20px, 5vw, 56px)', maxWidth: 520, width: '100%', boxShadow: '0 32px 80px rgba(0,0,0,0.35)' }}>
+
+        {/* Logo -- flexWrap left at its nowrap default and every child pinned
+            with whiteSpace:nowrap so this stays one line on a narrow phone;
+            card padding above is responsive (clamp) so there's actually
+            enough width for that to hold on small screens. */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 36, flexWrap: 'nowrap' }}>
+          <img src="/logo-icon-navy.svg" alt="" style={{ height: 34, width: 34, borderRadius: 8, flexShrink: 0 }} />
+          <span style={{ fontWeight: 800, fontSize: 'clamp(15px, 4.5vw, 19px)', color: '#0f172a', letterSpacing: '-0.2px', whiteSpace: 'nowrap', flexShrink: 0 }}>Solar Cost <span style={{ color: '#16a34a' }}>Predictor</span></span>
+          <span style={{ fontSize: 11, background: '#f0fdf4', color: PRIMARY, padding: '3px 8px', borderRadius: 999, fontWeight: 700, letterSpacing: '0.02em', whiteSpace: 'nowrap', flexShrink: 0 }}>Installer Portal</span>
         </div>
 
-        <div style={{ background: 'white', borderRadius: 20, padding: 36, boxShadow: '0 25px 50px rgba(0,0,0,0.3)' }}>
+        <h1 style={{ fontSize: 23, fontWeight: 800, color: '#0f172a', marginBottom: 5, letterSpacing: '-0.3px' }}>
+          {mode === 'login' ? 'Welcome back' : 'Create your account'}
+        </h1>
+        <p style={{ color: '#64748b', fontSize: 14, marginBottom: 28, lineHeight: 1.5 }}>
+          {mode === 'login' ? 'Sign in to manage your widget, leads, and billing.' : 'Start your 30-day free trial — card required, not charged until it ends.'}
+        </p>
 
-          {/* Redirecting to Stripe Checkout right after signup */}
-          {mode === 'redirecting_to_checkout' && (
-            <div style={{ textAlign: 'center', padding: '24px 0' }}>
-              <div style={{ width: 36, height: 36, border: '3px solid #e2e8f0', borderTopColor: '#1b4d3e', borderRadius: '50%', margin: '0 auto 20px', animation: 'ip-spin 0.8s linear infinite' }} />
-              <h2 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 6 }}>Last step — activate your calculator</h2>
-              <p style={{ fontSize: 14, color: '#64748b' }}>30 days free, then $49/month.</p>
-              <style>{`@keyframes ip-spin { to { transform: rotate(360deg); } }`}</style>
+        {/* Toggle */}
+        <div style={{ display: 'flex', background: '#f1f5f9', borderRadius: 8, padding: 4, marginBottom: 26 }}>
+          {[['login', 'Sign In'], ['signup', 'Create Account']].map(([m, l]) => (
+            <button key={m} onClick={() => { setMode(m); setError(''); }}
+              style={{ flex: 1, padding: '10px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: 14, background: mode === m ? 'white' : 'transparent', color: mode === m ? '#0f172a' : '#64748b', boxShadow: mode === m ? '0 1px 6px rgba(0,0,0,0.1)' : 'none', transition: 'all 0.15s' }}>
+              {l}
+            </button>
+          ))}
+        </div>
+
+        {error && (
+          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, padding: '12px 16px', marginBottom: 20, color: '#dc2626', fontSize: 13.5, fontWeight: 500 }}>
+            ⚠ {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+          {mode === 'signup' && (
+            <div>
+              <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 7 }}>Company name</label>
+              <input type="text" required value={companyName} onChange={e => setCompanyName(e.target.value)}
+                placeholder="SunShine Solar LLC" style={inputStyle}
+                onFocus={e => { e.target.style.borderColor = PRIMARY; e.target.style.boxShadow = focusRing; e.target.style.background = 'white'; }}
+                onBlur={e => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; e.target.style.background = '#fafafa'; }} />
             </div>
           )}
 
-          {/* Check email confirmation */}
-          {mode === 'check_email' && (
-            <div style={{ textAlign: 'center', padding: '8px 0' }}>
-              <div style={{ marginBottom: 16 }}><MailIcon size={48} /></div>
-              <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Check your email</h2>
-              <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>
-                We sent a link to <strong>{form.email}</strong>.<br />
-                {form.companyName
-                  ? 'Click it to confirm your account, then activate your calculator with a quick checkout step — 30 days free before your first charge.'
-                  : 'Click it to reset your password.'}
-              </p>
-              <button onClick={() => setMode('login')} style={{ ...linkStyle, marginTop: 20, display: 'block', textAlign: 'center' }}>
-                ← Back to sign in
+          <div>
+            <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 7 }}>Email address</label>
+            <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
+              placeholder="you@yourcompany.com" style={inputStyle}
+              onFocus={e => { e.target.style.borderColor = PRIMARY; e.target.style.boxShadow = focusRing; e.target.style.background = 'white'; }}
+              onBlur={e => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; e.target.style.background = '#fafafa'; }} />
+          </div>
+
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 7 }}>
+              <label style={{ fontSize: 13, fontWeight: 600, color: '#374151' }}>Password</label>
+              {mode === 'login' && (
+                <button type="button" onClick={() => { setMode('forgot'); setError(''); }}
+                  style={{ background: 'none', border: 'none', padding: 0, fontSize: 12, color: PRIMARY, fontWeight: 500, cursor: 'pointer' }}>
+                  Forgot password?
+                </button>
+              )}
+            </div>
+            <div style={{ position: 'relative' }}>
+              <input type={showPassword ? 'text' : 'password'} required minLength={8} value={password} onChange={e => setPassword(e.target.value)}
+                placeholder={mode === 'signup' ? 'At least 8 characters' : '••••••••'} style={passwordInputStyle}
+                onFocus={e => { e.target.style.borderColor = PRIMARY; e.target.style.boxShadow = focusRing; e.target.style.background = 'white'; }}
+                onBlur={e => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; e.target.style.background = '#fafafa'; }} />
+              <button type="button" onClick={() => setShowPassword(s => !s)} style={eyeButtonStyle} aria-label={showPassword ? 'Hide password' : 'Show password'} tabIndex={-1}>
+                {showPassword ? <EyeOffIcon size={17} /> : <EyeIcon size={17} />}
               </button>
             </div>
-          )}
+          </div>
 
-          {/* Login */}
-          {mode === 'login' && (
-            <>
-              <h1 style={headingStyle}>Welcome back</h1>
-              <p style={subStyle}>Sign in to manage your solar calculator</p>
-              <form onSubmit={handleLogin} style={formStyle}>
-                <Field label="Email Address" type="email" placeholder="you@company.com" value={form.email} onChange={v => update('email', v)} />
-                <Field label="Password" type="password" placeholder="••••••••" value={form.password} onChange={v => update('password', v)} />
-                {error && <ErrorBox>{error}</ErrorBox>}
-                <button type="submit" disabled={loading} style={submitStyle(loading)}>
-                  {loading ? 'Signing in...' : 'Sign In'}
-                </button>
-              </form>
-              <div style={{ textAlign: 'center', marginTop: 16, fontSize: 14, color: '#64748b' }}>
-                <button onClick={() => { setMode('forgot'); setError(''); }} style={linkStyle}>Forgot password?</button>
-              </div>
-              <div style={{ textAlign: 'center', marginTop: 10, fontSize: 14, color: '#64748b' }}>
-                No account?{' '}
-                <button onClick={() => { setMode('signup'); setError(''); }} style={linkStyle}>Sign up free</button>
-              </div>
-            </>
-          )}
-
-          {/* Signup */}
           {mode === 'signup' && (
-            <>
-              <h1 style={headingStyle}>Create your account</h1>
-              <p style={subStyle}>Start your 30-day free trial — card required, not charged until it ends.</p>
-              <form onSubmit={handleSignup} style={formStyle}>
-                <Field label="Company Name" type="text" placeholder="SunShine Solar LLC" value={form.companyName} onChange={v => update('companyName', v)} />
-                <Field label="Email Address" type="email" placeholder="you@company.com" value={form.email} onChange={v => update('email', v)} />
-                <Field label="Password" type="password" placeholder="At least 6 characters" value={form.password} onChange={v => update('password', v)} />
-                {error && <ErrorBox>{error}</ErrorBox>}
-                <button type="submit" disabled={loading} style={submitStyle(loading)}>
-                  {loading ? 'Creating account...' : 'Start Free Trial'}
+            <div>
+              <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 7 }}>Confirm password</label>
+              <div style={{ position: 'relative' }}>
+                <input type={showConfirmPassword ? 'text' : 'password'} required minLength={8} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter your password" style={{ ...passwordInputStyle, borderColor: confirmPassword && confirmPassword !== password ? '#dc2626' : '#e2e8f0' }}
+                  onFocus={e => { e.target.style.borderColor = confirmPassword && confirmPassword !== password ? '#dc2626' : PRIMARY; e.target.style.boxShadow = focusRing; e.target.style.background = 'white'; }}
+                  onBlur={e => { e.target.style.borderColor = confirmPassword && confirmPassword !== password ? '#dc2626' : '#e2e8f0'; e.target.style.boxShadow = 'none'; e.target.style.background = '#fafafa'; }} />
+                <button type="button" onClick={() => setShowConfirmPassword(s => !s)} style={eyeButtonStyle} aria-label={showConfirmPassword ? 'Hide password' : 'Show password'} tabIndex={-1}>
+                  {showConfirmPassword ? <EyeOffIcon size={17} /> : <EyeIcon size={17} />}
                 </button>
-              </form>
-              <div style={{ textAlign: 'center', marginTop: 16, fontSize: 14, color: '#64748b' }}>
-                Already have an account?{' '}
-                <button onClick={() => { setMode('login'); setError(''); }} style={linkStyle}>Sign in</button>
               </div>
-            </>
+              {confirmPassword && confirmPassword !== password && (
+                <p style={{ fontSize: 12, color: '#dc2626', marginTop: 6 }}>Passwords do not match.</p>
+              )}
+            </div>
           )}
 
-          {/* Forgot password */}
-          {mode === 'forgot' && (
-            <>
-              <h1 style={headingStyle}>Reset your password</h1>
-              <p style={subStyle}>Enter your email and we'll send a reset link.</p>
-              <form onSubmit={handleForgotPassword} style={formStyle}>
-                <Field label="Email Address" type="email" placeholder="you@company.com" value={form.email} onChange={v => update('email', v)} />
-                {error && <ErrorBox>{error}</ErrorBox>}
-                <button type="submit" disabled={loading} style={submitStyle(loading)}>
-                  {loading ? 'Sending...' : 'Send Reset Link'}
-                </button>
-              </form>
-              <div style={{ textAlign: 'center', marginTop: 16, fontSize: 14, color: '#64748b' }}>
-                <button onClick={() => { setMode('login'); setError(''); }} style={linkStyle}>← Back to sign in</button>
-              </div>
-            </>
-          )}
+          <button type="submit" disabled={loading}
+            style={{ marginTop: 4, padding: '14px 0', borderRadius: 8, border: 'none', background: loading ? '#94a3b8' : PRIMARY, color: 'white', fontWeight: 700, fontSize: 16, cursor: loading ? 'not-allowed' : 'pointer', boxShadow: loading ? 'none' : '0 4px 16px rgba(27,77,62,0.3)', transition: 'all 0.15s', letterSpacing: '0.01em' }}>
+            {loading ? 'Please wait…' : mode === 'login' ? 'Sign In →' : 'Start Free Trial →'}
+          </button>
+        </form>
 
-          {/* Reset password (after clicking email link) */}
-          {mode === 'reset_password' && (
-            <>
-              <h1 style={headingStyle}>Set new password</h1>
-              <p style={subStyle}>Choose a strong new password for your account.</p>
-              <form onSubmit={handleResetPassword} style={formStyle}>
-                <Field label="New Password" type="password" placeholder="At least 6 characters" value={form.password} onChange={v => update('password', v)} />
-                {error && <ErrorBox>{error}</ErrorBox>}
-                <button type="submit" disabled={loading} style={submitStyle(loading)}>
-                  {loading ? 'Updating...' : 'Update Password'}
-                </button>
-              </form>
-            </>
-          )}
+        {mode === 'signup' && (
+          <p style={{ fontSize: 12, color: '#94a3b8', textAlign: 'center', marginTop: 18, lineHeight: 1.6 }}>
+            By creating an account you agree to our{' '}
+            <a href="/terms-of-service" style={{ color: PRIMARY, textDecoration: 'none', fontWeight: 500 }}>Terms of Service</a>{' '}
+            and{' '}
+            <a href="/privacy-policy" style={{ color: PRIMARY, textDecoration: 'none', fontWeight: 500 }}>Privacy Policy</a>.
+          </p>
+        )}
 
+        <div style={{ textAlign: 'center', marginTop: 24, paddingTop: 22, borderTop: '1px solid #f1f5f9' }}>
+          <a href="/" style={{ color: '#94a3b8', fontSize: 13, textDecoration: 'none' }}>← Back to Solar Cost Predictor</a>
         </div>
       </div>
     </div>
   );
 }
-
-function Field({ label, type, placeholder, value, onChange }) {
-  return (
-    <div>
-      <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>{label}</label>
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        required
-        style={{
-          width: '100%', padding: '11px 14px', border: '1.5px solid #e2e8f0',
-          borderRadius: 10, fontSize: 15, color: '#1e293b', outline: 'none',
-          fontFamily: 'inherit', boxSizing: 'border-box',
-        }}
-      />
-    </div>
-  );
-}
-
-function ErrorBox({ children }) {
-  return (
-    <div style={{ padding: '10px 14px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, color: '#dc2626', fontSize: 13 }}>
-      {children}
-    </div>
-  );
-}
-
-const headingStyle = { fontSize: 22, fontWeight: 700, color: '#0f172a', marginBottom: 4 };
-const subStyle = { fontSize: 14, color: '#64748b', marginBottom: 24 };
-const formStyle = { display: 'flex', flexDirection: 'column', gap: 14 };
-const submitStyle = loading => ({
-  padding: 13, background: loading ? '#94a3b8' : 'linear-gradient(135deg, #1b4d3e, #123529)',
-  color: 'white', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 700,
-  cursor: loading ? 'not-allowed' : 'pointer', marginTop: 4, fontFamily: 'inherit',
-});
-const linkStyle = { background: 'none', border: 'none', color: '#1b4d3e', fontWeight: 600, cursor: 'pointer', fontSize: 14, fontFamily: 'inherit' };

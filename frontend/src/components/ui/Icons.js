@@ -549,6 +549,39 @@ export function GlobeIcon(p) {
   );
 }
 
+export function EyeIcon(p) {
+  return (
+    <Icon {...p}>
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </Icon>
+  );
+}
+
+export function EyeOffIcon(p) {
+  return (
+    <Icon {...p}>
+      <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.5 18.5 0 0 1 4.22-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+      <line x1="1" y1="1" x2="23" y2="23" />
+    </Icon>
+  );
+}
+
+export function LoaderIcon(p) {
+  return (
+    <Icon {...p}>
+      <line x1="12" y1="2" x2="12" y2="6" />
+      <line x1="12" y1="18" x2="12" y2="22" />
+      <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
+      <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
+      <line x1="2" y1="12" x2="6" y2="12" />
+      <line x1="18" y1="12" x2="22" y2="12" />
+      <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
+      <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
+    </Icon>
+  );
+}
+
 export function getCategoryColors(slug) {
   return CATEGORY_COLORS[slug] || { bg: '#f8fafc', border: '#e2e8f0', iconBg: '#f1f5f9', iconColor: '#1b4d3e' };
 }

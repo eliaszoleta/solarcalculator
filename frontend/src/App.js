@@ -7,6 +7,7 @@ import SolarCalculator from './components/calculator/SolarCalculator';
 import ResultsScreen from './components/calculator/ResultsScreen';
 import InstallerDashboard from './components/dashboard/InstallerDashboard';
 import AuthPage from './components/dashboard/AuthPage';
+import ResetPasswordPage from './components/dashboard/ResetPasswordPage';
 import Header from './components/ui/Header';
 import Footer from './components/ui/Footer';
 import SEOContent from './components/ui/SEOContent';
@@ -190,6 +191,13 @@ function EmbedWrapper({ installerId }) {
 export default function App() {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(isInstaller);
+  // Clicking a password-reset email link logs the visitor in with a real
+  // (temporary) session -- Supabase fires PASSWORD_RECOVERY for exactly
+  // this case, distinct from a normal sign-in. Without tracking it
+  // separately, that session would satisfy the `!user` check below and drop
+  // the visitor straight into the full dashboard instead of making them set
+  // a new password first.
+  const [passwordRecovery, setPasswordRecovery] = useState(false);
 
   useEffect(() => {
     if (!isInstaller || !supabase) { setAuthLoading(false); return; }
@@ -202,7 +210,8 @@ export default function App() {
       clearTimeout(timeout);
       setAuthLoading(false);
     });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') setPasswordRecovery(true);
       setUser(session?.user ?? null);
       setAuthLoading(false);
     });
@@ -248,6 +257,7 @@ export default function App() {
         </main><Footer /></div>
       </HelmetProvider>
     );
+    if (passwordRecovery) return <HelmetProvider><ResetPasswordPage onDone={() => setPasswordRecovery(false)} /></HelmetProvider>;
     if (!user) return <HelmetProvider><AuthPage onAuth={setUser} /></HelmetProvider>;
     return <HelmetProvider><InstallerDashboard user={user} onLogout={handleLogout} /></HelmetProvider>;
   }
