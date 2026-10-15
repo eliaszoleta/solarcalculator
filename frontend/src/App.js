@@ -192,7 +192,7 @@ export default function App() {
   const [authLoading, setAuthLoading] = useState(isInstaller);
 
   useEffect(() => {
-    if (!isInstaller) return;
+    if (!isInstaller || !supabase) { setAuthLoading(false); return; }
     const timeout = setTimeout(() => setAuthLoading(false), 3000);
     supabase.auth.getSession().then(({ data: { session } }) => {
       clearTimeout(timeout);
@@ -239,6 +239,14 @@ export default function App() {
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0f172a' }}>
         <div style={{ color: 'white', fontSize: 16 }}>Loading...</div>
       </div>
+    );
+    if (!user && !supabase) return (
+      <HelmetProvider>
+        <div className="app"><Header /><main style={{ padding: 40, textAlign: 'center' }}>
+          <h2>Authentication not configured</h2>
+          <p style={{ color: '#64748b', marginTop: 8 }}>Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY to enable the installer login.</p>
+        </main><Footer /></div>
+      </HelmetProvider>
     );
     if (!user) return <HelmetProvider><AuthPage onAuth={setUser} /></HelmetProvider>;
     return <HelmetProvider><InstallerDashboard user={user} onLogout={handleLogout} /></HelmetProvider>;

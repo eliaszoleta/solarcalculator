@@ -37,6 +37,7 @@ export default function AuthPage({ onAuth }) {
 
   const handleLogin = async e => {
     e.preventDefault();
+    if (!supabase) { setError('Authentication is not configured. Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY.'); return; }
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: form.email,
@@ -70,6 +71,7 @@ export default function AuthPage({ onAuth }) {
 
   const handleSignup = async e => {
     e.preventDefault();
+    if (!supabase) { setError('Authentication is not configured. Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY.'); return; }
     if (!form.companyName.trim()) { setError('Company name is required'); return; }
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
@@ -116,6 +118,7 @@ export default function AuthPage({ onAuth }) {
 
   const handleForgotPassword = async e => {
     e.preventDefault();
+    if (!supabase) { setError('Authentication is not configured. Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY.'); return; }
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(form.email, {
       redirectTo: 'https://www.solarcostpredictor.com/installer',
@@ -127,6 +130,7 @@ export default function AuthPage({ onAuth }) {
 
   const handleResetPassword = async e => {
     e.preventDefault();
+    if (!supabase) { setError('Authentication is not configured. Set REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY.'); return; }
     setLoading(true);
     const { error } = await supabase.auth.updateUser({ password: form.password });
     if (error) { setError(error.message); }

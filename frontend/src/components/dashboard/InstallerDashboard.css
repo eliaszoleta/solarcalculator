@@ -432,6 +432,18 @@
     overflow-x: auto;
     padding: 8px;
     gap: 4px;
+    position: relative;
+  }
+
+  .dash-nav::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 28px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.95));
+    pointer-events: none;
   }
 
   .dash-nav-item {
