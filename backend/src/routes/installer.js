@@ -92,6 +92,9 @@ async function saveInstallerConfig(installerId, config) {
 
 // GET /api/installer/:id
 router.get('/:id', async (req, res) => {
+  if (req.params.id !== req.user.id) {
+    return res.status(403).json({ success: false, error: 'Forbidden' });
+  }
   try {
     let config = await getInstallerConfig(req.params.id);
     if (!config) {
@@ -136,6 +139,9 @@ router.get('/:id', async (req, res) => {
 // PUT /api/installer/:id
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
+  if (id !== req.user.id) {
+    return res.status(403).json({ success: false, error: 'Forbidden' });
+  }
   const updates = req.body;
 
   const allowedFields = [
@@ -199,6 +205,9 @@ router.get('/:id/defaults', (req, res) => {
 
 // GET /api/installer/:id/api-key — return current API key (masked) or generate one
 router.get('/:id/api-key', async (req, res) => {
+  if (req.params.id !== req.user.id) {
+    return res.status(403).json({ success: false, error: 'Forbidden' });
+  }
   try {
     const config = (await getInstallerConfig(req.params.id)) || { ...DEFAULT_INSTALLER_CONFIG };
     if (!config.apiKey) {
@@ -213,6 +222,9 @@ router.get('/:id/api-key', async (req, res) => {
 
 // POST /api/installer/:id/api-key/regenerate — generate a fresh API key
 router.post('/:id/api-key/regenerate', async (req, res) => {
+  if (req.params.id !== req.user.id) {
+    return res.status(403).json({ success: false, error: 'Forbidden' });
+  }
   try {
     const config = (await getInstallerConfig(req.params.id)) || { ...DEFAULT_INSTALLER_CONFIG };
     config.apiKey = `sk_${crypto.randomBytes(24).toString('hex')}`;
